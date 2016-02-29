@@ -3,6 +3,7 @@ define([ 'jquery', 'css!api/classpath/query/support/web/console/theme/homer/styl
 	return {
 		start : function() {
 			console.log("后台启动器加载");
+			location.href = "#/dashboard";
 			$(".splash").hide();
 			// var app = angular.module('app', [ 'ui.router' ]);
 			//
