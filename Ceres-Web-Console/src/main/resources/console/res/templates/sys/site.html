@@ -1,0 +1,104 @@
+<div class="row" >
+	<div class="col-md-12">
+		<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">基本设置</h3>
+            </div><!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal">
+              <div class="box-body">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">网站域名</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.WEB_HOST"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;">如： http://www.domain.com</small>
+                </div>
+                 <div class="form-group">
+                  <label class="col-sm-2 control-label">图片域名</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_IMG_BASE"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;">用于图片流量分流，如： http://www.domain.com/imgbase/</small>
+                </div>
+               <div class="form-group">
+                  <label class="col-sm-2 control-label">网站Logo</label>
+                  <div class="col-sm-3">
+                    <input type="text" class="form-control" readonly ng-model="setting.SITE_LOGO"   >
+                  </div>
+                  <div class="col-sm-2">
+                     <button type="file" class="btn btn-success btn-block" ngf-select="onLogoSelect($files)" accept="image/*" ngf-max-height="1000" ngf-max-size="1MB">选择文件</button>
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;">图片大小：105*63</small>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">网站名称</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_NAME"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;">如：XX网站</small>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">网站简称</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_SHORT_NAME"  >
+                  </div>
+                   <small class=" col-sm-5 control-label" style="text-align:left;">如：XX网</small>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">网站标题</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_TITLE"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;">如： - 天下没有难做的生意[官网首页]</small>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">网站关键字</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_KEYWORD"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;">多个关键词请用,号分割</small>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">网站描述</label>
+                  <div class="col-sm-5">
+                    <textarea rows="5" maxlength="200" class="form-control" ng-model="setting.SITE_DESC"  ></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">备案信息</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_ICP"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;">如： 京ICP备00000000号</small>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">版权信息</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_COPYRIGHT"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;">如： 2014-2015 成都某某某信息技术有限公司</small>
+                </div>
+                <hr/>
+                 <div class="form-group">
+                  <label class="col-sm-2 control-label">客服QQ</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_CS_QQ"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;"></small>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">客服电话</label>
+                  <div class="col-sm-5">
+                    <input type="text" class="form-control" ng-model="setting.SITE_CS_PHONE"  >
+                  </div>
+                   <small class=" col-sm-5 control-label " style="text-align:left;"></small>
+                </div>
+              </div><!-- /.box-body -->
+              <div class="box-footer">
+                <button type="button" class="btn btn-primary pull-right" ng-click="doUpdate()">确认修改</button>
+              </div><!-- /.box-footer -->
+            </form>
+          </div>
+	</div>
+</div>

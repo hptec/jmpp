@@ -30,26 +30,18 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 			require.config(module_def);
 			require.config(cfg);
 
-			var starterJsUri = module_def.starterJs[cfg.applicationCategory];
-			console.log("启动器位置", starterJsUri);
+			var depUris = [ 'angular', 'app' ];
 
-			require([ 'angular', 'ceres-requirejs/js/app-routes' ], function(angular) {
+			if (cfg.configUri != undefined && cfg.configUri != "") {
+				console.log("发现启动配置文件路径", cfg.configUri);
+				depUris.push(cfg.configUri);
+			}
+			require(depUris, function(angular, app, starter) {
 				angular.element(document).ready(function() {
-					// 加载对应console并 启动angularjs
 					angular.bootstrap(document, [ 'app' ]);
 					angular.element(document).find('html').addClass('ng-app');
-
-					require([ starterJsUri ], function(starter) {
-						console.log("启动器:", starter);
-						if (starter != undefined && starter.start != undefined) {
-							starter.start();
-						}
-					});
-
 				});
-
 			});
-
-		}
+		},
 	};
 });
