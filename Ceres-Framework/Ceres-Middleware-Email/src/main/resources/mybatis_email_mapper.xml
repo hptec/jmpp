@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cerestech.middleware.email.mapper.EmailMapper">
+
+	<select id="search" resultType="cn.cerestech.middleware.email.entity.EmailRecord">
+		SELECT * FROM `$$email_record` eml
+		WHERE TRUE
+		<if test="type != null and type != ''">
+			AND eml.type = #{type}
+		</if>
+		<if test="status != null and status.length > 0">
+			<foreach collection="status" item="state" open=" AND eml.state IN (" close=")" separator=",">
+				#{state}
+			</foreach>
+		</if>
+		<if test="seconds_delay != null">
+			AND eml.send_time &lt;= DATE_ADD(NOW(),INTERVAL #{seconds_delay} SECOND)
+		</if>
+		ORDER BY eml.send_time ASC
+		<if test="offset != null and pageSize != null">
+			LIMIT #{offset}, #{pageSize}
+		</if>
+	</select>
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cerestech.middleware.weixin.mapper.MpUserMapper">
+	
+	<insert id="insert" parameterType="cn.cerestech.middleware.weixin.entity.MpUser" useGeneratedKeys="true" keyColumn="mpuser.id">
+		INSERT INTO `$$mpuser` 
+			(`openid`, `nickname`, `sex`, `province`, `city`, `country`, `headimgurl`, 
+				`subscribe`, `language`, `subscribe_time`, `unionid`, `remark`, `groupid`, `update_time`) 
+		VALUES 
+			(#{mpuser.openid}, #{mpuser.nickname}, #{mpuser.sex}, #{mpuser.province}, #{mpuser.city}, #{mpuser.country}, #{mpuser.headimgurl}, 
+				#{mpuser.subscribe}, #{mpuser.language}, #{mpuser.subscribe_time}, #{mpuser.unionid}, #{mpuser.remark}, #{mpuser.groupid}, #{mpuser.update_time});
+	</insert>
+	
+	<update id="update">
+		UPDATE `$$mpuser`
+		SET
+			openid = #{mpuser.openid}, 
+			nickname = #{mpuser.nickname},
+			sex = #{mpuser.sex},
+			province = #{mpuser.province},
+			city = #{mpuser.city},
+			country = #{mpuser.country},
+			headimgurl = #{mpuser.headimgurl},
+			subscribe = #{mpuser.subscribe},
+			language = #{mpuser.language},
+			subscribe_time = #{mpuser.subscribe_time},
+			unionid = #{mpuser.unionid},
+			remark = #{mpuser.remark},
+			groupid = #{mpuser.groupid},
+			update_time = #{mpuser.update_time}
+		WHERE id = #{mpuser.id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM `$$mpuser` WHERE id = #{id}
+	</delete>
+	
+	<select id="queryMpUserByOpenId" resultType="cn.cerestech.middleware.weixin.entity.MpUser">
+		SELECT CAST(mp.nickname AS CHAR) AS nickname, mp.* FROM `$$mpuser` mp WHERE mp.openid = #{openid}
+	</select>
+	
+	<select id="queryMpUserById" resultType="cn.cerestech.middleware.weixin.entity.MpUser">
+		SELECT CAST(mp.nickname AS CHAR) AS nickname, mp.* FROM `$$mpuser` mp WHERE mp.id = #{id}
+	</select>	
+	
+	
+</mapper>
