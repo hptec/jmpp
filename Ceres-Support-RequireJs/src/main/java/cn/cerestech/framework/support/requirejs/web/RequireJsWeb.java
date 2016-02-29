@@ -44,7 +44,7 @@ import cn.cerestech.framework.support.requirejs.service.RequireJsService;
 @BootCdnPath(module = "require-css", version = "0.1.8/css.min")
 @ClasspathPath(id = "ceres-requirejs", uri = "support/requirejs")
 @ClasspathPath(id = "ceres-classpath", uri = ".")
-public class RequireJsWeb extends AbstractRequireJsWebApi {
+public class RequireJsWeb extends RequireJsWebApi {
 
 	private Logger log = LogManager.getLogger();
 
