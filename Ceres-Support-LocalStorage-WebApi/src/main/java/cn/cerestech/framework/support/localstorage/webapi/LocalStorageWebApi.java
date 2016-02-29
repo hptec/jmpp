@@ -23,11 +23,11 @@ import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.localstorage.entity.LocalFile;
 import cn.cerestech.framework.support.localstorage.service.LocalStorageService;
 import cn.cerestech.framework.support.web.ContentType;
-import cn.cerestech.framework.support.webapi.AbstractWebApi;
+import cn.cerestech.framework.support.webapi.WebApi;
 
 @RestController
 @RequestMapping("api/localstorage")
-public class LocalStorageWebApi extends AbstractWebApi {
+public class LocalStorageWebApi extends WebApi {
 
 	private Logger log=LogManager.getLogger();
 	@Autowired

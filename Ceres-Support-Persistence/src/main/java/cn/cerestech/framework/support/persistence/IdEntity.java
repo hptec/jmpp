@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import cn.cerestech.framework.core.json.Jsonable;
+
 /**
  * 是否支持ID为主键类型的实体记录
  * 
@@ -13,7 +15,7 @@ import javax.persistence.MappedSuperclass;
  *
  */
 @MappedSuperclass
-public abstract class IdEntity {
+public abstract class IdEntity implements Jsonable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

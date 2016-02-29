@@ -19,5 +19,10 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.34</version>
 		</dependency>
+		<dependency>
+			<groupId>cn.cerestech</groupId>
+			<artifactId>Ceres-Core</artifactId>
+			<version>${ceres.version}</version>
+		</dependency>
 	</dependencies>
 </project>
