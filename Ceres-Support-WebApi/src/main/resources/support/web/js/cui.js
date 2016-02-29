@@ -15,7 +15,7 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 				appid : '',
 				appsecret : '',
 				baseUrl : '/',
-				waitSeconds : 5,
+				waitSeconds : 50,
 				map : {
 					'*' : {
 						'css' : 'require-css'
