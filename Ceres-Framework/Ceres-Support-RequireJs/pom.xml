@@ -14,11 +14,6 @@
   	</dependency>
   	<dependency>
   		<groupId>cn.cerestech</groupId>
-  		<artifactId>Ceres-Support-Application</artifactId>
-  		<version>${ceres.version}</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>cn.cerestech</groupId>
   		<artifactId>Ceres-Support-Classpath</artifactId>
   		<version>${ceres.version}</version>
   	</dependency>

@@ -14,7 +14,6 @@ import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.components.ComponentDispatcher;
-import cn.cerestech.framework.support.application.enums.ApplicationCategory;
 import cn.cerestech.framework.support.requirejs.annotation.BootCdnPath;
 import cn.cerestech.framework.support.requirejs.annotation.BootCdnPaths;
 import cn.cerestech.framework.support.requirejs.annotation.ClasspathPath;
@@ -31,8 +30,6 @@ public class RequireJsService implements ComponentDispatcher {
 	private static Map<String, KV> shimModules = Maps.newHashMap();
 
 	private static Map<String, String> pathsMap = Maps.newHashMap();
-
-	private static Map<ApplicationCategory, String> starterJsMap = Maps.newHashMap();
 
 	@Autowired
 	private ClasspathService classpathService;
@@ -135,10 +132,6 @@ public class RequireJsService implements ComponentDispatcher {
 
 	public Map<String, String> getPaths() {
 		return pathsMap;
-	}
-
-	public Map<ApplicationCategory, String> getStarter() {
-		return starterJsMap;
 	}
 
 	public void putPaths(String id, String uri) {
