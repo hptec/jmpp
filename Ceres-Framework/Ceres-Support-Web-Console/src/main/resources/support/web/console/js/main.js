@@ -4,7 +4,7 @@
  * 
  */
 
-angular.module('homer').controller('appCtrl', appCtrl);
+angular.module('app').controller('appCtrl', appCtrl);
 
 function appCtrl($http, $scope, $timeout) {
 

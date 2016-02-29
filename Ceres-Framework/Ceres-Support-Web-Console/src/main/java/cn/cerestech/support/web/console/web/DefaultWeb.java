@@ -7,19 +7,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.support.application.enums.ApplicationCategory;
 import cn.cerestech.framework.support.login.entity.LoginEntity;
-import cn.cerestech.framework.support.requirejs.RequireJsApplicationBootstrapJs;
+import cn.cerestech.framework.support.requirejs.annotation.ClasspathPath;
+import cn.cerestech.framework.support.web.ContentType;
+import cn.cerestech.support.classpath.ClasspathService;
 import cn.cerestech.support.web.console.service.ConsoleLoginService;
 
 @RestController
 @RequestMapping("$$ceres_sys/console")
-@RequireJsApplicationBootstrapJs(forCategory=ApplicationCategory.CONSOLE,jsUri="support/web/console/js/console-starter.js")
+@ClasspathPath(id = "ceres-console", uri = "support/web/console")
 public class DefaultWeb extends AbstractConsoleWeb {
 	private Logger log = LogManager.getLogger();
 
 	@Autowired
 	ConsoleLoginService loginService;
+
+	@Autowired
+	ClasspathService classpathService;
 
 	@RequestMapping("")
 	public void index() {
@@ -45,6 +49,13 @@ public class DefaultWeb extends AbstractConsoleWeb {
 		// configService.query(ConsoleConfigKey.CONSOLE_DEVELOPER_COPYRIGHT_YEAR).stringValue());
 		//
 		// zipOut(freemarker(new String(bytes), param));
+	}
+
+	@RequestMapping("requirejs/config.js")
+	public void reqiureJsConfig() {
+		byte[] bytes = classpathService.findByUri("support/web/console/js/angular-requirejs-config.js");
+		log.trace(new String(bytes));
+		zipOut(bytes, ContentType.getByExtension("js"));
 	}
 
 }
