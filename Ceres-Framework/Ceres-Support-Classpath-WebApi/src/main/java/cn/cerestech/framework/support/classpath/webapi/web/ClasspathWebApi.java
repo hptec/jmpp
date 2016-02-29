@@ -14,12 +14,12 @@ import com.google.common.io.Files;
 
 import cn.cerestech.framework.support.classpath.webapi.service.ClasspathComponentService;
 import cn.cerestech.framework.support.web.ContentType;
-import cn.cerestech.framework.support.webapi.AbstractWebApi;
+import cn.cerestech.framework.support.webapi.WebApi;
 import cn.cerestech.support.classpath.ClasspathService;
 
 @RestController
 @RequestMapping("/api/classpath")
-public class ClasspathWebApi extends AbstractWebApi {
+public class ClasspathWebApi extends WebApi {
 
 	private Logger log = LogManager.getLogger();
 
