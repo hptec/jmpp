@@ -11,7 +11,7 @@ public class AngularModule extends AbstractJsModule implements JsModule {
 
 	@Override
 	public String getJsUri() {
-		return bootcdn("angular.js", "1.5.0", "angular.min");
+		return bootcdn("angular.js", "1.5.0", "angular");
 	}
 
 	@Override

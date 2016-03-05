@@ -10,12 +10,12 @@
   <dependencies>
   	<dependency>
   		<groupId>cn.cerestech</groupId>
-  		<artifactId>Ceres-Support-Platform</artifactId>
+  		<artifactId>Ceres-Support-Web</artifactId>
   		<version>${ceres.version}</version>
   	</dependency>
   	<dependency>
   		<groupId>cn.cerestech</groupId>
-  		<artifactId>Ceres-Support-Web</artifactId>
+  		<artifactId>Ceres-Support-Platform</artifactId>
   		<version>${ceres.version}</version>
   	</dependency>
   </dependencies>
