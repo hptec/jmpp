@@ -1,6 +1,4 @@
-package cn.cerestech.framework.platform.enums;
-
-import cn.cerestech.framework.core.enums.DescribableEnum;
+package cn.cerestech.framework.core.enums;
 
 public enum PlatformCategory implements DescribableEnum {
 	CONSOLE("console", "管理台"), //

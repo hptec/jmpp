@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.common.primitives.Longs;
 
 import cn.cerestech.framework.core.enums.EnumCollector;
+import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.platform.enums.PlatformCategory;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
 import cn.cerestech.framework.support.login.provider.LoginServiceProvider;
