@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-@Repeatable(ConsoleModule.class)
-public @interface ModulePage {
+@Repeatable(Menu.class)
+public @interface MenuPage {
 
 	/**
 	 * 是否是模块的主入口页面

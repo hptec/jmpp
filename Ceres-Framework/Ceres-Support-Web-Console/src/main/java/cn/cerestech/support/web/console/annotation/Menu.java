@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-public @interface ConsoleModule {
+public @interface Menu {
 	String id() default "";
 
 	String icon() default "fa fa-cube";
@@ -19,5 +19,5 @@ public @interface ConsoleModule {
 
 	int sort() default Integer.MAX_VALUE;
 
-	ModulePage[] value();
+	MenuPage[] value();
 }

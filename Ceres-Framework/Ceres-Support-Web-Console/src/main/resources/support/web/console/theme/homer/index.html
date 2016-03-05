@@ -44,11 +44,10 @@
 
 </body>
 <script>
-	require([ '/api/classpath/query/support/web/js/cui.js' ], function(cui) {
-		console.log("页面启动", cui);
-		cui.bootstrap({
-			platformCategory : 'console',
-			configUri : '$$ceres_sys/console/requirejs/config'
+	require([ '/api/classpath/query/support/web/js/core.js' ], function(core) {
+		console.log("页面核心", core);
+		core.bootstrap({
+			platform : 'console'
 		});
 	});
 </script>

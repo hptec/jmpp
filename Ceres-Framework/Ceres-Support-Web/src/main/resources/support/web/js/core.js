@@ -6,8 +6,8 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 		 * @returns
 		 */
 		bootstrap : function(cfg) {
-			if (cfg.platformCategory == undefined || cfg.platformCategory == "") {
-				throw new Error("platformCategory is requried!");
+			if (cfg.platform == undefined || cfg.platform == "") {
+				throw new Error("platform is requried!");
 			}
 
 			var defaultConfig = {
@@ -32,7 +32,7 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 			require.config({
 				config : {
 					'http' : {
-						'platformCategory' : cfg.platformCategory,
+						'platform' : cfg.platform,
 						'onLoginRequired' : (cfg.onLoginRequired == undefined ? function() {
 							alert("请求登录");
 						} : cfg.onLoginRequired),
@@ -49,24 +49,21 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 							console.log(statusText, xhr);
 							throw statusText;
 						} : cfg.onHttpNotFound)
+					},
+					'app' : {
+						'requiredModule' : module_def.requiredModule,
+						'boot' : module_def.bootConfig[cfg.platform]
 					}
 				}
 			});
 
-//			require([ 'app' ], function(angular, starter) {
-				var depUris = [ 'angular' ];
-
-				if (cfg.configUri != undefined && cfg.configUri != "") {
-					console.log("发现启动配置文件路径", cfg.configUri);
-					depUris.push(cfg.configUri);
-				}
-				require(depUris, function(angular, starter) {
-//					angular.element(document).ready(function() {
-//						angular.bootstrap(document, [ 'app' ]);
-//						angular.element(document).find('html').addClass('ng-app');
-//					});
+			var boot = module_def.bootConfig[cfg.platform];
+			if (boot != undefined && boot.bootstrapJs != undefined && boot.bootstrapJs != "") {
+				console.log("启动模块 [" + boot.platform + "][" + boot.bootstrapJs + "]", boot);
+				require([ boot.bootstrapJs ], function() {
+					// 启动
 				});
-//			});
+			}
 
 		},
 	};

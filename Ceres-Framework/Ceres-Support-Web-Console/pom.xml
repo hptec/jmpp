@@ -24,17 +24,7 @@
   	</dependency>
   	<dependency>
   		<groupId>cn.cerestech</groupId>
-  		<artifactId>Ceres-Support-RequireJs</artifactId>
-  		<version>${ceres.version}</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>cn.cerestech</groupId>
   		<artifactId>Ceres-Support-Platform</artifactId>
-  		<version>${ceres.version}</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>cn.cerestech</groupId>
-  		<artifactId>Ceres-Support-AngularJs-Html5Mode</artifactId>
   		<version>${ceres.version}</version>
   	</dependency>
   </dependencies>
