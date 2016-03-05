@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.google.common.collect.Maps;
 
-import cn.cerestech.framework.core.Core;
 import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.platform.enums.PlatformCategory;
@@ -63,13 +62,15 @@ public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler im
 							Object result = m.invoke(obj);
 							if (result instanceof byte[]) {
 								byte[] bytes = (byte[]) result;
-								contents.append(new String(bytes, Core.charsetEncoding()));
+								contents.append(new String(bytes));
 							} else {
 								contents.append(result);
 							}
 
-						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-								| UnsupportedEncodingException e) {
+						} catch (IllegalAccessException | IllegalArgumentException 
+								| InvocationTargetException
+//								| UnsupportedEncodingException 
+								e) {
 							log.catching(e);
 						}
 					}
