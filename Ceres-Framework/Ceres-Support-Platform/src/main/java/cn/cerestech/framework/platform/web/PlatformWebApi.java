@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.platform.service.PlatformService;
-import cn.cerestech.framework.support.requirejs.web.RequireJsWebApi;
+import cn.cerestech.framework.support.web.RequireJsWebSupport;
 
 @RestController
 @RequestMapping("api/platform")
-public class PlatformWebApi extends RequireJsWebApi {
+public class PlatformWebApi extends RequireJsWebSupport {
 
 	@Autowired
 	PlatformService platformService;
