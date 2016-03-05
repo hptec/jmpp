@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.requirejs.web.RequireJsWebApi;
-import cn.cerestech.framework.support.webapi.WebApi;
 
 @RestController
 @RequestMapping("api/platform")

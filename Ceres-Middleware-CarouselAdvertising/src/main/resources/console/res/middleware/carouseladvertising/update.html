@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">轮播广告编辑</h3>
+				<div class="box-tools pull-right">
+					<button class="btn btn-default btn-sm " type="file" ngf-select="onPicSelect($files,namespace)" accept="image/*"  ngf-max-size="10MB"><i class="fa fa-upload"></i> 上传</button>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="col-sm-3" style="text-align:center;" ng-repeat="pic in data">
+                  <img class="img-responsive" resfs="{{pic.file_id}}">
+                  <div  class="btn-group">
+                  	<button class="btn btn-sm btn-default " ng-click="movePic(namespace,pic.id,'LEFT')" title="前移"><i class="fa fa-fw fa fa-long-arrow-left"></i></button>
+                  	<button class="btn btn-sm btn-default" ng-click="removePic(namespace,pic.id)">删除此图</button>
+                  	<a class="btn btn-sm btn-default" ng-href="#/carouseladvertising/config?id={{pic.id}}"><i class="fa fa-cogs"></i></a>
+                  	<button class="btn btn-sm btn-default " ng-click="movePic(namespace,pic.id,'RIGHT')" title="后移"><i class="fa fa-fw fa fa-long-arrow-right"></i></button>
+                  </div>
+                </div>
+			</div>
+			<!-- /.box-body -->
+			<div class="box-footer">
+				<a class="btn btn-default" ceres-action="return" ng-href="#/carouseladvertising/search">返回列表</a>
+			</div>
+			<!-- /.box-footer -->
+		</div>
+	</div>
+</div>
