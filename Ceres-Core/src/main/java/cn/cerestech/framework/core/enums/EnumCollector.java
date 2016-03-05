@@ -13,7 +13,6 @@ import com.google.common.collect.Sets;
 
 import cn.cerestech.framework.core.Classpaths;
 import cn.cerestech.framework.core.KV;
-import cn.cerestech.framework.support.configuration.enums.ConfigKey;
 
 /**
  * 整合采集枚举的方法
@@ -25,11 +24,12 @@ public class EnumCollector {
 	private static Map<String, EnumCollector> bufferPool = Maps.newHashMap();
 
 	static {
-		// 加载所有继承 DescribableEnum 和 ConfigKey 和 CategoryDescribableEnum的类
+		// 加载所有继承 DescribableEnum的类
 		Set<?> set = Classpaths.getSubTypeWith(DescribableEnum.class, Sets.newHashSet(""));
 		for (Object de : set) {
 			if (de instanceof Class) {
-				Class<?> clazz = (Class<?>) de;
+				@SuppressWarnings("unchecked")
+				Class<? extends DescribableEnum> clazz = (Class<? extends DescribableEnum>) de;
 				EnumCollector collector = new EnumCollector(clazz);
 				bufferPool.put(clazz.getName(), collector);
 			}
@@ -37,7 +37,7 @@ public class EnumCollector {
 
 	}
 
-	private Class<?> clazz;
+	private Class<? extends DescribableEnum> clazz;
 	private List<KV> list;
 	private DescribableEnum[] values;
 
@@ -53,35 +53,17 @@ public class EnumCollector {
 		return forName(clazz.getName());
 	}
 
-	/**
-	 * 找到第一个输入这个Category的类
-	 * 
-	 * @param name
-	 * @return
-	 * @return
-	 */
-	public static Class<?> queryClassByCategory(String name) {
-		return bufferPool.values().stream().filter(ec -> {
-			Class<?>[] inters = ec.clazz.getInterfaces();
-			if (inters != null && inters.length > 0) {
-				if (inters[0].equals(CategoryDescribableEnum.class)) {
-					CategoryDescribableEnum[] cde = (CategoryDescribableEnum[]) ec.values();
-					if (cde.length > 0) {
-						if (name.equals(cde[0].getCategory())) {
-							return true;
-						}
-					}
-				}
-			}
-			return false;
-		}).map(ec -> ec.clazz).findFirst().orElse(null);
+	public static List<Class<? extends DescribableEnum>> filterBy(Class<? extends DescribableEnum> cls) {
+		List<Class<? extends DescribableEnum>> retList = Lists.newArrayList();
+
+		bufferPool.values().stream().filter(ec -> {
+			return ec.isInterfaceOf(cls);
+		}).collect(Collectors.toList());
+
+		return retList;
 	}
 
-	public static EnumCollector queryEnumByCategory(String name) {
-		return EnumCollector.forClass(EnumCollector.queryClassByCategory(name));
-	}
-
-	private EnumCollector(Class<?> clazz) {
+	private EnumCollector(Class<? extends DescribableEnum> clazz) {
 		this.clazz = clazz;
 	}
 
@@ -97,34 +79,34 @@ public class EnumCollector {
 
 		return null;
 	}
-
-	public List<KV> toList() {
-		if (list == null) {
-			list = Lists.newArrayList();
-			Object[] values = (Object[]) values();
-			if (values != null) {
-				for (Object v : values) {
-					if (isDescribableEnum()) {
-						DescribableEnum de = (DescribableEnum) v;
-						KV kv = KV.on().put("key", de.key()).put("desc", de.desc());
-						list.add(kv);
-					} else if (isConfigKey()) {
-						ConfigKey ck = (ConfigKey) v;
-						KV kv = KV.on().put("key", ck.key()).put("desc", ck.desc()).put("value", ck.defaultValue());
-						list.add(kv);
-					} else if (isCategoryDescribableEnum()) {
-						CategoryDescribableEnum ck = (CategoryDescribableEnum) v;
-						KV kv = KV.on().put("key", ck.key()).put("desc", ck.desc()).put("category", ck.getCategory());
-						list.add(kv);
-					} else {
-						KV kv = KV.on().put(v.toString(), v);
-						list.add(kv);
-					}
-				}
-			}
-		}
-		return list;
-	}
+//
+//	public List<KV> toList() {
+//		if (list == null) {
+//			list = Lists.newArrayList();
+//			Object[] values = (Object[]) values();
+//			if (values != null) {
+//				for (Object v : values) {
+//					if (isDescribableEnum()) {
+//						DescribableEnum de = (DescribableEnum) v;
+//						KV kv = KV.on().put("key", de.key()).put("desc", de.desc());
+//						list.add(kv);
+//					} else if (isConfigKey()) {
+//						ConfigKey ck = (ConfigKey) v;
+//						KV kv = KV.on().put("key", ck.key()).put("desc", ck.desc()).put("value", ck.defaultValue());
+//						list.add(kv);
+//					} else if (isCategoryDescribableEnum()) {
+//						CategoryDescribableEnum ck = (CategoryDescribableEnum) v;
+//						KV kv = KV.on().put("key", ck.key()).put("desc", ck.desc()).put("category", ck.getCategory());
+//						list.add(kv);
+//					} else {
+//						KV kv = KV.on().put(v.toString(), v);
+//						list.add(kv);
+//					}
+//				}
+//			}
+//		}
+//		return list;
+//	}
 
 	public DescribableEnum[] values() {
 		if (values == null) {
@@ -140,28 +122,18 @@ public class EnumCollector {
 		return values;
 	}
 
-	public Boolean isConfigKey() {
+	public Boolean isInterfaceOf(Class<? extends DescribableEnum> itface) {
 		Class<?>[] inters = clazz.getInterfaces();
+		Boolean found = Boolean.FALSE;
 		if (inters != null && inters.length > 0) {
-			return inters[0].equals(ConfigKey.class);
+			for (Class<?> c : inters) {
+				if (c.equals(itface)) {
+					found = Boolean.TRUE;
+					break;
+				}
+			}
 		}
-		return Boolean.FALSE;
-	}
-
-	public Boolean isDescribableEnum() {
-		Class<?>[] inters = clazz.getInterfaces();
-		if (inters != null && inters.length > 0) {
-			return inters[0].equals(DescribableEnum.class);
-		}
-		return Boolean.FALSE;
-	}
-
-	public Boolean isCategoryDescribableEnum() {
-		Class<?>[] inters = clazz.getInterfaces();
-		if (inters != null && inters.length > 0) {
-			return inters[0].equals(CategoryDescribableEnum.class);
-		}
-		return Boolean.FALSE;
+		return found;
 	}
 
 	public Class<?> getClazz() {
