@@ -3,7 +3,25 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>3.0.0</version>
   </parent>
   <artifactId>Ceres-Core</artifactId>
+  <version>${ceres.version}</version>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.google.code.gson</groupId>
+  		<artifactId>gson</artifactId>
+  		<version>2.2.4</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.google.guava</groupId>
+  		<artifactId>guava</artifactId>
+  		<version>${guava.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.reflections</groupId>
+  		<artifactId>reflections</artifactId>
+  		<version>0.9.9-RC1</version>
+  	</dependency>
+  </dependencies>
 </project>
