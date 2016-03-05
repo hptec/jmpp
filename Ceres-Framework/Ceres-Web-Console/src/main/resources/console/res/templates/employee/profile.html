@@ -1,0 +1,79 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">修改资料</h3>
+			</div>
+			<!-- /.box-header -->
+			<!-- form start -->
+			<form class="form-horizontal">
+				<div class="box-body">
+					<div class="col-md-4 " style="text-align: center;">
+						<img resfs="{{info.avatar_img}}" width="160" height="160" class='user-image img-circle'/>
+						<!--<img class="user-image img-circle " width="160" height="160" ng-img="{{info.avatar_img +''}}"
+							 ng-src="{{ctx+'/base/image?id='+info.avatar_img+'&size=160x160'}}"
+							ng-errsrc="{{ctx+'/console/dist/img/user2-160x160.jpg'}}" />--> <br />
+						<br />
+						<button type="file" ngf-select="onCoverSelect($files)"
+							accept="image/*" ngf-max-size="3MB"
+							class="btn btn-sm btn-success">上传头像</button>
+					</div>
+					<div class="col-md-2">
+						<label class="control-label">昵称</label> 
+						<input type="text" class="form-control" ng-model="info.nickname">
+					</div>
+					<div class="col-md-2">
+						<label class="control-label">登录名</label> 
+						<input type="text" class="form-control" ng-model="info.usr">
+					</div>
+					<div class="col-md-2">
+						<label class="control-label">性别</label>
+						<select class="form-control" ng-model="info.gender"  ng-options="s.key as s.desc for s in enumGender">
+						</select>
+					</div>
+					<div class="col-md-2">
+						<label class="control-label">是否冻结</label>
+						<select class="form-control" ng-model="info.frozen"  ng-options="s.key as s.desc for s in enumFrozen">
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label class="control-label">工号</label> 
+						<input type="text" class="form-control" ng-model="info.work_num">
+					</div>
+					<div class="col-md-2">
+						<label class="control-label">岗位</label> 
+						<select class="form-control" ng-model="info.position_id"  ng-options="s.id as s.name for s in allPos">
+						</select>
+					</div>
+					<div class="col-md-2">
+						<label class="control-label">部门</label> 
+						<select class="form-control" ng-model="info.department_id"  ng-options="s.id as s.name for s in allDepts">
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label class="control-label">联系电话</label> 
+						<input type="text" class="form-control" ng-model="info.phone">
+					</div>
+					<div class="col-md-4">
+						<label class="control-label">电子邮箱</label> 
+						<input type="text" class="form-control" ng-model="info.email">
+					</div>
+					<div class="col-md-8">
+						<label class="control-label">备注信息</label> 
+						<input type="text" class="form-control" ng-model="info.remark">
+					</div>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer">
+					<a class="btn btn-default" ceres-action="return" ng-href="#/employee/search">返回列表</a>
+					<a class="btn btn-danger " style="visibility:hidden;" >占</a>
+					<a class="btn btn-danger " ng-click="modipwd()" ng-if="info.id">设置密码</a>
+					<button type="button" class="btn btn-primary pull-right"
+						ng-click="confirmModifyProfile()">确认修改</button>
+					
+				</div>
+				<!-- /.box-footer -->
+			</form>
+		</div>
+	</div>
+</div>

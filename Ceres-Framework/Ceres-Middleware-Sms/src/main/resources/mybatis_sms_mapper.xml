@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cerestech.middleware.balance.mapper.LogMapper">
+	
+	<select id="searchSms" resultType="cn.cerestech.middleware.sms.entity.SmsRecord">
+		SELECT * FROM `$$sms_record` sms
+		WHERE TRUE
+		<if test="criteria != null">
+			<if test="criteria.phone != null and criteria.phone != ''">
+				AND sms.phone = #{criteria.phone}
+			</if>
+			<if test="criteria.ip != null and criteria.ip != ''">
+				AND sms.ip = #{criteria.ip}
+			</if>
+			<if test="criteria.from != null">
+				AND sms.create_time &gt;= #{criteria.from}
+			</if>
+			<if test="criteria.to != null">
+				AND sms.create_time &lt;= #{criteria.to}
+			</if>
+			<if test="criteria.cur_day != null">
+				AND DATE_FORMAT(sms.create_time,'%Y-%m-%d') = DATE_FORMAT(#{criteria.cur_day},'%Y-%m-%d')
+			</if>
+			<if test="criteria.provider != null and criteria.provider != ''">
+				AND sms.provider = #{criteria.provider}
+			</if>
+			<if test="criteria.business_type != null and criteria.business_type != ''">
+				AND sms.business_type = #{criteria.business_type}
+			</if>
+			<if test="criteria.state != null and criteria.state.size() > 0">
+				<foreach collection="criteria.state" item="s" open=" AND sms.state IN ( " close=" )">
+					#{s}
+				</foreach>
+			</if>
+		</if>
+		ORDER BY sms.create_time DESC
+		<if test="criteria != null and criteria.pageSize != null and criteria.offset != null">
+			LIMIT #{offset},#{pageSize}
+		</if>
+	</select>
+	<select id="searchSmsCount" resultType="cn.cerestech.middleware.sms.entity.SmsRecord">
+		SELECT COUNT(sms.id) FROM `$$sms_record` sms
+		WHERE TRUE
+		<if test="criteria != null">
+			<if test="criteria.phone != null and criteria.phone != ''">
+				AND sms.phone = #{criteria.phone}
+			</if>
+			<if test="criteria.ip != null and criteria.ip != ''">
+				AND sms.ip = #{criteria.ip}
+			</if>
+			<if test="criteria.from != null">
+				AND sms.create_time &gt;= #{criteria.from}
+			</if>
+			<if test="criteria.to != null">
+				AND sms.create_time &lt;= #{criteria.to}
+			</if>
+			<if test="criteria.cur_day != null">
+				AND DATE_FORMAT(sms.create_time,'%Y-%m-%d') = DATE_FORMAT(#{criteria.cur_day},'%Y-%m-%d')
+			</if>
+			<if test="criteria.provider != null and criteria.provider != ''">
+				AND sms.provider = #{criteria.provider}
+			</if>
+			<if test="criteria.business_type != null and criteria.business_type != ''">
+				AND sms.business_type = #{criteria.business_type}
+			</if>
+			<if test="criteria.state != null and criteria.state.size() > 0">
+				<foreach collection="criteria.state" item="s" open=" AND sms.state IN ( " close=" )">
+					#{s}
+				</foreach>
+			</if>
+		</if>
+	</select>
+	
+</mapper>
