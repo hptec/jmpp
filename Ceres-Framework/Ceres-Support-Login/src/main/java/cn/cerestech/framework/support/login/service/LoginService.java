@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.components.ComponentDispatcher;
-import cn.cerestech.framework.platform.enums.PlatformCategory;
+import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.support.login.annotation.LoginProvider;
 import cn.cerestech.framework.support.login.provider.LoginServiceProvider;
 

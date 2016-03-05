@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import cn.cerestech.framework.platform.enums.PlatformCategory;
+import cn.cerestech.framework.core.enums.PlatformCategory;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
