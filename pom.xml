@@ -89,8 +89,9 @@
 		<module>Ceres-Support-Login</module>
 		
 		<module>Ceres-Support-RequireJs</module>
-		<module>Ceres-Support-Platform</module>
+		
 		<module>Ceres-Support-AngularJs-Html5Mode</module>
+		<module>Ceres-Support-Platform</module>
 	</modules>
 	<version>3.0.0</version>
 	<dependencies>

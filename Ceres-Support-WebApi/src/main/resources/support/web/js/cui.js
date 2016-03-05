@@ -53,18 +53,20 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 				}
 			});
 
-			var depUris = [ 'angular' ];
+//			require([ 'app' ], function(angular, starter) {
+				var depUris = [ 'angular' ];
 
-			if (cfg.configUri != undefined && cfg.configUri != "") {
-				console.log("发现启动配置文件路径", cfg.configUri);
-				depUris.push(cfg.configUri);
-			}
-			require(depUris, function(angular, starter) {
-				angular.element(document).ready(function() {
-					angular.bootstrap(document, [ 'app' ]);
-					angular.element(document).find('html').addClass('ng-app');
+				if (cfg.configUri != undefined && cfg.configUri != "") {
+					console.log("发现启动配置文件路径", cfg.configUri);
+					depUris.push(cfg.configUri);
+				}
+				require(depUris, function(angular, starter) {
+//					angular.element(document).ready(function() {
+//						angular.bootstrap(document, [ 'app' ]);
+//						angular.element(document).find('html').addClass('ng-app');
+//					});
 				});
-			});
+//			});
 
 		},
 	};
