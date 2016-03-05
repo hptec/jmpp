@@ -1,0 +1,50 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">帮助中心问题编辑</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="control-label">标题<font color="red">*</font></label> 
+						<input type="text" class="form-control" ng-model="question.question">
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">分类<font color="red">*</font></label> 
+						<select class="form-control" ng-model="question.category_id" ng-options="s.id as s.name for s in categorys">
+						</select>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">排序序号</label> 
+						<input class="form-control" type="number" ng-model="question.sort"></input>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label class="control-label">是否可见</label> 
+						<select class="form-control" ng-model="question.visible" ng-options="s.key as s.desc for s in yes_no"></select>
+					</div>
+				</div>
+				<div class="col-md-12">
+            		<div class="form-group">
+	                  <label class=" control-label">内容解答</label>
+	                  <textarea   id="desc_content" name="desc_content" class="form-control"  rows="16" placeholder="请输入解答内容" ng-model="question.answer"></textarea>
+	               </div>
+            	</div>
+			</div>
+			<!-- /.box-body -->
+			<div class="box-footer">
+				<a class="btn btn-default" ceres-action="return" ng-href="#/helpcenter/question/search">返回列表</a>
+				<button type="button" class="btn btn-primary pull-right" ng-click="confirm()">保存修改</button>
+				
+			</div>
+			<!-- /.box-footer -->
+		</div>
+	</div>
+</div>

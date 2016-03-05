@@ -1,0 +1,42 @@
+<div class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title">选择菜单</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table table-condensed table-hover table-responsive">
+					<thead>
+						<tr>
+							<th>&nbsp;</th>
+							<th>选中</th>
+							<th>名称</th>
+							<th>类型</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="row in $$ceres_value.menus">
+							<td></td>
+							<td><input type="checkbox" checked></td>
+							<td><i class="{{row.icon}} ng-if="row.icon"></i>
+								{{row.title}}</td>
+							<td><span ng-if="row.is_menu == 'Y'">菜单</span><span
+								ng-if="row.is_menu == 'N'">权限</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-left"
+					data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
