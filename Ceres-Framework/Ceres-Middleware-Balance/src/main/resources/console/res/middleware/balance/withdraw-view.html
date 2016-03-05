@@ -1,0 +1,100 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">提现详情</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+			<div class="row col-md-12">
+				<div class="form-group col-md-3">
+					<label class="control-label">户名</label> 
+					<input type="text" class="form-control" disabled ng-model="wd.username">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">联系电话</label> 
+					<input type="text" class="form-control" disabled ng-model="wd.phone">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">状态</label> 
+					<br/>
+					<span ng-bind="wd.state | enums:'cn_cerestech_middleware_balance_enums_WithdrawState'"></span>
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">交易流水号</label> 
+					<input type="text" class="form-control" disabled ng-model="wd.trans_id">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">提现方式</label> 
+					<br/>
+	                <span ng-bind="wd.channel | enums:'cn_cerestech_middleware_balance_enums_WithdrawChannel'"></span>
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">提现金额</label> 
+	                 <input type="text" class="form-control" disabled ng-model="wd.amount">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">手续费</label> 
+					<input type="text" class="form-control" disabled ng-model="wd.fee">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">实得金额</label> 
+					<input type="text" class="form-control" disabled ng-model="wd.fact_amount">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">提交时间</label> 
+					<br/>
+	                <span ng-bind="wd.submit_time | toDate | date:'yyyy-MM-dd hh:mm:ss'"></span>
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">审核时间</label> 
+					<br/>
+	                <span ng-bind="wd.audit_time | toDate | date:'yyyy-MM-dd hh:mm:ss'"></span>
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">取消时间</label> 
+					<br/>
+	                <span ng-bind="wd.cancel_time | toDate | date:'yyyy-MM-dd hh:mm:ss'"></span>
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">完成时间</label> 
+					<br/>
+	                <span ng-bind="wd.finish_time | toDate | date:'yyyy-MM-dd hh:mm:ss'"></span>
+				</div>
+			</div>
+			<div class="row col-md-12">
+				<div class="form-group col-md-3">
+					<label class="control-label">户名</label> 
+	                 <input type="text" class="form-control" disabled ng-model="card.name">
+				</div>
+				<div class="form-group col-md-9">
+					<label class="control-label">卡号</label> 
+	                <input type="text" class="form-control" disabled ng-model="card.card_no">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">银行</label> 
+	                 <input type="text" class="form-control" disabled ng-model="card.bank_name">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">省</label> 
+	                 <input type="text" class="form-control" disabled ng-model="card.province">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">市</label> 
+	                 <input type="text" class="form-control" disabled ng-model="card.city">
+				</div>
+				<div class="form-group col-md-3">
+					<label class="control-label">支行</label> 
+	                 <input type="text" class="form-control" disabled ng-model="card.bank_branch">
+				</div>
+			</div>
+			</div>
+			</form>
+			<!-- /.box-body -->
+			<div class="box-footer">
+				<a type="button" class="btn btn-default " ng-href="#/balance/withdraw/search">返回列表</a>
+			</div>
+			<!-- /.box-footer -->
+		</div>
+	</div>
+</div>

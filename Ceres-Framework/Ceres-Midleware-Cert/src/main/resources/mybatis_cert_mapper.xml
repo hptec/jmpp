@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cerestech.middleware.cert.mapper.CertMapper">
+
+	<select id="search" resultType="com.cerestech.middleware.cert.entity.CertRecord">
+		SELECT * 
+		FROM cert_rec cc 
+		WHERE 
+			cc.owner_id = #{owner.owner_id}
+		AND cc.owner_type = #{owner.owner_type}
+		<if test="cert_state != null and cert_state != ''">
+			AND cc.cert_state = #{cert_state}
+		</if>
+		<if test="cert_types != null and cert_types.length > 0">
+			<foreach collection="cert_types" item="type" open=" AND cc.type IN (" close=")" separator=",">
+				#{type}
+			</foreach>
+		</if>
+	</select>
+
+</mapper>

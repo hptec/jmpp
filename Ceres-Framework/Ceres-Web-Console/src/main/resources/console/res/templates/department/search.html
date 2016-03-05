@@ -1,0 +1,79 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">
+					部门设置<small>最多支持5级部门设置</small>
+				</h3>
+				<div class="box-tools pull-right">
+					<button class="btn btn-default btn-sm" ng-click="addDept(-1)">
+						<i class="fa fa-plus"></i> 添加顶层部门
+					</button>
+				</div>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<table class="table table-condensed table-hover table-responsive">
+					<thead>
+						<tr>
+							<th>名称</th>
+							<th>层级</th>
+							<!-- <th>人数</th> -->
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody >
+						<tr ng-repeat="dep in deps" ceres-id="{{dep.id}}" ceres-parentId="{{dep.parent_id}}" ceres-depth="{{dep.depth}}" >
+							<td>
+								<a href="javascript:void(0)" class="btn btn-xs" style="visibility:hidden;" ng-if="dep.depth > 1">&nbsp;</a>
+								<a href="javascript:void(0)" class="btn btn-xs" style="visibility:hidden;" ng-if="dep.depth > 2">&nbsp;</a>
+								<a href="javascript:void(0)" class="btn btn-xs" style="visibility:hidden;" ng-if="dep.depth > 3">&nbsp;</a>
+								<a href="javascript:void(0)" class="btn btn-xs" style="visibility:hidden;" ng-if="dep.depth > 4">&nbsp;</a>
+								<a href="javascript:void(0)" class="btn btn-xs" ng-if="dep.children.length > 0 ">
+									<font ng-if="dep.depth < 5"><i class="fa fa-fw fa-minus"></i></font>
+								</a>
+								<a href="javascript:void(0)" class="btn btn-xs" ng-if="dep.children.length == 0 " >&nbsp;</a>
+								{{dep.name}}
+							</td>
+							<td ng-bind="'第'+dep.depth+'级'"></td>
+							<!-- <td ng-bind="dep.employee_count"></td> -->
+							<td>
+								<button class="btn btn-xs btn-default" title="改名" ng-click="rename(dep)">
+									<i class="fa fa-fw fa-edit"></i>
+								</button>
+								<button class="btn btn-xs btn-default" title="移除" ng-click="remove(dep)">
+									<i class="fa fa-fw fa-trash"></i>
+								</button>
+								<!-- <button class="btn btn-xs btn-default" title="选择成员">
+									<i class="fa fa-fw fa-user-plus"></i>
+								</button> -->
+								<button class="btn btn-xs btn-default" title="添加子部门" ng-disabled="dep.depth == 5" ng-click="addDept(dep.id)" >
+									<i class="fa fa-fw fa-sitemap"></i>
+								</button>
+								<button class="btn btn-xs btn-default" style="visibility:hidden;" title="占位">
+									<i class="fa fa-fw fa-user-plus"></i>
+								</button>
+								<button class="btn btn-xs btn-default " title="上移" ng-click="move(dep,'U')">
+									<i class="fa fa-fw fa-arrow-up"></i>
+								</button>
+								<button class="btn btn-xs btn-default" title="下移" ng-click="move(dep,'D')">
+									<i class="fa fa-fw fa-arrow-down"></i>
+								</button>
+								<button class="btn btn-xs btn-default " title="升级" ng-disabled="dep.depth == 1" ng-click="move(dep,'L')">
+									<i class="fa fa-fw fa-arrow-left"></i>
+								</button>
+								<button class="btn btn-xs btn-default" title="降级" ng-disabled="dep.depth == 5" ng-click="move(dep,'R')">
+									<i class="fa fa-fw fa-arrow-right"></i>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- /.box-body -->
+			<div class="box-footer"></div>
+			<!-- /.box-footer -->
+		</div>
+	</div>
+</div>
+ <div ceres-edit-department-callback="sayhi"/>
