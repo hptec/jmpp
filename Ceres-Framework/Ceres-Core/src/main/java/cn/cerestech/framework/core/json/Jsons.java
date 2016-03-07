@@ -141,12 +141,12 @@ public class Jsons {
 		return getGson(false, true).toJson(obj);
 	}
 
-	public static String toPrettyJson(JsonElement obj) {
-		return gson.toJson(obj);
-	}
-
-	public static String toPrettyJson(String obj) {
-		return gson.toJson(Jsons.from(obj));
+	public static String toPrettyJson(Object obj) {
+		if (obj instanceof String) {
+			return gson.toJson(Jsons.from((String) obj));
+		} else {
+			return gson.toJson(obj);
+		}
 	}
 
 	/**

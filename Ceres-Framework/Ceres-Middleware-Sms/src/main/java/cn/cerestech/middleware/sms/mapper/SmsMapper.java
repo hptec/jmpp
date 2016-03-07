@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import cn.cerestech.middleware.sms.criteria.SmsCriteria;
+import cn.cerestech.middleware.sms.console.queryforms.SmsCriteria;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
 
 /**
