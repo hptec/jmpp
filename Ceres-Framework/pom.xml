@@ -92,6 +92,7 @@
 		
 		
 		<module>Ceres-Support-Platform</module>
+		<module>Ceres-Middleware-Sms-Console</module>
 	</modules>
 	<version>3.0.0</version>
 	<dependencies>

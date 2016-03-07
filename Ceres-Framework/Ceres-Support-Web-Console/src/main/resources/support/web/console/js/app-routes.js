@@ -569,5 +569,4 @@ define([ 'app' ], function(app) {
 		$rootScope.$state = $state;
 		// editableOptions.theme = 'bs3';
 	});
-
 });
