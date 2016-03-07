@@ -1,7 +1,11 @@
 package cn.cerestech.framework.platform.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import cn.cerestech.framework.support.persistence.IdEntity;
 
@@ -36,6 +40,13 @@ public class Platform extends IdEntity {
 	private String servicePhone;
 
 	private String serviceQQ;
+
+	private String platformKey;
+
+	private String platformSecret;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date platformExpired;
 
 	public String getDeveloperCopyright() {
 		return developerCopyright;
@@ -147,6 +158,30 @@ public class Platform extends IdEntity {
 
 	public void setServiceQQ(String serviceQQ) {
 		this.serviceQQ = serviceQQ;
+	}
+
+	public String getPlatformKey() {
+		return platformKey;
+	}
+
+	public void setPlatformKey(String platformKey) {
+		this.platformKey = platformKey;
+	}
+
+	public String getPlatformSecret() {
+		return platformSecret;
+	}
+
+	public void setPlatformSecret(String platformSecret) {
+		this.platformSecret = platformSecret;
+	}
+
+	public Date getPlatformExpired() {
+		return platformExpired;
+	}
+
+	public void setPlatformExpired(Date platformExpired) {
+		this.platformExpired = platformExpired;
 	}
 
 }
