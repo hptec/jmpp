@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.cerestech.framework.core.monitor.AbstractMonitor;
-import cn.cerestech.framework.persistence.service.MysqlService;
-import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
 import cn.cerestech.middleware.sms.enums.SmsState;
 import cn.cerestech.middleware.sms.service.SmsMessageService;
@@ -20,7 +18,6 @@ import cn.cerestech.middleware.sms.service.SmsMessageService;
  * @author harryhe
  *
  */
-@Service
 public class SmsMonitor extends AbstractMonitor<SmsRecord> {
 
 	@Autowired
