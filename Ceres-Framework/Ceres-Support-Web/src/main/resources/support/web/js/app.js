@@ -1,7 +1,8 @@
 define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], function(angular, asyncLoader, module) {
 
 	var app = angular.module('app', module.config().requiredModule);
-//	var app = angular.module('app', [ 'ui.router', // Angular flexible routing
+	// var app = angular.module('app', [ 'ui.router', // Angular flexible
+	// routing
 	// 'ngSanitize', // Angular-sanitize
 	// 'ui.bootstrap', // AngularJS native directives for Bootstrap
 	// 'angular-flot', // Flot chart
@@ -26,12 +27,14 @@ define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], fun
 	// 'datatables.buttons', // Datatables Buttons
 	// 'angular-ladda', // Ladda - loading buttons
 	// 'ui.codemirror' // Ui Codemirror
-//	]);
-
-	angular.element(document).ready(function() {
-		angular.bootstrap(document, [ 'app' ]);
-		angular.element(document).find('html').addClass('ng-app');
-	});
+	// ]);
+	app.start = function(callbackFunc) {
+		angular.element(document).ready(function() {
+			angular.bootstrap(document, [ 'app' ]);
+			angular.element(document).find('html').addClass('ng-app');
+			callbackFunc();
+		});
+	}
 
 	console.log("APP初始化")
 	// initialze app module for async loader

@@ -33,6 +33,8 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 				config : {
 					'http' : {
 						'platform' : cfg.platform,
+						'key' : cfg.platformKey,
+						'secret' : cfg.platformSecret,
 						'onLoginRequired' : (cfg.onLoginRequired == undefined ? function() {
 							alert("请求登录");
 						} : cfg.onLoginRequired),
@@ -65,6 +67,7 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 				});
 			}
 
-		},
+		}
+
 	};
 });

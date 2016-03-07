@@ -14,7 +14,7 @@ public class Cookies {
 
 	private Map<String, Cookie> cookies = Maps.newHashMap();
 
-	private String defaultDomain;
+	private String defaultDomain = null;
 	private String defaultPath = "/";
 	private Integer defaultMaxAgeSec = Integer.MAX_VALUE;
 	private Boolean defaultSecure = Boolean.FALSE;
@@ -52,7 +52,12 @@ public class Cookies {
 		Cookie c = new Cookie(name, value);
 
 		c.setPath(Strings.isNullOrEmpty(path) ? defaultPath : path);
-		c.setDomain(Strings.isNullOrEmpty(domain) ? defaultDomain : domain);
+		if (!Strings.isNullOrEmpty(domain)) {
+			c.setDomain(domain);
+		} else if (!Strings.isNullOrEmpty(defaultDomain)) {
+			c.setDomain(defaultDomain);
+		}
+
 		c.setMaxAge(maxAge == null ? defaultMaxAgeSec : maxAge);// 设置cookie经过多长秒后被删除。如果0，就说明立即删除。如果是负数就表明当浏览器关闭时自动删除。
 		c.setSecure(secure == null ? defaultSecure : secure);
 		c.setComment(comments);
