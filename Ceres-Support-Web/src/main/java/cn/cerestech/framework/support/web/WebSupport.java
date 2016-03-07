@@ -26,10 +26,15 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.Core;
+import cn.cerestech.framework.core.enums.EnumCollector;
+import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.json.Jsonable;
 import cn.cerestech.framework.core.json.Jsons;
 
 public abstract class WebSupport {
+
+	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
+	public static final String COOKIE_CERES_PLATFORM_ID = "COOKIE_CERES_PLATFORM_ID";
 
 	private Logger log = LogManager.getLogger();
 
@@ -236,5 +241,19 @@ public abstract class WebSupport {
 
 	public void putRequestAttr(String name, Object o) {
 		getRequest().setAttribute(name, o);
+	}
+
+	protected PlatformCategory getPlatformCategory() {
+		Cookies cookies = Cookies.from(getRequest());
+		String strPlatform = cookies.getValue(COOKIE_CERES_PLATFORM);
+		if (Strings.isNullOrEmpty(strPlatform)) {
+			return null;
+		} else {
+			return EnumCollector.forClass(PlatformCategory.class).keyOf(strPlatform);
+		}
+	}
+
+	protected Long getPlatformId() {
+		return (Long) session(COOKIE_CERES_PLATFORM_ID);
 	}
 }

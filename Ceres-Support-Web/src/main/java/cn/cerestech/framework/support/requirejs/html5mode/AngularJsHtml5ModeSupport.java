@@ -37,7 +37,6 @@ import cn.cerestech.support.classpath.ClasspathService;
 public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler implements ComponentDispatcher {
 
 	private static Map<PlatformCategory, Object> indexPages = Maps.newHashMap();
-	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
 	private Logger log = LogManager.getLogger();
 
 	protected static final String THEME_PATH_PREFIX = "support/web/console/theme/";
@@ -54,9 +53,9 @@ public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler im
 		ResponseEntity<Object> entity = null;
 
 		Cookies cookies = Cookies.from(WebUtils.getCurrentRequest());
-		if (cookies.exist(COOKIE_CERES_PLATFORM)) {
+		if (cookies.exist(WebSupport.COOKIE_CERES_PLATFORM)) {
 			PlatformCategory platform = EnumCollector.forClass(PlatformCategory.class)
-					.keyOf(cookies.getValue(COOKIE_CERES_PLATFORM));
+					.keyOf(cookies.getValue(WebSupport.COOKIE_CERES_PLATFORM));
 			if (platform != null && indexPages.containsKey(platform)) {
 				Object obj = indexPages.get(platform);
 				Method[] methods = obj.getClass().getMethods();

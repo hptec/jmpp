@@ -30,7 +30,6 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 
 	public static final String COOKIE_CERES_PLATFORM_KEY = "ceres_platform_key";
 	public static final String COOKIE_CERES_PLATFORM_SECRET = "ceres_platform_secret";
-	public static final String COOKIE_CERES_PLATFORM_ID = "COOKIE_CERES_PLATFORM_ID";
 
 //	private Logger log = LogManager.getLogger();
 
