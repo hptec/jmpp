@@ -14,11 +14,7 @@ import com.google.common.collect.Sets;
 
 import cn.cerestech.framework.core.Dates;
 import cn.cerestech.framework.core.PhoneUtils;
-import cn.cerestech.framework.core.service.BaseService;
 import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.persistence.entity.BaseEntity;
-import cn.cerestech.framework.support.configuration.service.ConfigService;
-import cn.cerestech.framework.web.WebUtils;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
 import cn.cerestech.middleware.sms.entity.SmsSendResult;
 import cn.cerestech.middleware.sms.enums.ErrorCodes;
@@ -31,8 +27,7 @@ import cn.cerestech.middleware.sms.providers.HuoniProvider;
 import cn.cerestech.middleware.sms.providers.SmsProvider;
 import cn.cerestech.middleware.sms.providers.YunPianProvider;
 
-@Service
-public class SmsMessageService extends BaseService {
+public class SmsMessageService  {
 
 	private static Set<SmsProvider> providers = Sets.newHashSet(new YunPianProvider(), new HuoniProvider());
 

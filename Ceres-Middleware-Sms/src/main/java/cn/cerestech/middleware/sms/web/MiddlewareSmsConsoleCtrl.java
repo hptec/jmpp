@@ -33,7 +33,6 @@ import cn.cerestech.middleware.sms.providers.SmsProvider;
 import cn.cerestech.middleware.sms.service.SmsMessageService;
 
 @RequestMapping("$$ceres_sys/console/middleware/sms")
-@Controller
 @RequiredResource(js = { "console/base/res/cp?id=console/res/middleware/sms/ceres-pages-middleware-sms.js" })
 public class MiddlewareSmsConsoleCtrl extends WebConsoleSupport {
 
