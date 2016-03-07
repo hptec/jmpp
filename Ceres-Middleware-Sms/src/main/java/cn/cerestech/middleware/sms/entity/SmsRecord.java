@@ -2,51 +2,43 @@ package cn.cerestech.middleware.sms.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+
 import cn.cerestech.framework.core.enums.EnumCollector;
-import cn.cerestech.framework.persistence.annotation.Column;
-import cn.cerestech.framework.persistence.annotation.Table;
-import cn.cerestech.framework.persistence.entity.BaseEntity;
-import cn.cerestech.framework.persistence.enums.ColumnDataType;
+import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.middleware.sms.enums.SmsState;
 
-@SuppressWarnings("serial")
-@Table("$$sms_record")
-public class SmsRecord extends BaseEntity {
+@Table(name = "$$sms_record")
+public class SmsRecord extends IdEntity {
 
-	@Column(title = "供应商")
 	public String provider;
 
-	@Column(title = "状态")
 	public String state;
-	@Column(title = "客户IP", length = 25)
+	@Column(length = 25)
 	public String ip;
-	@Column(title = "收件人")
 	public String phone;
-	@Column(title = "内容", length = 500)
+	@Column(length = 500)
 	public String content;
 
-	@Column(title = "发送时间")
 	public Date send_time;
 
-	@Column(title = "接收时间")
 	public Date recive_time;
 
-	@Column(title = "外部ID", length = 75)
 	public String outer_id;
 
-	@Column(title = "外部响应代码")
 	public String outer_code;
 
-	@Column(type = ColumnDataType.TEXT, title = "错误消息")
+	@Type(type = "text")
 	public String message;
-	
-	@Column(title = "消息分类，商业类型")
+
 	public String business_type;
 
-	@Column(title = "计划发送时间")
 	public Date plan_time;
 
-	@Column(title = "备注", length = 200)
+	@Column(length = 200)
 	public String remark;
 
 	public Boolean stateEqual(SmsState state) {
