@@ -18,4 +18,5 @@ public class PlatformWebApi extends RequireJsWebSupport {
 	public void query() {
 		zipOutRequrieJson(platformService.getPlatform());
 	}
+
 }

@@ -1,6 +1,7 @@
 define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 
 	console.log("http模块配置", module.config());
+
 	return {
 		// 支持onSuccess,onTimeout,onError,onComplete,onNotFound
 		load : function(context) {
@@ -15,6 +16,14 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 			}
 
 			$.cookie("ceres_platform", moduleConfig.platform, {
+				expired : 7,
+				path : '/'
+			});
+			$.cookie("ceres_platform_key", moduleConfig.key, {
+				expired : 7,
+				path : '/'
+			});
+			$.cookie("ceres_platform_secret", moduleConfig.secret, {
 				expired : 7,
 				path : '/'
 			});
@@ -57,7 +66,10 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 									moduleConfig.onLoginRequired(dataObj);
 									return;
 								}
+							} else if (!dataObj.isSuccess && dataObj.code == "PLATFORM_AUTH_INCORRECT") {
+								alert("平台授权认证错误，请联系管理员!");
 							}
+
 						} catch (e) {
 							var dataObj = content;
 						}
