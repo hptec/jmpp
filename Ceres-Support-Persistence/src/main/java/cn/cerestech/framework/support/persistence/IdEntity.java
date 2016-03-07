@@ -13,12 +13,14 @@ import javax.persistence.MappedSuperclass;
  *
  */
 @MappedSuperclass
-public abstract class IdEntity {
+public abstract class IdEntity implements PlatformEntitySupport {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(precision = 19, scale = 0)
 	private Long id;
+	@Column(precision = 19, scale = 0)
+	private Long platformId;
 
 	public Long getId() {
 		return id;
@@ -26,6 +28,14 @@ public abstract class IdEntity {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getPlatformId() {
+		return platformId;
+	}
+
+	public void setPlatformId(Long id) {
+		platformId = id;
 	}
 
 }
