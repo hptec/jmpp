@@ -4,8 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 
 public class Dates {
 	public static final String DATE_TIME_MS = "yyyy-MM-dd HH:mm:ss.SSS";
@@ -14,56 +15,52 @@ public class Dates {
 	public static final String TIME_MS = "HH:mm:ss.SSS";
 	public static final String TIME = "HH:mm:ss";
 
-	public static SimpleDateFormat getFormat(String pattern) {
+	private Calendar calc = Calendar.getInstance();
+
+	public Dates clone() {
+		return from(calc.getTimeInMillis());
+	}
+
+	public static Dates now() {
+		return from(new Date());
+	}
+
+	public static Dates beginngOfToday() {
+		return from(now().beginningOfDay().getTimeInMillis());
+	}
+
+	public static Dates endOfToday() {
+		return from(now().endOfDay().getTimeInMillis());
+	}
+
+	public static Dates from(Date date) {
+		Dates dts = new Dates();
+		dts.calc.setTime(date);
+		return dts;
+	}
+
+	public static Dates from(Long timeInMillis) {
+		Dates dts = new Dates();
+		dts.calc.setTimeInMillis(timeInMillis);
+		return dts;
+	}
+
+	public SimpleDateFormat getFormat(String pattern) {
 		return new SimpleDateFormat(pattern);
 	}
 
-	/**
-	 * 返回时间格式字符串，如果pa 为空 则返回默认格式时间字符串 yyyy-MM-dd HH:mm:ss
-	 * 
-	 * @param time
-	 * @param pa
-	 * @return
-	 */
-	public static String format(Date time, String pa) {
-		if (time == null) {
-			return "";
-		}
-
-		if (StringUtils.isBlank(pa)) {
-			pa = DATE_TIME;
-		}
-		return getFormat(pa).format(time);
+	public Calendar getCalendar() {
+		Calendar newCalc = Calendar.getInstance();
+		newCalc.setTimeInMillis(calc.getTimeInMillis());
+		return newCalc;
 	}
 
-	/**
-	 * 返回时间字符串 yyyy-MM-dd HH:mm:ss
-	 * 
-	 * @param time
-	 * @return
-	 */
-	public static String format(Date time) {
-		return format(time, null);
+	public Date getDate() {
+		return getCalendar().getTime();
 	}
 
-	/**
-	 * 返回时间字符串 yyyy-MM-dd
-	 * 
-	 * @param time
-	 * @return
-	 */
-	public static String formatDate(Date time) {
-		return format(time, DATE);
-	}
-
-	/**
-	 * 返回时间字符串 HH:mm:ss
-	 * 
-	 * @param time
-	 * @return
-	 */
-	public static String formatTime(Date time) {
-		return format(time, TIME);
+	public Long getTimeInMillis() {
+		return getCalendar().getTimeInMillis();
 	}
 
 	/**
@@ -72,8 +69,42 @@ public class Dates {
 	 * @param time
 	 * @return
 	 */
-	public static String formatDateTimeMs(Date time) {
-		return format(time, DATE_TIME_MS);
+	public String formatDateTimeMs() {
+		return getFormat(DATE_TIME_MS).format(calc.getTime());
+	}
+
+	/**
+	 * 返回时间字符串 yyyy-MM-dd HH:mm:ss
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public String formatDateTime() {
+		return getFormat(DATE_TIME).format(calc.getTime());
+	}
+
+	/**
+	 * 返回时间字符串 yyyy-MM-dd
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public String formatDate() {
+		return getFormat(DATE).format(calc.getTime());
+	}
+
+	public String formatTimeMs() {
+		return getFormat(TIME_MS).format(calc.getTime());
+	}
+
+	/**
+	 * 返回时间字符串 HH:mm:ss
+	 * 
+	 * @param time
+	 * @return
+	 */
+	public String formatTime() {
+		return getFormat(TIME).format(calc.getTime());
 	}
 
 	/**
@@ -83,24 +114,32 @@ public class Dates {
 	 * @param num
 	 * @return
 	 */
-	public static Date addDay(Date time, int num) {
-		return add(time, Calendar.DATE, num);
+	public Dates addDate(int num) {
+		return add(Calendar.DAY_OF_MONTH, num);
 	}
 
-	public static Date addHour(Date time, int num) {
-		return add(time, Calendar.HOUR, num);
+	public Dates addYear(int num) {
+		return add(Calendar.YEAR, num);
 	}
 
-	public static Date addMinute(Date time, int num) {
-		return add(time, Calendar.MINUTE, num);
+	public Dates addHour(int num) {
+		return add(Calendar.HOUR, num);
 	}
 
-	public static Date addMillisecond(Date time, int num) {
-		return add(time, Calendar.MILLISECOND, num);
+	public Dates addMinute(int num) {
+		return add(Calendar.MINUTE, num);
 	}
 
-	public static Date addMonth(Date time, int num) {
-		return add(time, Calendar.MONTH, num);
+	public Dates addSecond(int num) {
+		return add(Calendar.SECOND, num);
+	}
+
+	public Dates addMillisecond(int num) {
+		return add(Calendar.MILLISECOND, num);
+	}
+
+	public Dates addMonth(int num) {
+		return add(Calendar.MONTH, num);
 	}
 
 	/**
@@ -112,38 +151,25 @@ public class Dates {
 	 * @param num
 	 * @return 返回时间对象
 	 */
-	public static Date add(Date time, int field, int num) {
-		if (time == null) {
-			return null;
-		}
-		Calendar c = Calendar.getInstance();
-		c.setTime(time);
-		c.add(field, num);
-		return c.getTime();
-	}
-
-	public static Date now() {
-		return new Date();
+	public Dates add(int field, int num) {
+		Dates dts = clone();
+		dts.calc.add(field, num);
+		return dts;
 	}
 
 	/**
-	 * 日期的0点
+	 * 日期的00:00:00
 	 * 
 	 * @param date
 	 * @return
 	 */
-	public static Date dayStart(Date date) {
-		if (date == null) {
-			return null;
-		}
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.set(Calendar.HOUR_OF_DAY, 0);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND, 0);
-
-		return c.getTime();
+	public Dates beginningOfDay() {
+		Dates dts = clone();
+		dts.calc.set(Calendar.HOUR_OF_DAY, 0);
+		dts.calc.set(Calendar.MINUTE, 0);
+		dts.calc.set(Calendar.SECOND, 0);
+		dts.calc.set(Calendar.MILLISECOND, 0);
+		return dts;
 	}
 
 	/**
@@ -152,18 +178,13 @@ public class Dates {
 	 * @param date
 	 * @return
 	 */
-	public static Date dayEnd(Date date) {
-		if (date == null) {
-			return null;
-		}
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.set(Calendar.HOUR_OF_DAY, 23);
-		c.set(Calendar.MINUTE, 59);
-		c.set(Calendar.SECOND, 59);
-		c.set(Calendar.MILLISECOND, 999);
-
-		return c.getTime();
+	public Dates endOfDay() {
+		Dates dts = clone();
+		dts.calc.set(Calendar.HOUR_OF_DAY, 23);
+		dts.calc.set(Calendar.MINUTE, 59);
+		dts.calc.set(Calendar.SECOND, 59);
+		dts.calc.set(Calendar.MILLISECOND, 999);
+		return dts;
 	}
 
 	/**
@@ -174,16 +195,15 @@ public class Dates {
 	 *            时间字符串格式： 如果为null 或者 blank 则使用 yyyy-MM-dd HH:mm:ss 格式进行解析
 	 * @return
 	 */
-	public static Date parse(String dateStr, String format) {
-		if (StringUtils.isBlank(format)) {
-			format = DATE_TIME;
-		}
+	public static Dates from(String dateStr, String format) {
+		SimpleDateFormat sdf = Strings.isNullOrEmpty(format) ? new SimpleDateFormat(DATE_TIME)
+				: new SimpleDateFormat(format);
 		try {
-			return getFormat(format).parse(dateStr);
+			Date dt = sdf.parse(dateStr);
+			return Dates.from(dt);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -192,8 +212,8 @@ public class Dates {
 	 * @param dateStr
 	 * @return
 	 */
-	public static Date parse(String dateStr) {
-		return parse(dateStr, null);
+	public static Dates fromDateTime(String dateStr) {
+		return from(dateStr, DATE_TIME);
 	}
 
 	/**
@@ -202,8 +222,8 @@ public class Dates {
 	 * @param dateStr
 	 * @return
 	 */
-	public static Date parseDate(String dateStr) {
-		return parse(dateStr, DATE);
+	public static Dates fromDate(String dateStr) {
+		return from(dateStr, DATE);
 	}
 
 	/**
@@ -212,8 +232,8 @@ public class Dates {
 	 * @param dateStr
 	 * @return
 	 */
-	public static Date parseTime(String dateStr) {
-		return parse(dateStr, TIME);
+	public static Dates fromTime(String dateStr) {
+		return from(dateStr, TIME);
 	}
 
 	/**
@@ -222,8 +242,8 @@ public class Dates {
 	 * @param dateStr
 	 * @return
 	 */
-	public static Date parseDateTimeMillisecond(String dateStr) {
-		return parse(dateStr, DATE_TIME_MS);
+	public static Dates fromDateTimeMs(String dateStr) {
+		return from(dateStr, DATE_TIME_MS);
 	}
 
 	/**
@@ -233,46 +253,20 @@ public class Dates {
 	 * @param to
 	 * @return
 	 */
-	public static Long distance(Date from, Date to) {
-		long f = from != null ? from.getTime() : 0;
-		long t = to != null ? to.getTime() : 0;
-		return f - t;
+	public Long diff(Date to) {
+		if (to == null) {
+			throw new IllegalArgumentException("from or to cannot be null");
+		}
+
+		return to.getTime() - calc.getTimeInMillis();
 	}
 
-	/**
-	 * 判断 from 是否在 给定 to 时间 的 field 的num 距离之后
-	 * 
-	 * @param from
-	 * @param to
-	 * @param num
-	 * @param field
-	 * @return
-	 */
-	public static boolean after(Date from, Date to, int num, int field) {
-		Date toNow = add(to, field, num);
-		return from.after(toNow);
-	}
+	public Long diff(Date to, TimeUnit unit) {
+		if (to == null) {
+			throw new IllegalArgumentException("from or to cannot be null");
+		}
 
-	/**
-	 * 返回 from 是否 大于 to
-	 * 
-	 * @param from
-	 * @param to
-	 * @return
-	 */
-	public static boolean after(Date from, Date to) {
-		return from.after(to);
-	}
-
-	/**
-	 * 相差天数
-	 * 
-	 * @param from
-	 * @param to
-	 * @return
-	 */
-	public static float distanceDay(Date from, Date to) {
-		return (distance(from, to) * 1.0f) / (3600 * 24 * 1000);
+		return diff(to) / unit.toMillis(1);
 	}
 
 	/**
@@ -280,11 +274,11 @@ public class Dates {
 	 * 
 	 * @return
 	 */
-	public static boolean sameDay(Date from, Date to) {
-		if (from == null || to == null) {
-			return false;
+	public Boolean isSameDay(Date to) {
+		if (to == null) {
+			throw new IllegalArgumentException("to cannot be null");
 		}
-		return formatDate(from).equals(formatDate(to));
+		return formatDate().equals(from(to).formatDate());
 	}
 
 	/**
@@ -294,10 +288,8 @@ public class Dates {
 	 *            Calendar. field
 	 * @return
 	 */
-	public static int get(Date date, int field) {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		return cal.get(field);
+	public int get(int field) {
+		return calc.get(field);
 	}
 
 	/**
@@ -311,36 +303,29 @@ public class Dates {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		int max = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-
 		return max >= month_of_date;
+		
 	}
 	
 	
-//	public static String formatString(String dateStr){
-//		/*
-//		"default":      "ddd mmm dd yyyy HH:MM:ss",
-//		shortDate:      "m/d/yy",
-//		mediumDate:     "mmm d, yyyy",
-//		longDate:       "mmmm d, yyyy",
-//		fullDate:       "dddd, mmmm d, yyyy",
-//		shortTime:      "h:MM TT",
-//		mediumTime:     "h:MM:ss TT",
-//		longTime:       "h:MM:ss TT Z",
-//		isoDate:        "yyyy-mm-dd",
-//		isoTime:        "HH:MM:ss",
-//		isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
-//		isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-//		*/
-//		
-//		return "";
-//	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	// public static String formatString(String dateStr){
+	// /*
+	// "default": "ddd mmm dd yyyy HH:MM:ss",
+	// shortDate: "m/d/yy",
+	// mediumDate: "mmm d, yyyy",
+	// longDate: "mmmm d, yyyy",
+	// fullDate: "dddd, mmmm d, yyyy",
+	// shortTime: "h:MM TT",
+	// mediumTime: "h:MM:ss TT",
+	// longTime: "h:MM:ss TT Z",
+	// isoDate: "yyyy-mm-dd",
+	// isoTime: "HH:MM:ss",
+	// isoDateTime: "yyyy-mm-dd'T'HH:MM:ss",
+	// isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+	// */
+	//
+	// return "";
+	// }
 
 }

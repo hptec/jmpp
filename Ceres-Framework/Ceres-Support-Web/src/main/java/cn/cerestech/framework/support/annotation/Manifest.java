@@ -1,4 +1,4 @@
-package cn.cerestech.framework.support.requirejs.annotation;
+package cn.cerestech.framework.support.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-public @interface ClasspathPaths {
-
-	ClasspathPath[] value();
+public @interface Manifest {
+	String value() default "";
 }

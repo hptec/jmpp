@@ -76,11 +76,11 @@ public abstract class WebSupport {
 	}
 
 	protected void zipOut(Jsonable jsonObj) {
-		zipOut(jsonObj.toJson(), "application/json");
+		zipOut(jsonObj.getJson().toJson(), "application/json");
 	}
 
 	protected void zipOut(List<?> list) {
-		zipOut(Jsons.toJson(list));
+		zipOut(Jsons.from(list).toJson());
 	}
 
 	/**
@@ -255,5 +255,16 @@ public abstract class WebSupport {
 
 	protected Long getPlatformId() {
 		return (Long) session(COOKIE_CERES_PLATFORM_ID);
+	}
+
+	protected void zipOutRequireJson(Object obj) {
+		StringBuffer buffer = new StringBuffer("define(function() {");
+		buffer.append("return ");
+		buffer.append(Jsons.from(obj).toJson());
+		buffer.append("});");
+		if (log.isTraceEnabled()) {
+			log.trace(Jsons.from(obj).prettyPrint().toJson());
+		}
+		zipOut(buffer.toString(), "application/javascript");
 	}
 }

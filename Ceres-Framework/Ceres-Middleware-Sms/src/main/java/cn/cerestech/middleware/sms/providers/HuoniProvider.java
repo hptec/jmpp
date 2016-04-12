@@ -6,8 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.HttpUtils;
@@ -60,7 +59,7 @@ public class HuoniProvider implements SmsProvider {
 			resCode = matcher.group();
 		}
 		SmsSendResult result = new SmsSendResult();
-		if (StringUtils.isNotBlank(resCode)) {
+		if (Strings.isNullOrEmpty(resCode)) {
 			String[] arr = res.split(",");
 			int code = Integer.parseInt(arr[0]);
 			HuoniResponesCode s = (HuoniResponesCode) EnumCollector.forClass(HuoniResponesCode.class).keyOf(code + "");

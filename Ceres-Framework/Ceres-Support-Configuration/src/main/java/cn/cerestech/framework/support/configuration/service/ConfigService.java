@@ -20,6 +20,7 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.StringTypes;
+import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.configuration.dao.SysConfigDao;
 import cn.cerestech.framework.support.configuration.entity.SysConfig;
 import cn.cerestech.framework.support.configuration.enums.ConfigKey;
@@ -34,6 +35,9 @@ public class ConfigService {
 	@Autowired
 	SysConfigDao sysconfigDao;
 
+	@Autowired
+	PlatformService platformService;
+
 	@PostConstruct
 	public void init() {
 		if (cachedKV == null) {
@@ -41,7 +45,9 @@ public class ConfigService {
 					.build(new CacheLoader<ConfigKey, SysConfig>() {
 						@Override
 						public SysConfig load(ConfigKey key) throws Exception {
-							SysConfig config = sysconfigDao.findByKey(key.key());
+							Long platformId = platformService.getId();
+
+							SysConfig config = sysconfigDao.findByPlatformIdAndKey(platformId, key.key());
 
 							if (config == null) {
 								// 如果不存在则在数据库插入一条
@@ -92,6 +98,7 @@ public class ConfigService {
 		} catch (ExecutionException e) {
 			throw new RuntimeException(e);
 		}
+		config.setPlatformId(platformService.getId());
 		config.setValue(value);
 		config.setDesc(key.desc());
 		sysconfigDao.saveAndFlush(config);

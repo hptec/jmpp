@@ -1,12 +1,10 @@
-package cn.cerestech.middleware.sms.web;
+package cn.cerestech.middleware.sms.console.web;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,14 +13,12 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
-import cn.cerestech.console.annotation.RequiredResource;
-import cn.cerestech.console.web.WebConsoleSupport;
-import cn.cerestech.framework.core.Dates;
 import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.core.service.Result;
+import cn.cerestech.framework.support.annotation.Manifest;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
 import cn.cerestech.middleware.sms.enums.ErrorCodes;
@@ -31,10 +27,14 @@ import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
 import cn.cerestech.middleware.sms.enums.SmsState;
 import cn.cerestech.middleware.sms.providers.SmsProvider;
 import cn.cerestech.middleware.sms.service.SmsMessageService;
+import cn.cerestech.support.web.console.web.AbstractConsoleWeb;
 
 @RequestMapping("$$ceres_sys/console/middleware/sms")
-@RequiredResource(js = { "console/base/res/cp?id=console/res/middleware/sms/ceres-pages-middleware-sms.js" })
-public class MiddlewareSmsConsoleCtrl extends WebConsoleSupport {
+@Manifest("middleware/sms/manifest.json")
+// @RequiredResource(js = {
+// "console/base/res/cp?id=console/res/middleware/sms/ceres-pages-middleware-sms.js"
+// })
+public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 
 	@Autowired
 	ConfigService configService;
@@ -51,6 +51,7 @@ public class MiddlewareSmsConsoleCtrl extends WebConsoleSupport {
 
 		zipOut(Jsons.toJson(kv));
 	}
+
 	@RequestMapping("icp/changeProvider")
 	public @ResponseBody void smsIcpChangeProvider(@RequestParam("provider_name") String toProvider) {
 		KV kv = KV.on().put("smsProviders", smsService.getProviders());
@@ -116,14 +117,14 @@ public class MiddlewareSmsConsoleCtrl extends WebConsoleSupport {
 	public @ResponseBody void smsRecordsInit() {
 		KV kv = KV.on().put("smsProviders", smsService.getProviders());
 
-		kv.put("state", EnumCollector.forClass(SmsState.class).toList());
-
-		KV init = KV.on();
-		init.put("provider_name", smsService.defaultProvider().getName());
-		init.put("fromDate", FORMAT_DATE.format(Dates.addDay(new Date(), -7)));
-		init.put("toDate", FORMAT_DATE.format(new Date()));
-
-		kv.put("init", init);
+//		kv.put("state", EnumCollector.forClass(SmsState.class).toList());
+//
+//		KV init = KV.on();
+//		init.put("provider_name", smsService.defaultProvider().getName());
+//		init.put("fromDate", FORMAT_DATE.format(Dates.addDay(new Date(), -7)));
+//		init.put("toDate", FORMAT_DATE.format(new Date()));
+//
+//		kv.put("init", init);
 
 		zipOut(Jsons.toJson(kv));
 	}
@@ -148,16 +149,16 @@ public class MiddlewareSmsConsoleCtrl extends WebConsoleSupport {
 		if (!Strings.isNullOrEmpty(fromto)) {
 			List<String> dateStrList = Splitter.on(" - ").trimResults().splitToList(fromto);
 			if (dateStrList.size() > 0) {
-				try {
-					fromDate = FORMAT_DATE.parse(dateStrList.get(0));
-				} catch (ParseException e) {
-				}
+//				try {
+////					fromDate = FORMAT_DATE.parse(dateStrList.get(0));
+//				} catch (ParseException e) {
+//				}
 			}
 			if (dateStrList.size() > 1) {
-				try {
-					toDate = FORMAT_DATE.parse(dateStrList.get(1));
-				} catch (ParseException e) {
-				}
+//				try {
+////					toDate = FORMAT_DATE.parse(dateStrList.get(1));
+//				} catch (ParseException e) {
+//				}
 			}
 		}
 

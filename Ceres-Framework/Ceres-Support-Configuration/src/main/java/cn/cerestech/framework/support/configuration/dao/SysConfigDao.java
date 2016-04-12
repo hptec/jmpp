@@ -6,5 +6,5 @@ import cn.cerestech.framework.support.configuration.entity.SysConfig;
 
 public interface SysConfigDao extends JpaRepository<SysConfig, Long> {
 
-	public SysConfig findByKey(String key);
+	public SysConfig findByPlatformIdAndKey(Long platformId, String key);
 }
