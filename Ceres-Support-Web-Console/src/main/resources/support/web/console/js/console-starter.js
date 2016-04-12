@@ -1,9 +1,10 @@
 // 加载各种配置和启动前文件
 define([ 'jquery' ], function() {
-	require([ 'directives',//
+	require([ '/api/console/pages', 'directives',//
 	'icheck',//
 	'css!api/classpath/query/support/web/console/theme/homer/styles/style.css',//
-	], function() {
+	], function(pages) {
+		console.log("页面文件", pages);
 
 		require([ 'http', 'app' ], function(http, app) {
 

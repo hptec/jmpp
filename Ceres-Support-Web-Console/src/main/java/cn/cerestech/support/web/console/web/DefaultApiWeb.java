@@ -1,6 +1,7 @@
 package cn.cerestech.support.web.console.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,26 +10,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.annotation.Manifest;
-import cn.cerestech.support.classpath.ClasspathService;
+import cn.cerestech.framework.platform.annotation.PlatformIgnore;
 import cn.cerestech.support.web.console.entity.SysMenu;
+import cn.cerestech.support.web.console.entity.SysMenuPage;
 import cn.cerestech.support.web.console.service.MenuService;
 
 @RestController
-@RequestMapping("$$ceres_sys/console")
-@Manifest("support/web/console/manifest.json")
-public class DefaultWeb extends AbstractConsoleWeb {
+@RequestMapping("/api/console")
+public class DefaultApiWeb extends AbstractConsoleWeb {
 	private Logger log = LogManager.getLogger();
-
-	@Autowired
-	ClasspathService classpathService;
 
 	@Autowired
 	MenuService menuService;
 
-	@RequestMapping("")
-	public byte[] index() {
-		return themeResource("index.html");
+	/**
+	 * 读取系统中配置的菜单中的页面用于加载路由
+	 */
+	@RequestMapping("pages")
+	@PlatformIgnore
+	public void pages() {
+		List<SysMenuPage> pages = menuService.getFlatDefaultPages().values().stream().collect(Collectors.toList());
+		zipOutRequireJson(pages);
 	}
 
 	@RequestMapping("test")

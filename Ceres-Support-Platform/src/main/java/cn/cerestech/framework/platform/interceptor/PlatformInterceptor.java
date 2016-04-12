@@ -15,6 +15,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
 import cn.cerestech.framework.core.service.Result;
+import cn.cerestech.framework.platform.annotation.PlatformIgnore;
 import cn.cerestech.framework.platform.entity.Platform;
 import cn.cerestech.framework.platform.enums.ErrorCodes;
 import cn.cerestech.framework.platform.service.PlatformService;
@@ -39,7 +40,15 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+
 		if (handler instanceof HandlerMethod) {
+			HandlerMethod m = (HandlerMethod) handler;
+
+			if (m.getMethodAnnotation(PlatformIgnore.class) != null) {
+				// 忽略保护
+				return true;
+			}
+
 			String uri = request.getRequestURI();
 			if (uri.startsWith("/api/classpath/query")) {
 				return Boolean.TRUE;

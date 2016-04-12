@@ -82,6 +82,9 @@ define([ '/api/web/systemconfigs.js' ], function(sysConfig) {
 							console.log(statusText, xhr);
 							throw statusText;
 						} : cfg.onHttpNotFound)
+					},
+					'app' : {
+						jsModules : sysConfig.jsModules
 					}
 				}
 			});
