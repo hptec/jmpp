@@ -1,6 +1,11 @@
 {
 	name:"Ceres-Support-Web-Console",
 	desc:"平台后台管理基本模块",
+	starter:{
+		platform:"console",
+		uri:"/api/classpath/query/support/web/console/js/console-starter.js",
+		html5mode:true
+	},
 	menus:[
 		{
 			key:"TOP_SYSTEM_CONFIGURATION",
@@ -12,7 +17,56 @@
 		}
 		
 	],
-	jsModule:[
+	jsModules:[
+		{
+			name:"bootstrap",
+			uri:"//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min",
+			deps:[
+				"jquery",
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/transition.js",
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/alert.js",
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/button.js",
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/carousel.js",
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/dropdown.js",
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/modal.js",
+				"bootstrap-scrollspy",
+				"bootstrap-popover",
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/tab.js",
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/affix.js",
+				"css!//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min"
+			]
+		},
+		{
+			name:"bootstrap-popover",
+			uri:"//cdn.bootcss.com/bootstrap/3.2.0/js/popover",
+			deps:[
+				"//cdn.bootcss.com/bootstrap/3.2.0/js/tooltip.js"
+			]
+			
+		},
+		{
+			name:"bootstrap-scrollspy",
+			uri:"//cdn.bootcss.com/bootstrap/3.2.0/js/scrollspy",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"directives",
+			uri:"/api/classpath/query/support/web/console/theme/homer/scripts/directives/directives",
+			deps:[
+				"bootstrap"
+			]
+		},
+		{
+			name:"icheck",
+			uri:"//cdn.bootcss.com/iCheck/1.0.2/icheck.min",
+			deps:[
+				"bootstrap"
+			]
+			
+		}
 		
 	]
 }

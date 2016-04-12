@@ -1,6 +1,7 @@
 define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], function(angular, asyncLoader, module) {
 
-	var app = angular.module('app', module.config().requiredModule);
+	var app = angular.module('app', [ 'ui.router' ]);
+	// var app = angular.module('app', module.config().requiredModule);
 	// var app = angular.module('app', [ 'ui.router', // Angular flexible
 	// routing
 	// 'ngSanitize', // Angular-sanitize
@@ -32,7 +33,9 @@ define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], fun
 		angular.element(document).ready(function() {
 			angular.bootstrap(document, [ 'app' ]);
 			angular.element(document).find('html').addClass('ng-app');
-			callbackFunc();
+			if (callbackFunc) {
+				callbackFunc();
+			}
 		});
 	}
 

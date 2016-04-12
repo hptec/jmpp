@@ -1,9 +1,12 @@
 {
+	paths:{
+		"$classpath":"/api/classpath/query/"
+	},
 	jsModules:[
 		{
 			name:"angular",
-			uri:"//cdn.bootcss.com/angular.js/1.5.0/angular",
-			export:"angular",
+			uri:"//cdn.bootcss.com/angular.js/1.5.0/angular.min",
+			exports:"angular",
 			deps:[
 				"require-css"
 			]
@@ -20,7 +23,7 @@
 		{
 			name:"angular-async-loader",
 			uri:"/api/classpath/query/support/requirejs/js/angular-async-loader/angular-async-loader.min",
-			export:"asyncLoader",
+			exports:"asyncLoader",
 			deps:[
 				"angular",
 				"angular-ui-router"
@@ -32,32 +35,36 @@
 			uri:"//cdn.bootcss.com/angular.js/1.5.0/i18n/angular-locale_zh-cn"
 		},
 		{
-			name:"bootstrap",
-			uri:"//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min",
+			name:"jquery",
+			uri:"//cdn.bootcss.com/jquery/2.2.1/jquery.min",
+			exports:"$",
 			deps:[
-				"jquery",
-				"css!//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min"
+				"//cdn.bootcss.com/string.js/3.3.1/string.min.js"
 			]
 			
 		},
 		{
-			name:"jquery",
-			uri:"//cdn.bootcss.com/jquery/2.2.1/jquery.min",
-			export:"$",
-			deps:[
-				"//cdn.bootcss.com/string.js/3.3.1/css/string.min"
-			]
-			
+			name:"jquery-cookie",
+			uri:"//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min"
 		},
 		{
 			name:"md5",
 			uri:"//cdn.bootcss.com/blueimp-md5/2.3.0/js/md5.min",
-			export:"md5"
+			exports:"md5"
 		},
 		{
 			name:"app",
 			uri:"/api/classpath/query/support/web/js/app",
-			export:"app"
+			exports:"app"
+		},
+		{
+			name:"require-css",
+			uri:"/api/classpath/query/support/requirejs/js/require-css/css.min"
+		},
+		{
+			name:"http",
+			uri:"/api/classpath/query/support/web/js/http",
+			exports:"http"
 		}
 		
 	]

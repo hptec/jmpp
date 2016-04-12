@@ -1,4 +1,5 @@
-define([ '/api/requirejs/module_def.js' ], function(module_def) {
+define([ '/api/web/systemconfigs.js' ], function(sysConfig) {
+
 	return {
 		/**
 		 * 启动项目
@@ -22,12 +23,42 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 					}
 				}
 			}
-
 			console.log("默认配置", defaultConfig);
-			console.log("输入配置", cfg);
-			console.log("系统级模块定义", module_def);
 			require.config(defaultConfig);
-			require.config(module_def);
+
+			console.log("模块配置", sysConfig);
+			var shimConfig = {
+				"shim" : {
+
+				},
+				"paths" : sysConfig.paths == undefined ? {} : sysConfig.paths
+			}
+
+			// 根据jsModule设置requriejs的配置
+			if (sysConfig.jsModules != undefined) {
+				for (i in sysConfig.jsModules) {
+					var jsModule = sysConfig.jsModules[i];
+					if (shimConfig.shim[jsModule.name] == undefined) {
+						shimConfig.shim[jsModule.name] = {};
+					}
+
+					if (jsModule["exports"] != undefined) {
+						shimConfig.shim[jsModule.name]["exports"] = jsModule["exports"];
+					}
+					if (jsModule["deps"] != undefined) {
+						shimConfig.shim[jsModule.name]["deps"] = jsModule["deps"];
+					}
+					if (jsModule["uri"] != undefined) {
+						shimConfig.paths[jsModule.name] = jsModule.uri;
+					}
+				}
+			}
+
+			console.log("RequireJs配置", shimConfig);
+			require.config(shimConfig);
+
+			console.log("输入配置", cfg);
+
 			require.config(cfg);
 			require.config({
 				config : {
@@ -51,18 +82,14 @@ define([ '/api/requirejs/module_def.js' ], function(module_def) {
 							console.log(statusText, xhr);
 							throw statusText;
 						} : cfg.onHttpNotFound)
-					},
-					'app' : {
-						'requiredModule' : module_def.requiredModule,
-						'boot' : module_def.bootConfig[cfg.platform]
 					}
 				}
 			});
 
-			var boot = module_def.bootConfig[cfg.platform];
-			if (boot != undefined && boot.bootstrapJs != undefined && boot.bootstrapJs != "") {
-				console.log("启动模块 [" + boot.platform + "][" + boot.bootstrapJs + "]", boot);
-				require([ boot.bootstrapJs ], function() {
+			var boot = sysConfig.starters[cfg.platform];
+			if (boot != undefined && boot.uri != undefined && boot.uri != "") {
+				console.log("启动模块 [" + boot.platform + "][" + boot.uri + "]", boot);
+				require([ 'angular', boot.uri ], function() {
 					// 启动
 				});
 			}
