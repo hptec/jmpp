@@ -25,7 +25,7 @@ import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.support.requirejs.annotation.RequireJsBootstrap;
-import cn.cerestech.framework.support.requirejs.service.RequireJsService;
+import cn.cerestech.framework.support.requirejs.service.DefaultWebService;
 import cn.cerestech.framework.support.web.Cookies;
 import cn.cerestech.framework.support.web.WebSupport;
 import cn.cerestech.framework.support.web.WebUtils;
@@ -45,7 +45,7 @@ public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler im
 	ClasspathService classpathService;
 
 	@Autowired
-	RequireJsService requirejsService;
+	DefaultWebService requirejsService;
 
 	@Override
 	protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
@@ -107,7 +107,7 @@ public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler im
 					}
 
 					// 将Boot放入requriejsService供输出启动配置用
-					requirejsService.putBoot(boot.platform(), boot);
+//					requirejsService.putBoot(boot.platform(), boot);
 				}
 			}
 		}

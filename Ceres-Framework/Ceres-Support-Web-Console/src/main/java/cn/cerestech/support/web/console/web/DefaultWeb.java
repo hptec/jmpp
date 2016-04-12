@@ -19,7 +19,6 @@ import cn.cerestech.support.web.console.service.MenuService;
 @RestController
 @RequestMapping("$$ceres_sys/console")
 @Manifest("support/web/console/manifest.json")
-@ClasspathPath(id = "ceres-console", uri = "support/web/console")
 public class DefaultWeb extends AbstractConsoleWeb {
 	private Logger log = LogManager.getLogger();
 
@@ -30,7 +29,6 @@ public class DefaultWeb extends AbstractConsoleWeb {
 	MenuService menuService;
 
 	@RequestMapping("")
-	@RequireJsBootstrap(platform = PlatformCategory.CONSOLE, bootstrapJs = "ceres-console/js/console-starter", html5mode = true)
 	public byte[] index() {
 		return themeResource("index.html");
 	}

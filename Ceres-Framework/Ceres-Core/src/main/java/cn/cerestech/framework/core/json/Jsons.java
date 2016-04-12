@@ -8,9 +8,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,8 +18,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 public class Jsons {
-
-	private Logger log = LogManager.getLogger();
 
 	private JsonElement root;
 	private Boolean serializeNull = Boolean.FALSE;
@@ -137,6 +132,8 @@ public class Jsons {
 
 	public Jsons get(String... nodeName) {
 		JsonElement root = this.root;
+		if (root == null)
+			return new Jsons();
 		for (String node : nodeName) {
 			if (root.isJsonObject()) {
 				if (root.getAsJsonObject().has(node)) {
@@ -273,4 +270,12 @@ public class Jsons {
 		return list;
 	}
 
+	public JsonElement getRoot() {
+		return root;
+	}
+
+	@Override
+	public String toString() {
+		return this.toPrettyJson();
+	}
 }

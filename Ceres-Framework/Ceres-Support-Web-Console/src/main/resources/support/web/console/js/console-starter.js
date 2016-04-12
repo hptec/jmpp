@@ -1,27 +1,31 @@
 // 加载各种配置和启动前文件
-var files = [ //
-'http',//
-'app',//
-'bootstrap',//
-'icheck',//
-'ceres-console/js/app-routes',//
-'ceres-console/theme/homer/scripts/directives/directives',//
-'css!api/classpath/query/support/web/console/theme/homer/styles/style.css',//
-];
-define(files, function(http, app) {
+define([ 'jquery' ], function() {
+	require([ 'directives',//
+	'icheck',//
+	'css!api/classpath/query/support/web/console/theme/homer/styles/style.css',//
+	], function() {
 
-	app.start(function() {
-		console.log("后台启动器加载");
-		// location.href = "./console/common/login";
+		require([ 'http', 'app' ], function(http, app) {
 
-		$(".splash").hide();
+			var afterStart = function() {
 
-		http.load({
-			url : '/api/sayhi',
-			success : function(obj) {
-				console.log("HTTP返回", obj);
+				console.log("后台启动器加载");
+				// location.href = "./console/common/login";
+
+				$(".splash").hide();
+
+				http.load({
+					url : '/api/sayhi',
+					success : function(obj) {
+						console.log("HTTP返回", obj);
+					}
+				});
+
 			}
-		})
-	});
+			app.start(afterStart);
+
+		});
+
+	})
 
 });

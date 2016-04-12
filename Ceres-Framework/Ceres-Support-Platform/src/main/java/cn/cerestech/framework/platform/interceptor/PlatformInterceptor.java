@@ -31,7 +31,7 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 
 	private Set<String> excludeUris = Sets.newHashSet(//
 			"/api/classpath/query/support/web/js/core.js", //
-			"/api/requirejs/module_def.js"//
+			"/api/web/systemconfigs.js"//
 	);
 	@Autowired
 	PlatformService platformService;
