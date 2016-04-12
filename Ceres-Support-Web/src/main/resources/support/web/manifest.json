@@ -1,0 +1,65 @@
+{
+	jsModules:[
+		{
+			name:"angular",
+			uri:"//cdn.bootcss.com/angular.js/1.5.0/angular",
+			export:"angular",
+			deps:[
+				"require-css"
+			]
+			
+		},
+		{
+			name:"angular-ui-router",
+			uri:"//cdn.bootcss.com/angular-ui-router/1.0.0-alpha0/angular-ui-router.min",
+			deps:[
+				"angular"
+			],
+			angular-required:"ui.router"
+		},
+		{
+			name:"angular-async-loader",
+			uri:"/api/classpath/query/support/requirejs/js/angular-async-loader/angular-async-loader.min",
+			export:"asyncLoader",
+			deps:[
+				"angular",
+				"angular-ui-router"
+			]
+			
+		},
+		{
+			name:"angular-local",
+			uri:"//cdn.bootcss.com/angular.js/1.5.0/i18n/angular-locale_zh-cn"
+		},
+		{
+			name:"bootstrap",
+			uri:"//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min",
+			deps:[
+				"jquery",
+				"css!//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min"
+			]
+			
+		},
+		{
+			name:"jquery",
+			uri:"//cdn.bootcss.com/jquery/2.2.1/jquery.min",
+			export:"$",
+			deps:[
+				"//cdn.bootcss.com/string.js/3.3.1/css/string.min"
+			]
+			
+		},
+		{
+			name:"md5",
+			uri:"//cdn.bootcss.com/blueimp-md5/2.3.0/js/md5.min",
+			export:"md5"
+		},
+		{
+			name:"app",
+			uri:"/api/classpath/query/support/web/js/app",
+			export:"app"
+		}
+		
+	]
+	
+}

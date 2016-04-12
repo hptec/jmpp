@@ -14,13 +14,13 @@ public abstract class RequireJsWebSupport extends WebSupport {
 	 * 
 	 * @param str
 	 */
-	protected void zipOutRequrieJson(Object obj) {
+	protected void zipOutRequireJson(Object obj) {
 		StringBuffer buffer = new StringBuffer("define(function() {");
 		buffer.append("return ");
-		buffer.append(Jsons.toJson(obj));
+		buffer.append(Jsons.from(obj).toJson());
 		buffer.append("});");
 		if (log.isTraceEnabled()) {
-			log.trace(Jsons.toPrettyJson(Jsons.toJson(obj)));
+			log.trace(Jsons.from(obj).prettyPrint().toJson());
 		}
 		zipOut(buffer.toString(), "application/javascript");
 	}

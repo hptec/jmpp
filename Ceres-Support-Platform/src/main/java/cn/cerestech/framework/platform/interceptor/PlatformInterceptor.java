@@ -1,7 +1,6 @@
 package cn.cerestech.framework.platform.interceptor;
 
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +12,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.base.Strings;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Sets;
 
-import cn.cerestech.framework.core.Random;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.platform.entity.Platform;
 import cn.cerestech.framework.platform.enums.ErrorCodes;
@@ -31,10 +27,7 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 	public static final String COOKIE_CERES_PLATFORM_KEY = "ceres_platform_key";
 	public static final String COOKIE_CERES_PLATFORM_SECRET = "ceres_platform_secret";
 
-//	private Logger log = LogManager.getLogger();
-
-	// token有效期2小时
-	private Cache<String, Long> tokenPool = CacheBuilder.newBuilder().expireAfterWrite(2, TimeUnit.HOURS).build();
+	// private Logger log = LogManager.getLogger();
 
 	private Set<String> excludeUris = Sets.newHashSet(//
 			"/api/classpath/query/support/web/js/core.js", //
@@ -85,8 +78,6 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 					return Boolean.FALSE;
 				} else {
 					// 生成token
-					String token = Random.uuid();
-					tokenPool.put(token, result.getObject().getId());
 					cookies.remove(COOKIE_CERES_PLATFORM_KEY);
 					cookies.remove(COOKIE_CERES_PLATFORM_SECRET);
 					cookies.flushTo(response);

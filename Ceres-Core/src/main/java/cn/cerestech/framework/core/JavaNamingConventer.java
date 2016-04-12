@@ -1,6 +1,7 @@
 package cn.cerestech.framework.core;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -127,6 +128,10 @@ public class JavaNamingConventer {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(str);
 		return matcher.lookingAt();
+	}
+	
+	public static void main(String[] arugs){
+		System.out.println(TimeUnit.HOURS.toSeconds(1));
 	}
 
 }

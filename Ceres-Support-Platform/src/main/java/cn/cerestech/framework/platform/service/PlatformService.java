@@ -24,4 +24,8 @@ public class PlatformService {
 		return indentifyProvider;
 	}
 
+	public Long getId() {
+		return getIndentifyProvider().getId();
+	}
+
 }

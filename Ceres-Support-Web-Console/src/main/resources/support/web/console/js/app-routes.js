@@ -1,4 +1,4 @@
-define([ 'app' ], function(app) {
+define([ 'app', 'ceres_console/dashboard/menu' ], function(app, menu) {
 	function configState($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider) {
 
 		// Optimize load start with remove binding information inside the DOM
@@ -9,6 +9,7 @@ define([ 'app' ], function(app) {
 		// });
 		// Set default state
 		$urlRouterProvider.otherwise("/dashboard");
+		console.log("菜单:", menu);
 		// $urlRouterProvider.otherwise("/common/login");
 		$stateProvider
 

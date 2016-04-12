@@ -1,40 +1,104 @@
 package cn.cerestech.framework.core.json;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
 
 public class Jsons {
-	public static Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-	public static Gson nullDisabledGson = new GsonBuilder().setPrettyPrinting().create();
+
+	private Logger log = LogManager.getLogger();
+
+	private JsonElement root;
+	private Boolean serializeNull = Boolean.FALSE;
+	private Boolean toUnicode = Boolean.TRUE;
+	private Boolean prettyPrint = Boolean.FALSE;
+
+	/**
+	 * 转换成为json时，表示不会将中文等符号转化成unicode 编码的转义字符
+	 * 
+	 * @return
+	 */
+	public Jsons disableUnicode() {
+		toUnicode = Boolean.FALSE;
+		return this;
+	}
+
+	/**
+	 * 转化时是否序列化null 或者 empty str
+	 * 
+	 * @return
+	 */
+	public Jsons serializeNull() {
+		serializeNull = Boolean.TRUE;
+		return this;
+	}
+
+	/**
+	 * 按照方便阅读的格式输出
+	 * 
+	 * @return
+	 */
+	public Jsons prettyPrint() {
+		prettyPrint = Boolean.TRUE;
+		return this;
+	}
+
+	public static Jsons from(Object obj) {
+		Jsons me = new Jsons();
+		if (obj == null) {
+			me.root = null;
+			return me;
+		}
+		if (obj instanceof String) {
+			// 传入的字符串
+			me.root = me.getGson().fromJson(obj.toString(), JsonElement.class);
+			return me;
+		}
+
+		if (obj instanceof JsonElement) {
+			me.root = (JsonElement) obj;
+			return me;
+		}
+
+		if (obj instanceof JsonObject) {
+			me.root = (JsonObject) obj;
+			return me;
+		}
+
+		me.root = me.getGson().toJsonTree(obj);
+
+		return me;
+	}
 
 	/**
 	 * 获取Gson对象
 	 * 
-	 * @param nullAble
-	 *            ： 转化时是否序列化null 或者 empty str
-	 * @param unicode
-	 *            : 是否不转化成unicode 默认值为 false 表示会将中文等符号转化成unicode 编码的转义字符
 	 * @return
 	 */
-	public static Gson getGson(boolean nullAble, boolean unicode) {
+	private Gson getGson() {
 
-		GsonBuilder builder = new GsonBuilder();// .setDateFormat("yyyy-MM-dd
-												// HH:mm:ss");
-		builder = nullAble ? builder.serializeNulls() : builder;
-		builder = unicode ? builder : builder.disableHtmlEscaping();
+		GsonBuilder builder = new GsonBuilder();
+		builder = serializeNull ? builder.serializeNulls() : builder;
+		builder = toUnicode ? builder : builder.disableHtmlEscaping();
+		builder = prettyPrint ? builder.setPrettyPrinting() : builder;
+
+		// 解析日期格式
 		builder.registerTypeAdapter(java.util.Date.class, new JsonDeserializer<java.util.Date>() {
 			@Override
 			public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -61,118 +125,152 @@ public class Jsons {
 		return builder.create();
 	}
 
-	/**
-	 * 特殊类型的Bean转Json
-	 * 
-	 * @param json
-	 * @param type
-	 * @return
-	 */
-	public static <T> T fromJson(String json, TypeToken<T> type) {
-		if (Strings.isNullOrEmpty(json)) {
-			return null;
+	public String toJson() {
+		return getGson().toJson(root);
+	}
+
+	public String toPrettyJson() {
+		Jsons me = new Jsons();
+		me.root = root;
+		return me.prettyPrint().toJson();
+	}
+
+	public Jsons get(String... nodeName) {
+		JsonElement root = this.root;
+		for (String node : nodeName) {
+			if (root.isJsonObject()) {
+				if (root.getAsJsonObject().has(node)) {
+					// 拥有属性
+					root = root.getAsJsonObject().get(node);
+				} else {
+					// 没有这个属性,返回空属性
+					return Jsons.from(null);
+				}
+			} else if (root.isJsonNull()) {
+				// 空则返回空属性
+				return Jsons.from(null);
+			} else if (root.isJsonPrimitive()) {
+				// 基本类型则抛出错误
+				throw new IllegalArgumentException("property [" + node + "] is primitive");
+			} else if (root.isJsonArray()) {
+				// 数组类型则抛出错误
+				throw new IllegalArgumentException("property [" + node + "] is array");
+			}
 		}
-		try {
-			return getGson(false, true).fromJson(json, type.getType());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		Jsons ret = new Jsons();
+		ret.root = root;
+		return ret;
 	}
 
-	/**
-	 * 普通Bean 转JSon
-	 * 
-	 * @param json
-	 * @param cls
-	 * @return
-	 */
-	public static <T> T fromJson(String json, Class<T> cls) {
-		return getGson(true, true).fromJson(json, cls);
-	}
-
-	/**
-	 * 将字符串转换成JSON 对象
-	 * 
-	 * @param str
-	 * @return
-	 */
-	public static JsonElement from(String json) {
-		return fromJson(json, new TypeToken<JsonElement>() {
-			@SuppressWarnings("unused")
-			private static final long serialVersionUID = 1L;
-		});
-	}
-
-	/**
-	 * Object 转JSON
-	 * 
-	 * @param obj
-	 * @param serializeNull
-	 * @param toUnicode
-	 *            ： 是否需要转换成html 的格式，即对特殊符号进行转义
-	 * @return
-	 */
-	public static String toJson(Object obj, boolean serializeNull, Boolean toUnicode) {
-		return getGson(serializeNull, toUnicode).toJson(obj);
-	}
-
-	/**
-	 * 
-	 * @param obj
-	 *            : 对象
-	 * @param serializeNull
-	 *            ： 是否序列化NULL 属性
-	 * @return 值中的特殊符号会被处理成unicode 编码，= & 等
-	 */
-	public static String toJson(Object obj, boolean serializeNull) {
-		return getGson(serializeNull, true).toJson(obj);
-	}
-
-	/**
-	 * 
-	 * @param obj
-	 *            : 对象
-	 * @param serializeNull
-	 *            ： 是否序列化NULL 属性
-	 * @return 值中的特殊符号会被处理成unicode 编码，= & 等
-	 */
-	public static String toJson(Object obj) {
-		return getGson(false, true).toJson(obj);
-	}
-
-	public static String toPrettyJson(Object obj) {
-		if (obj instanceof String) {
-			return gson.toJson(Jsons.from((String) obj));
+	public Jsons get(int i) {
+		if (root.isJsonArray()) {
+			Jsons ret = new Jsons();
+			ret.root = root.getAsJsonArray().get(i);
+			return ret;
 		} else {
-			return gson.toJson(obj);
+			// 不是数组类型则抛出错误
+			throw new IllegalArgumentException("Is not a array");
 		}
 	}
 
-	/**
-	 * 对象转map
-	 * 
-	 * @param t
-	 * @return
-	 */
-	public static <T> Map<String, Object> toMap(T t) {
-		if (t == null) {
-			return Maps.newHashMap();
-		}
-		String tmp = "";
-		if (t.getClass().isAssignableFrom(String.class)) {
-			tmp = t.toString();
-		} else {
-			tmp = toJson(t, false);
-		}
+	public String asString() {
+		return asString(null);
+	}
 
-		if (Strings.isNullOrEmpty(tmp)) {
-			return Maps.newHashMap();
+	public String asString(String defaultValue) {
+		return root == null ? defaultValue : root.getAsString();
+	}
+
+	public BigDecimal asBigDecimal() {
+		return asBigDecimal(null);
+	}
+
+	public BigDecimal asBigDecimal(BigDecimal defaultValue) {
+		return root == null ? defaultValue : root.getAsBigDecimal();
+	}
+
+	public BigInteger asBigInteger() {
+		return asBigInteger(null);
+	}
+
+	public BigInteger asBigInteger(BigInteger defaultValue) {
+		return root == null ? defaultValue : root.getAsBigInteger();
+	}
+
+	public Boolean asBoolean() {
+		return asBoolean(null);
+	}
+
+	public Boolean asBoolean(Boolean defaultValue) {
+		return root == null ? defaultValue : root.getAsBoolean();
+	}
+
+	public Byte asByte() {
+		return asByte(null);
+	}
+
+	public Byte asByte(Byte defaultValue) {
+		return root == null ? defaultValue : root.getAsByte();
+	}
+
+	public Character asCharacter() {
+		return asCharacter(null);
+	}
+
+	public Character asCharacter(Character defaultValue) {
+		return root == null ? defaultValue : root.getAsCharacter();
+	}
+
+	public Double asDouble() {
+		return asDouble(null);
+	}
+
+	public Double asDouble(Double defaultValue) {
+		return root == null ? defaultValue : root.getAsDouble();
+	}
+
+	public Float asFloat() {
+		return asFloat(null);
+	}
+
+	public Float asFloat(Float defaultValue) {
+		return root == null ? defaultValue : root.getAsFloat();
+	}
+
+	public Integer asInt() {
+		return asInt(null);
+	}
+
+	public Integer asInt(Integer defaultValue) {
+		return root == null ? defaultValue : root.getAsInt();
+	}
+
+	public Long asLong() {
+		return asLong(null);
+	}
+
+	public Long asLong(Long defaultValue) {
+		return root == null ? defaultValue : root.getAsLong();
+	}
+
+	public Number asNumber() {
+		return asNumber(null);
+	}
+
+	public Number asNumber(Number defaultValue) {
+		return root == null ? defaultValue : root.getAsNumber();
+	}
+
+	public List<Jsons> asList() {
+		List<Jsons> list = Lists.newArrayList();
+		if (root != null && root.isJsonArray()) {
+			root.getAsJsonArray().forEach(ele -> {
+				Jsons j = new Jsons();
+				j.root = ele;
+				list.add(j);
+			});
 		}
-		return fromJson(tmp, new TypeToken<Map<String, Object>>() {
-			@SuppressWarnings("unused")
-			private static final long serialVersionUID = 1L;
-		});
+		return list;
 	}
 
 }

@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
 
-import cn.cerestech.framework.core.Random;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.platform.dao.PlatformDao;
 import cn.cerestech.framework.platform.entity.Platform;
 import cn.cerestech.framework.platform.enums.ErrorCodes;
-import cn.cerestech.framework.platform.interceptor.PlatformInterceptor;
+import cn.cerestech.framework.support.web.WebSupport;
 import cn.cerestech.framework.support.web.WebUtils;
 
 @Service
@@ -23,7 +22,7 @@ public class AuthPlatformIdentifyProvider implements PlatformIdentifyProvider {
 
 	@Override
 	public Platform get() {
-		Long id = (Long) WebUtils.getCurrentRequest().getAttribute(PlatformInterceptor.COOKIE_CERES_PLATFORM_ID);
+		Long id = getId();
 		if (id == null) {
 			throw new IllegalArgumentException("platform key & secrect shoud be specified");
 		} else {
@@ -53,8 +52,10 @@ public class AuthPlatformIdentifyProvider implements PlatformIdentifyProvider {
 
 	}
 
-	public static void main(String[] arugs){
-		System.out.println(Random.uuid());
-		System.out.println(Random.uuid());
+	@Override
+	public Long getId() {
+		
+		Long id = (Long) WebUtils.getCurrentRequest().getAttribute(WebSupport.COOKIE_CERES_PLATFORM_ID);
+		return id;
 	}
 }

@@ -1,0 +1,36 @@
+{
+	name:"Ceres-Middleware-Sms-Console",
+	desc:"提供平台短信发送组件管理界面",
+	menus:[
+		{
+			key:"MIDDLEWARE_SMS_MENU",
+			parent:"TOP_SYSTEM_CONFIGURATION",
+			caption:"短信服务",
+			menus:[
+				{
+					key:"MIDDLEWARE_SMS_SUPPLIER",
+					caption:"服务供应商",
+					pages:[
+						{
+							uri:"/middleware/sms/icp",
+							tpl:"/$$ceres_sys/console/base/res/cp?id=/console/res/middleware/sms/sms_icp.html"
+						}
+					]
+					
+				},{
+					key:"MIDDLEWARE_SMS_RECORED",
+					caption:"发送记录",
+					pages:[
+						{
+							uri:"/sys/sms/records",
+							tpl:"/$$ceres_sys/console/base/res/cp?id=/console/res/middleware/sms/sms_records.html"
+						}
+					]
+				}
+				
+			]
+			
+		}
+		
+	]
+}

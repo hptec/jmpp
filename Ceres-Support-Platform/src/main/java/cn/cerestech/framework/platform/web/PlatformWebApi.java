@@ -16,7 +16,7 @@ public class PlatformWebApi extends RequireJsWebSupport {
 
 	@RequestMapping("query")
 	public void query() {
-		zipOutRequrieJson(platformService.getPlatform());
+		zipOutRequireJson(platformService.getPlatform());
 	}
 
 }

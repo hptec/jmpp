@@ -17,13 +17,7 @@ import com.google.common.collect.Sets;
 import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.PlatformCategory;
-import cn.cerestech.framework.support.requirejs.annotation.BootCdnPath;
-import cn.cerestech.framework.support.requirejs.annotation.BootCdnPaths;
-import cn.cerestech.framework.support.requirejs.annotation.ClasspathPath;
-import cn.cerestech.framework.support.requirejs.annotation.ClasspathPaths;
 import cn.cerestech.framework.support.requirejs.annotation.RequireJsBootstrap;
-import cn.cerestech.framework.support.requirejs.annotation.RequireJsModule;
-import cn.cerestech.framework.support.requirejs.jsmodule.JsModule;
 import cn.cerestech.support.classpath.ClasspathService;
 
 @Service
@@ -172,13 +166,6 @@ public class RequireJsService implements ComponentDispatcher {
 			throw new IllegalArgumentException("Boot config conflict: " + platform.name());
 		}
 		bootMap.put(platform, boot);
-	}
-
-	private String bootcdnUri(BootCdnPath repo) {
-		StringBuffer buffer = new StringBuffer("//cdn.bootcss.com/");
-		buffer.append(repo.module() + '/');
-		buffer.append(repo.version());
-		return buffer.toString();
 	}
 
 }
