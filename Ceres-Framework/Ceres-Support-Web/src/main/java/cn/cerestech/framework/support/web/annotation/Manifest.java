@@ -1,4 +1,4 @@
-package cn.cerestech.framework.support.annotation;
+package cn.cerestech.framework.support.web.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,7 +1,5 @@
 define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 
-	console.log("http模块配置", module.config());
-
 	return {
 		// 支持onSuccess,onTimeout,onError,onComplete,onNotFound
 		load : function(context) {

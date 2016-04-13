@@ -21,7 +21,7 @@ import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.annotation.Manifest;
+import cn.cerestech.framework.support.web.annotation.Manifest;
 
 @Service
 public class ManifestService implements ComponentDispatcher {

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
-import cn.cerestech.framework.support.annotation.Manifest;
 import cn.cerestech.framework.support.web.WebSupport;
+import cn.cerestech.framework.support.web.annotation.Manifest;
 import cn.cerestech.framework.support.web.service.ManifestService;
 
 @RestController
@@ -23,7 +23,7 @@ public class DefaultWeb extends WebSupport {
 
 	@Autowired
 	ManifestService manifestService;
-
+	
 	@RequestMapping("systemconfigs.js")
 	public void systemConfigs(@RequestParam("platform") String platformKey) {
 		PlatformCategory category = EnumCollector.forClass(PlatformCategory.class).keyOf(platformKey);

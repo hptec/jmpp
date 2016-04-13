@@ -1,7 +1,4 @@
 {
-	paths:{
-		"$classpath":"/api/classpath/query/"
-	},
 	jsModules:[
 		{
 			name:"angular",
