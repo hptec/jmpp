@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.framework.platform.entity.Platform;
+import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.support.web.console.entity.SysMenu;
 import cn.cerestech.support.web.console.service.MenuService;
 
@@ -19,6 +22,9 @@ public class DefaultApiWeb extends AbstractConsoleWeb {
 
 	@Autowired
 	MenuService menuService;
+
+	@Autowired
+	PlatformService platformService;
 
 	@RequestMapping("test")
 	public byte[] test() {
@@ -31,10 +37,15 @@ public class DefaultApiWeb extends AbstractConsoleWeb {
 		// return "".getBytes();
 	}
 
-	@RequestMapping("/menu.js")
-	public void menu() {
+	@RequestMapping("/appconfig.js")
+	public void appConfig() {
 
-		zipOutRequireJson(menuService.getDefaultMenus());
+		KV map = KV.on();
+
+		Platform platform = platformService.getPlatform();
+		map.put("platform", platform);
+
+		zipOutRequireJson(map);
 	}
 
 }

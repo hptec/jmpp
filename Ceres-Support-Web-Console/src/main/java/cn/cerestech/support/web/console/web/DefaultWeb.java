@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.annotation.Manifest;
+import cn.cerestech.framework.support.web.annotation.Manifest;
+import cn.cerestech.framework.support.web.annotation.PlatformDefaultPage;
 import cn.cerestech.support.classpath.ClasspathService;
 import cn.cerestech.support.web.console.entity.SysMenu;
 import cn.cerestech.support.web.console.service.MenuService;
@@ -27,6 +29,7 @@ public class DefaultWeb extends AbstractConsoleWeb {
 	MenuService menuService;
 
 	@RequestMapping("")
+	@PlatformDefaultPage(PlatformCategory.CONSOLE)
 	public byte[] index() {
 		return themeResource("index.html");
 	}

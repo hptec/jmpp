@@ -86,7 +86,8 @@ define([], function() {
 						},
 						'app' : {
 							jsModules : sysConfig.jsModules,
-							pages : sysConfig.pages
+							pages : sysConfig.pages,
+							html5mode : sysConfig.starter.html5mode
 						}
 					}
 				});

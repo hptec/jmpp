@@ -14,77 +14,26 @@ define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], fun
 
 	function configState($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider) {
 
-		// Optimize load start with remove binding information inside the DOM
-		// element
-		$compileProvider.debugInfoEnabled(true);
-		// app.config([ '$locationProvider' ], function($locationProvider) {
-		$locationProvider.html5Mode(true);// 启用html5模式
-		// });
-		// Set default state
-		// $urlRouterProvider.otherwise("/dashboard");
-		$urlRouterProvider.otherwise("/common/login");
-		$stateProvider
+		$compileProvider.debugInfoEnabled(false);
+		var html5mode = config.html5mode;
+		if (html5mode != undefined && html5mode) {
+			console.log("启用html5模式");
+			$locationProvider.html5Mode(true);// 启用html5模式
+		}
 
-		// Dashboard - Main page
-		.state('dashboard', {
-			url : "/dashboard",
-			templateUrl : "/api/classpath/query/support/web/console/theme/homer/views/dashboard.html",
-			data : {
-				pageTitle : 'Dashboard'
+		for ( var i in config.pages) {
+			var pg = config.pages[i];
+			if (pg.defaultPage != undefined && pg.defaultPage) {
+				$urlRouterProvider.otherwise(pg.uri);
 			}
-		})
 
-		// Common views
-		.state('common', {
-			abstract : true,
-			url : "/common",
-			templateUrl : "/api/classpath/query/support/web/console/theme/homer/views/common/content_empty.html",
-			data : {
-				pageTitle : 'Common'
-			}
-		}).state('common.login', {
-			url : "/login",
-			templateUrl : "/api/classpath/query/support/web/console/theme/homer/views/common_app/login.html",
-			data : {
-				pageTitle : 'Login page',
-				specialClass : 'blank'
-			}
-		}).state('common.register', {
-			url : "/register",
-			templateUrl : "views/common_app/register.html",
-			data : {
-				pageTitle : 'Register page',
-				specialClass : 'blank'
-			}
-		}).state('common.error_one', {
-			url : "/error_one",
-			templateUrl : "views/common_app/error_one.html",
-			data : {
-				pageTitle : 'Error 404',
-				specialClass : 'blank'
-			}
-		}).state('common.error_two', {
-			url : "/error_two",
-			templateUrl : "views/common_app/error_two.html",
-			data : {
-				pageTitle : 'Error 505',
-				specialClass : 'blank'
-			}
-		}).state('common.lock', {
-			url : "/lock",
-			templateUrl : "views/common_app/lock.html",
-			data : {
-				pageTitle : 'Lock page',
-				specialClass : 'blank'
-			}
-		}).state('common.password_recovery', {
-			url : "/password_recovery",
-			templateUrl : "views/common_app/password_recovery.html",
-			data : {
-				pageTitle : 'Password recovery',
-				specialClass : 'blank'
-			}
-		})
+			$stateProvider.state(pg.uri, {
+				url : pg.uri,
+				templateUrl : pg.tpl,
+				data : pg.data
+			})
+
+		}
 
 	}
 
