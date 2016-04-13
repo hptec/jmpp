@@ -4,10 +4,6 @@ import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cn.cerestech.framework.core.Logable;
-import cn.cerestech.framework.persistence.mapper.BaseMapper;
-import cn.cerestech.framework.persistence.service.MysqlService;
-
 public abstract class BaseService implements Logable{
 
 	@Autowired
