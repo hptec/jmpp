@@ -85,7 +85,8 @@ define([], function() {
 							} : cfg.onHttpNotFound)
 						},
 						'app' : {
-							jsModules : sysConfig.jsModules
+							jsModules : sysConfig.jsModules,
+							pages : sysConfig.pages
 						}
 					}
 				});
