@@ -12,11 +12,9 @@ import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.platform.service.PlatformService;
-import cn.cerestech.framework.support.service.ManifestService;
+import cn.cerestech.framework.support.web.service.ManifestService;
 import cn.cerestech.support.web.console.dao.SysMenuDao;
-import cn.cerestech.support.web.console.dao.SysMenuPageDao;
 import cn.cerestech.support.web.console.entity.SysMenu;
-import cn.cerestech.support.web.console.entity.SysMenuPage;
 
 @Service
 public class MenuService {
@@ -29,9 +27,6 @@ public class MenuService {
 
 	@Autowired
 	SysMenuDao sysMenuDao;
-
-	@Autowired
-	SysMenuPageDao sysMenuPageDao;
 
 	// 记录当前platform是否已经同步过菜单
 	private static Map<Long, Boolean> platformMenuSynchronizedPool = Maps.newHashMap();
@@ -48,10 +43,6 @@ public class MenuService {
 
 	public Map<String, SysMenu> getFlatDefaultMenus() {
 		return flatMenus(getDefaultMenus());
-	}
-
-	public Map<String, SysMenuPage> getFlatDefaultPages() {
-		return flatPages(getDefaultMenus());
 	}
 
 	public List<SysMenu> getMyMenus() {
@@ -85,19 +76,6 @@ public class MenuService {
 
 		sysMenuDao.save(flatMenus.values());
 
-		// 同步页面
-
-		Map<String, SysMenuPage> flatPages = getFlatDefaultPages();
-		sysMenuPageDao.findByPlatformId(platformId).forEach(p -> {
-			flatPages.remove(p.getUri());
-		});
-
-		flatPages.forEach((k, p) -> {
-			p.setPlatformId(platformId);
-		});
-
-		sysMenuPageDao.save(flatPages.values());
-
 		platformMenuSynchronizedPool.put(platformId, Boolean.TRUE);
 	}
 
@@ -122,29 +100,6 @@ public class MenuService {
 		return flatMap;
 	}
 
-	private Map<String, SysMenuPage> flatPages(List<SysMenu> menus) {
-		Map<String, SysMenuPage> flatMap = Maps.newHashMap();
-		menus.forEach(m -> {
-			m.getPages().forEach(p -> {
-				if (flatMap.containsKey(p.getUri())) {
-					throw new IllegalArgumentException("MenuPage conflict: " + Jsons.from(p).toPrettyJson());
-				} else {
-					flatMap.put(p.getUri(), p);
-				}
-			});
-
-			flatPages(m.getSubmenus()).forEach((k, p) -> {
-				if (flatMap.containsKey(p.getUri())) {
-					throw new IllegalArgumentException("MenuPage conflict: " + p.getUri());
-				} else {
-					flatMap.put(p.getUri(), p);
-				}
-			});
-		});
-
-		return flatMap;
-	}
-
 	private List<SysMenu> extractMenus(Jsons root, String parentKey) {
 		List<SysMenu> thisMenus = Lists.newArrayList();
 
@@ -164,31 +119,11 @@ public class MenuService {
 			m.setIcon(icon);
 			m.setKey(key);
 			m.setParent(parent);
-			m.setPages(extractPages(json, key));
 			m.setSubmenus(extractMenus(json, key));
 			thisMenus.add(m);
 		});
 
 		return thisMenus;
-	}
-
-	private List<SysMenuPage> extractPages(Jsons menu, String menuKey) {
-		List<SysMenuPage> pagesList = Lists.newArrayList();
-		// 提取菜单下属的页面
-		menu.get("pages").asList().forEach(page -> {
-			String uri = page.get("uri").asString();
-			if (Strings.isNullOrEmpty(uri)) {
-				throw new IllegalArgumentException("The 'uri' of pages is required!");
-			}
-
-			String tpl = page.get("tpl").asString("");
-			SysMenuPage sysPage = new SysMenuPage();
-			sysPage.setMenuKey(menuKey);
-			sysPage.setTpl(tpl);
-			sysPage.setUri(uri);
-			pagesList.add(sysPage);
-		});
-		return pagesList;
 	}
 
 }

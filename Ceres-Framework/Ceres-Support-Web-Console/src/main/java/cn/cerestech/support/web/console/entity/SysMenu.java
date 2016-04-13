@@ -78,9 +78,6 @@ public class SysMenu extends IdEntity {
 	private Long sort;
 
 	@Transient
-	private List<SysMenuPage> pages = Lists.newArrayList();
-
-	@Transient
 	private List<SysMenu> submenus = Lists.newArrayList();
 
 	public String getKey() {
@@ -123,14 +120,6 @@ public class SysMenu extends IdEntity {
 		this.sort = sort;
 	}
 
-	public List<SysMenuPage> getPages() {
-		return pages;
-	}
-
-	public void setPages(List<SysMenuPage> pages) {
-		this.pages = pages;
-	}
-
 	public List<SysMenu> getSubmenus() {
 		return submenus;
 	}
@@ -138,7 +127,5 @@ public class SysMenu extends IdEntity {
 	public void setSubmenus(List<SysMenu> submenus) {
 		this.submenus = submenus;
 	}
-
-
 
 }
