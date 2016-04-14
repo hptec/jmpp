@@ -1,0 +1,12 @@
+{
+	name:"Ceres-Support-Platform",
+	desc:"平台APPID管理模块",
+	jsModules:[
+		{
+			name:"platform",
+			uri:"/api/classpath/query/support/platform/js/platform",
+			exports:"platform"
+		}
+		
+	]
+}

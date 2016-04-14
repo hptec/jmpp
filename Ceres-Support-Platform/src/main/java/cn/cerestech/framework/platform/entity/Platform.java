@@ -45,6 +45,8 @@ public class Platform extends IdEntity {
 
 	private String platformSecret;
 
+	private String platformAuthCode;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date platformExpired;
 
@@ -182,6 +184,14 @@ public class Platform extends IdEntity {
 
 	public void setPlatformExpired(Date platformExpired) {
 		this.platformExpired = platformExpired;
+	}
+
+	public String getPlatformAuthCode() {
+		return platformAuthCode;
+	}
+
+	public void setPlatformAuthCode(String platformAuthCode) {
+		this.platformAuthCode = platformAuthCode;
 	}
 
 }

@@ -62,7 +62,13 @@
 			name:"http",
 			uri:"/api/classpath/query/support/web/js/http",
 			exports:"http"
+		},
+		{
+			name:"cache",
+			uri:"/api/classpath/query/support/web/js/cache",
+			exports:"cache"
 		}
+		
 		
 	]
 	

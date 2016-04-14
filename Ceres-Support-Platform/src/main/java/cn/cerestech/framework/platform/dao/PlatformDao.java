@@ -9,4 +9,6 @@ import cn.cerestech.framework.platform.entity.Platform;
 public interface PlatformDao extends JpaRepository<Platform, Long> {
 
 	List<Platform> findByPlatformKey(String key);
+	
+	Platform findUniqueByPlatformKeyAndPlatformSecret(String key,String secret);
 }

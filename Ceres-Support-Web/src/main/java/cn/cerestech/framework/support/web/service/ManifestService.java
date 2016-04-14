@@ -16,7 +16,6 @@ import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
 
 import cn.cerestech.framework.core.Core;
-import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
@@ -66,47 +65,68 @@ public class ManifestService implements ComponentDispatcher {
 		return cacheManifests;
 	}
 
-	public List<JsonElement> getPages(PlatformCategory category) {
-		if (cachePages.isEmpty()) {
+	private List<Jsons> findElement(String nodeName, PlatformCategory category) {
+		List<Jsons> list = Lists.newArrayList();
+		// 找到应用于所有的
+		allManifest().forEach(manifest -> {
+			Jsons json = manifest.get(nodeName);
+			if (json.isObject()) {
+				list.add(json);
+			} else if (json.isArray()) {
+				list.addAll(json.asList());
+			}
+		});
+		// 找到应用于特定platform的
+		if (category != null) {
 			allManifest().forEach(manifest -> {
-				manifest.get("pages").asList().forEach(pgAll -> {
-					// 添加到所有
-					putPageCache(null, pgAll.getRoot());
-				});
-				PlatformCategory[] cates = PlatformCategory.values();
-				for (PlatformCategory c : cates) {
-					manifest.get("pages_" + c.key()).asList().forEach(pgAll -> {
-						// 添加到所有
-						putPageCache(c, pgAll.getRoot());
-					});
+				Jsons json = manifest.get(nodeName + "_" + category.key());
+				if (json.isObject()) {
+					list.add(json);
+				} else if (json.isArray()) {
+					list.addAll(json.asList());
 				}
 			});
 		}
+		return list;
+	}
+
+	public List<JsonElement> getPages(PlatformCategory category) {
+		if (category == null) {
+			throw new IllegalArgumentException("PlatformCategory is required");
+		}
+
+		if (!cachePages.containsKey(category)) {
+			List<JsonElement> cateList = Lists.newArrayList();
+			findElement("pages", category).forEach(pg -> {
+				cateList.add(pg.getRoot());
+			});
+			cachePages.put(category, cateList);
+		}
+		
 		return cachePages.get(category);
 	}
 
-	private void putPageCache(PlatformCategory category, JsonElement page) {
-		if (category == null) {
-			// 全部添加
-			PlatformCategory[] cates = PlatformCategory.values();
-			for (PlatformCategory c : cates) {
-				if (!cachePages.containsKey(c)) {
-					cachePages.put(c, Lists.newArrayList());
-				}
-				cachePages.get(c).add(page);
-			}
-		} else {
-			// 添加到指定
-			if (!cachePages.containsKey(category)) {
-				cachePages.put(category, Lists.newArrayList());
-			}
-			cachePages.get(category).add(page);
-		}
-	}
+	// private void putPageCache(PlatformCategory category, JsonElement page) {
+	// if (category == null) {
+	// // 全部添加
+	// PlatformCategory[] cates = PlatformCategory.values();
+	// for (PlatformCategory c : cates) {
+	// if (!cachePages.containsKey(c)) {
+	// cachePages.put(c, Lists.newArrayList());
+	// }
+	// cachePages.get(c).add(page);
+	// }
+	// } else {
+	// // 添加到指定
+	// if (!cachePages.containsKey(category)) {
+	// cachePages.put(category, Lists.newArrayList());
+	// }
+	// cachePages.get(category).add(page);
+	// }
+	// }
 
-	public List<JsonElement> getJsModules() {
+	public List<JsonElement> getJsModules(PlatformCategory category) {
 		if (cacheJsModules.isEmpty()) {
-
 			Map<String, JsonElement> moduleMap = Maps.newHashMap();
 			List<String> conflict = Lists.newArrayList();
 

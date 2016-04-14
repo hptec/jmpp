@@ -65,8 +65,6 @@ define([], function() {
 					config : {
 						'http' : {
 							'platform' : cfg.platform,
-							'key' : cfg.platformKey,
-							'secret' : cfg.platformSecret,
 							'onLoginRequired' : (cfg.onLoginRequired == undefined ? function() {
 								alert("请求登录");
 							} : cfg.onLoginRequired),
@@ -88,6 +86,11 @@ define([], function() {
 							jsModules : sysConfig.jsModules,
 							pages : sysConfig.pages,
 							html5mode : sysConfig.starter.html5mode
+						},
+						'platform' : {
+							'platform' : cfg.platform,
+							'appid' : cfg.platformKey,
+							'appsecret' : cfg.platformSecret,
 						}
 					}
 				});

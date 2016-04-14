@@ -17,7 +17,7 @@
 		}
 		
 	],
-	jsModules:[
+	jsModules_console:[
 		{
 			name:"bootstrap",
 			uri:"//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min",

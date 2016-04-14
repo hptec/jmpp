@@ -1,11 +1,11 @@
 // 加载各种配置和启动前文件
 define([ 'jquery' ], function() {
-	
-	require([ '/api/console/appconfig.js', 'directives',//
+
+	require([ 'platform', 'directives',//
 	'icheck',//
 	'css!api/classpath/query/support/web/console/theme/homer/styles/style.css',//
-	], function(appConfig) {
-		console.log("页面文件", appConfig);
+	], function(platform) {
+		console.log("平台信息", platform.get());
 
 		require([ 'http', 'app' ], function(http, app) {
 
