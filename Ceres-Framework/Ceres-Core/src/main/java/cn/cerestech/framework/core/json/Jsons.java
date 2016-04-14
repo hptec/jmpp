@@ -54,6 +54,10 @@ public class Jsons {
 		return this;
 	}
 
+	public <T> T to(Class<T> clazz) {
+		return getGson().fromJson(toJson(), clazz);
+	}
+
 	public static Jsons from(Object obj) {
 		Jsons me = new Jsons();
 		if (obj == null) {
@@ -272,6 +276,36 @@ public class Jsons {
 
 	public JsonElement getRoot() {
 		return root;
+	}
+
+	public Boolean isNull() {
+		if (root == null) {
+			return Boolean.TRUE;
+		} else if (root.isJsonNull()) {
+			return Boolean.TRUE;
+		} else {
+			return Boolean.FALSE;
+		}
+	}
+
+	public Boolean isArray() {
+		if (isNull()) {
+			return Boolean.FALSE;
+		} else if (root.isJsonArray()) {
+			return Boolean.TRUE;
+		} else {
+			return Boolean.FALSE;
+		}
+	}
+
+	public Boolean isObject() {
+		if (isNull()) {
+			return Boolean.FALSE;
+		} else if (root.isJsonObject()) {
+			return Boolean.TRUE;
+		} else {
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override

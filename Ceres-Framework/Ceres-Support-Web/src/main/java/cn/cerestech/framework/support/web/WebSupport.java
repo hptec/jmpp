@@ -79,6 +79,10 @@ public abstract class WebSupport {
 		zipOut(jsonObj.getJson().toJson(), "application/json");
 	}
 
+	protected void zipOut(Jsons jsonObj) {
+		zipOut(jsonObj.toJson(), "application/json");
+	}
+
 	protected void zipOut(List<?> list) {
 		zipOut(Jsons.from(list).toJson());
 	}

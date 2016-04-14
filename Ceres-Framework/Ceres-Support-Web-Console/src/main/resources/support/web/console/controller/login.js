@@ -1,4 +1,4 @@
-define(function(require) {
+define([], function() {
 	var app = require('console/js/app');
 
 	// dynamic load services here or add into dependencies of state config
