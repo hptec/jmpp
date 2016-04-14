@@ -1,14 +1,8 @@
-define([], function() {
-	var app = require('console/js/app');
+define([ 'app', 'platform', 'icheck' ], function(app, platform) {
 
-	// dynamic load services here or add into dependencies of state config
-	// require('../services/usersService');
+	app.controller('commonLoginCtrl', [ '$scope', function($scope) {
 
-	app.controller('usersCtrl', [ '$scope', function($scope) {
-		// shortcut to get angular injected service.
-		var userServices = app.get('usersService');
-
-		$scope.userList = usersService.list();
+		$scope.platform = platform.get();
 	} ]);
 
 });

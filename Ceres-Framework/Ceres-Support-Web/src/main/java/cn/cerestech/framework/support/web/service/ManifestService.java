@@ -17,7 +17,6 @@ import com.google.gson.JsonElement;
 
 import cn.cerestech.framework.core.Core;
 import cn.cerestech.framework.core.components.ComponentDispatcher;
-import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.web.annotation.Manifest;
@@ -31,8 +30,8 @@ public class ManifestService implements ComponentDispatcher {
 
 	// 数据缓存
 	List<Jsons> cacheManifests = Lists.newArrayList();
-	List<JsonElement> cacheJsModules = Lists.newArrayList();
-	Map<String, JsonElement> cacheStarterMap = Maps.newHashMap();
+	Map<PlatformCategory, List<JsonElement>> cacheJsModules = Maps.newHashMap();
+	Map<PlatformCategory, JsonElement> cacheStarterMap = Maps.newHashMap();
 	Map<String, String> cachePathsMap = Maps.newHashMap();
 	Map<PlatformCategory, List<JsonElement>> cachePages = Maps.newHashMap();
 
@@ -102,43 +101,25 @@ public class ManifestService implements ComponentDispatcher {
 			});
 			cachePages.put(category, cateList);
 		}
-		
+
 		return cachePages.get(category);
 	}
 
-	// private void putPageCache(PlatformCategory category, JsonElement page) {
-	// if (category == null) {
-	// // 全部添加
-	// PlatformCategory[] cates = PlatformCategory.values();
-	// for (PlatformCategory c : cates) {
-	// if (!cachePages.containsKey(c)) {
-	// cachePages.put(c, Lists.newArrayList());
-	// }
-	// cachePages.get(c).add(page);
-	// }
-	// } else {
-	// // 添加到指定
-	// if (!cachePages.containsKey(category)) {
-	// cachePages.put(category, Lists.newArrayList());
-	// }
-	// cachePages.get(category).add(page);
-	// }
-	// }
-
 	public List<JsonElement> getJsModules(PlatformCategory category) {
-		if (cacheJsModules.isEmpty()) {
+		if (category == null) {
+			throw new IllegalArgumentException("PlatformCategory is required");
+		}
+		if (!cacheJsModules.containsKey(category)) {
 			Map<String, JsonElement> moduleMap = Maps.newHashMap();
 			List<String> conflict = Lists.newArrayList();
 
-			allManifest().forEach(json -> {
-				json.get("jsModules").asList().forEach(m -> {
-					String name = m.get("name").asString();
-					if (moduleMap.containsKey(name)) {
-						conflict.add(m.toPrettyJson());
-					} else {
-						moduleMap.put(name, m.getRoot());
-					}
-				});
+			findElement("jsModules", category).forEach(m -> {
+				String name = m.get("name").asString();
+				if (moduleMap.containsKey(name)) {
+					conflict.add(m.toPrettyJson());
+				} else {
+					moduleMap.put(name, m.getRoot());
+				}
 			});
 
 			// 检测是否有冲突
@@ -146,11 +127,11 @@ public class ManifestService implements ComponentDispatcher {
 				throw new IllegalArgumentException(Jsons.from(conflict).toPrettyJson());
 			}
 
-			cacheJsModules = moduleMap.values().stream().collect(Collectors.toList());
+			cacheJsModules.put(category, moduleMap.values().stream().collect(Collectors.toList()));
 
 			// 检测是否有依赖未注入
 			List<String> noDeps = Lists.newArrayList();
-			cacheJsModules.forEach(root -> {
+			cacheJsModules.get(category).forEach(root -> {
 				Jsons json = Jsons.from(root);
 				json.get("deps").asList().forEach(str -> {
 					if (!moduleMap.containsKey(str.asString()) && str.asString().length() < 30) {
@@ -166,7 +147,7 @@ public class ManifestService implements ComponentDispatcher {
 
 			log.trace("Modules: \n" + Jsons.from(cacheJsModules).toPrettyJson());
 		}
-		return cacheJsModules;
+		return cacheJsModules.get(category);
 
 	}
 
@@ -177,43 +158,26 @@ public class ManifestService implements ComponentDispatcher {
 	 * 
 	 * @return
 	 */
-	public JsonElement getStarters(PlatformCategory category2) {
-		if (cacheStarterMap.isEmpty()) {
-			allManifest().forEach(json -> {
-				Jsons starter = json.get("starter");
+	public JsonElement getStarters(PlatformCategory category) {
+		if (category == null) {
+			throw new IllegalArgumentException("PlatformCategory is required");
+		}
+		if (!cacheStarterMap.containsKey(category)) {
+			findElement("starter", category).forEach(starter -> {
 				String platformStr = starter.get("platform").asString();
-				if (!Strings.isNullOrEmpty(platformStr)) {
-					PlatformCategory category = EnumCollector.forClass(PlatformCategory.class).keyOf(platformStr);
-					if (category != null) {
-						if (cacheStarterMap.containsKey(platformStr)) {
-							throw new IllegalArgumentException(
-									"The Starter for " + platformStr + " conflict: \n" + starter.toPrettyJson());
-						} else {
-							cacheStarterMap.put(platformStr, starter.getRoot());
-						}
+				if (!Strings.isNullOrEmpty(platformStr) && category.key().equals(platformStr)) {
+					if (cacheStarterMap.containsKey(platformStr)) {
+						throw new IllegalArgumentException(
+								"The Starter for " + platformStr + " conflict: \n" + starter.toPrettyJson());
+					} else {
+						cacheStarterMap.put(category, starter.getRoot());
 					}
 				}
 			});
 		}
 
-		return cacheStarterMap.get(category2.key());
+		return cacheStarterMap.get(category);
 	}
-
-	// public Map<String, String> getPaths() {
-	// if (cachePathsMap.isEmpty()) {
-	// allManifest().forEach(json -> {
-	// Jsons paths = json.get("paths");
-	// if (paths.getRoot() != null) {
-	// paths.getRoot().getAsJsonObject().entrySet().forEach(entry -> {
-	// Jsons v = Jsons.from(entry.getValue());
-	// cachePathsMap.put(entry.getKey(), v.asString());
-	// });
-	// }
-	// });
-	// log.trace("发现Paths:\n" + Jsons.from(cachePathsMap).toPrettyJson());
-	// }
-	// return cachePathsMap;
-	// }
 
 	@Override
 	public void onComplete() {

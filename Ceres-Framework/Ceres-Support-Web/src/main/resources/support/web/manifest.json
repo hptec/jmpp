@@ -2,7 +2,7 @@
 	jsModules:[
 		{
 			name:"angular",
-			uri:"//cdn.bootcss.com/angular.js/1.5.0/angular.min",
+			uri:"//cdn.bootcss.com/angular.js/1.5.0/angular",
 			exports:"angular",
 			deps:[
 				"require-css"
