@@ -4,8 +4,7 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 		// 支持onSuccess,onTimeout,onError,onComplete,onNotFound
 		load : function(context) {
 			var moduleConfig = module.config();
-			console.log("Http模块: 系统配置", moduleConfig);
-			console.log("Http模块: 输入配置", context);
+			console.log("Http模块: 请求" + context.url, context);
 
 			// 系统请求,用户加载系统相关信息(非用户行为请求，不用校验会话信息)
 			var url = context.url;
@@ -17,11 +16,7 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 				expired : 7,
 				path : '/'
 			});
-			$.cookie("ceres_platform_key", moduleConfig.key, {
-				expired : 7,
-				path : '/'
-			});
-			$.cookie("ceres_platform_secret", moduleConfig.secret, {
+			$.cookie("ceres_platform_authcode", moduleConfig.authcode, {
 				expired : 7,
 				path : '/'
 			});

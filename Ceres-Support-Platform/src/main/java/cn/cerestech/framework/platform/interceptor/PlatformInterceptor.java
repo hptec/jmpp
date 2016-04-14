@@ -25,8 +25,7 @@ import cn.cerestech.framework.support.web.WebSupport;
 @Component
 public class PlatformInterceptor extends WebSupport implements HandlerInterceptor {
 
-	public static final String COOKIE_CERES_PLATFORM_KEY = "ceres_platform_key";
-	public static final String COOKIE_CERES_PLATFORM_SECRET = "ceres_platform_secret";
+	public static final String COOKIE_CERES_PLATFORM_AUTHCODE = "ceres_platform_authcode";
 
 	// private Logger log = LogManager.getLogger();
 
@@ -46,7 +45,7 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 
 			if (m.getMethodAnnotation(PlatformIgnore.class) != null) {
 				// 忽略保护
-				return true;
+				return Boolean.TRUE;
 			}
 
 			String uri = request.getRequestURI();
@@ -60,37 +59,34 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 			Cookies cookies = Cookies.from(request);
 
 			if (session(COOKIE_CERES_PLATFORM_ID) != null) {
-				cookies.remove(COOKIE_CERES_PLATFORM_KEY);
-				cookies.remove(COOKIE_CERES_PLATFORM_SECRET);
+				cookies.remove(COOKIE_CERES_PLATFORM_AUTHCODE);
 				cookies.flushTo(response);
 				// 平台已经获得授权，直接通过
 				return Boolean.TRUE;
 			}
 
 			// 没有认证授权
-			// 检测是否拥有key和secret，有则进行授权，没有则报错
-			if (!cookies.exist(COOKIE_CERES_PLATFORM_KEY) || !cookies.exist(COOKIE_CERES_PLATFORM_SECRET)) {
+			// 检测是否拥有authcode，有则进行授权，没有则报错
+			if (!cookies.exist(COOKIE_CERES_PLATFORM_AUTHCODE)) {
 				zipOut(Result.error(ErrorCodes.PLATFORM_KEY_AND_SECRET_IS_REQUIRED));
 				return Boolean.FALSE;
 			} else {
-				// 读取key和secret;
-				String key = cookies.getValue(COOKIE_CERES_PLATFORM_KEY);
-				String secret = cookies.getValue(COOKIE_CERES_PLATFORM_SECRET);
-				if (Strings.isNullOrEmpty(key) || Strings.isNullOrEmpty(secret)) {
+				// 读取authcode
+				String authcode = cookies.getValue(COOKIE_CERES_PLATFORM_AUTHCODE);
+				if (Strings.isNullOrEmpty(authcode)) {
 					zipOut(Result.error(ErrorCodes.PLATFORM_KEY_AND_SECRET_IS_REQUIRED));
 					return Boolean.FALSE;
 				}
 				// 进行校验登录
-				Result<Platform> result = platformService.getIndentifyProvider().authentication(key, secret);
-				if (!result.isSuccess()) {
-					zipOut(result);
+				Platform platform = platformService.validate(authcode);
+				if (platform == null) {
+					zipOut(Result.error(ErrorCodes.PLATFORM_KEY_AND_SECRET_IS_REQUIRED));
 					return Boolean.FALSE;
 				} else {
 					// 生成token
-					cookies.remove(COOKIE_CERES_PLATFORM_KEY);
-					cookies.remove(COOKIE_CERES_PLATFORM_SECRET);
+					cookies.remove(COOKIE_CERES_PLATFORM_AUTHCODE);
 					cookies.flushTo(response);
-					session(COOKIE_CERES_PLATFORM_ID, result.getObject().getId());
+					session(COOKIE_CERES_PLATFORM_ID, platform.getId());
 
 					return Boolean.TRUE;
 				}

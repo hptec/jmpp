@@ -68,6 +68,11 @@
 				"bootstrap"
 			]
 			
+		},
+		{
+			name:"login",
+			uri:"/api/classpath/query/support/web/console/controller/login",
+			exports:"login"
 		}
 		
 	],

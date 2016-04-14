@@ -2,9 +2,8 @@
 define([ 'jquery' ], function() {
 
 	require([ 'platform', 'directives',//
-	'icheck',//
 	'css!api/classpath/query/support/web/console/theme/homer/styles/style.css',//
-	], function(platform) {
+	'login' ], function(platform) {
 		console.log("平台信息", platform.get());
 
 		require([ 'http', 'app' ], function(http, app) {
