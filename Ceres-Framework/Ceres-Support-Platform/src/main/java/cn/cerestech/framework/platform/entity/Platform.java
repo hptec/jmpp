@@ -193,5 +193,4 @@ public class Platform extends IdEntity {
 	public void setPlatformAuthCode(String platformAuthCode) {
 		this.platformAuthCode = platformAuthCode;
 	}
-
 }

@@ -23,10 +23,24 @@ define([ 'module', 'jquery' ], function(module, $) {
 			// 保存
 			if (this.isLocalStorageSupport()) {
 				// 如果支持localStorage就保存在localStorage
-				localStorage[key] = JSON.stringify(value);
+
+				if (value == undefined) {
+					localStorage.removeItem(key);
+				} else {
+					localStorage[key] = JSON.stringify(value);
+				}
+
 			} else {
 				// 不支持localStorage就保存在Cookie里
-				$.cookie("CeresCache_" + key, JSON.stringify(value), {
+				var keyName = "CeresCache_" + key;
+
+				if (value == undefined) {
+					$.removeCookie(keyName, {
+						path : '/'
+					});
+				}
+
+				$.cookie(keyName, JSON.stringify(value), {
 					expires : 30 * 3,
 					path : '/'
 				});
