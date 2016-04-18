@@ -29,7 +29,7 @@
 		},
 		{
 			name:"angular-local",
-			uri:"//cdn.bootcss.com/angular.js/1.4.9/i18n/angular-locale_zh-cn",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bower-angularjs/i18n/angular-locale_zh-cn",
 			deps:[
 				"angular"
 			]

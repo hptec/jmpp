@@ -1,5 +1,5 @@
 markdown:         rdiscount
 permalink:        pretty
-source:           ./src/docs
-destination:      ./docs
+source:           ./docs
+destination:      ./docs-build
 encoding:         UTF-8
