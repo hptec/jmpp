@@ -150,7 +150,7 @@ public class Https {
 		if(params != null && !params.isEmpty()){
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			params.forEach((k,v)->{
-				String val = Jsons.toJson(v, false, false);
+				String val = Jsons.from(v).disableUnicode().toJson();
 				val = Strings.nullToEmpty(val);
 				if (val.startsWith("\"")) {
 					val = val.substring(1, val.length());
