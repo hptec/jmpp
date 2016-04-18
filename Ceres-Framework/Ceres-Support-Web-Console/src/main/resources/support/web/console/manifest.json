@@ -23,9 +23,17 @@
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/js/bootstrap.min",
 			deps:[
 				"jquery",
-				"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/js/npm.js",
+				"bootstrap-transition",
+				"bootstrap-alert",
+				"bootstrap-button",
+				"bootstrap-carousel",
 				"bootstrap-scrollspy",
+				"bootstrap-collapse",
 				"bootstrap-popover",
+				"bootstrap-dropdown",
+				"bootstrap-modal",
+				"bootstrap-tab",
+				"bootstrap-affix",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/css/bootstrap.min",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/css/bootstrap-theme.min",
 				"metisMenu",
@@ -35,13 +43,97 @@
 		},
 		{
 			name:"jquery-sparkline",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/sparkline/index"
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/sparkline/index",
+			deps:[
+				"jquery"
+			]
 		},
 		{
 			name:"bootstrap-popover",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/popover",
 			deps:[
-				"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/tooltip.js"
+				"bootstrap-tooltip",
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-transition",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/transition",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-alert",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/alert",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-button",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/button",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-carousel",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/carousel",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-collapse",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/collapse",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-dropdown",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/dropdown",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-modal",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/modal",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-tab",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/tab",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-affix",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/affix",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"bootstrap-tooltip",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/tooltip",
+			deps:[
+				"jquery"
 			]
 			
 		},
@@ -119,7 +211,10 @@
 		},
 		{
 			name:"login-ctrl",
-			uri:"/api/classpath/query/support/web/console/controller/login-ctrl"
+			uri:"/api/classpath/query/support/web/console/controller/login-ctrl",
+			deps:[
+				"icheck"
+			]
 		},
 		{
 			name:"workbench",
@@ -139,6 +234,8 @@
 			uri:"/api/classpath/query/support/web/console/js/console-starter",
 			deps:[
 				"bootstrap",	
+				"icheck",
+				"directives",
 				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/fontawesome/css/font-awesome.min"
 			]
