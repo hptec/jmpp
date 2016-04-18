@@ -12,23 +12,22 @@
             </div>
             <div class="hpanel">
                 <div class="panel-body">
-                        <form action="#" id="loginForm">
+                        <form  id="loginForm">
                             <div class="form-group">
                                 <label class="control-label" for="username">登录用户名</label>
-                                <input type="text" placeholder="请输入您的登录用户名" title="请输入您的登录用户名" required="" value="" name="username" id="username" class="form-control">
+                                <input type="text" placeholder="请输入您的登录用户名" title="请输入您的登录用户名" required="" value="" name="username" id="username" class="form-control" ng-model="loginEntity.loginId">
                                 <span class="help-block small hide">您在平台的唯一登录名</span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="password">登录密码</label>
-                                <input type="password" title="请输入您的登录密码" placeholder="请输入您的登录密码" required="" value="" name="password" id="password" class="form-control">
-                                <span class="help-block small hide">Yur strong password</span>
+                                <input type="password" title="请输入您的登录密码" placeholder="请输入您的登录密码" required="" value="" name="password" id="password" class="form-control" ng-model="loginEntity.loginPwd">
                             </div>
                             <div class="checkbox">
-                                    <input icheck type="checkbox" ng-model="remember" ng-init="remember = true">
+                                    <input icheck type="checkbox" ng-model="loginEntity.remember" ng-init="remember = true">
                                      记住我的登录状态<font class="help-block small" style="display:inline;">(请勿在公用电脑上选择此选项)</font>
                                 	<p></p>
                             </div>
-                            <button class="btn btn-success btn-block">登录</button>
+                            <button class="btn btn-success btn-block" ng-click="doLogin()">登录</button>
                             <a class="btn btn-default btn-block hide" href="#">注册</a>
                         </form>
                 </div>
