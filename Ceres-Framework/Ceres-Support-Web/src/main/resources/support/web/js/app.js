@@ -1,4 +1,4 @@
-define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], function(angular, asyncLoader, module) {
+define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router', 'angular-require' ], function(angular, asyncLoader, module) {
 	var angularModule = new Array();
 	var config = module.config();
 
@@ -9,11 +9,11 @@ define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], fun
 			angularModule.push(m.angularModule);
 		}
 	}
-	
+
 	console.log("angularModule:", angularModule);
 	var app = angular.module('app', angularModule);
 
-	function configState($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider) {
+	function configState($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider, $requireProvider) {
 
 		$compileProvider.debugInfoEnabled(false);
 		var html5mode = config.html5mode;
@@ -28,11 +28,34 @@ define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], fun
 				$urlRouterProvider.otherwise(pg.uri);
 			}
 
-			$stateProvider.state(pg.uri, {
+			var opt = {
 				url : pg.uri,
 				templateUrl : pg.tpl,
 				data : pg.data
-			})
+			}
+
+			if (pg.deps != undefined) {
+				var js = new Array();
+				var css = new Array();
+				var resolve = {};
+				for ( var j in pg.deps) {
+					var dep = pg.deps[j];
+					if (dep.substr(0, 4) == "css!") {
+						css.push(dep);
+					} else {
+						js.push(dep);
+					}
+				}
+				if (js.length > 0) {
+					resolve.deps = $requireProvider.requireJS(js);
+				}
+				if (css.length > 0) {
+					resolve.css = $requireProvider.requireCSS(css);
+				}
+				opt.resolve = resolve;
+			}
+			console.log(opt);
+			$stateProvider.state(pg.uri, opt);
 
 		}
 

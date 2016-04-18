@@ -2,7 +2,7 @@
 	jsModules:[
 		{
 			name:"angular",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular/angular.min",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular/angular",
 			exports:"angular",
 			deps:[
 				"require-css"
@@ -29,7 +29,7 @@
 		},
 		{
 			name:"angular-local",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular/angular-locale_zh-cn",
+			uri:"//cdn.bootcss.com/angular.js/1.4.9/i18n/angular-locale_zh-cn",
 			deps:[
 				"angular"
 			]
