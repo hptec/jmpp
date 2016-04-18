@@ -3,7 +3,7 @@
 	desc:"平台后台管理基本模块",
 	starter:{
 		platform:"console",
-		uri:"/api/classpath/query/support/web/console/js/console-starter.js",
+		uri:"console-starter",
 		html5mode:true
 	},
 	menus:[
@@ -20,38 +20,65 @@
 	jsModules_console:[
 		{
 			name:"bootstrap",
-			uri:"//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/js/bootstrap.min",
 			deps:[
 				"jquery",
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/transition.js",
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/alert.js",
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/button.js",
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/carousel.js",
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/dropdown.js",
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/modal.js",
+				"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/js/npm.js",
 				"bootstrap-scrollspy",
 				"bootstrap-popover",
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/tab.js",
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/affix.js",
-				"css!//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min"
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/css/bootstrap.min",
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/css/bootstrap-theme.min",
+				"metisMenu",
+				"jquery-sparkline"
 			]
 			
 		},
 		{
+			name:"jquery-sparkline",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/sparkline/index"
+		},
+		{
 			name:"bootstrap-popover",
-			uri:"//cdn.bootcss.com/bootstrap/3.2.0/js/popover",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/popover",
 			deps:[
-				"//cdn.bootcss.com/bootstrap/3.2.0/js/tooltip.js"
+				"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/tooltip.js"
 			]
 			
 		},
 		{
 			name:"bootstrap-scrollspy",
-			uri:"//cdn.bootcss.com/bootstrap/3.2.0/js/scrollspy",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/scrollspy",
 			deps:[
 				"jquery"
 			]
 			
+		},
+		{
+			name:"angular-ui-bootstrap",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-bootstrap/ui-bootstrap.min",
+			deps:[
+				"angular",
+				"angular-local",
+				"angular-ui-bootstrap-tpls"
+			],
+			angularModule:"ui.bootstrap"
+		},
+		{
+			name:"angular-ui-bootstrap-tpls",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-bootstrap/ui-bootstrap-tpls.min",
+			deps:[
+				"angular",
+				"angular-local"
+			]
+			
+		},
+		{
+			name:"angular-sanitize",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-sanitize/angular-sanitize.min",
+			deps:[
+				"angular-local"
+			],
+			angularModule:"ngSanitize"
 		},
 		{
 			name:"directives",
@@ -70,9 +97,51 @@
 			
 		},
 		{
-			name:"login",
-			uri:"/api/classpath/query/support/web/console/controller/login",
-			exports:"login"
+			name:"sweet-alert",
+			uri:"//cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min",
+			deps:[
+				"css!//cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min"
+			]
+			
+		},
+		{
+			name:"metisMenu",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/metisMenu/dist/metisMenu.min",
+			deps:[
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/metisMenu/dist/metisMenu.min"
+			]
+			
+		},
+		{
+			name:"modal",
+			uri:"/api/classpath/query/support/web/console/js/modal",
+			exports:"modal"
+		},
+		{
+			name:"login-ctrl",
+			uri:"/api/classpath/query/support/web/console/controller/login-ctrl"
+		},
+		{
+			name:"workbench",
+			uri:"/api/classpath/query/support/web/console/js/workbench",
+			deps:[
+				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/helper",
+				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke",
+				"css!//cdn.bootcss.com/animate.css/3.5.1/animate.min.css",
+				"metisMenu",
+				"angular-ui-bootstrap",
+				"bootstrap-scrollspy"
+			]
+			
+		},
+		{
+			name:"console-starter",
+			uri:"/api/classpath/query/support/web/console/js/console-starter",
+			deps:[
+				"bootstrap",	
+				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/fontawesome/css/font-awesome.min"
+			]
 		}
 		
 	],
@@ -81,6 +150,14 @@
 			uri:"/common/login",
 			tpl:"/api/classpath/query/support/web/console/theme/homer/views/common_app/login.html",
 			defaultPage:true,
+			data:{
+				
+			}
+			
+		},
+		{
+			uri:"/workbench",
+			tpl:"/api/classpath/query/support/web/console/theme/homer/views/workbench.html",
 			data:{
 				
 			}

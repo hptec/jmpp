@@ -35,6 +35,7 @@ define([], function() {
 					"paths" : sysConfig.paths == undefined ? {} : sysConfig.paths
 				}
 
+				var angularModule = new Array();
 				// 根据jsModule设置requriejs的配置
 				if (sysConfig.jsModules != undefined) {
 					for (i in sysConfig.jsModules) {
@@ -52,6 +53,11 @@ define([], function() {
 						if (jsModule["uri"] != undefined) {
 							shimConfig.paths[jsModule.name] = jsModule.uri;
 						}
+						// 判读那些模块需要预先加载
+						if (jsModule.angularModule != undefined) {
+							angularModule.push(jsModule.name);
+						}
+
 					}
 				}
 
@@ -98,7 +104,8 @@ define([], function() {
 				var boot = sysConfig.starter;
 				if (boot != undefined && boot.uri != undefined && boot.uri != "") {
 					console.log("启动模块 [" + boot.platform + "][" + boot.uri + "]", boot);
-					require([ boot.uri ], function() {
+					angularModule.push(boot.uri);
+					require(angularModule, function() {
 						// 启动
 					});
 				}

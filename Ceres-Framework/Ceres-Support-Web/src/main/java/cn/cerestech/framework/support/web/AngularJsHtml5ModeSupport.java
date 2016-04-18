@@ -35,8 +35,6 @@ public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler im
 	private static Map<PlatformCategory, Object> indexPages = Maps.newHashMap();
 	private Logger log = LogManager.getLogger();
 
-	protected static final String THEME_PATH_PREFIX = "support/web/console/theme/";
-
 	@Autowired
 	ClasspathService classpathService;
 
