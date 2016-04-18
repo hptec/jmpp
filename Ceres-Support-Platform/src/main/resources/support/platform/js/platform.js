@@ -40,6 +40,9 @@ define([ 'module', 'cache', 'jquery' ], function(module, cache, $) {
 
 	return {
 		get : get,
-		doSync : doSync
+		doSync : doSync,
+		category : function() {
+			return module.config().platform;
+		}
 	}
 });

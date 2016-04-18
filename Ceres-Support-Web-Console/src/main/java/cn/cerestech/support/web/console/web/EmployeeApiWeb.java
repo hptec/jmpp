@@ -29,7 +29,8 @@ public class EmployeeApiWeb extends AbstractConsoleWeb {
 		if (ret.isSuccess()) {
 
 			loginInterceptor.register(getPlatformCategory(), ret.getObject(), remember, getRequest(), getResponse());
-			ret.setObject(null);
+			ret.getObject().setLoginPwd(null);
+			ret.getObject().setRememberToken(null);
 		}
 		zipOut(ret.toJson());
 	}

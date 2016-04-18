@@ -173,6 +173,14 @@
 			angularModule:"ngSanitize"
 		},
 		{
+			name:"angular-require",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-require/angular-require.min",
+			deps:[
+				"angular-local"
+			],
+			angularModule:"ngRequire"
+		},
+		{
 			name:"directives",
 			uri:"/api/classpath/query/support/web/console/theme/homer/scripts/directives/directives",
 			deps:[
@@ -210,16 +218,43 @@
 			exports:"modal"
 		},
 		{
-			name:"login-ctrl",
-			uri:"/api/classpath/query/support/web/console/controller/login-ctrl",
+			name:"console-starter",
+			uri:"/api/classpath/query/support/web/console/js/console-starter",
 			deps:[
-				"icheck"
+				"bootstrap",	
+				"icheck",
+				"directives",
+				"metisMenu",
+				"bootstrap-scrollspy",
+				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/fontawesome/css/font-awesome.min"
 			]
 		},
 		{
-			name:"workbench",
-			uri:"/api/classpath/query/support/web/console/js/workbench",
+			name:"employee",
+			uri:"/api/classpath/query/support/web/console/js/employee"
+			
+		}
+		
+		
+	],
+	pages_console:[
+		{
+			uri:"/login",
+			tpl:"/api/classpath/query/support/web/console/theme/homer/views/common_app/login.html",
+			defaultPage:true,
 			deps:[
+				"/api/classpath/query/support/web/console/controller/login-ctrl.js",
+				"icheck",
+				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css"
+			]
+			
+		},
+		{
+			uri:"/workbench",
+			tpl:"/api/classpath/query/support/web/console/theme/homer/views/workbench.html",
+			deps:[
+				"/api/classpath/query/support/web/console/controller/workbench-ctrl.js",
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/helper",
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke",
 				"css!//cdn.bootcss.com/animate.css/3.5.1/animate.min.css",
@@ -227,37 +262,6 @@
 				"angular-ui-bootstrap",
 				"bootstrap-scrollspy"
 			]
-			
-		},
-		{
-			name:"console-starter",
-			uri:"/api/classpath/query/support/web/console/js/console-starter",
-			deps:[
-				"bootstrap",	
-				"icheck",
-				"directives",
-				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
-				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/fontawesome/css/font-awesome.min"
-			]
-		}
-		
-	],
-	pages_console:[
-		{
-			uri:"/common/login",
-			tpl:"/api/classpath/query/support/web/console/theme/homer/views/common_app/login.html",
-			defaultPage:true,
-			data:{
-				
-			}
-			
-		},
-		{
-			uri:"/workbench",
-			tpl:"/api/classpath/query/support/web/console/theme/homer/views/workbench.html",
-			data:{
-				
-			}
 			
 		}
 		
