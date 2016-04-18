@@ -7,6 +7,9 @@
   </parent>
   <artifactId>Ceres-Core</artifactId>
   <version>${ceres.version}</version>
+  <properties>
+  	<http.client.version>4.5</http.client.version>
+  </properties>
   <dependencies>
   	<dependency>
   		<groupId>com.google.code.gson</groupId>
@@ -23,5 +26,17 @@
   		<artifactId>reflections</artifactId>
   		<version>0.9.9-RC1</version>
   	</dependency>
+  	<!-- HTTP CLIENT -->
+  	<dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${http.client.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>${http.client.version}</version>
+    </dependency>
+  	
   </dependencies>
 </project>
