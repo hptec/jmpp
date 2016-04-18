@@ -62,6 +62,12 @@ public class PlatformService {
 		Platform platform = null;
 		if (platformAuthMap.containsKey(authCode)) {
 			platform = platformAuthMap.get(authCode);
+		} else {
+			// 查看库中有没有
+			platform = platformDao.findUniqueByPlatformAuthCode(authCode);
+			if (platform != null) {
+				platformAuthMap.put(authCode, platform);
+			}
 		}
 		return platform;
 	}

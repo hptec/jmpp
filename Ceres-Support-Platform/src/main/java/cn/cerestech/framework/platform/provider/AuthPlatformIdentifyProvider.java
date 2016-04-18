@@ -54,8 +54,8 @@ public class AuthPlatformIdentifyProvider implements PlatformIdentifyProvider {
 
 	@Override
 	public Long getId() {
-		
-		Long id = (Long) WebUtils.getCurrentRequest().getAttribute(WebSupport.COOKIE_CERES_PLATFORM_ID);
+
+		Long id = (Long) WebUtils.getCurrentRequest().getSession().getAttribute(WebSupport.COOKIE_CERES_PLATFORM_ID);
 		return id;
 	}
 }
