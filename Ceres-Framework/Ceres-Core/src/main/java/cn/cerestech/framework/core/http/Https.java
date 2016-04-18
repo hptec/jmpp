@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -22,6 +24,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.routing.HttpRoute;
@@ -34,6 +37,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 
 import com.google.common.base.Strings;
@@ -44,7 +48,7 @@ import cn.cerestech.framework.core.json.Jsons;
 
 public class Https {
 	
-	private static String encoding = "UTF-8";
+	private String encoding = "UTF-8";
 	private CookieStore cookieStore = new BasicCookieStore();;
 	private HttpClient client;
 	private List<Header> headers = Lists.newArrayList();
@@ -55,9 +59,22 @@ public class Https {
 		return https;
 	}
 	
+	public static Https of(String encoding){
+		Https https = new Https(null, null, null, 80);
+		https.encoding(encoding);
+		return https;
+	}
+	
 	public static Https of(String proxyHost, int port, List<Cookie> cookies, List<Header> headers){
 		Https https = new Https(cookies, headers, proxyHost, port);
 		return https;
+	}
+	
+	public Https encoding(String encoding){
+		if(!Strings.isNullOrEmpty(encoding) && Charset.isSupported(encoding)){
+			this.encoding = encoding;
+		}
+		return this;
 	}
 	
 	private Https(List<Cookie> cookies, List<Header> headers, String proxyHost, int port){
@@ -137,7 +154,12 @@ public class Https {
 			post.setEntity(entity);
 		}
 		try {
-			return Response.of(this.client.execute(post));
+			HttpResponse response = this.client.execute(post);
+			if(response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY || response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_PERMANENTLY){
+				String url_redirect = response.getLastHeader("Location").getValue();
+				return post(url_redirect, entity, cookies, headers);
+			}
+			return Response.of(response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.of(null);
@@ -148,7 +170,8 @@ public class Https {
 		HttpEntity entity = null;
 		
 		if(params != null && !params.isEmpty()){
-			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			List<BasicNameValuePair> nvp = Lists.newArrayList();
+//			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
 			params.forEach((k,v)->{
 				String val = Jsons.from(v).disableUnicode().toJson();
 				val = Strings.nullToEmpty(val);
@@ -158,10 +181,18 @@ public class Https {
 				if (val.endsWith("\"")) {
 					val = val.substring(0, val.length() - 1);
 				}
-				
-				builder.addPart(FormBodyPartBuilder.create(k, new StringBody(val, ContentType.APPLICATION_JSON)).build());
+				try {
+					//builder.addPart(FormBodyPartBuilder.create(k, new StringBody(val, ContentType.APPLICATION_FORM_URLENCODED.withCharset(encoding))).build());
+					nvp.add(new BasicNameValuePair(k, val));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			});
-			entity = builder.build();
+			try {
+				entity = new UrlEncodedFormEntity(nvp, this.encoding);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return post(url, entity, cookies, headers);
@@ -175,7 +206,7 @@ public class Https {
 		return post(url, entity, null, null);
 	}
 	
-	public Response Post(String url, Map<String, Object> params){
+	public Response post(String url, Map<String, Object> params){
 		return post(url, params, null, null);
 	}
 	
@@ -183,7 +214,7 @@ public class Https {
 		return post(url, (HttpEntity)null, null, null);
 	}
 	
-	public static String url(String host, String uri, Map<String, String> params){
+	public String url(String host, String uri, Map<String, String> params){
 		StringBuffer buffer = new StringBuffer();
 		if (!Pattern.compile("(?i)^http(s{0,1})://.{0,}").matcher(host).matches()) {
 			buffer.append("http://");
@@ -287,15 +318,24 @@ public class Https {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedEncodingException {
 //		System.out.println(Https.of().get("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN").readString());
 //		System.out.println(HttpUtils.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN"));
 		
+//		Map<String, Object> params = Maps.newHashMap();
+//		params.put("financial_product_id", "ALLLAL");
+//		Response ret = Https.of().post("http://ranxc.e7db.com/loan/datas", params);
 		Map<String, Object> params = Maps.newHashMap();
-		params.put("financial_product_id", "ALLLAL");
-		Response ret = Https.of().Post("http://ranxc.e7db.com/loan/datas", params);
+//		params.put("financial_product_id", "ALLLAL");
+//		Response ret = Https.of().post("http://ranxc.e7db.com/loan/datas", params);
+		//System.out.println(Https.of().get("http://wx.idsh.cn/sdfsdfd").readString("gbk"));;
 		
-		
-		System.out.println(ret.readString());;
+//		params.put("acc", "15281036309");
+//		params.put("pwd","123qwe");
+//		params.put("phoneCode","1111");
+//		params.put("user_register", "15281036309");
+//		params.put("user_register_phone", "1111");
+		System.out.println(Https.of().post("http://www.baidu.com",params/*, cookies, null*/).readString());
+//		System.out.println(Charset.isSupported("fsdf  sd"));
 	}
 }
