@@ -17,9 +17,11 @@ import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
+import cn.cerestech.framework.support.login.entity.LoginEntity;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
 import cn.cerestech.framework.support.login.provider.LoginServiceProvider;
 import cn.cerestech.framework.support.login.service.LoginService;
+import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.framework.support.web.Cookies;
 import cn.cerestech.framework.support.web.WebSupport;
 
@@ -27,6 +29,7 @@ import cn.cerestech.framework.support.web.WebSupport;
 public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 
 	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
+	public static final String SESSION_LOGINENTITY_ID = "SESSION_LOGINENTITY_ID";
 
 	private Logger log = LogManager.getLogger();
 
@@ -104,6 +107,41 @@ public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
+	}
+
+	public void register(PlatformCategory platform, LoginEntity entity, Boolean remember, HttpServletRequest request,
+			HttpServletResponse response) {
+		// 记录登录信息到cookie中
+		IdEntity idEntity = null;
+		if (entity instanceof IdEntity) {
+			idEntity = (IdEntity) entity;
+			session(SESSION_LOGINENTITY_ID, idEntity.getId());// 记录入Session
+		}
+
+		String cKeyToken = getCookieKeyRememberToken(platform);
+		String cKeyId = getCookieKeyRememberID(platform);
+		Cookies c = Cookies.from(request);
+		// 如果用户记住登录，还要放入cookie
+		if (remember) {
+			// 记录登录,添加cookie
+			if (idEntity != null) {
+				c.add(cKeyId, idEntity.getId().toString());
+			}
+			c.add(cKeyToken, entity.getRememberToken());
+		} else {
+			// 清除cookie
+			c.remove(cKeyId);
+			c.remove(cKeyToken);
+		}
+		c.flushTo(response);
+	}
+
+	public String getCookieKeyRememberToken(PlatformCategory platform) {
+		return "COOKIE_REMEMBER_TOKEN_" + platform.key();
+	}
+
+	public String getCookieKeyRememberID(PlatformCategory platform) {
+		return "COOKIE_REMEMBER_ID_" + platform.key();
 	}
 
 }

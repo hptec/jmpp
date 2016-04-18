@@ -30,7 +30,6 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 	// private Logger log = LogManager.getLogger();
 
 	private Set<String> excludeUris = Sets.newHashSet(//
-			"/api/classpath/query/support/web/js/core.js", //
 			"/api/web/systemconfigs.js"//
 	);
 	@Autowired
@@ -67,7 +66,8 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 
 			// 没有认证授权
 			// 检测是否拥有authcode，有则进行授权，没有则报错
-			if (!cookies.exist(COOKIE_CERES_PLATFORM_AUTHCODE)) {
+
+			if (request.getParameter(COOKIE_CERES_PLATFORM_AUTHCODE) == null) {
 				zipOut(Result.error(ErrorCodes.PLATFORM_KEY_AND_SECRET_IS_REQUIRED));
 				return Boolean.FALSE;
 			} else {

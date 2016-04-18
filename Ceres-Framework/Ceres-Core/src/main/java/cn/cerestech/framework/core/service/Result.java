@@ -115,11 +115,11 @@ public class Result<T> implements Jsonable {
 	}
 
 	public String toJson(boolean isNullEnable) {
+		Jsons json = Jsons.from(this);
 		if (isNullEnable) {
-			return Jsons.toJson(this);
-		} else {
-			return Jsons.nullDisabledGson.toJson(this);
+			json.serializeNull();
 		}
+		return json.toJson();
 	}
 
 	public String toJson() {
@@ -133,5 +133,10 @@ public class Result<T> implements Jsonable {
 	public Result<T> setCode(String code) {
 		this.code = code;
 		return (Result<T>) this;
+	}
+
+	@Override
+	public String toString() {
+		return Jsons.from(this).toPrettyJson();
 	}
 }

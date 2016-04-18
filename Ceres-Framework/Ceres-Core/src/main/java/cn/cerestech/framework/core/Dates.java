@@ -26,11 +26,11 @@ public class Dates {
 	}
 
 	public static Dates beginngOfToday() {
-		return from(now().beginningOfDay().getTimeInMillis());
+		return from(now().beginningOfDay().toTimeInMillis());
 	}
 
 	public static Dates endOfToday() {
-		return from(now().endOfDay().getTimeInMillis());
+		return from(now().endOfDay().toTimeInMillis());
 	}
 
 	public static Dates from(Date date) {
@@ -55,11 +55,11 @@ public class Dates {
 		return newCalc;
 	}
 
-	public Date getDate() {
+	public Date toDate() {
 		return getCalendar().getTime();
 	}
 
-	public Long getTimeInMillis() {
+	public Long toTimeInMillis() {
 		return getCalendar().getTimeInMillis();
 	}
 
