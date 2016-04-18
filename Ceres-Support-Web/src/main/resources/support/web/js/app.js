@@ -9,6 +9,7 @@ define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router' ], fun
 			angularModule.push(m.angularModule);
 		}
 	}
+	
 	console.log("angularModule:", angularModule);
 	var app = angular.module('app', angularModule);
 

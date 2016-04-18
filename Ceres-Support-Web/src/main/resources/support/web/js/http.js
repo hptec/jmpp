@@ -21,10 +21,13 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 				path : '/'
 			});
 
+			context.data.ceres_platform = moduleConfig.platform;
+			context.data.ceres_platform_authcode = moduleConfig.authcode;
+
 			$.ajax({
 				url : context.url,
 				type : "POST",
-				async : true,
+				async : context.async == undefined ? true : context.async,
 				dataType : "text",
 				data : context.data,
 				context : context,
