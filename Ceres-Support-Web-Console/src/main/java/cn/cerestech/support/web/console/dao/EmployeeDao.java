@@ -7,4 +7,6 @@ import cn.cerestech.support.web.console.entity.Employee;
 public interface EmployeeDao extends JpaRepository<Employee, Long> {
 
 	Employee findUniqueByPlatformIdAndLoginId(Long platformId, String loginId);
+
+	Employee findUniqueByPlatformIdAndId(Long platformId, Long id);
 }

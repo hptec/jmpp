@@ -271,4 +271,11 @@ public abstract class WebSupport {
 		}
 		zipOut(buffer.toString(), "application/javascript");
 	}
+
+	/**
+	 * 得到当前登录用户的ID
+	 * 
+	 * @return
+	 */
+	abstract protected Long getUserId();
 }

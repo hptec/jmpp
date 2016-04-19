@@ -5,7 +5,7 @@
         </a>
 
         <div class="stats-label text-color">
-            <span class="font-extra-bold font-uppercase">Robert Razer</span>
+            <span class="font-extra-bold font-uppercase" ng-bind="currentUser.name"></span>
 
             <div class="dropdown" uib-dropdown>
                 <a uib-dropdown-toggle href>
@@ -16,11 +16,11 @@
                     <li><a ui-sref="app_views.profile">Profile</a></li>
                     <li><a ui-sref="analytics">Analytics</a></li>
                     <li class="divider"></li>
-                    <li><a ui-sref="common.login">Logout</a></li>
+                    <li><a ui-sref="common.login">退出登录</a></li>
                 </ul>
             </div>
 
-            <div class="small-chart m-t-sm">
+           <!--  <div class="small-chart m-t-sm">
             <div sparkline spark-data="barProfileData" spark-options="barProfileOptions"></div>
             </div>
             <div>
@@ -28,7 +28,7 @@
                     $260 104,200
                 </h4>
                 <small class="text-muted">Your income from the last year in sales product X.</small>
-            </div>
+            </div> -->
         </div>
     </div>
 

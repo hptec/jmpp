@@ -67,7 +67,7 @@ public class EmployeeService {
 			u.setRememberExpired(now);
 		}
 		u.setLastLoginTime(now);
-	
+
 		employeeDao.save(u);
 
 		// user log 记录登录地址、ip
@@ -103,6 +103,10 @@ public class EmployeeService {
 		} else {
 			return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
 		}
+	}
+
+	public Employee findById(Long id) {
+		return employeeDao.findUniqueByPlatformIdAndId(platformService.getId(), id);
 	}
 
 	// public List<Employee> search(Gender gender, YesNo frozen, String keyword,
