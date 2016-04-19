@@ -1,4 +1,4 @@
-package cn.cerestech.framework.core;
+package cn.cerestech.framework.core.xml;
 
 
 import java.io.ByteArrayInputStream;
@@ -7,22 +7,22 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 
 import cn.cerestech.framework.core.json.Jsons;
 
-public class XmlUtils {
+public class Xmls {
 	
 	public static Map<String, Object> xmlToMap(Node node, boolean ignoreRoot){
 		Map<String, Object> map = Maps.newHashMap();
@@ -70,8 +70,7 @@ public class XmlUtils {
 	
 	public static <T> T xmlToObject(Class<T> cls , String xml, boolean ignoreRoot){
 		Map<String, Object> ret = xmlToMap(xml, ignoreRoot);
-		String json = Jsons.toJson(ret, false);
-		T t = Jsons.fromJson(json, TypeToken.of(cls));
+		T t = Jsons.from(ret).to(TypeToken.get(cls));
 		
 		return t;
 	}
@@ -101,12 +100,12 @@ public class XmlUtils {
 	}
 	
 	public static <T> String objectToXml(T t, String root){
-		if(StringUtils.isBlank(root)){
+		if(Strings.isNullOrEmpty(root)){
 			root = "xml";
 		}
 		StringBuffer sb = new StringBuffer("");
 		
-		sb.append("<"+root+">").append(jsonObjectToXml(Jsons.from(Jsons.toJson(t, false)))).append("</"+root+">");
+		sb.append("<"+root+">").append(jsonObjectToXml(Jsons.from(t).getRoot())).append("</"+root+">");
 		return sb.toString();
 	}
 }

@@ -1,7 +1,6 @@
-package cn.cerestech.framework.core;
+package cn.cerestech.framework.core.utils;
 
 import java.util.HashMap;
-
 import cn.cerestech.framework.core.json.Jsonable;
 
 @SuppressWarnings("serial")

@@ -1,4 +1,4 @@
-package cn.cerestech.framework.core;
+package cn.cerestech.framework.core.qr;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;

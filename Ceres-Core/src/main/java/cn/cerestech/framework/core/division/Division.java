@@ -1,4 +1,4 @@
-package cn.cerestech.framework.core;
+package cn.cerestech.framework.core.division;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,10 +13,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -424,7 +424,7 @@ public class Division {
 	 */
 	public static List<Division> fuzzyQuery(String parentCode, String query) {
 		List<Division> children = null;
-		if (StringUtils.isBlank(parentCode)) {
+		if (!Strings.isNullOrEmpty(parentCode)) {
 			parentCode = "000000000000";
 		}
 		children = Division.children(parentCode);
