@@ -2,7 +2,7 @@ package cn.cerestech.framework.support.web;
 
 import com.google.common.base.Strings;
 
-import cn.cerestech.framework.core.FileExtensions;
+import cn.cerestech.framework.core.utils.FileExtensions;
 
 public class ContentType {
 

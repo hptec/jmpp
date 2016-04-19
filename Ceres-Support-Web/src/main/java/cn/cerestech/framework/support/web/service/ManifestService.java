@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 
 import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.PlatformCategory;
+import cn.cerestech.framework.core.environment.OsInfo;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.web.annotation.Manifest;
 
@@ -46,7 +47,7 @@ public class ManifestService implements ComponentDispatcher {
 				} else {
 					log.trace("Found manifest json: " + path);
 					try {
-						String content = Resources.toString(Resources.getResource(path), Charset.defaultCharset());
+						String content = Resources.toString(Resources.getResource(path),OsInfo.charset());
 						manifestPaths.put(path, Jsons.from(content));
 					} catch (IOException e) {
 						log.catching(e);
