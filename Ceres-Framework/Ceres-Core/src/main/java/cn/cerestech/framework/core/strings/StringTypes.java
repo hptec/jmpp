@@ -1,4 +1,4 @@
-package cn.cerestech.framework.core;
+package cn.cerestech.framework.core.strings;
 
 
 import java.math.BigDecimal;

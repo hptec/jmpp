@@ -1,4 +1,4 @@
-package cn.cerestech.framework.core;
+package cn.cerestech.framework.core.date;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

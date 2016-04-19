@@ -1,4 +1,4 @@
-package cn.cerestech.framework.core;
+package cn.cerestech.framework.core.utils;
 
 import java.lang.annotation.Annotation;
 import java.net.URL;
