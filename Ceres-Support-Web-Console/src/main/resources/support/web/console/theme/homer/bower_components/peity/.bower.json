@@ -12,7 +12,7 @@
     "tag": "v3.2.0",
     "commit": "3b2c6ab1f2070721fff91f9bfdd4ede2cfdf2da2"
   },
-  "_source": "https://github.com/benpickles/peity.git",
-  "_target": "~3.2.0",
-  "_originalSource": "https://github.com/benpickles/peity.git"
+  "_source": "git://github.com/benpickles/peity.git",
+  "_target": "*",
+  "_originalSource": "benpickles/peity"
 }
