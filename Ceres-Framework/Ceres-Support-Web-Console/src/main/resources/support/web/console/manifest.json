@@ -227,7 +227,7 @@
 				"metisMenu",
 				"bootstrap-scrollspy",
 				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
-				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/fontawesome/css/font-awesome.min"
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/font-awesome/css/font-awesome.min"
 			]
 		},
 		{

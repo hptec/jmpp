@@ -1,4 +1,4 @@
-define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router', 'angular-require' ], function(angular, asyncLoader, module) {
+define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function(angular, module) {
 	var angularModule = new Array();
 	var config = module.config();
 
@@ -74,7 +74,5 @@ define([ 'angular', 'angular-async-loader', 'module', 'angular-ui-router', 'angu
 	}
 
 	console.log("APP初始化")
-	// initialze app module for async loader
-	asyncLoader.configure(app);
 	return app;
 });

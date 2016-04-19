@@ -25,9 +25,9 @@ import org.apache.logging.log4j.Logger;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
-import cn.cerestech.framework.core.Core;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
+import cn.cerestech.framework.core.environment.OsInfo;
 import cn.cerestech.framework.core.json.Jsonable;
 import cn.cerestech.framework.core.json.Jsons;
 
@@ -95,8 +95,8 @@ public abstract class WebSupport {
 	protected void zipOut(String content, String contentType) {
 		byte[] bytes = new byte[0];
 		try {
-			getResponse().setCharacterEncoding(Core.charsetEncoding());
-			bytes = content.getBytes(Core.charsetEncoding());
+			getResponse().setCharacterEncoding(OsInfo.charsetEncoding());
+			bytes = content.getBytes(OsInfo.charsetEncoding());
 			zipOut(bytes, contentType);
 		} catch (UnsupportedEncodingException e) {
 			log.catching(e);
@@ -112,7 +112,7 @@ public abstract class WebSupport {
 		HttpServletResponse response = this.getResponse();
 		try {
 			response.addHeader("Content-Encoding", "gzip");
-			response.setCharacterEncoding(Core.charsetEncoding());
+			response.setCharacterEncoding(OsInfo.charsetEncoding());
 			response.setContentType(contentType);
 			response.setLocale(Locale.CHINA);
 			ByteArrayOutputStream bais = new ByteArrayOutputStream();
@@ -193,7 +193,7 @@ public abstract class WebSupport {
 
 	protected void addCookie(String key, String value) {
 		try {
-			Cookie c = new Cookie(key, URLEncoder.encode(value, Core.charsetEncoding()));
+			Cookie c = new Cookie(key, URLEncoder.encode(value, OsInfo.charsetEncoding()));
 			c.setPath("/");
 			getResponse().addCookie(c);
 		} catch (UnsupportedEncodingException e) {
@@ -225,7 +225,7 @@ public abstract class WebSupport {
 
 		String tmp = null;
 		try {
-			tmp = URLDecoder.decode(Strings.nullToEmpty(val), Core.charsetEncoding());
+			tmp = URLDecoder.decode(Strings.nullToEmpty(val), OsInfo.charsetEncoding());
 		} catch (Exception e) {
 			tmp = val;
 		}
