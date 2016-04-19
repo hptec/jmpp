@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.framework.core.utils.KV;
 import cn.cerestech.framework.platform.entity.Platform;
 import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.support.web.console.entity.SysMenu;
