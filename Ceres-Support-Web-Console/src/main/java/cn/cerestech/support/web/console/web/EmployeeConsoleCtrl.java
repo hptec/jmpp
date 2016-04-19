@@ -1,31 +1,9 @@
 package cn.cerestech.support.web.console.web;
 
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
-
-import cn.cerestech.framework.core.Encrypts;
-import cn.cerestech.framework.core.KV;
-import cn.cerestech.framework.core.enums.EnumCollector;
-import cn.cerestech.framework.core.enums.Gender;
-import cn.cerestech.framework.core.enums.YesNo;
-import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.support.login.annotation.LoginRequired;
-import cn.cerestech.framework.support.web.Cookies;
-import cn.cerestech.framework.support.web.WebSupport;
-import cn.cerestech.support.web.console.entity.Employee;
 import cn.cerestech.support.web.console.service.EmployeeService;
 
 @RequestMapping("$$ceres_sys/console/employee")
