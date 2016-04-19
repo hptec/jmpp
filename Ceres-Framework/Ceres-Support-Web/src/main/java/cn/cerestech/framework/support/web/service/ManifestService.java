@@ -1,6 +1,7 @@
 package cn.cerestech.framework.support.web.service;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class ManifestService implements ComponentDispatcher {
 				} else {
 					log.trace("Found manifest json: " + path);
 					try {
-						String content = Resources.toString(Resources.getResource(path), Core.charset());
+						String content = Resources.toString(Resources.getResource(path), Charset.defaultCharset());
 						manifestPaths.put(path, Jsons.from(content));
 					} catch (IOException e) {
 						log.catching(e);
