@@ -24,10 +24,11 @@ public class Props implements Logable{
 			String ext = Strings.nullToEmpty(Files.getFileExtension(ln));
 			return ext.equalsIgnoreCase("properties");
 		} , ".").forEach(str -> {
-			if (str.contains(File.separator) && !str.startsWith("com.cerestech")) {
-				log.trace("Ignore properties [ " + str + " ]");
-				return;
-			}
+			System.out.println(str);
+//			if (str.contains(File.separator) && !str.startsWith("com.cerestech")) {
+//				log.trace("Ignore properties [ " + str + " ]");
+//				return;
+//			}
 
 			log.debug("Load properties [ " + str + " ]");
 			try {
