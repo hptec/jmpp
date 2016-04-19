@@ -16,6 +16,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 public class Jsons {
 
@@ -56,6 +57,10 @@ public class Jsons {
 
 	public <T> T to(Class<T> clazz) {
 		return getGson().fromJson(toJson(), clazz);
+	}
+	
+	public <T> T to(TypeToken<T> typeToken){
+		return getGson().fromJson(toJson(), typeToken.getType());
 	}
 
 	public static Jsons from(Object obj) {
