@@ -10,6 +10,7 @@
   <properties>
   	<http.client.version>4.5</http.client.version>
   	<zxing.version>3.2.1</zxing.version>
+  	<apache.poi>3.15-beta1</apache.poi>
   </properties>
   <dependencies>
   	<dependency>
@@ -61,6 +62,23 @@
 		<artifactId>android-integration</artifactId>
 		<version>${zxing.version}</version>
 	</dependency>
-  	
+	<!-- apache poi -->
+  	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi</artifactId>
+		<version>${apache.poi}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml</artifactId>
+		<version>${apache.poi}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml-schemas</artifactId>
+		<version>${apache.poi}</version>
+	</dependency>
+		
+		
   </dependencies>
 </project>
