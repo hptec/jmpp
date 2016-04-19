@@ -21,11 +21,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
-import cn.cerestech.framework.core.Random;
+import cn.cerestech.framework.core.date.Dates;
 import cn.cerestech.framework.core.enums.DescribableEnum;
 import cn.cerestech.framework.core.enums.EnumCollector;
-import cn.cerestech.framework.core.service.BaseService;
-import cn.cerestech.framework.persistence.entity.BaseEntity;
+import cn.cerestech.framework.core.utils.Random;
 
 /**
  * 导出
@@ -33,7 +32,7 @@ import cn.cerestech.framework.persistence.entity.BaseEntity;
  * @author harryhe
  *
  */
-public class Exporter<T extends BaseEntity> {
+public class Exporter<T>{
 
 	private List<T> dataList = Lists.newArrayList();
 	private List<ExportColumn> columnList = Lists.newArrayList();
@@ -47,13 +46,13 @@ public class Exporter<T extends BaseEntity> {
 
 	private String sheetTitle = "sheet1";
 
-	public static <T extends BaseEntity> Exporter<T> addSheet(List<T> list) {
+	public static <T> Exporter<T> addSheet(List<T> list) {
 		Exporter<T> e = new Exporter<T>();
 		e.dataList.addAll(list);
 		return e;
 	}
 
-	public static <T extends BaseEntity> Exporter<T> addSheet(String title, List<T> list) {
+	public static <T> Exporter<T> addSheet(String title, List<T> list) {
 		Exporter<T> e = new Exporter<T>();
 		e.dataList.addAll(list);
 		e.title(title);
@@ -190,7 +189,7 @@ public class Exporter<T extends BaseEntity> {
 						case DATE:
 							Date vDate = column.getValue(t);
 							if (vDate != null) {
-								cell.setCellValue(BaseService.FORMAT_DATETIME.format(vDate));
+								cell.setCellValue(Dates.from(vDate).formatDateTime());
 							}
 							break;
 						case BIGDECIMAL:
