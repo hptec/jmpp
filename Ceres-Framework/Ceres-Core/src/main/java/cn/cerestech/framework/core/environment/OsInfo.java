@@ -57,6 +57,10 @@ public class OsInfo {
 		return get("file.encoding");
 	}
 	
+	public static String jdk(){
+		return get("java.version");
+	}
+	
 	public static void main(String[] args) throws Exception {
 		System.out.println(InetAddress.getLocalHost());
 	}
