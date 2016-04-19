@@ -53,6 +53,9 @@ public class OsInfo {
 		return get("user.home");
 	}
 	
+	public static String charset(){
+		return get("file.encoding");
+	}
 	
 	public static void main(String[] args) throws Exception {
 		System.out.println(InetAddress.getLocalHost());
