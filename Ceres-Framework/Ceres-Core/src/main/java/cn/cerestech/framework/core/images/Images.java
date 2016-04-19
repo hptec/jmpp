@@ -333,5 +333,11 @@ public class Images {
 		return this;
 	}
 	
+	public static void main(String[] args) throws Exception {
+		Images.of("/Users/bird/Desktop/tmp/mask/a.jpg")
+		.save("/Users/bird/Desktop/tmp/mask/_back.png").compress(0.1f).save("/Users/bird/Desktop/tmp/mask/_compress0.5.png")
+		.init().mask("/Users/bird/Desktop/tmp/mask/mask.png", 0.3f).save("/Users/bird/Desktop/tmp/mask/_mask.png");
+	}
+	
 	
 }
