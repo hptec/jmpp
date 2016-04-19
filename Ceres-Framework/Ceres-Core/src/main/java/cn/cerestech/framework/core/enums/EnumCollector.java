@@ -11,8 +11,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import cn.cerestech.framework.core.Classpaths;
-import cn.cerestech.framework.core.KV;
+import cn.cerestech.framework.core.utils.Classpaths;
+import cn.cerestech.framework.core.utils.KV;
 
 /**
  * 整合采集枚举的方法
