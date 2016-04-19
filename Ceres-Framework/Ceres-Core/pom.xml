@@ -9,6 +9,7 @@
   <version>${ceres.version}</version>
   <properties>
   	<http.client.version>4.5</http.client.version>
+  	<zxing.version>3.2.1</zxing.version>
   </properties>
   <dependencies>
   	<dependency>
@@ -37,11 +38,28 @@
       <artifactId>httpmime</artifactId>
       <version>${http.client.version}</version>
     </dependency>
-    
+    <!-- servlet-api -->
     <dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>javax.servlet-api</artifactId>
 		<version>4.0.0-b01</version>
+	</dependency>
+	<!-- zxing 二维码 -->
+	<!-- zxing 二维码 -->
+	<dependency>
+		<groupId>com.google.zxing</groupId>
+		<artifactId>core</artifactId>
+		<version>${zxing.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.google.zxing</groupId>
+		<artifactId>javase</artifactId>
+		<version>${zxing.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.google.zxing</groupId>
+		<artifactId>android-integration</artifactId>
+		<version>${zxing.version}</version>
 	</dependency>
   	
   </dependencies>
