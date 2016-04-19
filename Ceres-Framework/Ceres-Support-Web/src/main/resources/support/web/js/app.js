@@ -54,7 +54,6 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 				}
 				opt.resolve = resolve;
 			}
-			console.log(opt);
 			$stateProvider.state(pg.uri, opt);
 
 		}

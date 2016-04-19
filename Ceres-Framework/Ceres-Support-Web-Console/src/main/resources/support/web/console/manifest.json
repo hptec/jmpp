@@ -232,8 +232,13 @@
 		},
 		{
 			name:"employee",
-			uri:"/api/classpath/query/support/web/console/js/employee"
-			
+			uri:"/api/classpath/query/support/web/console/js/employee",
+			exports:"employee"
+		},
+		{
+			name:"menu",
+			uri:"/api/classpath/query/support/web/console/js/menu",
+			exports:"menu"
 		}
 		
 		
@@ -254,10 +259,10 @@
 			uri:"/workbench",
 			tpl:"/api/classpath/query/support/web/console/theme/homer/views/workbench.html",
 			deps:[
-				"/api/classpath/query/support/web/console/controller/workbench-ctrl.js",
+				"/api/classpath/query/support/web/console/js/workbench.js",
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/helper",
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke",
-				"css!//cdn.bootcss.com/animate.css/3.5.1/animate.min.css",
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/animate.css/animate.min",
 				"metisMenu",
 				"angular-ui-bootstrap",
 				"bootstrap-scrollspy"

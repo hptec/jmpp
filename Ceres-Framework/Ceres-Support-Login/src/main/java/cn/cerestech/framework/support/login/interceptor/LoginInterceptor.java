@@ -29,7 +29,7 @@ import cn.cerestech.framework.support.web.WebSupport;
 public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 
 	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
-	public static final String SESSION_LOGINENTITY_ID = "SESSION_LOGINENTITY_ID";
+	public static final String SESSION_LOGINENTITY_ID = "SESSION_LOGINENTITY_ID_";
 
 	private Logger log = LogManager.getLogger();
 
@@ -55,14 +55,14 @@ public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 						.keyOf(cookies.getValue(COOKIE_CERES_PLATFORM));
 
 				// 检查Session中是否存在登录用户ID
-				String sKey = "SESSION_KEY_" + platform.key();
+				String sKey = SESSION_LOGINENTITY_ID + platform.key();
 
 				Long id = (Long) request.getSession(true).getAttribute(sKey);
 				if (id == null) {
 					// 用户未登录
 
 					// 检测是否有持久化Cookie登录
-					String cKey = "COOKIE_REMEMBER_" + platform.key();
+					String cKey = getCookieKeyRememberToken(platform);
 					if (!cookies.exist(cKey)) {
 						// 如果要求登录、没有登录也没有remember_key，则要求登录
 						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
@@ -70,7 +70,7 @@ public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 					} else {
 						// 获取remember_key和remember_id
 						String remember = cookies.getValue(cKey);
-						id = Longs.tryParse(cookies.getValue("COOKIE_REMEMBER_ID_" + platform.key()));
+						id = Longs.tryParse(cookies.getValue(getCookieKeyRememberToken(platform)));
 						if (id == null) {
 							// id 不存在，数据错误,要求重登录
 							zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
@@ -142,6 +142,13 @@ public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 
 	public String getCookieKeyRememberID(PlatformCategory platform) {
 		return "COOKIE_REMEMBER_ID_" + platform.key();
+	}
+
+	@Override
+	@Deprecated
+	protected Long getUserId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="text-center m-b-md">
-                <h3> 欢迎登录 <font ng-bind="platform.frontendShortName"></font> 管理系统</h3>
+                <h3> 欢迎登录 <font ng-bind="platform.front.shortname"></font> 管理系统</h3>
                 <!-- <small>This is the best app ever!</small> -->
             </div>
             <div class="hpanel">
@@ -36,7 +36,7 @@
     </div>
     <div class="row">
         <div class="col-md-12 text-center">
-            <!-- <strong>HOMER</strong> - AngularJS Responsive WebApp  --><br/> <font ng-bind="platform.developerCopyright"></font> <font ng-bind="platform.developerName"></font>
+            <!-- <strong>HOMER</strong> - AngularJS Responsive WebApp  --><br/> <font ng-bind-html="platform.developer.copyright"></font> <font ng-bind-html="platform.developer.name"></font>
         </div>
     </div>
 </div>

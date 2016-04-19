@@ -1,9 +1,14 @@
 define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
+	var moduleConfig = module.config();
 
-	return {
+	var retObj = {
+		onLoginRequired : moduleConfig.onLoginRequired,
+		onHttpTimeout : moduleConfig.onHttpTimeout,
+		onHttpError : moduleConfig.onHttpError,
+		onHttpNotFound : moduleConfig.onHttpNotFound,
 		// 支持onSuccess,onTimeout,onError,onComplete,onNotFound
 		load : function(context) {
-			var moduleConfig = module.config();
+
 			console.log("Http模块: 请求" + context.url, context);
 
 			// 系统请求,用户加载系统相关信息(非用户行为请求，不用校验会话信息)
@@ -73,7 +78,7 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 						console.log("Http模块: 返回内容", dataObj);
 
 						if (this.success != null) {
-							this.success(dataObj, this);
+							this.success(dataObj, this.context == undefined ? this : this.context);
 						}
 					}
 				},
@@ -89,4 +94,5 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 			});
 		}
 	}
+	return retObj;
 });
