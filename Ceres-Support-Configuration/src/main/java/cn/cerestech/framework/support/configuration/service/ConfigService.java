@@ -19,7 +19,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Maps;
 
-import cn.cerestech.framework.core.StringTypes;
+import cn.cerestech.framework.core.strings.StringTypes;
 import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.configuration.dao.SysConfigDao;
 import cn.cerestech.framework.support.configuration.entity.SysConfig;

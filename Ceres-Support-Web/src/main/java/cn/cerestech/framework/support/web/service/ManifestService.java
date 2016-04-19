@@ -15,7 +15,6 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
 
-import cn.cerestech.framework.core.Core;
 import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.json.Jsons;

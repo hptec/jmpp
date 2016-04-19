@@ -19,7 +19,7 @@
 		},
 		{
 			name:"angular-async-loader",
-			uri:"/api/classpath/query/support/requirejs/js/angular-async-loader/angular-async-loader.min",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-async-loader/dist/angular-async-loader.min",
 			exports:"asyncLoader",
 			deps:[
 				"angular",
@@ -39,17 +39,17 @@
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery/dist/jquery.min",
 			exports:"$",
 			deps:[
-				"/api/classpath/query/support/web/console/theme/homer/bower_components/string/string.min.js"
+				"/api/classpath/query/support/web/console/theme/homer/bower_components/string/dist/string.min.js"
 			]
 			
 		},
 		{
 			name:"jquery-cookie",
-			uri:"//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min"
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery.cookie/jquery.cookie"
 		},
 		{
 			name:"md5",
-			uri:"//cdn.bootcss.com/blueimp-md5/2.3.0/js/md5.min",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/js-md5/build/md5.min",
 			exports:"md5"
 		},
 		{
@@ -59,7 +59,7 @@
 		},
 		{
 			name:"require-css",
-			uri:"/api/classpath/query/support/requirejs/js/require-css/css.min"
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/require-css/css.min"
 		},
 		{
 			name:"http",

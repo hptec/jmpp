@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
-import cn.cerestech.framework.core.Random;
+import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.platform.dao.PlatformDao;
 import cn.cerestech.framework.platform.entity.Platform;
 import cn.cerestech.framework.platform.provider.PlatformIdentifyProvider;

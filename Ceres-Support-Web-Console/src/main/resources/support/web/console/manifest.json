@@ -43,7 +43,7 @@
 		},
 		{
 			name:"jquery-sparkline",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/sparkline/index",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery-sparkline/dist/jquery.sparkline.min",
 			deps:[
 				"jquery"
 			]
@@ -190,7 +190,7 @@
 		},
 		{
 			name:"icheck",
-			uri:"//cdn.bootcss.com/iCheck/1.0.2/icheck.min",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/iCheck/icheck.min",
 			deps:[
 				"bootstrap"
 			]
@@ -198,9 +198,9 @@
 		},
 		{
 			name:"sweet-alert",
-			uri:"//cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/sweetalert/dist/sweetalert.min",
 			deps:[
-				"css!//cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min"
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/sweetalert/dist/sweetalert"
 			]
 			
 		},
