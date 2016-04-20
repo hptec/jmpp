@@ -70,7 +70,7 @@ public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 					} else {
 						// 获取remember_key和remember_id
 						String remember = cookies.getValue(cKey);
-						id = Longs.tryParse(cookies.getValue(getCookieKeyRememberToken(platform)));
+						id = Longs.tryParse(cookies.getValue(getCookieKeyRememberID(platform)));
 						if (id == null) {
 							// id 不存在，数据错误,要求重登录
 							zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));

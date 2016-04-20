@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
-import cn.cerestech.framework.core.HttpUtils;
 import cn.cerestech.framework.core.enums.EnumCollector;
+import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.middleware.sms.entity.SmsSendResult;
 import cn.cerestech.middleware.sms.enums.HuoniResponesCode;
 import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
@@ -49,7 +49,7 @@ public class HuoniProvider implements SmsProvider {
 		params.put("taskId", outer_id);
 		params.put("sendtime", "");
 
-		String res = HttpUtils.post(SEND_MSG_URI, params);
+		String res = Https.of().post(SEND_MSG_URI, params).readString();
 
 		System.out.println(res);
 

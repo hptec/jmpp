@@ -42,6 +42,7 @@ define([ 'http', 'modal', 'cache', 'platform', 'app' ], function(http, modal, ca
 					}
 				}
 				if (http.onLoginRequired) {
+					console.log("onLoginRequired");
 					http.onLoginRequired();
 				}
 				return undefined;

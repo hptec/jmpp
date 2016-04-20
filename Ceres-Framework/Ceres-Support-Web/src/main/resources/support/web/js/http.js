@@ -26,6 +26,9 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 				path : '/'
 			});
 
+			if (context.data == undefined) {
+				context.data = {};
+			}
 			context.data.ceres_platform = moduleConfig.platform;
 			context.data.ceres_platform_authcode = moduleConfig.authcode;
 

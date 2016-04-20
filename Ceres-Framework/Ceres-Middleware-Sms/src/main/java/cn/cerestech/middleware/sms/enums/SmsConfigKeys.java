@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import cn.cerestech.framework.core.KV;
+import cn.cerestech.framework.core.utils.KV;
 import cn.cerestech.framework.support.configuration.enums.ConfigKey;
 
 public enum SmsConfigKeys implements ConfigKey {
