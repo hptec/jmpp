@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import cn.cerestech.framework.core.enums.Gender;
 import cn.cerestech.framework.core.enums.YesNo;
+import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.login.entity.LoginEntity;
 import cn.cerestech.framework.support.persistence.IdEntity;
 
@@ -136,6 +137,15 @@ public class Employee extends IdEntity implements LoginEntity {
 
 	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
+	}
+
+	public Employee maskMe() {
+		Employee employee = Jsons.from(this).to(Employee.class);
+		employee.setLoginPwd(null);
+		employee.setRememberExpired(null);
+		employee.setRememberToken(null);
+		employee.setPlatformId(null);
+		return employee;
 	}
 
 }

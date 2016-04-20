@@ -1,37 +1,27 @@
-define([ 'http', 'employee' ], function(http, modal, cache, platform) {
+define([ 'http', 'cache', 'platform' ], function(http, cache, platform) {
 
-	return {
-		login : function(loginId, loginPwd, remember, funcCallback) {
-			if (loginId == undefined || loginId == "" || loginPwd == undefined || loginPwd == "") {
-
-			} else {
+	var obj = {
+		/**
+		 * 获取本人的菜单
+		 */
+		getMine : function(func) {
+			var key = "EMPLOYEE_MINE_MENUS_" + platform.category();
+			if (func != undefined) {
 				http.load({
-					url : '/api/console/employee/doLogin',
-					data : {
-						loginId : loginId,
-						loginPwd : loginPwd,
-						remember : remember == undefined ? false : remember
-					},
+					url : '/api/menu/mine',
 					success : function(result) {
-						if (result.isSuccess) {
-							// 成功则存入缓存
-							var key = "current_user_" + platform.category();
-							cache.set(key, result.object);
-						}
-
-						// 通知回调
-						if (funcCallback) {
-							funcCallback(result);
+						cache.set(key, result)
+						if (func) {
+							func(result);
 						}
 					}
 				});
 			}
-		},
-		getCurrentUser : function() {
-			var key = "current_user_" + platform.category();
-			var e = cache.get(key);
 
-			return e;
+			var ret = cache.get(key);
+			return ret;
 		}
 	}
+
+	return obj;
 });

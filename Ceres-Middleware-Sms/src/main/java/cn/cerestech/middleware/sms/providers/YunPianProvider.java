@@ -6,7 +6,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 
-import cn.cerestech.framework.core.HttpUtils;
+import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.middleware.sms.entity.SmsSendResult;
 import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
@@ -39,11 +39,11 @@ public class YunPianProvider implements SmsProvider {
 		SmsSendResult result = new SmsSendResult();
 
 		try {
-			String content = HttpUtils.post(url, params);
+			String content = Https.of().post(url, params).readString();
 			if (Strings.isNullOrEmpty(content)) {
 				content = "{}";
 			}
-			JsonObject element = Jsons.from(content).getAsJsonObject();
+			JsonObject element = Jsons.from(content).getRoot().getAsJsonObject();
 			if (element.has("code")) {
 				Integer code = element.get("code").getAsInt();
 				String msg = Strings.nullToEmpty(element.get("msg").getAsString());

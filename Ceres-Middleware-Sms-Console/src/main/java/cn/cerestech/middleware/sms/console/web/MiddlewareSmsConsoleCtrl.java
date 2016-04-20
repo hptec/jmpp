@@ -13,11 +13,11 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
-import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.core.service.Result;
+import cn.cerestech.framework.core.utils.KV;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.framework.support.web.annotation.Manifest;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
@@ -49,7 +49,7 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 
 		kv.put("provider_name", smsService.defaultProvider().getName());
 
-		zipOut(Jsons.toJson(kv));
+		zipOut(Jsons.from(kv));
 	}
 
 	@RequestMapping("icp/changeProvider")
@@ -71,7 +71,7 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 		kv.put("authkeys", keyList);
 		kv.put("provider_name", toProvider);
 
-		zipOut(Jsons.toJson(kv));
+		zipOut(Jsons.from(kv));
 	}
 
 	@RequestMapping("icp/update")
@@ -126,7 +126,7 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 //
 //		kv.put("init", init);
 
-		zipOut(Jsons.toJson(kv));
+		zipOut(Jsons.from(kv));
 	}
 
 	@RequestMapping("record/search")
@@ -164,7 +164,7 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 
 		List<? extends SmsRecord> result = smsService.search(SmsRecord.class, smsProvider, state, phone, fromDate,
 				toDate, null);
-		zipOut(Jsons.toJson(result));
+		zipOut(Jsons.from(result));
 	}
 
 }

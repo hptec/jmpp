@@ -37,4 +37,9 @@ public class DefaultWeb extends WebSupport {
 		zipOutRequireJson(defMap);
 	}
 
+	@Override
+	protected Long getUserId() {
+		return null;
+	}
+
 }

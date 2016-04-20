@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.core.utils.KV;
 import cn.cerestech.framework.support.login.interceptor.LoginInterceptor;
+import cn.cerestech.framework.support.login.provider.LoginServiceProvider;
+import cn.cerestech.framework.support.login.service.LoginService;
 import cn.cerestech.framework.support.web.Cookies;
 import cn.cerestech.support.web.console.entity.Employee;
 import cn.cerestech.support.web.console.service.EmployeeService;
@@ -21,17 +22,24 @@ public class EmployeeApiWeb extends AbstractConsoleWeb {
 	EmployeeService employeeService;
 
 	@Autowired
+	LoginService loginService;
+
+	@Autowired
 	LoginInterceptor loginInterceptor;
 
 	@RequestMapping("/doLogin")
 	public void doLogin(@RequestParam("loginId") String usr, @RequestParam("loginPwd") String pwd,
 			@RequestParam(name = "remember", defaultValue = "false") Boolean remember) {
-		Result<Employee> ret = employeeService.login(usr, pwd, remember);
-		if (ret.isSuccess()) {
 
+		LoginServiceProvider<Employee> provider = loginService.getServiceProvider(getPlatformCategory());
+		Employee e = new Employee();
+		e.setLoginId(usr);
+		e.setLoginPwd(pwd);
+
+		Result<Employee> ret = provider.login(e, remember);
+		if (ret.isSuccess()) {
 			loginInterceptor.register(getPlatformCategory(), ret.getObject(), remember, getRequest(), getResponse());
-			ret.getObject().setLoginPwd(null);
-			ret.getObject().setRememberToken(null);
+			ret.setObject(ret.getObject().maskMe());
 		}
 		zipOut(ret.toJson());
 	}
@@ -47,11 +55,7 @@ public class EmployeeApiWeb extends AbstractConsoleWeb {
 	@RequestMapping("/get")
 	public void get(@RequestParam("id") Long id) {
 		Employee e = employeeService.findById(id);
-		e.setLoginPwd(null);
-		e.setRememberToken(null);
-		e.setRememberExpired(null);
-		e.setPlatformId(null);
-		zipOut(Jsons.from(e));
+		zipOut(Jsons.from(e.maskMe()));
 	}
 
 }

@@ -26,54 +26,6 @@ public class EmployeeService {
 	@Autowired
 	PlatformService platformService;
 
-	public Result<Employee> login(String loginId, String loginPwd, Boolean isRemember) {
-		if (Strings.isNullOrEmpty(loginId) || Strings.isNullOrEmpty(loginPwd)) {
-			return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
-		}
-		Employee u = employeeDao.findUniqueByPlatformIdAndLoginId(platformService.getId(), loginId);
-
-		if (u == null) {
-			return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
-		}
-
-		if (Strings.nullToEmpty(u.getLoginPwd()).equals(Encrypts.md5(loginPwd))) {
-			// 比对用户名密码
-			if (new StringTypes(u.getFrozen()).boolValue()) {
-				// actionLog(u.getId(),
-				// Console.Employee.ActionType.LOGIN_FROZEN,
-				// Console.SysObj.LOGIN, "");
-				return Result.error(EmployeeErrorCodes.EMPLOYEE_FROZEN);
-			} else {
-				// 登录成功
-				// actionLog(u.getId(),
-				// Console.Employee.ActionType.LOGIN_SUCCESS,
-				// Console.SysObj.LOGIN, "");
-			}
-		} else {
-			// actionLog(u.getId(), Console.Employee.ActionType.LOGIN_PWD_ERROR,
-			// Console.SysObj.LOGIN, "");
-			return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
-		}
-
-		// 记录remember me
-		Date now = new Date();
-		if (isRemember) {
-			// 记住登录
-			u.setRememberToken(Random.uuid());
-			u.setRememberExpired(Dates.now().addMonth(3).toDate());
-		} else {
-			// 清除登录
-			u.setRememberToken(null);
-			u.setRememberExpired(now);
-		}
-		u.setLastLoginTime(now);
-
-		employeeDao.save(u);
-
-		// user log 记录登录地址、ip
-		return Result.success().setObject(u).setMessage("登录成功");
-	}
-
 	public Result<Employee> modifyPassword(Long eid, String pwd) {
 		if (Strings.isNullOrEmpty(pwd)) {
 			return Result.error(EmployeeErrorCodes.PASSWORD_CANNOT_EMPTY);
