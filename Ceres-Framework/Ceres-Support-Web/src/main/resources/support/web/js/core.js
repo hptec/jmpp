@@ -11,7 +11,11 @@ define([], function() {
 				throw new Error("platform is requried!");
 			}
 
-			require([ '/api/web/systemconfigs.js?platform=' + cfg.platform ], function(sysConfig) {
+			if (cfg.configUrl == undefined) {
+				cfg.configUrl = "/api/web/systemconfigs.js";
+			}
+
+			require([ cfg.configUrl + '?platform=' + cfg.platform ], function(sysConfig) {
 				var defaultConfig = {
 					application : '',
 					appid : '',
@@ -86,7 +90,8 @@ define([], function() {
 								alert(statusText);
 								console.log(statusText, xhr);
 								throw statusText;
-							} : cfg.onHttpNotFound)
+							} : cfg.onHttpNotFound),
+							'host' : cfg.host
 						},
 						'app' : {
 							jsModules : sysConfig.jsModules,

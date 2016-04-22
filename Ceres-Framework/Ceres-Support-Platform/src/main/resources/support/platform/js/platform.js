@@ -1,4 +1,4 @@
-define([ 'module', 'cache', 'jquery' ], function(module, cache, $) {
+define([ 'module', 'cache', 'jquery', 'http' ], function(module, cache, $, http) {
 	function get() {
 		return cache.get(module.config().appid + "_platform");
 	}
@@ -12,7 +12,7 @@ define([ 'module', 'cache', 'jquery' ], function(module, cache, $) {
 			async = true;
 		}
 
-		$.ajax({
+		http.load({
 			url : '/api/platform/query',
 			async : async,
 			data : module.config(),

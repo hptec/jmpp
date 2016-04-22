@@ -18,11 +18,11 @@ define([ 'app', 'platform', 'employee', 'http', 'cache', 'menu' ], function(app,
 	app.controller('workbenchCtrl', [ '$scope', '$location', function($scope, $location) {
 		$scope.platform = platform.get();
 		$scope.currentUser = employee.getCurrentUser();
-		$scope.menus = menu.getMine(function(result) {
-			$scope.menus = result;
-			$scope.$apply();
-			$("#side-menu").metisMenu();
-		});
+//		$scope.menus = menu.getMine(function(result) {
+//			$scope.menus = result;
+//			$scope.$apply();
+//			$("#side-menu").metisMenu();
+//		});
 	} ]);
 
 	return retObj;
