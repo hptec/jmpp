@@ -35,7 +35,10 @@
 		},
 		{
 			name:"jquery-cookie",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery.cookie/jquery.cookie"
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery.cookie/jquery.cookie",
+			deps:[
+				"jquery"
+			]
 		},
 		{
 			name:"md5",

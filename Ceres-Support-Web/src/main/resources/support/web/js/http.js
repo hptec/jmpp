@@ -1,4 +1,4 @@
-define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
+define([ 'module' ], function(module) {
 	var moduleConfig = module.config();
 
 	var retObj = {
@@ -17,23 +17,27 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 				throw new Error("Url is requried!", context);
 			}
 
-			$.cookie("ceres_platform", moduleConfig.platform, {
-				expired : 7,
-				path : '/'
-			});
-			$.cookie("ceres_platform_authcode", moduleConfig.authcode, {
-				expired : 7,
-				path : '/'
-			});
+			var prefix = "";
+			if (moduleConfig.host != undefined) {
+				var host = moduleConfig.host;
+				if (host.port != undefined) {
+					if (host.server != undefined) {
+						prefix = "//" + host.server + ":" + host.port;
+					} else {
+						prefix = "//localhost" + ":" + host.port
+					}
+				} else if (host.server != undefined) {
+					prefix = '//' + host.server;
+				}
+			}
 
 			if (context.data == undefined) {
 				context.data = {};
 			}
 			context.data.ceres_platform = moduleConfig.platform;
 			context.data.ceres_platform_authcode = moduleConfig.authcode;
-
-			$.ajax({
-				url : context.url,
+			var sendRequest = {
+				url : prefix + context.url,
 				type : "POST",
 				async : context.async == undefined ? true : context.async,
 				dataType : "text",
@@ -89,12 +93,32 @@ define([ 'jquery', 'module', 'jquery-cookie' ], function($, module) {
 					if (context.complete != null) {
 						context.complete(xhr, textStatus);
 					}
-					/*
-					 * 暂时取消进度条 hide_loading_bar();
-					 */
 				}
 
-			});
+			}
+			if (moduleConfig.platform == "app") {
+				var mui = require("mui");
+				// require([ 'mui' ], function(mui) {
+				sendRequest.headers = {
+					'COOKIE' : "ceres_platform=" + moduleConfig.platform + ";ceres_platform_authcode=" + moduleConfig.authcode + ";"
+				}
+				mui.ajax("http:" + sendRequest.url, sendRequest);
+				// });
+			} else {
+				var $ = require("jquery");
+				
+				// require([ 'jquery', 'jquery-cookie' ], function($) {
+				$.cookie("ceres_platform", moduleConfig.platform, {
+					expired : 7,
+					path : '/'
+				});
+				$.cookie("ceres_platform_authcode", moduleConfig.authcode, {
+					expired : 7,
+					path : '/'
+				});
+				$.ajax(sendRequest);
+				// });
+			}
 		}
 	}
 	return retObj;
