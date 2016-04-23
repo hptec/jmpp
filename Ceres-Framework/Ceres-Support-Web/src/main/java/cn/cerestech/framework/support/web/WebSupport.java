@@ -277,5 +277,5 @@ public abstract class WebSupport {
 	 * 
 	 * @return
 	 */
-	abstract protected Long getUserId();
+//	abstract protected Long getUserId();
 }

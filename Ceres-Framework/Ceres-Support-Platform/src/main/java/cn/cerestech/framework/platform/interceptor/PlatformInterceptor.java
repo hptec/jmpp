@@ -38,7 +38,9 @@ public class PlatformInterceptor extends WebSupport implements HandlerIntercepto
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "POST, GET");
+		response.addHeader("Access-Control-Allow-Headers", "x-requested-with");
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod m = (HandlerMethod) handler;
 
