@@ -15,7 +15,6 @@ define([ 'http', 'modal', 'cache', 'platform', 'app' ], function(http, modal, ca
 					},
 					context : this,
 					success : function(result, context) {
-						console.log("this", context);
 						if (result.isSuccess) {
 							context.__currentUser = result.object;
 						}

@@ -10,8 +10,17 @@ define([ 'platform', 'jquery' ], function(platform) {
 			// location.href = "./console/common/login";
 
 			$(".splash").hide();
-
 		}
+		app.controller("appcmd", [ "$scope", "$location", function($scope, $location) {
+			var pages = require('pages');
+
+			console.log("pages", pages);
+
+			$scope.pages = pages.pages();
+			$scope.jump = function(url) {
+				$location.path(url);
+			}
+		} ]);
 		app.start(afterStart);
 
 	});

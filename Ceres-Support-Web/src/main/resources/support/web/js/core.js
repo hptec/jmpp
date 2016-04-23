@@ -20,7 +20,7 @@ define([], function() {
 					application : '',
 					appid : '',
 					appsecret : '',
-					baseUrl : '/',
+					baseUrl : '',
 					waitSeconds : 50,
 					map : {
 						'*' : {
@@ -96,7 +96,11 @@ define([], function() {
 						'app' : {
 							jsModules : sysConfig.jsModules,
 							pages : sysConfig.pages,
-							html5mode : sysConfig.starter.html5mode
+							html5mode : cfg.starter.html5mode
+						},
+						'pages' : {
+							pages : sysConfig.pages,
+							platform : cfg.platform
 						},
 						'platform' : {
 							'platform' : cfg.platform,
@@ -106,10 +110,10 @@ define([], function() {
 					}
 				});
 
-				var boot = sysConfig.starter;
-				if (boot != undefined && boot.uri != undefined && boot.uri != "") {
-					console.log("启动模块 [" + boot.platform + "][" + boot.uri + "]", boot);
-					angularModule.push(boot.uri);
+				var boot = cfg.starter;
+				if (boot != undefined && boot.name != undefined && boot.name != "") {
+					console.log("启动模块 [" + boot.name + "]", boot);
+					angularModule.push(boot.name);
 					require(angularModule, function() {
 						// 启动
 					});

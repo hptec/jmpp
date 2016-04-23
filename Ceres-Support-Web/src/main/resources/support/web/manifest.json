@@ -23,6 +23,7 @@
 			deps:[
 				"angular"
 			]
+			
 		},
 		{
 			name:"jquery",
@@ -39,6 +40,7 @@
 			deps:[
 				"jquery"
 			]
+			
 		},
 		{
 			name:"md5",
@@ -60,11 +62,15 @@
 			exports:"http"
 		},
 		{
+			name:"pages",
+			uri:"/api/classpath/query/support/web/js/pages",
+			exports:"pages"
+		},
+		{
 			name:"cache",
 			uri:"/api/classpath/query/support/web/js/cache",
 			exports:"cache"
 		}
-		
 		
 	]
 	

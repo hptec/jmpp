@@ -1,11 +1,6 @@
 {
 	name:"Ceres-Support-Web-Console",
 	desc:"平台后台管理基本模块",
-	starter:{
-		platform:"console",
-		uri:"console-starter",
-		html5mode:true
-	},
 	menus:[
 		{
 			key:"TOP_SYSTEM_CONFIGURATION",
@@ -228,7 +223,8 @@
 				"bootstrap-scrollspy",
 				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/font-awesome/css/font-awesome.min",
-				"jquery-cookie"
+				"jquery-cookie",
+				"pages"
 			]
 		},
 		{

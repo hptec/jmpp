@@ -8,7 +8,8 @@
 <title page-title></title>
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
-
+<link
+	rel="/api/classpath/query/support/web/console/theme/homer/styles/style.css" />
 <script type="text/javascript"
 	src="/api/classpath/query/support/web/console/theme/homer/bower_components/requirejs/require.js"></script>
 
@@ -41,17 +42,29 @@
 
 	<!-- Page view wrapper -->
 	<div ui-view autoscroll="true"></div>
-
+	<div ng-controller="appcmd" style="display: none;">
+		<a href="javascript:void(0);" ng-click="jump(pg.uri)"
+			ng-repeat="pg in pages" ng-bind="pg.uri"></a>
+	</div>
 </body>
 <script>
 	require([ '/api/classpath/query/support/web/js/core.js' ], function(core) {
 		console.log("页面核心", core);
 		core.bootstrap({
+			starter : {
+				name : "console-starter",
+				html5mode : true
+			},
 			platform : 'console',
 			platformKey : '19d06a2bbbcd4c12b925ebf6deacaa5a',
 			platformSecret : 'e485e7e485e70bfa82400eb355a8e1bd7cd004',
 			onLoginRequired : function() {
-				location.href = "./login";
+				require([ 'pages' ], function(pages) {
+					pages.open({
+						url : '/login'
+					})
+				});
+
 			}
 		});
 	});
