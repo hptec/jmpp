@@ -1,4 +1,4 @@
-define([ 'app', 'platform', 'employee', 'http', 'cache', 'menu' ], function(app, platform, employee, http, cache, menu) {
+define([ 'app', 'platform', 'employee', 'http', 'cache', 'menu', 'pages' ], function(app, platform, employee, http, cache, menu, pages) {
 
 	var retObj = {
 		__mineMenu : undefined,
@@ -18,11 +18,16 @@ define([ 'app', 'platform', 'employee', 'http', 'cache', 'menu' ], function(app,
 	app.controller('workbenchCtrl', [ '$scope', '$location', function($scope, $location) {
 		$scope.platform = platform.get();
 		$scope.currentUser = employee.getCurrentUser();
-//		$scope.menus = menu.getMine(function(result) {
-//			$scope.menus = result;
-//			$scope.$apply();
-//			$("#side-menu").metisMenu();
-//		});
+		$scope.jump = function(url) {
+			pages.open({
+				url : url
+			});
+		}
+		// $scope.menus = menu.getMine(function(result) {
+		// $scope.menus = result;
+		// $scope.$apply();
+		// $("#side-menu").metisMenu();
+		// });
 	} ]);
 
 	return retObj;

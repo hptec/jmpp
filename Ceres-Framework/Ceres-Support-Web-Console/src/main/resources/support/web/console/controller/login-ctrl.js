@@ -1,4 +1,4 @@
-define([ 'app', 'platform', 'http', 'modal', 'employee', 'icheck' ], function(app, platform, http, modal, employee) {
+define([ 'app', 'platform', 'http', 'modal', 'employee', 'pages' ], function(app, platform, http, modal, employee, pages) {
 
 	app.controller('commonLoginCtrl', [ '$scope', '$location', function($scope, $location) {
 
@@ -9,7 +9,7 @@ define([ 'app', 'platform', 'http', 'modal', 'employee', 'icheck' ], function(ap
 
 			employee.login($scope.loginEntity.loginId, $scope.loginEntity.loginPwd, $scope.loginEntity.remember, function(result) {
 				if (result.isSuccess) {
-					$location.path("/workbench");
+					pages.open("/workbench");
 					$scope.$apply();
 				} else {
 					modal.alert({
