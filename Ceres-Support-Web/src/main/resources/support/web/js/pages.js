@@ -12,17 +12,23 @@ define([ 'module', 'app' ], function(module, app) {
 			if (context == undefined) {
 				throw new Error("context is required!");
 			}
+
+			if (typeof (context) == "string") {
+				context = {
+					url : context
+				}
+			}
+
 			if (moduleConfig.platform == "app") {
 				// mui的open
 				var mui = require("mui");
-
+				var pg = this.__windows[context.url];
+				var options = pg.options;
+				options.url = pg.tpl;
+				options.id = pg.uri;
+				mui.openWindow(options);
 			} else {
 				var $ = require("jquery");
-				if (typeof (context) == "string") {
-					context = {
-						url : context
-					}
-				}
 
 				$("div[ng-controller='appcmd']").find("a").each(function(i, obj) {
 					var o = $(obj);
