@@ -14,6 +14,7 @@ define([ 'module', 'cache', 'jquery', 'http' ], function(module, cache, $, http)
 
 		http.load({
 			url : '/api/platform/query',
+			server : true,
 			async : async,
 			data : module.config(),
 			success : function(content) {
