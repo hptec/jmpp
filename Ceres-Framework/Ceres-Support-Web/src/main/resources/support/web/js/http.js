@@ -9,8 +9,6 @@ define([ 'module' ], function(module) {
 		// 支持onSuccess,onTimeout,onError,onComplete,onNotFound
 		load : function(context) {
 
-			console.log("Http模块: 请求" + context.url, context);
-
 			// 系统请求,用户加载系统相关信息(非用户行为请求，不用校验会话信息)
 			var url = context.url;
 			if (context == undefined || context.url == undefined) {
@@ -18,16 +16,20 @@ define([ 'module' ], function(module) {
 			}
 
 			var prefix = "";
-			if (moduleConfig.host != undefined) {
+			if (moduleConfig.host != undefined && context.server) {
 				var host = moduleConfig.host;
 				if (host.port != undefined) {
 					if (host.server != undefined) {
-						prefix = "//" + host.server + ":" + host.port;
+						prefix = "" + host.server + ":" + host.port;
 					} else {
-						prefix = "//localhost" + ":" + host.port
+						prefix = "localhost" + ":" + host.port
 					}
 				} else if (host.server != undefined) {
-					prefix = '//' + host.server;
+					prefix = '' + host.server;
+				}
+
+				if (host.protocal != undefined) {
+					prefix = host.protocal + "://" + prefix;
 				}
 			}
 
@@ -96,17 +98,22 @@ define([ 'module' ], function(module) {
 				}
 
 			}
+			var tmpUrl = context.url;
+			if (sendRequest.url != context.url) {
+				tmpUrl = context.url + " ==> " + sendRequest.url;
+			}
+			console.log("Http模块: 请求" + tmpUrl, context);
 			if (moduleConfig.platform == "app") {
 				var mui = require("mui");
 				// require([ 'mui' ], function(mui) {
 				sendRequest.headers = {
 					'COOKIE' : "ceres_platform=" + moduleConfig.platform + ";ceres_platform_authcode=" + moduleConfig.authcode + ";"
 				}
-				mui.ajax("http:" + sendRequest.url, sendRequest);
+				mui.ajax(sendRequest.url, sendRequest);
 				// });
 			} else {
 				var $ = require("jquery");
-				
+
 				// require([ 'jquery', 'jquery-cookie' ], function($) {
 				$.cookie("ceres_platform", moduleConfig.platform, {
 					expired : 7,
