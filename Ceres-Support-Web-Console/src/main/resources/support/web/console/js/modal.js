@@ -1,24 +1,15 @@
-define([ 'jquery', 'sweet-alert' ], function($) {
+define([ 'module', '$' ], function(module, $) {
 
-	return {
+	var obj = {
 		success : function(data) {
-			data.type = "success";
-
-			swal({
-				title : "Good job!",
-				text : "You clicked the button!",
-				type : "success"
-			});
 		},
 		alert : function(data) {
-			var defaultOptions = {
-				confirmButtonText : "好的"
-			};
-
-			var options = $.extend(true, defaultOptions, data);
-			swal(options, function(isConfirm) {
-			});
-
 		}
 	}
+
+	if (module.config() != undefined) {
+		obj = $.extend(true, obj, module.config());
+	}
+
+	return obj;
 });

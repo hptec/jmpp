@@ -34,7 +34,7 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 					},
 					createNew : false, // 是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 					show : {
-						autoShow : true, // 页面loaded事件发生后自动显示，默认为true
+						autoShow : false, // 页面loaded事件发生后自动显示，默认为true
 					// aniShow: (aniShow || 'slide-in-right'),
 					// //页面显示动画，默认为”slide-in-right“；
 					// duration: animationTime
@@ -56,11 +56,18 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 				// mui的open
 				var mui = require("mui");
 				var pg = this.__windows[context.url];
-				if (pg.options != undefined) {
-					var options = $.extend(true, options, pg.options);
+				if (pg == undefined) {
+					// 没有配置pages设置，直接使用html
+					options.url = context.url;
+					options.id = context.id == undefined ? context.url : context.id;
+				} else {
+					if (pg.options != undefined) {
+						var options = $.extend(true, options, pg.options);
+					}
+					options.url = pg.tpl;
+					options.id = pg.uri;
 				}
-				options.url = pg.tpl;
-				options.id = pg.uri;
+
 				mui.openWindow(options);
 			} else {
 				$("div[ng-controller='appcmd']").find("a").each(function(i, obj) {
