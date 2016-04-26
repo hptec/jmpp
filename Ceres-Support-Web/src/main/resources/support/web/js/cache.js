@@ -1,4 +1,4 @@
-define([ 'module', 'jquery' ], function(module, $) {
+define([ 'module', '$' ], function(module, $) {
 
 	return {
 		get : function(key) {
