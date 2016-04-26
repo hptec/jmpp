@@ -1,4 +1,4 @@
-define([ 'module', 'cache', '$', 'http' ], function(module, cache, $, http) {
+define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, http, modal) {
 	function get() {
 		return cache.get(module.config().appid + "_platform");
 	}
@@ -27,8 +27,7 @@ define([ 'module', 'cache', '$', 'http' ], function(module, cache, $, http) {
 
 				if (content.object == undefined) {
 					var errMsg = "未识别或者未授权的Key，请联系管理员!";
-					throw new Error("未识别或者未授权的Key，请联系管理员!");
-					alert(errMsg);
+					modal.toast(errMsg);
 					return;
 				}
 
