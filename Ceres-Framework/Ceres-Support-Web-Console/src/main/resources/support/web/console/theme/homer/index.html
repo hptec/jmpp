@@ -11,7 +11,7 @@
 <link
 	rel="/api/classpath/query/support/web/console/theme/homer/styles/style.css" />
 <script type="text/javascript"
-	src="/api/classpath/query/support/web/console/theme/homer/bower_components/requirejs/require.js"></script>
+	src="/api/classpath/query/support/web/bower_components/requirejs/require.js"></script>
 
 </head>
 
@@ -55,20 +55,24 @@
 				name : "console-starter",
 				html5mode : true
 			},
-			platform : 'console',
-			platformKey : '19d06a2bbbcd4c12b925ebf6deacaa5a',
-			platformSecret : 'e485e7e485e70bfa82400eb355a8e1bd7cd004',
-			onLoginRequired : function() {
-				require([ 'pages' ], function(pages) {
-					pages.open({
-						url : '/login'
-					})
-				});
-
+			platform : {
+				category : 'console',
+				key : '19d06a2bbbcd4c12b925ebf6deacaa5a',
+				secret : 'e485e7e485e70bfa82400eb355a8e1bd7cd004'
 			},
-			host: {
-				port: "8080",
-				protocal: "http"
+			http : {
+				onLoginRequired : function() {
+					require([ 'pages' ], function(pages) {
+						pages.open({
+							url : '/login'
+						})
+					});
+
+				}
+			},
+			host : {
+				port : "8080",
+				protocal : "http"
 			}
 		});
 	});

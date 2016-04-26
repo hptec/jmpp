@@ -17,7 +17,7 @@
 			name:"bootstrap",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/js/bootstrap.min",
 			deps:[
-				"jquery",
+				"$",
 				"bootstrap-transition",
 				"bootstrap-alert",
 				"bootstrap-button",
@@ -40,7 +40,7 @@
 			name:"jquery-sparkline",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery-sparkline/dist/jquery.sparkline.min",
 			deps:[
-				"jquery"
+				"$"
 			]
 		},
 		{
@@ -48,7 +48,7 @@
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/popover",
 			deps:[
 				"bootstrap-tooltip",
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -56,7 +56,7 @@
 			name:"bootstrap-transition",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/transition",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -64,7 +64,7 @@
 			name:"bootstrap-alert",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/alert",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -72,7 +72,7 @@
 			name:"bootstrap-button",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/button",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -80,7 +80,7 @@
 			name:"bootstrap-carousel",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/carousel",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -88,7 +88,7 @@
 			name:"bootstrap-collapse",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/collapse",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -96,7 +96,7 @@
 			name:"bootstrap-dropdown",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/dropdown",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -104,7 +104,7 @@
 			name:"bootstrap-modal",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/modal",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -112,7 +112,7 @@
 			name:"bootstrap-tab",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/tab",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -120,7 +120,7 @@
 			name:"bootstrap-affix",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/affix",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -128,7 +128,7 @@
 			name:"bootstrap-tooltip",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/tooltip",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -136,7 +136,7 @@
 			name:"bootstrap-scrollspy",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/scrollspy",
 			deps:[
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -158,22 +158,6 @@
 				"angular-local"
 			]
 			
-		},
-		{
-			name:"angular-sanitize",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-sanitize/angular-sanitize.min",
-			deps:[
-				"angular-local"
-			],
-			angularModule:"ngSanitize"
-		},
-		{
-			name:"angular-require",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-require/angular-require.min",
-			deps:[
-				"angular-local"
-			],
-			angularModule:"ngRequire"
 		},
 		{
 			name:"directives",
@@ -223,7 +207,7 @@
 				"bootstrap-scrollspy",
 				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/font-awesome/css/font-awesome.min",
-				"jquery-cookie",
+				"$cookie",
 				"pages"
 			]
 		},
