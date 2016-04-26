@@ -1,4 +1,4 @@
-define([ 'module' ], function(module) {
+define([ 'module', '$' ], function(module, $) {
 	var moduleConfig = module.config();
 
 	var retObj = {
@@ -7,6 +7,7 @@ define([ 'module' ], function(module) {
 		onHttpError : moduleConfig.onHttpError,
 		onHttpNotFound : moduleConfig.onHttpNotFound,
 		// 支持onSuccess,onTimeout,onError,onComplete,onNotFound
+		__InProcessingCounter : 0, // 正在发送http的计数器，用于隐藏显示浮动
 		load : function(context) {
 
 			// 系统请求,用户加载系统相关信息(非用户行为请求，不用校验会话信息)
@@ -95,6 +96,15 @@ define([ 'module' ], function(module) {
 					if (context.complete != null) {
 						context.complete(xhr, textStatus);
 					}
+					if (this.__waiting != undefined) {
+						console.log("计数器:", this.__waiting.__root.__InProcessingCounter);
+						this.__waiting.__root.__InProcessingCounter--;
+						if (this.__waiting.__root.__InProcessingCounter <= 0) {
+							this.__waiting.__root.__InProcessingCounter = 0;
+							this.__waiting.__config.close(this.__waiting.__handle, this.__waiting.__config);
+						}
+					}
+
 				}
 
 			}
@@ -103,18 +113,35 @@ define([ 'module' ], function(module) {
 				tmpUrl = context.url + " ==> " + sendRequest.url;
 			}
 			console.log("Http模块: 请求" + tmpUrl, context);
+
+			// 开始计数
+			if (context.waiting == undefined || context.waiting) {
+				// 默认是开启的
+				var __waitingConfig = moduleConfig.waiting;
+				if (typeof (context.waiting) == "object") {
+					// 是对象说明覆盖设置
+					__waitingConfig = $.extend(true, __waitingConfig, context.waiting);
+				}
+
+				var waitingHandle = __waitingConfig.show(__waitingConfig);
+				this.__InProcessingCounter++;
+				context.__waiting = {
+					__handle : waitingHandle,
+					__config : __waitingConfig,
+					__root : this
+				}
+
+			}
+
 			if (moduleConfig.platform == "app") {
 				var mui = require("mui");
-				// require([ 'mui' ], function(mui) {
 				sendRequest.headers = {
 					'COOKIE' : "ceres_platform=" + moduleConfig.platform + ";ceres_platform_authcode=" + moduleConfig.authcode + ";"
 				}
 				mui.ajax(sendRequest.url, sendRequest);
-				// });
 			} else {
 				var $ = require("jquery");
 
-				// require([ 'jquery', 'jquery-cookie' ], function($) {
 				$.cookie("ceres_platform", moduleConfig.platform, {
 					expired : 7,
 					path : '/'
@@ -124,7 +151,6 @@ define([ 'module' ], function(module) {
 					path : '/'
 				});
 				$.ajax(sendRequest);
-				// });
 			}
 		}
 	}

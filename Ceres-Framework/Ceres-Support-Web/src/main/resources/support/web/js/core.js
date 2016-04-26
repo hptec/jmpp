@@ -7,20 +7,20 @@ define([], function() {
 		 * @returns
 		 */
 		bootstrap : function(cfg) {
-			if (cfg.platform == undefined || cfg.platform == "") {
-				throw new Error("platform is requried!");
+			if (cfg.platform == undefined || cfg.platform.category == undefined || cfg.platform.category == "") {
+				throw new Error("platform category is requried!");
 			}
 
 			if (cfg.configUrl == undefined) {
 				cfg.configUrl = "/api/web/systemconfigs.js";
 			}
 
-			require([ cfg.configUrl + '?platform=' + cfg.platform ], function(sysConfig) {
+			require([ cfg.configUrl + '?platform=' + cfg.platform.category ], function(sysConfig) {
 				var defaultConfig = {
 					application : '',
 					appid : '',
 					appsecret : '',
-					baseUrl : '',
+					baseUrl : cfg.baseUrl == undefined ? '' : cfg.baseUrl,
 					waitSeconds : 50,
 					map : {
 						'*' : {
@@ -71,43 +71,31 @@ define([], function() {
 				console.log("输入配置", cfg);
 
 				require.config(cfg);
-				require.config({
-					config : {
-						'http' : {
-							'platform' : cfg.platform,
-							'onLoginRequired' : (cfg.onLoginRequired == undefined ? function() {
-								alert("请求登录");
-							} : cfg.onLoginRequired),
-							'onHttpTimeout' : (cfg.onHttpTimeout == undefined ? function() {
-								alert("请求超时");
-							} : cfg.onHttpTimeout),
-							'onHttpError' : (cfg.onHttpError == undefined ? function(xhr, errorText, srcObject) {
-								console.log("http error:" + errorText, srcObject);
-								alert("错误:" + srcObject);
-								throw errorText;
-							} : cfg.onHttpError),
-							'onHttpNotFound' : (cfg.onHttpNotFound == undefined ? function(content, statusText, xhr) {
-								alert(statusText);
-								console.log(statusText, xhr);
-								throw statusText;
-							} : cfg.onHttpNotFound),
-							'host' : cfg.host
-						},
-						'app' : {
-							jsModules : sysConfig.jsModules,
-							pages : sysConfig.pages,
-							html5mode : cfg.starter.html5mode
-						},
-						'pages' : {
-							pages : sysConfig.pages,
-							platform : cfg.platform
-						},
-						'platform' : {
-							'platform' : cfg.platform,
-							'appid' : cfg.platformKey,
-							'appsecret' : cfg.platformSecret,
-						}
+
+				var configObj = {
+					'app' : {
+						jsModules : sysConfig.jsModules,
+						pages : sysConfig.pages,
+						html5mode : cfg.starter.html5mode
+					},
+					'pages' : {
+						pages : sysConfig.pages,
+						platform : cfg.platform.category
+					},
+					'platform' : {
+						'platform' : cfg.platform.category,
+						'appid' : cfg.platform.key,
+						'appsecret' : cfg.platform.secret
 					}
+				};
+				if (cfg['http'] != undefined) {
+					configObj['http'] = cfg.http;
+					configObj['http'].platform = cfg.platform.category;
+				}
+				configObj['http'].host = cfg.host;
+
+				require.config({
+					config : configObj
 				});
 
 				var boot = cfg.starter;
