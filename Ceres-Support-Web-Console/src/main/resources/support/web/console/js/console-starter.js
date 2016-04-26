@@ -1,5 +1,5 @@
 // 加载各种配置和启动前文件
-define([ 'platform', 'jquery' ], function(platform) {
+define([ 'platform'], function(platform) {
 	console.log("平台信息", platform.get());
 
 	require([ 'http', 'app' ], function(http, app) {

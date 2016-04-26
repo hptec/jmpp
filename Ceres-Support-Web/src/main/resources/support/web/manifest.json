@@ -83,6 +83,15 @@
 			
 		},
 		{
+			name:"jquery",
+			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery.min",
+			exports:"$",
+			deps:[
+				"/api/classpath/query/support/web/bower_components/string/dist/string.min.js"
+			]
+			
+		},
+		{
 			name:"$cookie",
 			uri:"/api/classpath/query/support/web/bower_components/jquery.cookie/jquery.cookie",
 			deps:[
