@@ -34,8 +34,8 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 					},
 					createNew : false, // 是否重复创建同样id的webview，默认为false:不重复创建，直接显示
 					show : {
-						autoShow : false, // 页面loaded事件发生后自动显示，默认为true
-					// aniShow: (aniShow || 'slide-in-right'),
+						autoShow : true, // 页面loaded事件发生后自动显示，默认为true
+						aniShow : 'slide-in-right',
 					// //页面显示动画，默认为”slide-in-right“；
 					// duration: animationTime
 					// //页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
@@ -60,6 +60,7 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 					// 没有配置pages设置，直接使用html
 					options.url = context.url;
 					options.id = context.id == undefined ? context.url : context.id;
+					var options = $.extend(true, options, context);
 				} else {
 					if (pg.options != undefined) {
 						var options = $.extend(true, options, pg.options);

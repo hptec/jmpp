@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.core.service.Result;
+import cn.cerestech.framework.platform.annotation.PlatformIgnore;
 import cn.cerestech.framework.support.login.interceptor.LoginInterceptor;
 import cn.cerestech.framework.support.login.provider.LoginServiceProvider;
 import cn.cerestech.framework.support.login.service.LoginService;

@@ -144,11 +144,4 @@ public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 		return "COOKIE_REMEMBER_ID_" + platform.key();
 	}
 
-	@Override
-	@Deprecated
-	protected Long getUserId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

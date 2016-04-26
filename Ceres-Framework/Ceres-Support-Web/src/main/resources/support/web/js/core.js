@@ -6,7 +6,7 @@ define([], function() {
 		 * 
 		 * @returns
 		 */
-		bootstrap: function(cfg) {
+		bootstrap : function(cfg) {
 			if (cfg.platform == undefined || cfg.platform.category == undefined || cfg.platform.category == "") {
 				throw new Error("platform category is requried!");
 			}
@@ -15,16 +15,16 @@ define([], function() {
 				cfg.configUrl = "/api/web/systemconfigs.js";
 			}
 
-			require([cfg.configUrl + '?platform=' + cfg.platform.category], function(sysConfig) {
+			require([ cfg.configUrl + '?platform=' + cfg.platform.category ], function(sysConfig) {
 				var defaultConfig = {
-					application: '',
-					appid: '',
-					appsecret: '',
-					baseUrl: cfg.baseUrl == undefined ? '' : cfg.baseUrl,
-					waitSeconds: 50,
-					map: {
-						'*': {
-							'css': 'require-css'
+					application : '',
+					appid : '',
+					appsecret : '',
+					baseUrl : cfg.baseUrl == undefined ? '' : cfg.baseUrl,
+					waitSeconds : 50,
+					map : {
+						'*' : {
+							'css' : 'require-css'
 						}
 					}
 				}
@@ -33,10 +33,10 @@ define([], function() {
 
 				console.log("模块配置", sysConfig);
 				var shimConfig = {
-					"shim": {
+					"shim" : {
 
 					},
-					"paths": sysConfig.paths == undefined ? {} : sysConfig.paths
+					"paths" : sysConfig.paths == undefined ? {} : sysConfig.paths
 				}
 
 				var angularModule = new Array();
@@ -73,30 +73,33 @@ define([], function() {
 				require.config(cfg);
 
 				var configObj = {
-					'app': {
-						jsModules: sysConfig.jsModules,
-						pages: sysConfig.pages,
-						html5mode: cfg.starter.html5mode
+					'app' : {
+						jsModules : sysConfig.jsModules,
+						pages : sysConfig.pages,
+						html5mode : cfg.starter.html5mode
 					},
-					'pages': {
-						pages: sysConfig.pages,
-						platform: cfg.platform.category
+					'pages' : {
+						pages : sysConfig.pages,
+						platform : cfg.platform.category
 					},
-					'platform': {
-						'platform': cfg.platform.category,
-						'appid': cfg.platform.key,
-						'appsecret': cfg.platform.secret
+					'platform' : {
+						'platform' : cfg.platform.category,
+						'appid' : cfg.platform.key,
+						'appsecret' : cfg.platform.secret
 					},
-					'modal': cfg.modal
+					'modal' : cfg.modal,
+					'http' : {}
 				};
+
 				if (cfg['http'] != undefined) {
 					configObj['http'] = cfg.http;
-					configObj['http'].platform = cfg.platform.category;
 				}
+				configObj['http'].platform = cfg.platform.category;
+				configObj['http'].appid = cfg.platform.key;
 				configObj['http'].host = cfg.host;
 
 				require.config({
-					config: configObj
+					config : configObj
 				});
 
 				var boot = cfg.starter;
