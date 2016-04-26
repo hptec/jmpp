@@ -2,7 +2,7 @@
 	jsModules:[
 		{
 			name:"angular",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular/angular",
+			uri:"/api/classpath/query/support/web/bower_components/angular/angular",
 			exports:"angular",
 			deps:[
 				"require-css"
@@ -11,40 +11,39 @@
 		},
 		{
 			name:"angular-ui-router",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-ui-router/release/angular-ui-router.min",
+			uri:"/api/classpath/query/support/web/bower_components/angular-ui-router/release/angular-ui-router.min",
 			deps:[
 				"angular"
 			],
 			angularModule:"ui.router"
 		},
 		{
+			name:"angular-sanitize",
+			uri:"/api/classpath/query/support/web/bower_components/angular-sanitize/angular-sanitize.min",
+			deps:[
+				"angular-local"
+			],
+			angularModule:"ngSanitize"
+		},
+		{
+			name:"angular-require",
+			uri:"/api/classpath/query/support/web/bower_components/angular-require/angular-require.min",
+			deps:[
+				"angular-local"
+			],
+			angularModule:"ngRequire"
+		},
+		{
 			name:"angular-local",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bower-angularjs/i18n/angular-locale_zh-cn",
+			uri:"/api/classpath/query/support/web/bower_components/bower-angularjs/i18n/angular-locale_zh-cn",
 			deps:[
 				"angular"
 			]
 			
 		},
 		{
-			name:"jquery",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery/dist/jquery.min",
-			exports:"$",
-			deps:[
-				"/api/classpath/query/support/web/console/theme/homer/bower_components/string/dist/string.min.js"
-			]
-			
-		},
-		{
-			name:"jquery-cookie",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery.cookie/jquery.cookie",
-			deps:[
-				"jquery"
-			]
-			
-		},
-		{
 			name:"md5",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/js-md5/build/md5.min",
+			uri:"/api/classpath/query/support/web/bower_components/js-md5/build/md5.min",
 			exports:"md5"
 		},
 		{
@@ -54,7 +53,7 @@
 		},
 		{
 			name:"require-css",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/require-css/css.min"
+			uri:"/api/classpath/query/support/web/bower_components/require-css/css.min"
 		},
 		{
 			name:"http",
@@ -70,6 +69,66 @@
 			name:"cache",
 			uri:"/api/classpath/query/support/web/js/cache",
 			exports:"cache"
+		}
+		
+	],
+	jsModules_console:[
+		{
+			name:"$",
+			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery.min",
+			exports:"$",
+			deps:[
+				"/api/classpath/query/support/web/bower_components/string/dist/string.min.js"
+			]
+			
+		},
+		{
+			name:"$cookie",
+			uri:"/api/classpath/query/support/web/bower_components/jquery.cookie/jquery.cookie",
+			deps:[
+				"$"
+			]
+			
+		}
+		
+	],
+	jsModules_frontend:[
+		{
+			name:"$",
+			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery.min",
+			exports:"$",
+			deps:[
+				"/api/classpath/query/support/web/bower_components/string/dist/string.min.js"
+			]
+			
+		},
+		{
+			name:"$cookie",
+			uri:"/api/classpath/query/support/web/bower_components/jquery.cookie/jquery.cookie",
+			deps:[
+				"$"
+			]
+			
+		}
+		
+	],
+	jsModules_mp:[
+		{
+			name:"$",
+			uri:"/api/classpath/query/support/web/bower_components/zepto/zepto.min",
+			exports:"$",
+			deps:[
+				"/api/classpath/query/support/web/bower_components/string/dist/string.min.js"
+			]
+			
+		},
+		{
+			name:"$cookie",
+			uri:"/api/classpath/query/support/web/bower_components/Zepto-Cookie/zepto.cookie.min",
+			deps:[
+				"$"
+			]
+			
 		}
 		
 	]

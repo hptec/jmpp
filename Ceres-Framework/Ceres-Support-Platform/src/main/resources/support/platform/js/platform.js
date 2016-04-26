@@ -1,4 +1,4 @@
-define([ 'module', 'cache', 'jquery', 'http' ], function(module, cache, $, http) {
+define([ 'module', 'cache', '$', 'http' ], function(module, cache, $, http) {
 	function get() {
 		return cache.get(module.config().appid + "_platform");
 	}
@@ -6,6 +6,10 @@ define([ 'module', 'cache', 'jquery', 'http' ], function(module, cache, $, http)
 	function doSync() {
 		var async = false;
 		var obj = get();
+		if (obj != undefined && obj.lastUpdate != undefined && obj.lastUpdate + (24 * 60 * 60 * 1000) > new Date().getTime()) {
+			// 每24小时更新一次
+			return;
+		}
 
 		if (obj != undefined) {
 			// 如果缓存中已经有数据，则使用异步更新
@@ -18,6 +22,7 @@ define([ 'module', 'cache', 'jquery', 'http' ], function(module, cache, $, http)
 			async : async,
 			data : module.config(),
 			success : function(content) {
+				content.object.lastUpdate = new Date().getTime();
 				cache.set(module.config().appid + "_platform", content.object);
 
 				if (content.object == undefined) {
