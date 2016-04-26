@@ -29,7 +29,6 @@ public class AbstractConsoleWeb extends WebSupport {
 		zipOut(themeResource(relativeUri), ContentType.getByExtension(Files.getFileExtension(relativeUri)));
 	}
 
-	@Override
 	protected Long getUserId() {
 		return (Long) session(LoginInterceptor.SESSION_LOGINENTITY_ID + getPlatformCategory().key());
 	}

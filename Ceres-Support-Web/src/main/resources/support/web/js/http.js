@@ -1,4 +1,4 @@
-define([ 'module', '$' ], function(module, $) {
+define([ 'module', '$', 'cache' ], function(module, $, cache) {
 	var moduleConfig = module.config();
 
 	var retObj = {
@@ -14,6 +14,13 @@ define([ 'module', '$' ], function(module, $) {
 			var url = context.url;
 			if (context == undefined || context.url == undefined) {
 				throw new Error("Url is requried!", context);
+			}
+
+			// 如果不需要更新platform，那么authcode从这里获取
+			if (moduleConfig.authcode == undefined) {
+				var p = cache.get(module.config().appid + "_platform")
+				console.log("pp", p);
+				moduleConfig.authcode = p.platformAuthCode;
 			}
 
 			var prefix = "";
