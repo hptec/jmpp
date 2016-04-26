@@ -115,7 +115,7 @@ define([ 'module', '$' ], function(module, $) {
 			console.log("Http模块: 请求" + tmpUrl, context);
 
 			// 开始计数
-			if (context.waiting == undefined || context.waiting) {
+			if (context.waiting == true || typeof (context.waiting) == "object") {
 				// 默认是开启的
 				var __waitingConfig = moduleConfig.waiting;
 				if (typeof (context.waiting) == "object") {
@@ -140,7 +140,6 @@ define([ 'module', '$' ], function(module, $) {
 				}
 				mui.ajax(sendRequest.url, sendRequest);
 			} else {
-				var $ = require("jquery");
 
 				$.cookie("ceres_platform", moduleConfig.platform, {
 					expired : 7,
