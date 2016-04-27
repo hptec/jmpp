@@ -69,11 +69,6 @@ define([ 'module', '$', 'cache' ], function(module, $, cache) {
 							return;
 						}
 						return;
-					} else if (content.startsWith("error:")) {
-						console.log("Http模块: 返回错误", content);
-						var func = (context.onError == undefined ? moduleConfig.onError : context.onError);
-						func(xhr, statusText, content);
-						return;
 					} else {
 						// 强制尝试错误判断
 						try {
