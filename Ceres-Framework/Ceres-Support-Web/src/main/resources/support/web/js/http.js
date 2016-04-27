@@ -20,7 +20,7 @@ define([ 'module', '$', 'cache' ], function(module, $, cache) {
 			if (moduleConfig.authcode == undefined) {
 				var p = cache.get(module.config().appid + "_platform")
 				console.log("pp", p);
-				moduleConfig.authcode = p.platformAuthCode;
+				moduleConfig.authcode = p ? p.platformAuthCode : undefined;
 			}
 
 			var prefix = "";
