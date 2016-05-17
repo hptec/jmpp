@@ -21,7 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
-import cn.cerestech.framework.core.date.Dates;
+import cn.cerestech.framework.core.date.Moment;
 import cn.cerestech.framework.core.enums.DescribableEnum;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.utils.Random;
@@ -189,7 +189,7 @@ public class Exporter<T>{
 						case DATE:
 							Date vDate = column.getValue(t);
 							if (vDate != null) {
-								cell.setCellValue(Dates.from(vDate).formatDateTime());
+								cell.setCellValue(Moment.from(vDate).formatDateTime());
 							}
 							break;
 						case BIGDECIMAL:
