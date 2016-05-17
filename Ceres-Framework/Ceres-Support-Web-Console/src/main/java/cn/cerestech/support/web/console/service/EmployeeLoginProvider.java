@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
 
-import cn.cerestech.framework.core.date.Dates;
+import cn.cerestech.framework.core.date.Moment;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.core.strings.StringTypes;
@@ -78,7 +78,7 @@ public class EmployeeLoginProvider implements LoginServiceProvider<Employee> {
 		if (isRemember) {
 			// 记住登录
 			u.setRememberToken(Random.uuid());
-			u.setRememberExpired(Dates.now().addMonth(3).toDate());
+			u.setRememberExpired(Moment.now().addMonth(3).toDate());
 		} else {
 			// 清除登录
 			u.setRememberToken(null);
