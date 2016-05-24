@@ -29,7 +29,7 @@ import cn.cerestech.framework.support.webapi.WebApi;
 @RequestMapping("api/localstorage")
 public class LocalStorageWebApi extends WebApi {
 
-	private Logger log=LogManager.getLogger();
+	private Logger log = LogManager.getLogger();
 	@Autowired
 	LocalStorageService localstorageService;
 
@@ -38,7 +38,7 @@ public class LocalStorageWebApi extends WebApi {
 		String srcKey = getRequest().getRequestURI();
 		srcKey = srcKey.substring("/api/localstorage/query/".length());
 		log.trace("query local file: " + srcKey);
-		
+
 		Optional<LocalFile> optionFile = localstorageService.queryCache(srcKey);
 		if (!optionFile.isPresent()) {
 			getResponse().sendError(404);
@@ -73,7 +73,8 @@ public class LocalStorageWebApi extends WebApi {
 			});
 		});
 
-		return Jsons.toJson(retList);
+		// return Jsons.toJson(retList);
+		return null;
 	}
 
 }

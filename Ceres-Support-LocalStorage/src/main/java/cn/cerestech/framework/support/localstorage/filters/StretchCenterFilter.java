@@ -11,8 +11,8 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 
-import cn.cerestech.framework.core.FileExtensions;
-import cn.cerestech.framework.core.Images;
+import cn.cerestech.framework.core.images.Images;
+import cn.cerestech.framework.core.utils.FileExtensions;
 import cn.cerestech.framework.support.localstorage.QueryRequest;
 import cn.cerestech.framework.support.localstorage.service.LocalStorageService;
 
@@ -37,7 +37,8 @@ public class StretchCenterFilter implements Filter {
 
 		paramString = Strings.nullToEmpty(paramString);
 		if (!paramString.contains("w") || !paramString.contains("h") || !paramString.contains("_")) {
-			log.error("parameter error for StretchCenterFilter: " + paramString + "\nContext: " + context.toPretty());
+			// log.error("parameter error for StretchCenterFilter: " +
+			// paramString + "\nContext: " + context.toPretty());
 			return inputBuffer;
 		}
 		Integer w = null, h = null;
@@ -51,11 +52,13 @@ public class StretchCenterFilter implements Filter {
 		}
 
 		if (w == null || h == null) {
-			log.error("parameter error for StretchCenterFilter: " + paramString + "\nContext: " + context.toPretty());
+			// log.error("parameter error for StretchCenterFilter: " +
+			// paramString + "\nContext: " + context.toPretty());
 			return inputBuffer;
 		}
-		Images img = new Images(inputBuffer, context.getExt());
-		return img.stretchCenterClip(w, h).toBytes();
+		// Images img = new Images(inputBuffer, context.getExt());
+		// return img.stretchCenterClip(w, h).toBytes();
+		return null;
 	}
 
 	@Override

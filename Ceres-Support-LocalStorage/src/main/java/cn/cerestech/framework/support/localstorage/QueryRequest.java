@@ -35,7 +35,7 @@ public class QueryRequest implements Jsonable {
 			context.setFilterString(strList.get(1));
 			log.trace("filter string: " + context.getFilterString());
 			context.setLocal_uri(strList.get(0) + (Strings.isNullOrEmpty(ext) ? "" : ("." + ext)));
-			log.trace("context: " + context.toPretty());
+//			log.trace("context: " + context.toPretty());
 		}
 		return context;
 	}
