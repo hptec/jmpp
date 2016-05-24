@@ -7,7 +7,7 @@ import javax.persistence.Transient;
 
 import com.google.common.io.Files;
 
-import cn.cerestech.framework.core.Random;
+import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.support.persistence.IdEntity;
 
 @Entity

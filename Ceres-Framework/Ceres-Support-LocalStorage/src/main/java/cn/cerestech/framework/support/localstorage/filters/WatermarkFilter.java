@@ -1,14 +1,11 @@
 package cn.cerestech.framework.support.localstorage.filters;
 
-import java.io.IOException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.cerestech.framework.core.FileExtensions;
-import cn.cerestech.framework.core.Images;
+import cn.cerestech.framework.core.utils.FileExtensions;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.framework.support.localstorage.QueryRequest;
 import cn.cerestech.framework.support.localstorage.enums.WatermarkConfigKey;
@@ -47,13 +44,9 @@ public class WatermarkFilter implements Filter {
 
 	@Override
 	public byte[] process(byte[] inputBuffer, String paramString, QueryRequest context) {
-		Images img = new Images(inputBuffer, context.getExt());
-		try {
-			return img.mask(watermarkPath(), 1.0f).toBytes();
-		} catch (IOException e) {
-			log.catching(e);
-			return new byte[0];
-		}
+		// Images img = new Images(inputBuffer, context.getExt());
+		// return img.mask(watermarkPath(), 1.0f).toBytes();
+		return null;
 	}
 
 	@Override
