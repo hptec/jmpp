@@ -12,36 +12,36 @@ import cn.cerestech.framework.core.enums.DescribableEnum;
 @Embeddable
 public class Owner {
 
-	private String ownerType;
-	private Long ownerId;
+	private String type;
+	private Long id;
 
 	public Owner(DescribableEnum type, Long id) {
 		if (type == null || id == null) {
 			throw new IllegalArgumentException(" type or id is null");
 		}
-		this.setOwnerId(id);
-		this.setOwnerType(type.key());
+		this.setId(id);
+		this.setType(type.key());
 	}
 
 	public Owner(String type, Long id) {
-		this.setOwnerId(id);
-		this.setOwnerType(type);
+		this.setId(id);
+		this.setType(type);
 	}
 
-	public String getOwnerType() {
-		return ownerType;
+	public String getType() {
+		return type;
 	}
 
-	public void setOwnerType(String ownerType) {
-		this.ownerType = ownerType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public Long getOwnerId() {
-		return ownerId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setOwnerId(Long ownerId) {
-		this.ownerId = ownerId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	@Override
@@ -54,11 +54,11 @@ public class Owner {
 			return false;
 		Owner other = (Owner) obj;
 
-		return this.getOwnerType().equals(other.getOwnerType()) && this.getOwnerId().equals(other.getOwnerId());
+		return this.getType().equals(other.getType()) && this.getId().equals(other.getId());
 	}
 
 	public Boolean isEmpty() {
-		return Strings.isNullOrEmpty(ownerType) || ownerId == null;
+		return Strings.isNullOrEmpty(type) || id == null;
 	}
 
 	public static void main(String[] arugs) {

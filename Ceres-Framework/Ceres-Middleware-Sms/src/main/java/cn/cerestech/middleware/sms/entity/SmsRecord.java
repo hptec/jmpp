@@ -3,7 +3,9 @@ package cn.cerestech.middleware.sms.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -16,41 +18,36 @@ import cn.cerestech.middleware.sms.enums.SmsState;
 @Table(name = "$$sms_record")
 public class SmsRecord extends IdEntity {
 
-	public String provider;
+	private String provider;
 
-	public String state;
+	// 发送状态
+	@Convert(converter = SmsState.class)
+	@Column(length = 15)
+	private SmsState state;
 	@Column(length = 25)
-	public String ip;
-	public String phone;
+	private String ip;
+	private String phone;
 	@Column(length = 500)
-	public String content;
+	private String content;
 
-	public Date sendTime;
+	private Date sendTime;
 
-	public Date reciveTime;
+	private Date reciveTime;
 
-	public String outerId;
+	private String outerId;
 
-	public String outerCode;
+	private String outerCode;
 
 	@Type(type = "text")
-	public String message;
+	private String message;
 
-	public String businessType;
+	private String businessType;
 
-	public Date planTime;
+	private Date planTime;
 
-	@Column(length = 200)
-	public String remark;
-
-	public Boolean stateEqual(SmsState state) {
-		EnumCollector stateEnum = EnumCollector.forClass(SmsState.class);
-		if (this.state == null) {
-			return Boolean.FALSE;
-		} else {
-			return stateEnum.keyOf(this.state).equals(state);
-		}
-	}
+	@Type(type = "TEXT")
+	@Lob
+	private String remark;
 
 	public String getIp() {
 		return ip;
@@ -92,11 +89,11 @@ public class SmsRecord extends IdEntity {
 		this.remark = remark;
 	}
 
-	public String getState() {
+	public SmsState getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(SmsState state) {
 		this.state = state;
 	}
 
