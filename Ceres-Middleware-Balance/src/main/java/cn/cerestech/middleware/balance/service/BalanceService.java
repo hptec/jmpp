@@ -22,9 +22,11 @@ import cn.cerestech.framework.core.enums.DescribableEnum;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.core.service.Result;
+import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.middleware.balance.criteria.LogCriteria;
 import cn.cerestech.middleware.balance.criteria.WithdrawCriteria;
+import cn.cerestech.middleware.balance.dao.BalanceAccountDao;
 import cn.cerestech.middleware.balance.entity.Balance;
 import cn.cerestech.middleware.balance.entity.BalanceAccount;
 import cn.cerestech.middleware.balance.entity.BalanceTransaction;
@@ -40,14 +42,21 @@ import cn.cerestech.middleware.balance.enums.TransactionStatus;
 import cn.cerestech.middleware.balance.enums.WithdrawChannel;
 import cn.cerestech.middleware.balance.enums.WithdrawState;
 import cn.cerestech.middleware.balance.mapper.LogMapper;
+import cn.cerestech.middleware.sms.service.SmsMessageService;
 
 @Service
-public class BalanceService extends BaseService {
+public class BalanceService {
 
 	public static final String CATEGORY_KEYWORD = "BALANCE";
 
 	@Autowired
 	BalanceConfigService configService;
+
+	@Autowired
+	BalanceAccountDao balanceAccountDao;
+
+	@Autowired
+	PlatformService platformService;
 	@Autowired
 	LogMapper logMapper;
 	@Autowired
@@ -63,8 +72,8 @@ public class BalanceService extends BaseService {
 
 		Balance balance = new Balance();
 		balance.setOwner(owner);
-		List<BalanceAccount> accounts = mysqlService.queryBy(BalanceAccount.class,
-				"owner_type='" + owner.getOwner_type() + "' AND owner_id=" + owner.getOwner_id() + "");
+		List<BalanceAccount> accounts = balanceAccountDao
+				.findByPlatformIdAndOwnerIdAndOwnerType(platformService.getId(), owner.getId(), owner.getType());
 		balance.put(accounts);
 
 		return balance;
