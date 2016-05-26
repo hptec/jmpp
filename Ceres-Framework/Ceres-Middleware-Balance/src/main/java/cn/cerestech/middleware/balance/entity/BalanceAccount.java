@@ -3,6 +3,7 @@ package cn.cerestech.middleware.balance.entity;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -23,26 +24,18 @@ public class BalanceAccount extends IdEntity {
 	/**
 	 * 账户当前余额
 	 */
-	@Column()
 	private BigDecimal amount = BigDecimal.ZERO;
 
 	/**
 	 * 账户当前冻结金额
 	 */
-	@Column()
-	public BigDecimal amountFreeze = BigDecimal.ZERO;
+	private BigDecimal amountFreeze = BigDecimal.ZERO;
 
 	/**
-	 * 所有者类型
+	 * 所有者
 	 */
-	@Column()
-	public String ownerType;
-
-	/**
-	 * 所有者ID
-	 */
-	@Column()
-	public Long ownerId;
+	@Embedded
+	private Owner owner;
 
 	/**
 	 * 账户类型
@@ -60,8 +53,7 @@ public class BalanceAccount extends IdEntity {
 	}
 
 	public BalanceAccount(Owner owner) {
-		this.setOwnerType(owner.getOwnerType());
-		this.setOwnerId(owner.getOwnerId());
+		this.owner = owner;
 	}
 
 	public BigDecimal getAmount() {
@@ -73,7 +65,11 @@ public class BalanceAccount extends IdEntity {
 	}
 
 	public Owner getOwner() {
-		return new Owner(this.getOwnerType(), this.getOwnerId());
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	public BigDecimal getAmountFreeze() {
@@ -82,22 +78,6 @@ public class BalanceAccount extends IdEntity {
 
 	public void setAmountFreeze(BigDecimal amountFreeze) {
 		this.amountFreeze = amountFreeze;
-	}
-
-	public String getOwnerType() {
-		return ownerType;
-	}
-
-	public void setOwnerType(String ownerType) {
-		this.ownerType = ownerType;
-	}
-
-	public Long getOwnerId() {
-		return ownerId;
-	}
-
-	public void setOwnerId(Long ownerId) {
-		this.ownerId = ownerId;
 	}
 
 	public String getBalanceType() {
