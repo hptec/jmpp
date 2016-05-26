@@ -11,7 +11,7 @@ import cn.cerestech.framework.core.enums.EnumCollector;
 public abstract class AbstractAttributeConverter<T extends DescribableEnum> implements AttributeConverter<T, String> {
 
 	public String convertToDatabaseColumn(T attribute) {
-		return attribute.key();
+		return attribute == null ? null : attribute.key();
 	}
 
 	public T convertToEntityAttribute(String dbData) {

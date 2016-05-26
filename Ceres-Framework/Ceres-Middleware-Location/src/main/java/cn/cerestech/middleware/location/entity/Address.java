@@ -7,8 +7,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 
-import com.google.common.base.Strings;
-
 import cn.cerestech.middleware.location.enums.AdminLevel;
 
 @Embeddable
