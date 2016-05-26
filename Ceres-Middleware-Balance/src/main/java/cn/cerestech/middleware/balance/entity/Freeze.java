@@ -3,54 +3,48 @@ package cn.cerestech.middleware.balance.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import cn.cerestech.framework.persistence.annotation.Column;
-import cn.cerestech.framework.persistence.annotation.Table;
-import cn.cerestech.framework.persistence.entity.BaseEntity;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.framework.support.persistence.Owner;
 
-@SuppressWarnings("serial")
-@Table(value = "$$balance_freeze", comment = "账户冻结记录")
-public class Freeze extends BaseEntity {
+@Entity
+@Table(name = "$$balance_freeze")
+public class Freeze extends IdEntity {
 
-	@Column(title = "冻结金额")
+	// 冻结金额
 	public BigDecimal amount = BigDecimal.ZERO;
 
-	@Column(title = "所有者类型")
-	public String owner_type;
+	// 所有者类型
+	@Embedded
+	private Owner owner;
 
-	@Column(title = "所有者ID")
-	public Long owner_id;
-
-	@Column(title = "账户类型")
+	// 账户类型
 	public String balance_type;
 
-	@Column(title = "账户描述")
+	// 账户描述
 	public String balance_desc;
 
-	@Column(title = "冻结时间")
+	// 冻结时间
 	public Date freeze_time = new Date();
 
-	@Column(title = "冻结原因")
+	// 冻结原因
 	public String freeze_reason;
-
-	@Column(title = "冻结备注")
+	// 冻结备注
 	public String freeze_remark;
 
-	@Column(title = "解冻时间")
+	// 解冻时间
 	public Date unfreeze_time;
 
-	@Column(title = "解冻原因")
+	// 解冻原因
 	public String unfreeze_reason;
-
-	@Column(title = "解冻备注")
+	// 解冻备注
 	public String unfreeze_remark;
 
-	@Column(title = "状态")
+	// 状态
 	public String state;
-
-	public Owner getOwner() {
-		return new Owner(getOwner_type(), getOwner_id());
-	}
 
 	public BigDecimal getAmount() {
 		return amount;
@@ -114,22 +108,6 @@ public class Freeze extends BaseEntity {
 
 	public void setState(String state) {
 		this.state = state;
-	}
-
-	public String getOwner_type() {
-		return owner_type;
-	}
-
-	public void setOwner_type(String owner_type) {
-		this.owner_type = owner_type;
-	}
-
-	public Long getOwner_id() {
-		return owner_id;
-	}
-
-	public void setOwner_id(Long owner_id) {
-		this.owner_id = owner_id;
 	}
 
 	public String getBalance_type() {

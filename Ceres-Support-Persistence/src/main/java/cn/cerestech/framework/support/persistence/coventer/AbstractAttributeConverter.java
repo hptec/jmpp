@@ -18,6 +18,7 @@ public abstract class AbstractAttributeConverter<T extends DescribableEnum> impl
 		return EnumCollector.forClass(getType()).keyOf(dbData);
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Class<T> getType() {
 		Class<T> entityClass = null;
 		Type t = getClass().getGenericSuperclass();

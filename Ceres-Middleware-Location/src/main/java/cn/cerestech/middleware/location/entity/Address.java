@@ -36,7 +36,11 @@ public class Address {
 			@AttributeOverride(name = "latitude", column = @Column(name = "addr_coord_latitude")) })
 	private Coordinate coordinate;
 
+	@Column(name = "addr_street")
 	private String street;
+
+	@Column(name = "addr_zipcode")
+	private String zipcode;
 
 	public Coordinate getCoordinate() {
 		return coordinate;
@@ -78,6 +82,14 @@ public class Address {
 		this.street = street;
 	}
 
+	public String getZipcode() {
+		return zipcode;
+	}
+
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+
 	public Boolean isCoordinateEmpty() {
 		if (coordinate == null) {
 			return Boolean.TRUE;
@@ -85,7 +97,6 @@ public class Address {
 			return coordinate.isEmpty();
 		}
 	}
-
 
 	public Boolean isDivisionEmpty(AdminLevel level) {
 		switch (level) {

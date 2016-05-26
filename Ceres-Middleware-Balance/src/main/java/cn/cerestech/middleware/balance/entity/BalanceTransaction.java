@@ -189,8 +189,8 @@ public class BalanceTransaction extends IdEntity {
 		Log log = new Log();
 		log.setActionType(inout.key());
 		log.setAmount(amount);
-		log.setOwner_id(toWhom.getOwnerId());
-		log.setOwner_type(toWhom.getOwnerType());
+		log.setOwner_id(toWhom.getId());
+		log.setOwner_type(toWhom.getType());
 		log.setReason(reason == null ? this.reason : reason.key());
 		log.setBusiness_status_desc(business_stats == null ? businessStatusDesc : business_stats.desc());
 		log.setBusiness_status_key(business_stats == null ? businessStatusKey : business_stats.key());

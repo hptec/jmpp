@@ -17,7 +17,6 @@ import cn.cerestech.framework.support.persistence.Owner;
  * @author harryhe
  *
  */
-@SuppressWarnings("serial")
 public class Balance extends IdEntity {
 
 	private Map<String, BalanceAccount> pool = Maps.newHashMap();
