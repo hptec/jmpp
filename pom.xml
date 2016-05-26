@@ -76,6 +76,8 @@
     <module>Ceres-Support-Login</module>
     <module>Ceres-Support-Platform</module>
     <module>Ceres-Middleware-Sms-Console</module>
+    <module>Ceres-Middleware-Balance</module>
+    <module>Ceres-Middleware-Location</module>
   </modules>
   <version>3.0.0</version>
   <dependencies>
@@ -88,6 +90,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
       <version>${spring.boot.version}</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.google.guava</groupId>
+    	<artifactId>guava</artifactId>
+    	<version>19.0</version>
     </dependency>
   </dependencies>
 </project>
