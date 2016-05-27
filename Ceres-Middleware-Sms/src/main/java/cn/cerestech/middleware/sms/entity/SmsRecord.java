@@ -46,7 +46,7 @@ public class SmsRecord extends IdEntity {
 
 	private Date planTime;
 
-	@Type(type = "TEXT")
+	@Type(type = "text")
 	@Lob
 	private String remark;
 
