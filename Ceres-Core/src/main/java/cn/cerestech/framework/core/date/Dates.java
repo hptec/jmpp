@@ -62,6 +62,10 @@ public class Dates {
 	public Long toTimeInMillis() {
 		return getCalendar().getTimeInMillis();
 	}
+	
+	public String format(String pattern){
+		return getFormat(pattern).format(calc.getTime());
+	}
 
 	/**
 	 * 返回时间字符串 yyyy-MM-dd HH:mm:ss.SSS
