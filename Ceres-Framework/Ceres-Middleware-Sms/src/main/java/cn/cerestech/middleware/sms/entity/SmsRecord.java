@@ -12,6 +12,7 @@ import org.hibernate.annotations.Type;
 
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.support.persistence.IdEntity;
+import cn.cerestech.middleware.sms.converter.SmsStateConverter;
 import cn.cerestech.middleware.sms.enums.SmsState;
 
 @Entity
@@ -21,7 +22,7 @@ public class SmsRecord extends IdEntity {
 	private String provider;
 
 	// 发送状态
-	@Convert(converter = SmsState.class)
+	@Convert(converter = SmsStateConverter.class)
 	@Column(length = 15)
 	private SmsState state;
 	@Column(length = 25)
