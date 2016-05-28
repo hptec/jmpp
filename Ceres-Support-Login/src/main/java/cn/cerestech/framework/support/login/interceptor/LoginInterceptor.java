@@ -1,40 +1,39 @@
 package cn.cerestech.framework.support.login.interceptor;
 
+import java.util.Date;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.common.primitives.Longs;
+import com.beust.jcommander.internal.Maps;
+import com.google.common.base.Strings;
 
-import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
-import cn.cerestech.framework.support.login.entity.LoginEntity;
+import cn.cerestech.framework.support.login.dao.LoginDao;
+import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
-import cn.cerestech.framework.support.login.provider.LoginServiceProvider;
-import cn.cerestech.framework.support.login.service.LoginService;
+import cn.cerestech.framework.support.login.operator.UserSessionOperator;
 import cn.cerestech.framework.support.persistence.IdEntity;
-import cn.cerestech.framework.support.web.Cookies;
-import cn.cerestech.framework.support.web.WebSupport;
+import cn.cerestech.framework.support.web.operator.PlatformOperator;
+import cn.cerestech.framework.support.web.operator.SessionOperator;
+import cn.cerestech.framework.support.web.operator.ZipOutOperator;
 
 @Component
-public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
+public class LoginInterceptor
+		implements HandlerInterceptor, ZipOutOperator, SessionOperator, PlatformOperator, UserSessionOperator {
+
+	@SuppressWarnings("rawtypes")
+	private static final Map<PlatformCategory, LoginDao> loginProviderPool = Maps.newHashMap();
 
 	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
-	public static final String SESSION_LOGINENTITY_ID = "SESSION_LOGINENTITY_ID_";
-
-	private Logger log = LogManager.getLogger();
-
-	@Autowired
-	private LoginService loginService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -44,51 +43,45 @@ public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 			LoginRequired fl = m.getMethodAnnotation(LoginRequired.class);
 			if (fl != null && fl.required()) {
 
-				Cookies cookies = Cookies.from(request);
-
 				// 检查paltform,必须指定platfomr
-				if (!cookies.exist(COOKIE_CERES_PLATFORM)) {
+				PlatformCategory platform = getPlatformCategory();
+				if (platform == null) {
 					zipOut(Result.error(ErrorCodes.PLATFORM_CATEGORY_REQUIRED));
 					return Boolean.FALSE;
 				}
-				PlatformCategory platform = EnumCollector.forClass(PlatformCategory.class)
-						.keyOf(cookies.getValue(COOKIE_CERES_PLATFORM));
 
 				// 检查Session中是否存在登录用户ID
-				String sKey = SESSION_LOGINENTITY_ID + platform.key();
 
-				Long id = (Long) request.getSession(true).getAttribute(sKey);
+				Long id = getUserId();
 				if (id == null) {
 					// 用户未登录
 
 					// 检测是否有持久化Cookie登录
-					String cKey = getCookieKeyRememberToken(platform);
-					if (!cookies.exist(cKey)) {
-						// 如果要求登录、没有登录也没有remember_key，则要求登录
+					String token = getRememberToken();
+					if (Strings.isNullOrEmpty(token)) {
+						// 如果要求登录、没有登录也没有token，则要求登录
 						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
 						return Boolean.FALSE;
+					}
+					// 获取remember_key和remember_id
+					id = getRememberId();
+					if (id == null) {
+						// id 不存在，数据错误,要求重登录
+						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
+						return Boolean.FALSE;
+					}
+
+					// 校验登录
+					LoginDao dao = getDao();
+					if (dao != null && dao.findUniqueByIdAndLoginRememberTokenAndLoginRememberExpiredGreaterThan(id,
+							token, new Date()) != null) {
+						// 校验通过，记录入Session
+						putUserId(id);
+						return Boolean.TRUE;
 					} else {
-						// 获取remember_key和remember_id
-						String remember = cookies.getValue(cKey);
-						id = Longs.tryParse(cookies.getValue(getCookieKeyRememberID(platform)));
-						if (id == null) {
-							// id 不存在，数据错误,要求重登录
-							zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
-							return Boolean.FALSE;
-						}
-
-						// 校验登录
-						LoginServiceProvider serviceProvider = loginService.getServiceProvider(platform);
-						if (serviceProvider != null && serviceProvider.validateRememberToken(remember, id)) {
-							// 校验通过，记录入Session
-							session(sKey, id);
-							return Boolean.TRUE;
-						} else {
-							// 不提供此种类型的持久化登录,要求重新登录
-							zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
-							return Boolean.FALSE;
-						}
-
+						// 不提供此种类型的持久化登录,要求重新登录
+						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
+						return Boolean.FALSE;
 					}
 
 				}
@@ -109,39 +102,37 @@ public class LoginInterceptor extends WebSupport implements HandlerInterceptor {
 			throws Exception {
 	}
 
-	public void register(PlatformCategory platform, LoginEntity entity, Boolean remember, HttpServletRequest request,
-			HttpServletResponse response) {
-		// 记录登录信息到cookie中
-		IdEntity idEntity = null;
-		if (entity instanceof IdEntity) {
-			idEntity = (IdEntity) entity;
-			session(SESSION_LOGINENTITY_ID, idEntity.getId());// 记录入Session
-		}
+	public void register(Loginable login, Boolean remember) {
+		Long id = login instanceof IdEntity ? ((IdEntity) login).getId() : null;
 
-		String cKeyToken = getCookieKeyRememberToken(platform);
-		String cKeyId = getCookieKeyRememberID(platform);
-		Cookies c = Cookies.from(request);
+		// 记录登录信息到cookie中
+		putUserId(id);
+
 		// 如果用户记住登录，还要放入cookie
 		if (remember) {
 			// 记录登录,添加cookie
-			if (idEntity != null) {
-				c.add(cKeyId, idEntity.getId().toString());
-			}
-			c.add(cKeyToken, entity.getRememberToken());
+			putRemember(id, login.getLogin().getRememberToken());
 		} else {
 			// 清除cookie
-			c.remove(cKeyId);
-			c.remove(cKeyToken);
+			clearRemember();
 		}
-		c.flushTo(response);
 	}
 
-	public String getCookieKeyRememberToken(PlatformCategory platform) {
-		return "COOKIE_REMEMBER_TOKEN_" + platform.key();
+	/**
+	 * 存储LoginProvider，不重复存储
+	 * 
+	 * @param category
+	 * @param provider
+	 */
+	public void putDao(LoginDao provider) {
+		PlatformCategory category = getPlatformCategory();
+		if (!loginProviderPool.containsKey(category)) {
+			loginProviderPool.put(category, provider);
+		}
 	}
 
-	public String getCookieKeyRememberID(PlatformCategory platform) {
-		return "COOKIE_REMEMBER_ID_" + platform.key();
+	public LoginDao getDao() {
+		return loginProviderPool.get(getPlatformCategory());
 	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.util.WebUtils;
 
 import com.google.common.collect.Maps;
 
@@ -25,12 +26,14 @@ import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.support.web.annotation.PlatformDefaultPage;
+import cn.cerestech.framework.support.web.operator.PlatformOperator;
 import cn.cerestech.support.classpath.ClasspathService;
 
 @EnableWebMvc
 @ControllerAdvice
 @Configuration
-public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler implements ComponentDispatcher {
+public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler
+		implements ComponentDispatcher, PlatformOperator {
 
 	private static Map<PlatformCategory, Object> indexPages = Maps.newHashMap();
 	private Logger log = LogManager.getLogger();
@@ -43,32 +46,28 @@ public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler im
 			HttpStatus status, WebRequest request) {
 		ResponseEntity<Object> entity = null;
 
-		Cookies cookies = Cookies.from(WebUtils.getCurrentRequest());
-		if (cookies.exist(WebSupport.COOKIE_CERES_PLATFORM)) {
-			PlatformCategory platform = EnumCollector.forClass(PlatformCategory.class)
-					.keyOf(cookies.getValue(WebSupport.COOKIE_CERES_PLATFORM));
-			if (platform != null && indexPages.containsKey(platform)) {
-				Object obj = indexPages.get(platform);
-				Method[] methods = obj.getClass().getMethods();
-				for (Method m : methods) {
-					if (m.isAnnotationPresent(PlatformDefaultPage.class)) {
-						try {
-							Object result = m.invoke(obj);
-							if (result instanceof byte[]) {
-								byte[] bytes = (byte[]) result;
-								entity = new ResponseEntity<Object>(bytes, headers, HttpStatus.FOUND);
-							} else {
-								new ResponseEntity<Object>(result, headers, HttpStatus.FOUND);
-							}
+		PlatformCategory platform = getPlatformCategory();
 
-						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-						// | UnsupportedEncodingException
-						e) {
-							log.catching(e);
+		if (platform != null && indexPages.containsKey(platform)) {
+			Object obj = indexPages.get(platform);
+			Method[] methods = obj.getClass().getMethods();
+			for (Method m : methods) {
+				if (m.isAnnotationPresent(PlatformDefaultPage.class)) {
+					try {
+						Object result = m.invoke(obj);
+						if (result instanceof byte[]) {
+							byte[] bytes = (byte[]) result;
+							entity = new ResponseEntity<Object>(bytes, headers, HttpStatus.FOUND);
+						} else {
+							new ResponseEntity<Object>(result, headers, HttpStatus.FOUND);
 						}
+
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+					// | UnsupportedEncodingException
+					e) {
+						log.catching(e);
 					}
 				}
-
 			}
 
 		}

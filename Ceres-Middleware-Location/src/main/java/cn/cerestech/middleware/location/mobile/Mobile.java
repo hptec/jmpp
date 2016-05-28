@@ -3,14 +3,12 @@ package cn.cerestech.middleware.location.mobile;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
 import com.google.common.base.Strings;
 
 import cn.cerestech.framework.core.regexp.RegExp;
-import cn.cerestech.middleware.location.converter.CallingCodeConverter;
 
 @Embeddable
 public class Mobile {

@@ -1,43 +1,79 @@
 package cn.cerestech.framework.support.login.service;
 
-import java.util.Map;
+import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Maps;
-
-import cn.cerestech.framework.core.components.ComponentDispatcher;
-import cn.cerestech.framework.core.enums.PlatformCategory;
-import cn.cerestech.framework.support.login.annotation.LoginProvider;
-import cn.cerestech.framework.support.login.provider.LoginServiceProvider;
+import cn.cerestech.framework.core.date.Moment;
+import cn.cerestech.framework.core.enums.YesNo;
+import cn.cerestech.framework.core.service.Result;
+import cn.cerestech.framework.core.utils.Random;
+import cn.cerestech.framework.support.login.dao.LoginDao;
+import cn.cerestech.framework.support.login.entity.Login;
+import cn.cerestech.framework.support.login.entity.Loginable;
+import cn.cerestech.framework.support.login.enums.ErrorCodes;
+import cn.cerestech.framework.support.login.interceptor.LoginInterceptor;
+import cn.cerestech.framework.support.persistence.entity.Confidential;
+import cn.cerestech.framework.support.web.operator.PlatformOperator;
 
 @Service
-public class LoginService implements ComponentDispatcher {
+public class LoginService<T extends Loginable> implements PlatformOperator {
 
-	private static Map<PlatformCategory, LoginServiceProvider> providerPool = Maps.newHashMap();
+	@Autowired
+	LoginInterceptor interceptor;
 
-	public LoginServiceProvider getServiceProvider(PlatformCategory platform) {
-		return providerPool.get(platform);
-	}
-
-	@Override
-	public void recive(String beanName, Object bean) {
-		if (bean instanceof LoginServiceProvider && bean.getClass().isAnnotationPresent(LoginProvider.class)) {
-			LoginServiceProvider provider = (LoginServiceProvider) bean;
-			LoginProvider providerAnno = bean.getClass().getAnnotation(LoginProvider.class);
-			if (providerPool.containsKey(providerAnno.value())) {
-				throw new IllegalArgumentException("Login Provider conflict: [" + providerAnno.value().name() + "] "
-						+ bean.getClass().getCanonicalName());
-
-			} else {
-				providerPool.put(providerAnno.value(), provider);
-			}
+	@SuppressWarnings("unchecked")
+	public Result<T> login(LoginDao<T> dao, Login login, Boolean needRemember) {
+		if (dao == null || login == null || login.isEmpty()) {
+			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
 
+		T t = dao.findUniqueByLoginId(login.getId());
+		if (t == null) {
+			return Result.error(ErrorCodes.LOGIN_FAILED);
+		}
+
+		Login inDb = t.getLogin();
+
+		if (inDb == null || inDb.isEmpty()) {
+			return Result.error(ErrorCodes.LOGIN_FAILED);
+		}
+
+		if (!login.comparePassword(inDb.getPwd())) {
+			// 比对用户名密码
+			return Result.error(ErrorCodes.LOGIN_FAILED);
+		}
+
+		if (inDb.getFrozen().equals(YesNo.YES)) {
+			return Result.error(ErrorCodes.LOGIN_FROZEN);
+		}
+
+		// 记录remember me
+		Date now = new Date();
+		if (needRemember) {
+			// 记住登录
+			inDb.setRememberToken(Random.uuid());
+			inDb.setRememberExpired(Moment.now().addMonth(3).toDate());
+		} else {
+			// 清除登录
+			inDb.setRememberToken(null);
+			inDb.setRememberExpired(now);
+		}
+
+		inDb.setLastLoginTime(inDb.getThisLoginTime());
+		inDb.setThisLoginTime(new Date());
+
+		// 登记到登录拦截器中
+		interceptor.register(t, needRemember);
+
+		// 保存登录信息
+		dao.save(t);
+
+		// 检测登录器是否注册
+		interceptor.putDao(dao);
+
+		return Result.success(t instanceof Confidential ? ((Confidential<T>) t).safty() : t);
 	}
 
-	@Override
-	public void onComplete() {
-
-	}
 }
