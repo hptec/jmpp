@@ -3,22 +3,22 @@ package cn.cerestech.middleware.sms.entity;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
 import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.middleware.location.ip.IP;
 import cn.cerestech.middleware.location.mobile.Mobile;
-import cn.cerestech.middleware.sms.converter.SmsProviderConverter;
-import cn.cerestech.middleware.sms.converter.SmsStateConverter;
 import cn.cerestech.middleware.sms.enums.SmsProvider;
 import cn.cerestech.middleware.sms.enums.SmsState;
 
@@ -27,12 +27,10 @@ import cn.cerestech.middleware.sms.enums.SmsState;
 public class SmsRecord extends IdEntity {
 
 	// 发送通道
-	@Convert(converter = SmsProviderConverter.class)
 	@Enumerated(EnumType.STRING)
 	private SmsProvider provider;
 
 	// 发送状态
-	@Convert(converter = SmsStateConverter.class)
 	@Column(length = 15)
 	private SmsState state;
 
@@ -52,15 +50,25 @@ public class SmsRecord extends IdEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date sendedTime;
 
-	// 接收时间
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date recivedTime;
-
 	@Embedded
 	private SmsSendResult result;
 
 	@Type(type = "text")
 	private String remark;
+
+	@ManyToOne
+	@JoinColumn(name = "batch_id")
+	private SmsBatch batch;
+
+	/**
+	 * 开发者可以用两种方式设置短信的内容<br/>
+	 * 1. setContent(String) 直接设置<br/>
+	 * 2. setContent(String,Object) 使用模板解析,结息规则取决于SmsProvider中提供的Parser逻辑
+	 */
+	@Transient
+	private Object contentParameter;
+	@Transient
+	private String contentTemplate;
 
 	public SmsState getState() {
 		return state;
@@ -76,6 +84,11 @@ public class SmsRecord extends IdEntity {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public void setContent(String template, Object parameter) {
+		this.contentTemplate = template;
+		this.contentParameter = parameter;
 	}
 
 	public SmsProvider getProvider() {
@@ -118,12 +131,12 @@ public class SmsRecord extends IdEntity {
 		this.sendedTime = sendedTime;
 	}
 
-	public Date getRecivedTime() {
-		return recivedTime;
+	public SmsBatch getBatch() {
+		return batch;
 	}
 
-	public void setRecivedTime(Date recivedTime) {
-		this.recivedTime = recivedTime;
+	public void setBatch(SmsBatch batch) {
+		this.batch = batch;
 	}
 
 	public Date getPlanTime() {
@@ -140,6 +153,14 @@ public class SmsRecord extends IdEntity {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Object getContentParameter() {
+		return contentParameter;
+	}
+
+	public String getContentTemplate() {
+		return contentTemplate;
 	}
 
 }
