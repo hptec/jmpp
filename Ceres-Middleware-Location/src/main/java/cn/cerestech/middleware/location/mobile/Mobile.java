@@ -20,7 +20,6 @@ public class Mobile {
 	@Transient
 	private static char maskChar = '*';
 
-	@Convert(converter = CallingCodeConverter.class)
 	private CallingCode code = CallingCode.CHINA;
 
 	private String number;

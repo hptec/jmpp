@@ -9,15 +9,17 @@ import javax.persistence.Table;
 import cn.cerestech.framework.core.enums.Gender;
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.framework.support.localstorage.entity.LocalFile;
 import cn.cerestech.framework.support.login.entity.LoginEntity;
 import cn.cerestech.framework.support.persistence.IdEntity;
+import cn.cerestech.middleware.location.mobile.Mobile;
 
 @Entity
 @Table(name = "$$sys_employee")
 public class Employee extends IdEntity implements LoginEntity {
 
 	private String name;
-	private String phone;
+	private Mobile phone;
 	private String email;
 	private String work_num;
 	private String loginId;
@@ -25,15 +27,12 @@ public class Employee extends IdEntity implements LoginEntity {
 	private Long positionId;
 	// private Long departmentId;
 
-	private String gender = Gender.UNKNOWN.key();
-	private String frozen = YesNo.NO.key();
-
-	@Column(length = 500)
-	private String avatarImage;
+	private Gender gender = Gender.UNKNOWN;
+	private String frozen = YesNo.NO;
+	private LocalFile avatar;
 	@Column(length = 70)
 	private String rememberToken;
 	private Date rememberExpired;
-	private Date lastLoginTime;
 
 	public String getName() {
 		return name;
@@ -41,14 +40,6 @@ public class Employee extends IdEntity implements LoginEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public String getEmail() {

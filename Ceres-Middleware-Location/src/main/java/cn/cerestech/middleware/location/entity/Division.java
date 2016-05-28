@@ -23,8 +23,7 @@ public class Division implements Serializable {
 
 	private String code;
 	private String name;
-	
-	@Convert(converter = AdminLevelConverter.class)
+
 	@Enumerated(EnumType.STRING)
 	private AdminLevel level;
 
