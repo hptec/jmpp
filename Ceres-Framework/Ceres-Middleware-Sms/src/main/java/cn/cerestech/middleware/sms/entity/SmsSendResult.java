@@ -1,12 +1,24 @@
 package cn.cerestech.middleware.sms.entity;
 
+import javax.persistence.Embeddable;
+
+import org.hibernate.annotations.Type;
+
+/**
+ * 发送结果
+ * 
+ * @author harryhe
+ *
+ */
+@Embeddable
 public class SmsSendResult {
 
 	private Boolean isSuccess;
-	private String outer_id;
-	private String outer_code;
-	private String message;
-	private String remark;
+	private String outer_id;// 发送事件ID
+	private String outer_code;// 响应代码
+	private String message;// 相应内容
+	@Type(type = "text")
+	private String remark;// 备注
 
 	public Boolean isSuccess() {
 		return isSuccess;
