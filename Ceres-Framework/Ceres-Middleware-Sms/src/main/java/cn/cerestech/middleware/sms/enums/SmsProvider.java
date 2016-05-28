@@ -20,8 +20,7 @@ import cn.cerestech.middleware.sms.providers.YunPianAuthKeys;
 public enum SmsProvider implements DescribableEnum, ISmsProvider {
 	YUNPIAN("云片网络", "云片网络", //
 			PropertiesTemplateParser.fromProperties("sms"), //
-			YunPianAuthKeys.values(),
-			new ISmsSender() {
+			YunPianAuthKeys.values(), new ISmsSender() {
 				@Override
 				public SmsSendResult send(SmsRecord sms, Map<String, Object> configParams) {
 					String url = "http://yunpian.com/v1/sms/send.json";
