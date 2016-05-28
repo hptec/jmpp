@@ -56,9 +56,6 @@ public class LocalStorageService {
 	@Autowired
 	protected FilterService filterService;
 
-	@Autowired
-	protected PlatformService platformService;
-
 	/**
 	 * 返回工程文件存储目录，不带结束“/”
 	 * 
@@ -108,7 +105,7 @@ public class LocalStorageService {
 	protected LocalFile queryByHttpUri(String httpUri) {
 
 		// 首先检测相同过滤器的文件是否已经存在
-		LocalFile file = localfileDao.findByPlatformIdAndHttpUri(platformService.getId(), httpUri);
+		LocalFile file = localfileDao.findByHttpUri(httpUri);
 		if (file == null) {
 			// 数据库记录不存在
 			QueryRequest request = QueryRequest.fromHttpUri(httpUri);// 格式化请求
@@ -216,7 +213,7 @@ public class LocalStorageService {
 	 */
 	protected LocalFile queryByLocalUri(String localUri) {
 
-		LocalFile file = localfileDao.findByPlatformIdAndLocalUri(platformService.getId(), localUri);
+		LocalFile file = localfileDao.findByLocalUri(localUri);
 
 		byte[] bytes = new byte[0];
 		if (file == null) {

@@ -8,5 +8,4 @@ import cn.cerestech.support.web.console.entity.SysMenu;
 
 public interface SysMenuDao extends JpaRepository<SysMenu, Long> {
 
-	List<SysMenu> findByPlatformId(Long platformId);
 }
