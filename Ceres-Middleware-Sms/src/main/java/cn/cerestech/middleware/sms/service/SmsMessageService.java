@@ -2,28 +2,23 @@ package cn.cerestech.middleware.sms.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Sets;
 
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.middleware.sms.dao.SmsDao;
+import cn.cerestech.middleware.sms.entity.SmsBatch;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
 import cn.cerestech.middleware.sms.enums.SmsConfigKeys;
 import cn.cerestech.middleware.sms.enums.SmsState;
-import cn.cerestech.middleware.sms.providers.HuoniProvider;
 import cn.cerestech.middleware.sms.providers.SmsProvider;
-import cn.cerestech.middleware.sms.providers.YunPianProvider;
 
 @Service
 public class SmsMessageService {
-
-	private static Set<SmsProvider> providers = Sets.newHashSet(new YunPianProvider(), new HuoniProvider());
 
 	@Autowired
 	ConfigService configService;
@@ -44,48 +39,9 @@ public class SmsMessageService {
 		return configService.query(SmsConfigKeys.SMS_ENABLE).boolValue();
 	}
 
-	public Set<SmsProvider> getProviders() {
-		return providers;
-	}
+	public Result<SmsBatch> send(SmsBatch batch) {
 
-	public SmsProvider getProvider(String name) {
-		return getProviders().stream().filter(p -> p.getName().equalsIgnoreCase(name)).findFirst()
-				.orElse(defaultProvider());
-	}
-
-	/**
-	 * 设置服务供应商，如果找不到，则返回空
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public SmsProvider setProvider(String name) {
-		SmsProvider smsProvider = getProviders().stream().filter(p -> p.getName().equalsIgnoreCase(name)).findFirst()
-				.orElse(null);
-		if (smsProvider == null) {
-			return null;
-		}
-		configService.update(SmsConfigKeys.SMS_DEFAULT_PROVIDER, name);
-		return smsProvider;
-	}
-
-	public SmsProvider defaultProvider() {
-		String name = configService.query(SmsConfigKeys.SMS_DEFAULT_PROVIDER).stringValue();
-		for (SmsProvider p : getProviders()) {
-			if (p.getName().equalsIgnoreCase(name)) {
-				return p;
-			}
-		}
-
-		return getProviders().stream().findFirst().orElse(new YunPianProvider());
-	}
-
-	public void defaultProvider(SmsProvider provider) {
-		configService.update(SmsConfigKeys.SMS_DEFAULT_PROVIDER, provider.getName());
-	}
-
-	protected void sendInstant(String phone, String text) {
-
+		return null;
 	}
 
 	public Result<SmsRecord> send(SmsRecord sr, Boolean checkFrequency) {
@@ -141,7 +97,7 @@ public class SmsMessageService {
 
 		StringBuffer where = new StringBuffer(" 1=1 ");
 		if (smsProvider != null) {
-			where.append(" AND provider='" + smsProvider.getName() + "'");
+//			where.append(" AND provider='" + smsProvider.getName() + "'");
 		}
 
 		if (state != null) {

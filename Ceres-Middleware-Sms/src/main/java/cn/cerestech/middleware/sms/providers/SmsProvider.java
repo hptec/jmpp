@@ -8,8 +8,6 @@ import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
 
 public interface SmsProvider {
 
-	public String getName();
-
 	public SmsProviderAuthKey[] authKeys();
 
 	public SmsSendResult send(String phone, String text, Map<String, Object> configParams);

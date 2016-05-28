@@ -24,6 +24,11 @@
       <artifactId>Ceres-Support-Configuration</artifactId>
       <version>${ceres.version}</version>
     </dependency>
+    <dependency>
+    	<groupId>cn.cerestech</groupId>
+    	<artifactId>Ceres-Middleware-Location</artifactId>
+    	<version>${ceres.version}</version>
+    </dependency>
   </dependencies>
 </project>
 

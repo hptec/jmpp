@@ -4,11 +4,22 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
 
 import cn.cerestech.framework.support.persistence.IdEntity;
+import cn.cerestech.middleware.location.ip.IP;
+import cn.cerestech.middleware.location.mobile.Mobile;
+import cn.cerestech.middleware.sms.converter.SmsProviderConverter;
 import cn.cerestech.middleware.sms.converter.SmsStateConverter;
+import cn.cerestech.middleware.sms.enums.SmsProvider;
 import cn.cerestech.middleware.sms.enums.SmsState;
 
 @Entity
@@ -16,45 +27,40 @@ import cn.cerestech.middleware.sms.enums.SmsState;
 public class SmsRecord extends IdEntity {
 
 	// 发送通道
-	private String provider;
+	@Convert(converter = SmsProviderConverter.class)
+	@Enumerated(EnumType.STRING)
+	private SmsProvider provider;
 
 	// 发送状态
 	@Convert(converter = SmsStateConverter.class)
 	@Column(length = 15)
 	private SmsState state;
-	@Column(length = 25)
-	private String clientIp;
-	private String reciver;
+
+	@Embedded
+	private IP ip;
+	@Embedded
+	private Mobile to;
+
 	@Column(length = 500)
 	private String content;
 
+	// 计划发送时间
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date planTime;
+
 	// 发送时间
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date sendedTime;
 
 	// 接收时间
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date recivedTime;
 
-	private String outerId;
+	@Embedded
+	private SmsSendResult result;
 
-	private String outerCode;
-
-	private String message;
-
-	// 业务类型，即引发此短信的业务节点
-	private String invokerType;
-
-	// 计划发送时间
-	private Date planTime;
-
+	@Type(type = "text")
 	private String remark;
-
-	public String getProvider() {
-		return provider;
-	}
-
-	public void setProvider(String provider) {
-		this.provider = provider;
-	}
 
 	public SmsState getState() {
 		return state;
@@ -64,28 +70,44 @@ public class SmsRecord extends IdEntity {
 		this.state = state;
 	}
 
-	public String getClientIp() {
-		return clientIp;
-	}
-
-	public void setClientIp(String clientIp) {
-		this.clientIp = clientIp;
-	}
-
-	public String getReciver() {
-		return reciver;
-	}
-
-	public void setReciver(String reciver) {
-		this.reciver = reciver;
-	}
-
 	public String getContent() {
 		return content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public SmsProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(SmsProvider provider) {
+		this.provider = provider;
+	}
+
+	public IP getIp() {
+		return ip;
+	}
+
+	public void setIp(IP ip) {
+		this.ip = ip;
+	}
+
+	public Mobile getTo() {
+		return to;
+	}
+
+	public void setTo(Mobile to) {
+		this.to = to;
+	}
+
+	public SmsSendResult getResult() {
+		return result;
+	}
+
+	public void setResult(SmsSendResult result) {
+		this.result = result;
 	}
 
 	public Date getSendedTime() {
@@ -102,38 +124,6 @@ public class SmsRecord extends IdEntity {
 
 	public void setRecivedTime(Date recivedTime) {
 		this.recivedTime = recivedTime;
-	}
-
-	public String getOuterId() {
-		return outerId;
-	}
-
-	public void setOuterId(String outerId) {
-		this.outerId = outerId;
-	}
-
-	public String getOuterCode() {
-		return outerCode;
-	}
-
-	public void setOuterCode(String outerCode) {
-		this.outerCode = outerCode;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getInvokerType() {
-		return invokerType;
-	}
-
-	public void setInvokerType(String invokerType) {
-		this.invokerType = invokerType;
 	}
 
 	public Date getPlanTime() {

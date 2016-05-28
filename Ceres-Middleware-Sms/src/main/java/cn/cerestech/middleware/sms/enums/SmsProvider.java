@@ -2,14 +2,13 @@ package cn.cerestech.middleware.sms.enums;
 
 import cn.cerestech.framework.core.enums.DescribableEnum;
 
-public enum Providers implements DescribableEnum {
+public enum SmsProvider implements DescribableEnum {
 	YUNPIAN("云片网络", "云片网络"), //
-	HUONI("火尼短信", "火尼短信"),//
 	;
 
 	private String key, desc;
 
-	private Providers(String key, String desc) {
+	private SmsProvider(String key, String desc) {
 		this.key = key;
 		this.desc = desc;
 	}
