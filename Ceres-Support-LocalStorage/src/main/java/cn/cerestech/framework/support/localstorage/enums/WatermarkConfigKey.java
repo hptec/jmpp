@@ -6,8 +6,8 @@ public enum WatermarkConfigKey implements ConfigKey {
 
 	FRAMEWORK_SUPPORT_LOCALSTORAGE_WATERMARK_FILE_PATH("FRAMEWORK_SUPPORT_LOCALSTORAGE_WATERMARK_FILE_PATH", "",
 			"图片水印图片绝对路径"),
-			//
-			;
+	//
+	;
 
 	private String key, defaultValue, desc;
 

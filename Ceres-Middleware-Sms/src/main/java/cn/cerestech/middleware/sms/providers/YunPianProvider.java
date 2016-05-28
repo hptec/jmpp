@@ -13,7 +13,7 @@ import cn.cerestech.framework.core.parser.PropertiesTemplateParser;
 import cn.cerestech.middleware.sms.entity.SmsSendResult;
 import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
 
-public class YunPianProvider implements SmsProvider {
+public class YunPianProvider implements ISmsProvider {
 
 	private String name = "云片网络";
 

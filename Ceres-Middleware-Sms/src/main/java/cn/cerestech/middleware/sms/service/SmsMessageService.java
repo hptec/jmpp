@@ -15,7 +15,7 @@ import cn.cerestech.middleware.sms.entity.SmsBatch;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
 import cn.cerestech.middleware.sms.enums.SmsConfigKeys;
 import cn.cerestech.middleware.sms.enums.SmsState;
-import cn.cerestech.middleware.sms.providers.SmsProvider;
+import cn.cerestech.middleware.sms.providers.ISmsProvider;
 
 @Service
 public class SmsMessageService {
@@ -92,7 +92,7 @@ public class SmsMessageService {
 		return 1;
 	}
 
-	public List<? extends SmsRecord> search(Class<? extends SmsRecord> cls, SmsProvider smsProvider, SmsState state,
+	public List<? extends SmsRecord> search(Class<? extends SmsRecord> cls, ISmsProvider smsProvider, SmsState state,
 			String phone, Date fromDate, Date toDate, Integer maxRecords) {
 
 		StringBuffer where = new StringBuffer(" 1=1 ");
