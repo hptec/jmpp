@@ -29,12 +29,15 @@ public class SmsMessageService {
 	@Autowired
 	ConfigService configService;
 
-
 	@Autowired
 	SmsDao smsDao;
 
 	@Autowired
 	PlatformService platformServcie;
+
+	public void beginGroup() {
+		
+	}
 
 	/**
 	 * 是否开启短信发送功能
