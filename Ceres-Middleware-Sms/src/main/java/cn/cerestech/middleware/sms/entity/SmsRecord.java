@@ -70,89 +70,100 @@ public class SmsRecord extends IdEntity {
 	@Transient
 	private String contentTemplate;
 
-	public SmsState getState() {
+	public SmsState state() {
 		return state;
 	}
 
-	public void setState(SmsState state) {
+	public SmsRecord setState(SmsState state) {
 		this.state = state;
+		return this;
 	}
 
 	public String getContent() {
 		return content;
 	}
 
-	public void setContent(String content) {
+	public SmsRecord setContent(String content) {
 		this.content = content;
+		return this;
 	}
 
-	public void setContent(String template, Object parameter) {
+	public SmsRecord setContent(String template, Object parameter) {
 		this.contentTemplate = template;
 		this.contentParameter = parameter;
+		return this;
 	}
 
 	public SmsProvider getProvider() {
 		return provider;
 	}
 
-	public void setProvider(SmsProvider provider) {
+	public SmsRecord setProvider(SmsProvider provider) {
 		this.provider = provider;
+		return this;
 	}
 
 	public IP getIp() {
 		return ip;
 	}
 
-	public void setIp(IP ip) {
+	public SmsRecord setIp(IP ip) {
 		this.ip = ip;
+		return this;
 	}
 
 	public Mobile getTo() {
 		return to;
 	}
 
-	public void setTo(Mobile to) {
+	public SmsRecord setTo(Mobile to) {
 		this.to = to;
+		return this;
 	}
 
 	public SmsSendResult getResult() {
 		return result;
 	}
 
-	public void setResult(SmsSendResult result) {
+	public SmsRecord setResult(SmsSendResult result) {
 		this.result = result;
+		return this;
 	}
 
 	public Date getSendedTime() {
 		return sendedTime;
 	}
 
-	public void setSendedTime(Date sendedTime) {
+	public SmsRecord setSendedTime(Date sendedTime) {
 		this.sendedTime = sendedTime;
+		return this;
 	}
 
 	public SmsBatch getBatch() {
 		return batch;
 	}
 
-	public void setBatch(SmsBatch batch) {
+	public SmsRecord setBatch(SmsBatch batch) {
 		this.batch = batch;
+		return this;
 	}
 
 	public Date getPlanTime() {
 		return planTime;
 	}
 
-	public void setPlanTime(Date planTime) {
+	public SmsRecord setPlanTime(Date planTime) {
 		this.planTime = planTime;
+		return this;
 	}
 
 	public String getRemark() {
 		return remark;
 	}
 
-	public void setRemark(String remark) {
+	public SmsRecord setRemark(String remark) {
 		this.remark = remark;
+		return this;
 	}
 
 	public Object getContentParameter() {
@@ -161,6 +172,17 @@ public class SmsRecord extends IdEntity {
 
 	public String getContentTemplate() {
 		return contentTemplate;
+	}
+
+	/**
+	 * 使用默认的短信服务提供商
+	 * 
+	 * @return
+	 */
+	public static SmsRecord fromDefault() {
+		SmsRecord sms = new SmsRecord();
+		sms.setProvider(SmsProvider.YUNPIAN);
+		return sms;
 	}
 
 }
