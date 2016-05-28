@@ -40,7 +40,7 @@ public class LoginService<T extends Loginable> implements PlatformOperator {
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
 
-		if (!login.comparePassword(inDb.getPwd())) {
+		if (!inDb.comparePassword(login.getPwd())) {
 			// 比对用户名密码
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
