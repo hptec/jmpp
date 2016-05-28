@@ -5,10 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 
 import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.middleware.sms.converter.SmsStateConverter;
@@ -49,11 +46,6 @@ public class SmsRecord extends IdEntity {
 	// 计划发送时间
 	private Date planTime;
 
-<<<<<<< .mine
-=======
-	@Type(type = "text")
-	@Lob
->>>>>>> .r206
 	private String remark;
 
 	public String getProvider() {

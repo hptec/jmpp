@@ -25,7 +25,7 @@ public class Mobile {
 
 	private String number;
 
-	public Boolean isMatch() {
+	public Boolean legal() {
 		switch (code) {
 		case CHINA:
 			if (Strings.isNullOrEmpty(number)) {
@@ -42,6 +42,10 @@ public class Mobile {
 		m.number(number);
 		m.code(code);
 		return m;
+	}
+
+	public static Mobile fromChina(String number) {
+		return Mobile.from(CallingCode.CHINA, number);
 	}
 
 	public CallingCode code() {
@@ -73,7 +77,7 @@ public class Mobile {
 	}
 
 	public String mask() {
-		if (!isMatch()) {
+		if (!legal()) {
 			return "";
 		}
 		number = number.trim();
