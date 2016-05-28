@@ -17,20 +17,16 @@ public class Address extends IdEntity {
 	private Division province;
 
 	@Embedded
-	@JoinColumn(insertable = false, updatable = false)
 	private Division city;
 
 	@Embedded
-	@JoinColumn(insertable = false, updatable = false)
 	private Division county;
 
 	@Embedded
 	private Coordinate coordinate;
 
-	@Column(name = "addr_street")
 	private String street;
 
-	@Column(name = "addr_zipcode")
 	private String zipcode;
 
 	public Coordinate getCoordinate() {
