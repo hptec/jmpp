@@ -23,7 +23,7 @@ public class EmployeeService {
 		}
 		Employee e = employeeDao.findOne(eid);
 		if (e != null) {
-			e.setLoginPwd(Encrypts.md5(pwd));
+			// e.setLoginPwd(Encrypts.md5(pwd));
 			employeeDao.save(e);
 			return Result.success().setObject(e);
 		} else {
@@ -39,12 +39,13 @@ public class EmployeeService {
 			return Result.error(EmployeeErrorCodes.PASSWORD_NOT_EQUAL);
 		}
 		Employee e = employeeDao.findOne(eid);
-		if (e != null && Strings.nullToEmpty(e.getLoginPwd()).equals(Encrypts.md5(oldPwd))) {
-			e.setLoginPwd(Encrypts.md5(newPwd1));
+		if (e != null && Strings.nullToEmpty(e.getLogin().getPwd()).equals(Encrypts.md5(oldPwd))) {
+			// e.setLoginPwd(Encrypts.md5(newPwd1));
 			employeeDao.save(e);
 			return Result.success().setObject(e);
 		} else {
-			return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
+			// return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
+			return null;
 		}
 	}
 

@@ -25,7 +25,7 @@ public class MenuApiWeb extends AbstractConsoleWeb {
 	@LoginRequired
 	public void mine() {
 		Long eid = getUserId();
-		List<SysMenu> menus=menuService.getDefaultMenus();
+		List<SysMenu> menus = menuService.getDefaultMenus();
 		zipOut(menus);
 	}
 
