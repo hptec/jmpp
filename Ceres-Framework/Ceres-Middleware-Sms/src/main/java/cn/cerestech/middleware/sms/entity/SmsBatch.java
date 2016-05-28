@@ -3,10 +3,8 @@ package cn.cerestech.middleware.sms.entity;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -14,27 +12,23 @@ import javax.persistence.TemporalType;
 
 import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.middleware.location.mobile.Mobile;
-import cn.cerestech.middleware.sms.converter.SmsProviderConverter;
 import cn.cerestech.middleware.sms.enums.SmsProvider;
-import cn.cerestech.middleware.sms.providers.ISmsProvider;
 
 @Entity
 @Table(name = "$$sms_batch")
 public class SmsBatch extends IdEntity {
 
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "batch_id", referencedColumnName = "id")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "batch")
 	private List<SmsRecord> records;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date plantime;
+	private Date planTime;
 
-	@Convert(converter = SmsProviderConverter.class)
-	private ISmsProvider provider;
+	private SmsProvider provider;
 
 	private String template;
 
-	public SmsBatch(ISmsProvider provider) {
+	public SmsBatch(SmsProvider provider) {
 		this.provider = provider;
 	}
 
@@ -44,13 +38,22 @@ public class SmsBatch extends IdEntity {
 	public SmsRecord createSms(Mobile to) {
 		SmsRecord sms = new SmsRecord();
 		sms.setTo(to);
+		sms.setBatch(this);
 		records.add(sms);
 		return sms;
 	}
 
 	public SmsBatch plan(Date plantime) {
-		this.plantime = plantime;
+		this.planTime = plantime;
 		return this;
+	}
+
+	public Date getPlanTime() {
+		return planTime;
+	}
+
+	public void setPlanTime(Date planTime) {
+		this.planTime = planTime;
 	}
 
 	public static SmsBatch from(SmsProvider provider) {
@@ -59,16 +62,8 @@ public class SmsBatch extends IdEntity {
 		return batch;
 	}
 
-	public ISmsProvider getProvider() {
+	public SmsProvider getProvider() {
 		return provider;
-	}
-
-	public Date getPlantime() {
-		return plantime;
-	}
-
-	public void setPlantime(Date plantime) {
-		this.plantime = plantime;
 	}
 
 	public String getTemplate() {
@@ -79,8 +74,12 @@ public class SmsBatch extends IdEntity {
 		this.template = template;
 	}
 
-	public void setProvider(ISmsProvider provider) {
+	public void setProvider(SmsProvider provider) {
 		this.provider = provider;
+	}
+
+	public List<SmsRecord> getRecords() {
+		return records;
 	}
 
 }

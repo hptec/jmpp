@@ -70,7 +70,7 @@ public class ConfigService {
 		return new StringTypes(value);
 	}
 
-	public Map<ConfigKey, StringTypes> querySet(ConfigKey... key) {
+	public Map<ConfigKey, StringTypes> query(ConfigKey... key) {
 		Map<ConfigKey, StringTypes> retMap = Maps.newHashMap();
 		for (ConfigKey k : key) {
 			retMap.put(k, query(k));
@@ -78,7 +78,7 @@ public class ConfigService {
 		return retMap;
 	}
 
-	public Map<ConfigKey, StringTypes> querySet(Set<ConfigKey> keys) {
+	public Map<ConfigKey, StringTypes> query(Set<ConfigKey> keys) {
 		Map<ConfigKey, StringTypes> retMap = Maps.newHashMap();
 		for (ConfigKey k : keys) {
 			retMap.put(k, query(k));

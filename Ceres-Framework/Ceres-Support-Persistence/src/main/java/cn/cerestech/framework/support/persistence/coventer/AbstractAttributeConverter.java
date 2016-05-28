@@ -4,10 +4,12 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
 import cn.cerestech.framework.core.enums.DescribableEnum;
 import cn.cerestech.framework.core.enums.EnumCollector;
 
+@Converter(autoApply = true)
 public abstract class AbstractAttributeConverter<T extends DescribableEnum> implements AttributeConverter<T, String> {
 
 	public String convertToDatabaseColumn(T attribute) {
