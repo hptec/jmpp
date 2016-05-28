@@ -8,6 +8,8 @@ import com.google.gson.JsonObject;
 
 import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.framework.core.parser.Parser;
+import cn.cerestech.framework.core.parser.PropertiesTemplateParser;
 import cn.cerestech.middleware.sms.entity.SmsSendResult;
 import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
 
@@ -71,5 +73,12 @@ public class YunPianProvider implements SmsProvider {
 			result.setMessage(t.getMessage());
 		}
 		return result;
+	}
+
+	private static Parser parser = PropertiesTemplateParser.fromProperties("sms_tpl");
+
+	@Override
+	public Parser getParser() {
+		return parser;
 	}
 }

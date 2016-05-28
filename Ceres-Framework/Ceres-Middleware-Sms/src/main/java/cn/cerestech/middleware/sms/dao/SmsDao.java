@@ -13,6 +13,6 @@ public interface SmsDao extends JpaRepository<SmsRecord, Long> {
 	// SmsState.SUCCESS.key()
 	// + "' AND send_time IS NOT NULL AND send_time > '" +
 	// FORMAT_DATETIME.format(offset) + "'");
-	List<SmsRecord> findByPlatformIdAndIpAndStateAndSendTimeNotNullAndSendTimeGreaterThan(Long platformId, String ip,
-			String state, Date sentTime);
+//	List<SmsRecord> findByPlatformIdAndIpAndStateAndSendTimeNotNullAndSendTimeGreaterThan(Long platformId, String ip,
+//			String state, Date sentTime);
 }

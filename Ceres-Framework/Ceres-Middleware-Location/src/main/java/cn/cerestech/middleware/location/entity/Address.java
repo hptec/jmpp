@@ -1,39 +1,30 @@
 package cn.cerestech.middleware.location.entity;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 
+import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.middleware.location.enums.AdminLevel;
 
-@Embeddable
-public class Address {
+@Entity
+@Table(name = "$$address")
+public class Address extends IdEntity {
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "code", column = @Column(name = "addr_province_code")),
-			@AttributeOverride(name = "name", column = @Column(name = "addr_province_name")) })
-	@JoinColumn(insertable = false, updatable = false)
 	private Division province;
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "code", column = @Column(name = "addr_city_code")),
-			@AttributeOverride(name = "name", column = @Column(name = "addr_city_name")) })
 	@JoinColumn(insertable = false, updatable = false)
 	private Division city;
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "code", column = @Column(name = "addr_county_code")),
-			@AttributeOverride(name = "name", column = @Column(name = "addr_county_name")) })
 	@JoinColumn(insertable = false, updatable = false)
 	private Division county;
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "standard", column = @Column(name = "addr_coord_standard")),
-			@AttributeOverride(name = "longitude", column = @Column(name = "addr_coord_longitude")),
-			@AttributeOverride(name = "latitude", column = @Column(name = "addr_coord_latitude")) })
 	private Coordinate coordinate;
 
 	@Column(name = "addr_street")
