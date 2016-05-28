@@ -15,7 +15,6 @@ import cn.cerestech.middleware.location.enums.GeodeticSystem;
 public class Coordinate implements Serializable {
 	public static final int COORDINATE_SCALE = 6;
 
-	@Convert(converter = GeodeticSystemConverter.class)
 	private GeodeticSystem standard;
 
 	@Column(precision = 19, scale = COORDINATE_SCALE)
