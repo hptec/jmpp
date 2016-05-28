@@ -25,7 +25,7 @@ import cn.cerestech.middleware.sms.enums.ErrorCodes;
 import cn.cerestech.middleware.sms.enums.SmsConfigKeys;
 import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
 import cn.cerestech.middleware.sms.enums.SmsState;
-import cn.cerestech.middleware.sms.providers.SmsProvider;
+import cn.cerestech.middleware.sms.providers.ISmsProvider;
 import cn.cerestech.middleware.sms.service.SmsMessageService;
 import cn.cerestech.support.web.console.web.AbstractConsoleWeb;
 
@@ -77,14 +77,14 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 	@RequestMapping("icp/update")
 	public @ResponseBody void smsIcpUpdate(@RequestParam(value = "provider_name") String provider_name) {
 		// 更新provider
-		SmsProvider smsProvider = smsService.setProvider(provider_name);
+		ISmsProvider smsProvider = smsService.setProvider(provider_name);
 		if (smsProvider == null) {
 			zipOut(Result.error(ErrorCodes.SMS_PROVIDER_NOT_EXSIT).toJson());
 			return;
 		}
 
 		// 更新参数值
-		SmsProvider provider = smsService.getProvider(provider_name);
+		ISmsProvider provider = smsService.getProvider(provider_name);
 		SmsProviderAuthKey[] authkeys = provider.authKeys();
 		Enumeration<String> keys = getRequest().getParameterNames();
 		while (keys.hasMoreElements()) {
@@ -134,7 +134,7 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 			@RequestParam(value = "state", required = false) String strState, //
 			@RequestParam(value = "keyword", required = false) String phone, //
 			@RequestParam(value = "fromto", required = false) String fromto) {
-		SmsProvider smsProvider = null;
+		ISmsProvider smsProvider = null;
 		if (!Strings.isNullOrEmpty(providername)) {
 			smsProvider = smsService.getProvider(providername);
 		}

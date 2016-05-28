@@ -62,8 +62,8 @@ public class Dates {
 	public Long toTimeInMillis() {
 		return getCalendar().getTimeInMillis();
 	}
-	
-	public String format(String pattern){
+
+	public String format(String pattern) {
 		return getFormat(pattern).format(calc.getTime());
 	}
 
@@ -296,6 +296,10 @@ public class Dates {
 		return calc.get(field);
 	}
 
+	public Date getDate() {
+		return calc.getTime();
+	}
+
 	/**
 	 * 检查月份是否存在某一个日期
 	 * 
@@ -308,10 +312,8 @@ public class Dates {
 		cal.setTime(date);
 		int max = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		return max >= month_of_date;
-		
+
 	}
-	
-	
 
 	// public static String formatString(String dateStr){
 	// /*
