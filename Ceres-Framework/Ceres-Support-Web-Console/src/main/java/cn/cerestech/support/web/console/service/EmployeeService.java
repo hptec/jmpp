@@ -1,18 +1,12 @@
 package cn.cerestech.support.web.console.service;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
 
-import cn.cerestech.framework.core.date.Moment;
 import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.core.strings.StringTypes;
 import cn.cerestech.framework.core.utils.Encrypts;
-import cn.cerestech.framework.core.utils.Random;
-import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.support.web.console.dao.EmployeeDao;
 import cn.cerestech.support.web.console.entity.Employee;
 import cn.cerestech.support.web.console.errorcode.EmployeeErrorCodes;
@@ -22,9 +16,6 @@ public class EmployeeService {
 
 	@Autowired
 	EmployeeDao employeeDao;
-
-	@Autowired
-	PlatformService platformService;
 
 	public Result<Employee> modifyPassword(Long eid, String pwd) {
 		if (Strings.isNullOrEmpty(pwd)) {
@@ -55,10 +46,6 @@ public class EmployeeService {
 		} else {
 			return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
 		}
-	}
-
-	public Employee findById(Long id) {
-		return employeeDao.findUniqueByPlatformIdAndId(platformService.getId(), id);
 	}
 
 	// public List<Employee> search(Gender gender, YesNo frozen, String keyword,

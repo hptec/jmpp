@@ -21,13 +21,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class IdEntity implements PlatformEntitySupport {
+public abstract class IdEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private Long platformId;
 
 	@Column()
 	@CreatedDate
@@ -43,14 +41,6 @@ public abstract class IdEntity implements PlatformEntitySupport {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getPlatformId() {
-		return platformId;
-	}
-
-	public void setPlatformId(Long id) {
-		platformId = id;
 	}
 
 	public Date getCreateTime() {

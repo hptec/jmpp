@@ -56,8 +56,6 @@ public class BalanceService {
 	BalanceAccountDao balanceAccountDao;
 
 	@Autowired
-	PlatformService platformService;
-	@Autowired
 	LogMapper logMapper;
 	@Autowired
 	SmsMessageService smsService;
@@ -72,8 +70,7 @@ public class BalanceService {
 
 		Balance balance = new Balance();
 		balance.setOwner(owner);
-		List<BalanceAccount> accounts = balanceAccountDao
-				.findByPlatformIdAndOwnerIdAndOwnerType(platformService.getId(), owner.getId(), owner.getType());
+		List<BalanceAccount> accounts = balanceAccountDao.findByOwnerIdAndOwnerType(owner.getId(), owner.getType());
 		balance.put(accounts);
 
 		return balance;

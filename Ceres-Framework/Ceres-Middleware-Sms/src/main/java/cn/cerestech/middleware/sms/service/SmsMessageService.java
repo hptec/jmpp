@@ -11,7 +11,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
 import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.middleware.sms.dao.SmsDao;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
@@ -32,11 +31,8 @@ public class SmsMessageService {
 	@Autowired
 	SmsDao smsDao;
 
-	@Autowired
-	PlatformService platformServcie;
-
 	public void beginGroup() {
-		
+
 	}
 
 	/**
@@ -128,7 +124,6 @@ public class SmsMessageService {
 	}
 
 	private SmsRecord persist(SmsRecord sr) {
-		sr.setPlatformId(platformServcie.getId());
 		smsDao.save(sr);
 		return sr;
 	}

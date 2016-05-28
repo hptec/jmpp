@@ -13,7 +13,6 @@ import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.core.strings.StringTypes;
 import cn.cerestech.framework.core.utils.Encrypts;
 import cn.cerestech.framework.core.utils.Random;
-import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.login.annotation.LoginProvider;
 import cn.cerestech.framework.support.login.interceptor.LoginInterceptor;
 import cn.cerestech.framework.support.login.provider.LoginServiceProvider;
@@ -32,9 +31,6 @@ public class EmployeeLoginProvider implements LoginServiceProvider<Employee> {
 	EmployeeDao employeeDao;
 
 	@Autowired
-	PlatformService platformService;
-
-	@Autowired
 	LoginInterceptor loginInterceptor;
 
 	@Override
@@ -48,7 +44,7 @@ public class EmployeeLoginProvider implements LoginServiceProvider<Employee> {
 			return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
 		}
 
-		Employee u = employeeDao.findUniqueByPlatformIdAndLoginId(platformService.getId(), entity.getLoginId());
+		Employee u = employeeDao.findUniqueByLoginId(entity.getLoginId());
 
 		if (u == null) {
 			return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
@@ -94,8 +90,7 @@ public class EmployeeLoginProvider implements LoginServiceProvider<Employee> {
 
 	@Override
 	public Boolean validateRememberToken(String token, Long id) {
-		Employee e = employeeDao.findUniqueByPlatformIdAndIdAndRememberTokenAndRememberExpiredGreaterThan(
-				platformService.getId(), id, token, new Date());
+		Employee e = employeeDao.findUniqueByIdAndRememberTokenAndRememberExpiredGreaterThan(id, token, new Date());
 		return e != null;
 	}
 

@@ -8,9 +8,8 @@ import cn.cerestech.support.web.console.entity.Employee;
 
 public interface EmployeeDao extends JpaRepository<Employee, Long> {
 
-	Employee findUniqueByPlatformIdAndLoginId(Long platformId, String loginId);
+	Employee findUniqueByLoginId(String loginId);
 
-	Employee findUniqueByPlatformIdAndId(Long platformId, Long id);
-	
-	Employee findUniqueByPlatformIdAndIdAndRememberTokenAndRememberExpiredGreaterThan(Long platformId,Long id,String remmeberToken,Date rememberExpired);
+	Employee findUniqueByIdAndRememberTokenAndRememberExpiredGreaterThan(Long id, String remmeberToken,
+			Date rememberExpired);
 }

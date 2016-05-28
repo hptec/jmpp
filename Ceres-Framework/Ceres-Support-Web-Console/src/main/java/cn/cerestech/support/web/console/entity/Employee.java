@@ -144,7 +144,6 @@ public class Employee extends IdEntity implements LoginEntity {
 		employee.setLoginPwd(null);
 		employee.setRememberExpired(null);
 		employee.setRememberToken(null);
-		employee.setPlatformId(null);
 		return employee;
 	}
 

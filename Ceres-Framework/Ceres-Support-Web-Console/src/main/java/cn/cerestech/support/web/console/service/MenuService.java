@@ -11,7 +11,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.web.service.ManifestService;
 import cn.cerestech.support.web.console.dao.SysMenuDao;
 import cn.cerestech.support.web.console.entity.SysMenu;
@@ -21,9 +20,6 @@ public class MenuService {
 
 	@Autowired
 	ManifestService manifestService;
-
-	@Autowired
-	PlatformService platformService;
 
 	@Autowired
 	SysMenuDao sysMenuDao;
@@ -56,9 +52,8 @@ public class MenuService {
 	 * @return
 	 */
 	public void doSynchronizedIfNecessary() {
-		Long platformId = platformService.getId();
 
-		if (platformMenuSynchronizedPool.containsKey(platformId) && platformMenuSynchronizedPool.get(platformId)) {
+		if (platformMenuSynchronizedPool.containsKey(1L) && platformMenuSynchronizedPool.get(1L)) {
 			// 已经同步过了，无需同步，直接返回
 			return;
 		}
@@ -66,17 +61,13 @@ public class MenuService {
 		// 同步菜单
 		Map<String, SysMenu> flatMenus = getFlatDefaultMenus();
 		// 排除掉已经存在的
-		sysMenuDao.findByPlatformId(platformId).forEach(m -> {
+		sysMenuDao.findAll().forEach(m -> {
 			flatMenus.remove(m.getKey());
-		});
-
-		flatMenus.forEach((k, m) -> {
-			m.setPlatformId(platformId);
 		});
 
 		sysMenuDao.save(flatMenus.values());
 
-		platformMenuSynchronizedPool.put(platformId, Boolean.TRUE);
+		platformMenuSynchronizedPool.put(1L, Boolean.TRUE);
 	}
 
 	private Map<String, SysMenu> flatMenus(List<SysMenu> menus) {
