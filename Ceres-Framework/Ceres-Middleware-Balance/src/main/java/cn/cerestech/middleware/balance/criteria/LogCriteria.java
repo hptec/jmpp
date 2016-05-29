@@ -1,7 +1,7 @@
 package cn.cerestech.middleware.balance.criteria;
 
-import cn.cerestech.framework.core.search.AbstractCriteria;
 import cn.cerestech.framework.support.persistence.Owner;
+import cn.cerestech.framework.support.persistence.search.AbstractCriteria;
 import cn.cerestech.middleware.balance.entity.Log;
 
 public class LogCriteria<T extends Log> extends AbstractCriteria<T> {

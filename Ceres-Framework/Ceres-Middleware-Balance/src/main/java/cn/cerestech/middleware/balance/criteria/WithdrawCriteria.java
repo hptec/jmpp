@@ -2,8 +2,8 @@ package cn.cerestech.middleware.balance.criteria;
 
 import java.util.Date;
 
-import cn.cerestech.framework.core.search.AbstractCriteria;
 import cn.cerestech.framework.support.persistence.Owner;
+import cn.cerestech.framework.support.persistence.search.AbstractCriteria;
 import cn.cerestech.middleware.balance.entity.Withdraw;
 
 public class WithdrawCriteria<T extends Withdraw> extends AbstractCriteria<T> {

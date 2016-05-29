@@ -1,4 +1,4 @@
-package cn.cerestech.framework.core.search;
+package cn.cerestech.framework.support.persistence.enums;
 
 import cn.cerestech.framework.core.enums.DescribableEnum;
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import cn.cerestech.framework.core.search.AbstractCriteria;
+import cn.cerestech.framework.support.persistence.search.AbstractCriteria;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
 /**
  * 短信检索平台
