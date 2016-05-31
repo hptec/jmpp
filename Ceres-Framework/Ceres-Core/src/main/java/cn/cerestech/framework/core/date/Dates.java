@@ -296,10 +296,6 @@ public class Dates {
 		return calc.get(field);
 	}
 
-	public Date getDate() {
-		return calc.getTime();
-	}
-
 	/**
 	 * 检查月份是否存在某一个日期
 	 * 

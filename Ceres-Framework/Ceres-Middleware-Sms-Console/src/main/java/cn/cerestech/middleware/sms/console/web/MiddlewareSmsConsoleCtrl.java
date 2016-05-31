@@ -25,8 +25,8 @@ import cn.cerestech.middleware.sms.enums.ErrorCodes;
 import cn.cerestech.middleware.sms.enums.SmsConfigKeys;
 import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
 import cn.cerestech.middleware.sms.enums.SmsState;
-import cn.cerestech.middleware.sms.providers.ISmsProvider;
-import cn.cerestech.middleware.sms.service.SmsMessageService;
+import cn.cerestech.middleware.sms.providers.Provider;
+import cn.cerestech.middleware.sms.service.SmsService;
 import cn.cerestech.support.web.console.web.AbstractConsoleWeb;
 
 @RequestMapping("$$ceres_sys/console/middleware/sms")
@@ -40,7 +40,7 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 	ConfigService configService;
 
 	@Autowired
-	SmsMessageService smsService;
+	SmsService smsService;
 
 	@RequestMapping("icp/init")
 	public @ResponseBody void smsIcpinit() {
@@ -77,14 +77,14 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 	@RequestMapping("icp/update")
 	public @ResponseBody void smsIcpUpdate(@RequestParam(value = "provider_name") String provider_name) {
 		// 更新provider
-		ISmsProvider smsProvider = smsService.setProvider(provider_name);
+		Provider smsProvider = smsService.setProvider(provider_name);
 		if (smsProvider == null) {
 			zipOut(Result.error(ErrorCodes.SMS_PROVIDER_NOT_EXSIT).toJson());
 			return;
 		}
 
 		// 更新参数值
-		ISmsProvider provider = smsService.getProvider(provider_name);
+		Provider provider = smsService.getProvider(provider_name);
 		SmsProviderAuthKey[] authkeys = provider.authKeys();
 		Enumeration<String> keys = getRequest().getParameterNames();
 		while (keys.hasMoreElements()) {
@@ -134,7 +134,7 @@ public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
 			@RequestParam(value = "state", required = false) String strState, //
 			@RequestParam(value = "keyword", required = false) String phone, //
 			@RequestParam(value = "fromto", required = false) String fromto) {
-		ISmsProvider smsProvider = null;
+		Provider smsProvider = null;
 		if (!Strings.isNullOrEmpty(providername)) {
 			smsProvider = smsService.getProvider(providername);
 		}
