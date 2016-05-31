@@ -3,6 +3,7 @@ package cn.cerestech.middleware.sms.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,9 @@ import com.google.common.base.Strings;
 
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
+import cn.cerestech.middleware.sms.SmsBatch;
 import cn.cerestech.middleware.sms.dao.SmsBatchDao;
 import cn.cerestech.middleware.sms.dao.SmsDao;
-import cn.cerestech.middleware.sms.entity.SmsBatch;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
 import cn.cerestech.middleware.sms.entity.SmsSendResult;
 import cn.cerestech.middleware.sms.enums.ErrorCodes;
@@ -44,6 +45,29 @@ public class SmsMessageService {
 	 */
 	public Boolean isSMSEnabled() {
 		return configService.query(SmsConfigKeys.SMS_ENABLE).boolValue();
+	}
+
+	public SmsBatch beginBatch() {
+		return new SmsBatch() {
+			@Autowired
+			SmsDao smsDao;
+
+			// 计划发送时间
+			private Function<SmsRecord, Date> planTimeSupplier;
+
+			public SmsBatch setPlanTimeSupplier(Function<SmsRecord, Date> planTimeSupplier) {
+				this.planTimeSupplier = planTimeSupplier;
+				return this;
+			}
+
+			@Override
+			public void doSend() {
+				
+				
+			}
+			
+
+		};
 	}
 
 	public Result<SmsBatch> send(SmsBatch batch) {

@@ -58,7 +58,7 @@ public class SmsRecord extends IdEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "batch_id")
-	private SmsBatch batch;
+	private SmsBatch1 batch;
 
 	/**
 	 * 开发者可以用两种方式设置短信的内容<br/>
@@ -139,11 +139,11 @@ public class SmsRecord extends IdEntity {
 		return this;
 	}
 
-	public SmsBatch getBatch() {
+	public SmsBatch1 getBatch() {
 		return batch;
 	}
 
-	public SmsRecord setBatch(SmsBatch batch) {
+	public SmsRecord setBatch(SmsBatch1 batch) {
 		this.batch = batch;
 		return this;
 	}

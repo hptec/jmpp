@@ -2,9 +2,9 @@ package cn.cerestech.middleware.sms.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import cn.cerestech.middleware.sms.entity.SmsBatch;
+import cn.cerestech.middleware.sms.entity.SmsBatch1;
 
-public interface SmsBatchDao extends JpaRepository<SmsBatch, Long> {
+public interface SmsBatchDao extends JpaRepository<SmsBatch1, Long> {
 	// List<SmsRecord> reses = mysqlService.queryBy(SmsRecord.class,
 	// "ip='" + Strings.nullToEmpty(ip) + "' AND `state`='" +
 	// SmsState.SUCCESS.key()
