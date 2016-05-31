@@ -35,4 +35,5 @@ public interface RequestOperator {
 	default void removeRequest(String key) {
 		getRequest().removeAttribute(key);
 	}
+
 }

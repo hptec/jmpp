@@ -1,8 +1,5 @@
 package cn.cerestech.framework.core.parser;
 
-import java.util.MissingResourceException;
-import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import com.google.common.base.Strings;
@@ -10,12 +7,11 @@ import com.google.common.base.Strings;
 import ognl.Ognl;
 import ognl.OgnlException;
 
-@SuppressWarnings("serial")
-public class PropertiesTemplateParser extends Properties implements Parser {
+public abstract class TemplateParser implements Parser {
 
 	@Override
-	public String parse(String templateId, Object param) {
-		String tpl = getProperty(templateId);
+	public String parse(Object param) {
+		String tpl = getTemplate();
 		if (Strings.isNullOrEmpty(tpl)) {
 			return "";
 		}
@@ -45,19 +41,6 @@ public class PropertiesTemplateParser extends Properties implements Parser {
 		return tpl;
 	}
 
-	public static PropertiesTemplateParser fromProperties(String filename) {
-		PropertiesTemplateParser parser = new PropertiesTemplateParser();
-		try {
-			ResourceBundle bundle = ResourceBundle.getBundle(filename);
-
-			bundle.keySet().forEach(k -> {
-				String v = bundle.getString(k);
-				parser.put(k, v);
-			});
-		} catch (MissingResourceException e) {
-
-		}
-		return parser;
-	}
+	abstract String getTemplate();
 
 }

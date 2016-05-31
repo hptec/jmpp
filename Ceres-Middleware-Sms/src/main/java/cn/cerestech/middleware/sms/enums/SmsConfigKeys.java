@@ -8,7 +8,9 @@ import cn.cerestech.framework.core.utils.KV;
 import cn.cerestech.framework.support.configuration.enums.ConfigKey;
 
 public enum SmsConfigKeys implements ConfigKey {
-	SMS_ENABLE("SMS_ENABLE", "Y", "短信功能是否开启"), SMS_DEFAULT_PROVIDER("SMS_DEFAULT_PROVIDER", "云片网络", "默认的短信平台");
+	SMS_ENABLE("SMS_ENABLE", "Y", "短信功能是否开启"), //
+//	SMS_DEFAULT_PROVIDER("SMS_DEFAULT_PROVIDER", "云片网络", "默认的短信平台"),//
+	;
 	private String key, defaultValue, desc;
 
 	private SmsConfigKeys(String key, String defaultValue, String desc) {

@@ -1,18 +1,37 @@
 package cn.cerestech.middleware.sms.dao;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import cn.cerestech.middleware.sms.entity.SmsRecord;
+import cn.cerestech.middleware.sms.enums.SmsState;
 
 public interface SmsDao extends JpaRepository<SmsRecord, Long> {
-	// List<SmsRecord> reses = mysqlService.queryBy(SmsRecord.class,
-	// "ip='" + Strings.nullToEmpty(ip) + "' AND `state`='" +
-	// SmsState.SUCCESS.key()
-	// + "' AND send_time IS NOT NULL AND send_time > '" +
-	// FORMAT_DATETIME.format(offset) + "'");
-//	List<SmsRecord> findByPlatformIdAndIpAndStateAndSendTimeNotNullAndSendTimeGreaterThan(Long platformId, String ip,
-//			String state, Date sentTime);
+	// List<SmsRecord>
+	// findByPlatformIdAndIpAndStateAndSendTimeNotNullAndSendTimeGreaterThan(Long
+	// platformId, String ip,
+	// String state, Date sentTime);
+
+	/**
+	 * 指定ip下指定时间段内是否有发送成功的短信
+	 * 
+	 * @param state
+	 * @param ip
+	 * @param date
+	 * @return
+	 */
+	SmsRecord findUniqueBySendTimeIsNotNullAndSendTimeGreaterThanAndStateAndIpAddr(Date date, SmsState state,
+			String ip);
+
+	/**
+	 * 指定ip下指定时间段内是否有发送成功的短信
+	 * 
+	 * @param state
+	 * @param ip
+	 * @param date
+	 * @return
+	 */
+	SmsRecord findUniqueBySendTimeIsNotNullAndSendTimeGreaterThanAndStateAndToNumber(Date date, SmsState state,
+			String to);
 }

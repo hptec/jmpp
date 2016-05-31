@@ -1,14 +1,27 @@
 package cn.cerestech.middleware.location.ip;
 
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
+import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 
 @Embeddable
 public class IP {
+	@Transient
+	private static final Pattern IPV4_PATTERN = Pattern
+			.compile("^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$");
+
+	@Transient
+	private static final Pattern IPV6_STD_PATTERN = Pattern.compile("^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$");
+
+	@Transient
+	private static final Pattern IPV6_HEX_COMPRESSED_PATTERN = Pattern
+			.compile("^((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)$");
 
 	@Column(length = 25)
 	private String addr = "127.0.0.1";
@@ -66,6 +79,26 @@ public class IP {
 		IP i = new IP();
 		i.setAddr(ip);
 		return i;
+	}
+
+	public Boolean isEmpty() {
+		return (Strings.isNullOrEmpty(addr) || !isIpv4() || !isIpv6()) ? Boolean.FALSE : Boolean.TRUE;
+	}
+
+	public Boolean isIpv4() {
+		return IPV4_PATTERN.matcher(addr).matches();
+	}
+
+	public Boolean isIpv6Std() {
+		return IPV6_STD_PATTERN.matcher(addr).matches();
+	}
+
+	public Boolean isIpv6Hex() {
+		return IPV6_HEX_COMPRESSED_PATTERN.matcher(addr).matches();
+	}
+
+	public Boolean isIpv6() {
+		return isIpv6Std() || isIpv6Hex();
 	}
 
 }

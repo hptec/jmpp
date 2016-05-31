@@ -1,43 +1,20 @@
 package cn.cerestech.framework.core.parser;
 
-import java.util.Scanner;
-
-import com.google.common.base.Strings;
-
-import ognl.Ognl;
-import ognl.OgnlException;
-
-public class StringTemplateParser implements Parser {
+public class StringTemplateParser extends TemplateParser implements Parser {
+	private String tpl = "";
 
 	@Override
-	public String parse(String tpl, Object param) {
-		if (Strings.isNullOrEmpty(tpl)) {
-			return "";
-		}
-
-		Scanner sc = new Scanner(tpl);
-		while (sc.hasNext()) {
-			String key = sc.findInLine("\\{[^\\}]+\\}");
-			if (!Strings.isNullOrEmpty(key)) {
-				String var = "$" + key;
-				StringBuffer valName = new StringBuffer(var);
-				valName.delete(0, 2);
-				valName.delete(valName.length() - 1, valName.length());
-				Object val = null;
-				try {
-					val = Ognl.getValue(valName.toString(), param);
-				} catch (OgnlException e) {
-					e.printStackTrace();
-				}
-				String valStr = val == null ? "" : val.toString();
-				tpl = tpl.replace(var, valStr);
-			} else {
-				break;
-			}
-		}
-		sc.close();
-
+	String getTemplate() {
 		return tpl;
+	}
+
+	public StringTemplateParser(String tpl) {
+		super();
+		this.tpl = tpl;
+	}
+
+	public StringTemplateParser() {
+		super();
 	}
 
 }

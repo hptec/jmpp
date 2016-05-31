@@ -42,7 +42,7 @@ import cn.cerestech.middleware.balance.enums.TransactionStatus;
 import cn.cerestech.middleware.balance.enums.WithdrawChannel;
 import cn.cerestech.middleware.balance.enums.WithdrawState;
 import cn.cerestech.middleware.balance.mapper.LogMapper;
-import cn.cerestech.middleware.sms.service.SmsMessageService;
+import cn.cerestech.middleware.sms.service.SmsService;
 
 @Service
 public class BalanceService {
@@ -58,7 +58,7 @@ public class BalanceService {
 	@Autowired
 	LogMapper logMapper;
 	@Autowired
-	SmsMessageService smsService;
+	SmsService smsService;
 
 	// @Autowired
 	// BalanceWithdrawMPMonitor balanceWithdrawMonitor;
