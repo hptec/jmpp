@@ -10,7 +10,9 @@ public interface Criteria<T> {
 	 * 
 	 * @return
 	 */
-	Sort getSort();
+	default Sort getSort(){
+		return null;
+	};
 
 	/**
 	 * 返回当前查询的组合查询条件
