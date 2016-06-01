@@ -38,6 +38,12 @@ public class LoginInterceptor
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		// 开发模式专用
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Max-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod m = (HandlerMethod) handler;
 			LoginRequired fl = m.getMethodAnnotation(LoginRequired.class);

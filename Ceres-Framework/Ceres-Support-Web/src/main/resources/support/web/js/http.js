@@ -1,4 +1,4 @@
-define([ 'module', '$', 'cache' ], function(module, $, cache) {
+define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 	var moduleConfig = module.config();
 
 	var retObj = {
@@ -19,7 +19,6 @@ define([ 'module', '$', 'cache' ], function(module, $, cache) {
 			// 如果不需要更新platform，那么authcode从这里获取
 			if (moduleConfig.authcode == undefined) {
 				var p = cache.get(module.config().appid + "_platform")
-				console.log("pp", p);
 				moduleConfig.authcode = p ? p.platformAuthCode : undefined;
 			}
 
@@ -62,13 +61,6 @@ define([ 'module', '$', 'cache' ], function(module, $, cache) {
 						var func = (context.onNotFound == undefined ? moduleConfig.onHttpNotFound : context.onNotFound);
 						func(content, statusText, xhr);
 						return;
-					} else if (content == "login") {
-						console.log("Http模块: 要求登录", content);
-						if (moduleConfig.onLoginRequired != undefined) {
-							moduleConfig.onLoginRequired(content);
-							return;
-						}
-						return;
 					} else {
 						// 强制尝试错误判断
 						try {
@@ -76,7 +68,8 @@ define([ 'module', '$', 'cache' ], function(module, $, cache) {
 							if (!dataObj.isSuccess && dataObj.code == "LOGIN_REQUIRED") {
 								if (moduleConfig.onLoginRequired != undefined) {
 									console.log("Http模块: 要求登录", dataObj);
-									moduleConfig.onLoginRequired(dataObj);
+									moduleConfig.onLoginRequired(pages, dataObj);
+
 									return;
 								}
 							} else if (!dataObj.isSuccess && dataObj.code == "PLATFORM_AUTH_INCORRECT") {
@@ -137,20 +130,21 @@ define([ 'module', '$', 'cache' ], function(module, $, cache) {
 
 			if (moduleConfig.platform == "app") {
 				var mui = require("mui");
-				sendRequest.headers = {
-					'COOKIE' : "ceres_platform=" + moduleConfig.platform + ";ceres_platform_authcode=" + moduleConfig.authcode + ";"
-				}
+				// sendRequest.headers = {
+				// 'COOKIE' : "ceres_platform=" + moduleConfig.platform +
+				// ";ceres_platform_authcode=" + moduleConfig.authcode + ";"
+				// }
 				mui.ajax(sendRequest.url, sendRequest);
 			} else {
-
-				$.cookie("ceres_platform", moduleConfig.platform, {
-					expired : 7,
-					path : '/'
-				});
-				$.cookie("ceres_platform_authcode", moduleConfig.authcode, {
-					expired : 7,
-					path : '/'
-				});
+				//
+				// $.cookie("ceres_platform", moduleConfig.platform, {
+				// expired : 7,
+				// path : '/'
+				// });
+				// $.cookie("ceres_platform_authcode", moduleConfig.authcode, {
+				// expired : 7,
+				// path : '/'
+				// });
 				$.ajax(sendRequest);
 			}
 		}
