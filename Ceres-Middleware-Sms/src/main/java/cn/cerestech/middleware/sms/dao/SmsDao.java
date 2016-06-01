@@ -21,7 +21,7 @@ public interface SmsDao extends JpaRepository<SmsRecord, Long> {
 	 * @param date
 	 * @return
 	 */
-	SmsRecord findUniqueBySendTimeIsNotNullAndSendTimeGreaterThanAndStateAndIpAddr(Date date, SmsState state,
+	SmsRecord findUniqueBySendedTimeIsNotNullAndSendTimeGreaterThanAndStateAndIpAddr(Date date, SmsState state,
 			String ip);
 
 	/**
@@ -32,6 +32,6 @@ public interface SmsDao extends JpaRepository<SmsRecord, Long> {
 	 * @param date
 	 * @return
 	 */
-	SmsRecord findUniqueBySendTimeIsNotNullAndSendTimeGreaterThanAndStateAndToNumber(Date date, SmsState state,
+	SmsRecord findUniqueBySendedTimeIsNotNullAndSendTimeGreaterThanAndStateAndToNumber(Date date, SmsState state,
 			String to);
 }
