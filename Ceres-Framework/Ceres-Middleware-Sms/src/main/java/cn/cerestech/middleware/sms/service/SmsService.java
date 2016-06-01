@@ -113,7 +113,7 @@ public class SmsService {
 				Integer ipLimit = firewall.sameIpInterval();
 				if (ipLimit != null && record.getIp() != null && !record.getIp().isEmpty()) {
 					Date before = Dates.now().addMillisecond(-1 * ipLimit).toDate();
-					if (smsDao.findUniqueBySendTimeIsNotNullAndSendTimeGreaterThanAndStateAndIpAddr(before,
+					if (smsDao.findUniqueBySendedTimeIsNotNullAndSendTimeGreaterThanAndStateAndIpAddr(before,
 							SmsState.SUCCESS, record.getIp().getAddr()) != null) {
 						// 在指定时间内有发送成功的短信
 						SmsResult ret = new SmsResult();
@@ -131,7 +131,7 @@ public class SmsService {
 				Integer mobileLimit = firewall.sameMobileInterval();
 				if (mobileLimit != null) {
 					Date before = Dates.now().addMillisecond(-1 * mobileLimit).toDate();
-					if (smsDao.findUniqueBySendTimeIsNotNullAndSendTimeGreaterThanAndStateAndToNumber(before,
+					if (smsDao.findUniqueBySendedTimeIsNotNullAndSendTimeGreaterThanAndStateAndToNumber(before,
 							SmsState.SUCCESS, record.getTo().number()) != null) {
 						// 在指定时间内有发送成功的短信
 						SmsResult ret = new SmsResult();
@@ -192,7 +192,7 @@ public class SmsService {
 						String ip = record.getIp().getAddr();
 						// 在当前批次或者数据库中存在的，则视为违反
 						if (ipMap.contains(ip)
-								|| smsDao.findUniqueBySendTimeIsNotNullAndSendTimeGreaterThanAndStateAndIpAddr(before,
+								|| smsDao.findUniqueBySendedTimeIsNotNullAndSendTimeGreaterThanAndStateAndIpAddr(before,
 										SmsState.SUCCESS, ip) != null) {
 							// 在指定时间内有发送成功的短信
 							SmsResult ret = new SmsResult();
@@ -214,7 +214,7 @@ public class SmsService {
 						String mobile = record.getTo().number();
 						// 在当前批次或者数据库中存在的，则视为违反
 						if (mobileMap.contains(mobile)
-								|| smsDao.findUniqueBySendTimeIsNotNullAndSendTimeGreaterThanAndStateAndToNumber(before,
+								|| smsDao.findUniqueBySendedTimeIsNotNullAndSendTimeGreaterThanAndStateAndToNumber(before,
 										SmsState.SUCCESS, record.getTo().number()) != null) {
 							// 在指定时间内有发送成功的短信
 							SmsResult ret = new SmsResult();
