@@ -80,7 +80,7 @@ define([ 'module', '$', 'cache' ], function(module, $, cache) {
 									return;
 								}
 							} else if (!dataObj.isSuccess && dataObj.code == "PLATFORM_AUTH_INCORRECT") {
-								alert("平台授权认证错误，请联系管理员!");
+								// alert("平台授权认证错误，请联系管理员!");
 							}
 
 						} catch (e) {

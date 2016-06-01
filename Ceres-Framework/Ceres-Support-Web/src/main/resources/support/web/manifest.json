@@ -69,6 +69,11 @@
 			name:"cache",
 			uri:"/api/classpath/query/support/web/js/cache",
 			exports:"cache"
+		},
+		{
+			name:"modal",
+			uri:"/api/classpath/query/support/web/js/modal",
+			exports:"modal"
 		}
 		
 	],

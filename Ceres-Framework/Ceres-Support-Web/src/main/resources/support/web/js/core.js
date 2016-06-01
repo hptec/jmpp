@@ -55,7 +55,32 @@ define([], function() {
 							shimConfig.shim[jsModule.name]["deps"] = jsModule["deps"];
 						}
 						if (jsModule["uri"] != undefined) {
-							shimConfig.paths[jsModule.name] = jsModule.uri;
+							var uri = jsModule["uri"];
+							if (uri instanceof Object) {
+								// 对象，要判断开发模式，如果是dev模式，则从服务器映射文件
+								if (cfg.devMode != undefined && cfg.devMode == "dev") {
+									// 开发模式，从远端加载js
+									var remote = jsModule.uri.remote;
+									if (cfg.host != undefined) {
+										var p = (cfg.host.protocal == undefined ? "http" : cfg.host.protocal) + "://";
+										if (cfg.host.server != undefined) {
+											p = p + cfg.host.server;
+											if (cfg.host.port != undefined) {
+												p = p + ":" + cfg.host.port;
+											}
+										}
+										remote = p + remote;
+									}
+									console.log("开发者模式：使用服务器端文件 [" + remote + "]");
+									shimConfig.paths[jsModule.name] = remote;
+								} else {
+									console.log("生产模式：使用本地文件 [" + jsModule.uri.local + "]")
+									shimConfig.paths[jsModule.name] = jsModule.uri.local;
+								}
+							} else {
+								shimConfig.paths[jsModule.name] = jsModule.uri;
+							}
+
 						}
 						// 判读那些模块需要预先加载
 						if (jsModule.angularModule != undefined) {
