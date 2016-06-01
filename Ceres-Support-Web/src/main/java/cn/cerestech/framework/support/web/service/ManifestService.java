@@ -47,7 +47,7 @@ public class ManifestService implements ComponentDispatcher {
 				} else {
 					log.trace("Found manifest json: " + path);
 					try {
-						String content = Resources.toString(Resources.getResource(path),OsInfo.charset());
+						String content = Resources.toString(Resources.getResource(path), OsInfo.charset());
 						manifestPaths.put(path, Jsons.from(content));
 					} catch (IOException e) {
 						log.catching(e);
@@ -125,7 +125,7 @@ public class ManifestService implements ComponentDispatcher {
 
 			// 检测是否有冲突
 			if (!conflict.isEmpty()) {
-				throw new IllegalArgumentException(Jsons.from(conflict).toPrettyJson());
+				throw new IllegalArgumentException("jsModule conflict:" + Jsons.from(conflict).toPrettyJson());
 			}
 
 			cacheJsModules.put(category, moduleMap.values().stream().collect(Collectors.toList()));

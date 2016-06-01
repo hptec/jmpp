@@ -192,11 +192,6 @@
 			
 		},
 		{
-			name:"modal",
-			uri:"/api/classpath/query/support/web/console/js/modal",
-			exports:"modal"
-		},
-		{
 			name:"console-starter",
 			uri:"/api/classpath/query/support/web/console/js/console-starter",
 			deps:[
