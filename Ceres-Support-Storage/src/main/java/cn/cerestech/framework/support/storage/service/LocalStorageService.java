@@ -1,4 +1,4 @@
-package cn.cerestech.framework.support.localstorage.service;
+package cn.cerestech.framework.support.storage.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +22,10 @@ import com.google.common.io.Files;
 
 import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
-import cn.cerestech.framework.support.localstorage.QueryRequest;
-import cn.cerestech.framework.support.localstorage.dao.LocalFileDao;
-import cn.cerestech.framework.support.localstorage.entity.LocalFile;
-import cn.cerestech.framework.support.localstorage.enums.LocalStorageConfigKey;
+import cn.cerestech.framework.support.storage.QueryRequest;
+import cn.cerestech.framework.support.storage.dao.LocalFileDao;
+import cn.cerestech.framework.support.storage.entity.LocalFile;
+import cn.cerestech.framework.support.storage.enums.LocalStorageConfigKey;
 
 @Service
 public class LocalStorageService {

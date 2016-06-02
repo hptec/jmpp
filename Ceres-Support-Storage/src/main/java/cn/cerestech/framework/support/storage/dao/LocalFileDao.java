@@ -1,8 +1,8 @@
-package cn.cerestech.framework.support.localstorage.dao;
+package cn.cerestech.framework.support.storage.dao;
 
 import org.springframework.data.repository.CrudRepository;
 
-import cn.cerestech.framework.support.localstorage.entity.LocalFile;
+import cn.cerestech.framework.support.storage.entity.LocalFile;
 
 public interface LocalFileDao extends CrudRepository<LocalFile, Long> {
 

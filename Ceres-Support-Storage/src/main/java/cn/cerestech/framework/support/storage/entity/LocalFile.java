@@ -1,4 +1,4 @@
-package cn.cerestech.framework.support.localstorage.entity;
+package cn.cerestech.framework.support.storage.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
