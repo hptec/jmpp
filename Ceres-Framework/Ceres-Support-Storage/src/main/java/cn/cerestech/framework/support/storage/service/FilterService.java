@@ -1,4 +1,4 @@
-package cn.cerestech.framework.support.localstorage.service;
+package cn.cerestech.framework.support.storage.service;
 
 import java.util.List;
 import java.util.Map;
@@ -15,12 +15,12 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import cn.cerestech.framework.support.localstorage.QueryRequest;
-import cn.cerestech.framework.support.localstorage.entity.LocalFile;
-import cn.cerestech.framework.support.localstorage.filters.Channel;
-import cn.cerestech.framework.support.localstorage.filters.Filter;
-import cn.cerestech.framework.support.localstorage.filters.StretchCenterFilter;
-import cn.cerestech.framework.support.localstorage.filters.WatermarkFilter;
+import cn.cerestech.framework.support.storage.QueryRequest;
+import cn.cerestech.framework.support.storage.entity.LocalFile;
+import cn.cerestech.framework.support.storage.filter.Channel;
+import cn.cerestech.framework.support.storage.filter.Filter;
+import cn.cerestech.framework.support.storage.filter.StretchCenterFilter;
+import cn.cerestech.framework.support.storage.filter.WatermarkFilter;
 
 @Service
 public class FilterService {
