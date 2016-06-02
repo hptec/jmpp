@@ -41,6 +41,6 @@ public abstract class TemplateParser implements Parser {
 		return tpl;
 	}
 
-	abstract String getTemplate();
+	abstract public String getTemplate();
 
 }

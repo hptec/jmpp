@@ -20,7 +20,7 @@ public class DefaultPropertiesTemplateParser extends TemplateParser implements P
 	private String tplId;
 
 	@Override
-	String getTemplate() {
+	public String getTemplate() {
 		return Strings.nullToEmpty(Strings.isNullOrEmpty(tplId) ? null : prop.getProperty(tplId));
 	}
 

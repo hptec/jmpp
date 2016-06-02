@@ -7,12 +7,24 @@ define([ 'http', 'modal', '$' ], function(http, modal, $) {
 			}
 
 			var req = {};
-			req = $.extends(req, option);
-			req = $.extends(req, {
+			req = $.extend(req, option);
+			req = $.extend(req, {
 				url : "/api/login/doLogin",
 				server : true
 			});
 
+			http.load(req);
+		},
+		/**
+		 * 发送登录注册用的验证码
+		 */
+		sendSms : function(option) {
+			var req = {};
+			req = $.extend(req, option);
+			req = $.extend(req, {
+				url : "/api/login/sms",
+				server : true
+			});
 			http.load(req);
 		},
 		logout : function() {
