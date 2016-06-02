@@ -5,7 +5,7 @@
   <artifactId>Ceres-Framework</artifactId>
   <packaging>pom</packaging>
   <properties>
-    <ceres.version>3.0.0</ceres.version>
+    <ceres.version>3.0.2</ceres.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <zxing.version>3.2.0</zxing.version>
@@ -66,9 +66,7 @@
     <module>Ceres-Middleware-Sms</module>
     <module>Ceres-Support-Configuration</module>
     <module>Ceres-Support-Persistence</module>
-    <module>Ceres-Support-LocalStorage</module>
     <module>Ceres-Support-WebApi</module>
-    <module>Ceres-Support-LocalStorage-WebApi</module>
     <module>Ceres-Support-Web</module>
     <module>Ceres-Support-Web-Console</module>
     <module>Ceres-Support-Classpath-WebApi</module>
@@ -78,8 +76,12 @@
     <module>Ceres-Middleware-Sms-Console</module>
     <module>Ceres-Middleware-Balance</module>
     <module>Ceres-Middleware-Location</module>
+    
+    
+    <module>Ceres-Support-Storage</module>
+    <module>Ceres-Support-Storage-WebApi</module>
   </modules>
-  <version>3.0.0</version>
+  <version>3.0.2</version>
   <dependencies>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -92,14 +94,14 @@
       <version>${spring.boot.version}</version>
     </dependency>
     <dependency>
-    	<groupId>com.google.guava</groupId>
-    	<artifactId>guava</artifactId>
-    	<version>19.0</version>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>19.0</version>
     </dependency>
     <dependency>
-    	<groupId>ognl</groupId>
-    	<artifactId>ognl</artifactId>
-    	<version>3.1.2</version>
+      <groupId>ognl</groupId>
+      <artifactId>ognl</artifactId>
+      <version>3.1.2</version>
     </dependency>
   </dependencies>
 </project>
