@@ -6,13 +6,14 @@ import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
 
-public class PasswordLoginProvider<T extends Loginable> implements LoginProvider<T> {
-
-	private Login fromLogin = null;
-	private LoginDao<T> dao;
+public abstract class PasswordLoginProvider<T extends Loginable> implements LoginProvider<T> {
+	public static final String LOGIN_ID = "usr";
+	public static final String LOGIN_PWD = "pwd";
 
 	@Override
 	public Result<Long> validate() {
+		LoginDao<T> dao = getDao();
+		Login fromLogin = getLogin();
 		if (dao == null || fromLogin == null || fromLogin.isEmpty()) {
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
@@ -37,16 +38,10 @@ public class PasswordLoginProvider<T extends Loginable> implements LoginProvider
 		return Result.success(t.getId());
 	}
 
-	@Override
-	public LoginDao<T> getDao() {
-		return dao;
+	public Login getLogin() {
+		String usr = getRequest(LOGIN_ID);
+		String pwd = getRequest(LOGIN_PWD);
+		return Login.from(usr, pwd);
 	}
 
-	public static <T extends Loginable> LoginProvider<T> from(Login login, LoginDao<T> dao) {
-		PasswordLoginProvider<T> plp = new PasswordLoginProvider<T>();
-		plp.fromLogin = login;
-		plp.dao = dao;
-
-		return plp;
-	}
 }

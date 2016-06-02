@@ -1,12 +1,22 @@
 package cn.cerestech.framework.support.login.provider;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import cn.cerestech.framework.core.parser.DefaultPropertiesTemplateParser;
 import cn.cerestech.framework.core.service.Result;
+import cn.cerestech.framework.core.utils.KV;
+import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
 import cn.cerestech.framework.support.web.operator.RequestOperator;
 import cn.cerestech.framework.support.web.operator.SessionOperator;
+import cn.cerestech.middleware.location.mobile.Mobile;
+import cn.cerestech.middleware.location.operator.IpOperator;
+import cn.cerestech.middleware.sms.entity.SmsRecord;
+import cn.cerestech.middleware.sms.service.SmsService;
 
 /**
  * 默认提交参数值 phone/code
@@ -16,7 +26,7 @@ import cn.cerestech.framework.support.web.operator.SessionOperator;
  * @param <T>
  */
 public abstract class SmsLoginProvider<T extends Loginable>
-		implements LoginProvider<T>, SessionOperator, RequestOperator {
+		implements LoginProvider<T>, SessionOperator, RequestOperator, IpOperator {
 
 	public static final String LOGIN_SESSION_SMS_MOBILE = "LOGIN_SESSION_SMS_MOBILE";// 发送验证短信后保存在Session中电话号码的值
 	public static final String LOGIN_SESSION_SMS_CODE = "LOGIN_SESSION_SMS_CODE";// 发送验证短信后保存在Session中代码的值
@@ -24,7 +34,7 @@ public abstract class SmsLoginProvider<T extends Loginable>
 	public static final String LOGIN_PHONE = "phone";// 登录电话
 	public static final String LOGIN_CODE = "code";// 登录验证码
 
-	private Login fromLogin = null;
+	private Logger log = LogManager.getLogger();
 
 	/**
 	 * 当校验完成需要创建用户的时候，调用此方法进行创建，
@@ -37,6 +47,7 @@ public abstract class SmsLoginProvider<T extends Loginable>
 	public Result<Long> validate() {
 
 		LoginDao<T> dao = getDao();
+		Login fromLogin = getLogin();
 		if (dao == null || fromLogin == null || fromLogin.isEmpty()) {
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
@@ -44,10 +55,6 @@ public abstract class SmsLoginProvider<T extends Loginable>
 		// 验证短信验证码
 		String sys_phone = getSession(LOGIN_SESSION_SMS_MOBILE);
 		String sys_code = getSession(LOGIN_SESSION_SMS_CODE);
-
-		if (fromLogin != null && fromLogin.isEmpty()) {
-			return Result.error(ErrorCodes.LOGIN_FAILED);
-		}
 
 		if (!fromLogin.getId().equals(sys_phone) || !fromLogin.getPwd().equals(sys_code)) {
 			return Result.error(ErrorCodes.SMS_CODE_ERROR);
@@ -77,5 +84,26 @@ public abstract class SmsLoginProvider<T extends Loginable>
 
 		return Login.from(phone, code);
 	};
+
+	public Result<SmsRecord> sendSmsCode(Mobile to) {
+		if (!to.legal()) {
+			return Result.error(cn.cerestech.middleware.location.enums.ErrorCodes.PHONE_ILLEGAL);
+		}
+
+		String code = Random.number(4);
+		String content = new DefaultPropertiesTemplateParser("login_or_reg").parse(KV.on().put("code", code));
+		Result<SmsRecord> res = getSmsService().send(to, content, getIp());
+		log.trace("发送短信 号码：" + to.fullNumber() + " 验证码：" + code);
+		if (res.isSuccess()) {
+			putSession(SmsLoginProvider.LOGIN_SESSION_SMS_CODE, code);
+			putSession(SmsLoginProvider.LOGIN_SESSION_SMS_MOBILE, to.number());
+		}
+
+		return res;
+	}
+
+	abstract public String getSmsCodeTemplate();
+
+	abstract public SmsService getSmsService();
 
 }

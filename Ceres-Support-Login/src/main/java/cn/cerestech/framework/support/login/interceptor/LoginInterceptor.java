@@ -1,7 +1,6 @@
 package cn.cerestech.framework.support.login.interceptor;
 
 import java.util.Date;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,27 +10,21 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.beust.jcommander.internal.Maps;
 import com.google.common.base.Strings;
 
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
+import cn.cerestech.framework.support.login.config.LoginProviderConfiguration;
 import cn.cerestech.framework.support.login.dao.LoginDao;
-import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
-import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.framework.support.web.operator.PlatformOperator;
 import cn.cerestech.framework.support.web.operator.SessionOperator;
 import cn.cerestech.framework.support.web.operator.ZipOutOperator;
 
 @Component
-public class LoginInterceptor
-		implements HandlerInterceptor, ZipOutOperator, SessionOperator, PlatformOperator, UserSessionOperator {
-
-	@SuppressWarnings("rawtypes")
-	private static final Map<PlatformCategory, LoginDao> loginProviderPool = Maps.newHashMap();
+public class LoginInterceptor implements HandlerInterceptor, ZipOutOperator, SessionOperator, PlatformOperator,UserSessionOperator {
 
 	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
 
@@ -42,7 +35,7 @@ public class LoginInterceptor
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
 		response.setHeader("Access-Control-Max-Age", "3600");
-		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); 
+		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod m = (HandlerMethod) handler;
@@ -78,7 +71,7 @@ public class LoginInterceptor
 					}
 
 					// 校验登录
-					LoginDao dao = getDao();
+					LoginDao dao = LoginProviderConfiguration.getProvider(platform).getDao();
 					if (dao != null && dao.findUniqueByIdAndLoginRememberTokenAndLoginRememberExpiredGreaterThan(id,
 							token, new Date()) != null) {
 						// 校验通过，记录入Session
@@ -106,39 +99,6 @@ public class LoginInterceptor
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-	}
-
-	public void register(Loginable login, Boolean remember) {
-		Long id = login instanceof IdEntity ? ((IdEntity) login).getId() : null;
-
-		// 记录登录信息到cookie中
-		putUserId(id);
-
-		// 如果用户记住登录，还要放入cookie
-		if (remember) {
-			// 记录登录,添加cookie
-			putRemember(id, login.getLogin().getRememberToken());
-		} else {
-			// 清除cookie
-			clearRemember();
-		}
-	}
-
-	/**
-	 * 存储LoginProvider，不重复存储
-	 * 
-	 * @param category
-	 * @param provider
-	 */
-	public void putDao(LoginDao provider) {
-		PlatformCategory category = getPlatformCategory();
-		if (!loginProviderPool.containsKey(category)) {
-			loginProviderPool.put(category, provider);
-		}
-	}
-
-	public LoginDao getDao() {
-		return loginProviderPool.get(getPlatformCategory());
 	}
 
 }
