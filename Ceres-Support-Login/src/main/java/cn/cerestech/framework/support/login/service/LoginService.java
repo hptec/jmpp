@@ -80,4 +80,10 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		return Result.success(t instanceof Confidential ? ((Confidential<T>) t).safty() : t);
 	}
 
+	public Result<Loginable> logout() {
+		clearRemember();
+		putUserId(null);
+		return Result.success();
+	}
+
 }

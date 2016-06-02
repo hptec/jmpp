@@ -4,7 +4,7 @@ public class StringTemplateParser extends TemplateParser implements Parser {
 	private String tpl = "";
 
 	@Override
-	String getTemplate() {
+	public String getTemplate() {
 		return tpl;
 	}
 

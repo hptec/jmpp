@@ -50,4 +50,17 @@ public class LoginWebApi extends WebApi {
 			zipOut(ret);
 		}
 	}
+
+	@RequestMapping("/logout")
+	@PlatformCategoryRequired
+	public void logout() {
+		PlatformCategory category = getPlatformCategory();
+		LoginProvider provider = LoginProviderConfiguration.getProvider(category);
+		if (provider == null) {
+			zipOut(Result.error(ErrorCodes.PROVIDER_NOT_SUPPORT));
+		} else {
+			Result ret = loginService.logout();
+			zipOut(ret);
+		}
+	}
 }
