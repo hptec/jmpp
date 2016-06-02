@@ -5,12 +5,24 @@ import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
+import cn.cerestech.framework.support.web.operator.RequestOperator;
 import cn.cerestech.framework.support.web.operator.SessionOperator;
 
-public abstract class SmsLoginProvider<T extends Loginable> implements LoginProvider<T>, SessionOperator {
+/**
+ * 默认提交参数值 phone/code
+ * 
+ * @author harryhe
+ *
+ * @param <T>
+ */
+public abstract class SmsLoginProvider<T extends Loginable>
+		implements LoginProvider<T>, SessionOperator, RequestOperator {
 
 	public static final String LOGIN_SESSION_SMS_MOBILE = "LOGIN_SESSION_SMS_MOBILE";// 发送验证短信后保存在Session中电话号码的值
 	public static final String LOGIN_SESSION_SMS_CODE = "LOGIN_SESSION_SMS_CODE";// 发送验证短信后保存在Session中代码的值
+
+	public static final String LOGIN_PHONE = "phone";// 登录电话
+	public static final String LOGIN_CODE = "code";// 登录验证码
 
 	private Login fromLogin = null;
 
@@ -19,7 +31,7 @@ public abstract class SmsLoginProvider<T extends Loginable> implements LoginProv
 	 * 
 	 * @return 创建记录的ID，必须保证数据库中有记录。如果返回null,则默认从数据库查找，数据库中没有的话，会报错
 	 */
-	abstract public Long onRegisterRequired();
+	abstract public Long onRegisterRequired(Login login);
 
 	@Override
 	public Result<Long> validate() {
@@ -30,8 +42,8 @@ public abstract class SmsLoginProvider<T extends Loginable> implements LoginProv
 		}
 
 		// 验证短信验证码
-		String sys_phone = getSession("login_or_reg_phone");
-		String sys_code = getSession("login_or_reg");
+		String sys_phone = getSession(LOGIN_SESSION_SMS_MOBILE);
+		String sys_code = getSession(LOGIN_SESSION_SMS_CODE);
 
 		if (fromLogin != null && fromLogin.isEmpty()) {
 			return Result.error(ErrorCodes.LOGIN_FAILED);
@@ -41,7 +53,7 @@ public abstract class SmsLoginProvider<T extends Loginable> implements LoginProv
 			return Result.error(ErrorCodes.SMS_CODE_ERROR);
 		}
 		// 检查是否创建用户
-		Long id = onRegisterRequired();
+		Long id = onRegisterRequired(fromLogin);
 		if (id == null) {
 			// 从数据库获取用户对象
 			T t = dao.findUniqueByLoginId(fromLogin.getId());
@@ -59,6 +71,11 @@ public abstract class SmsLoginProvider<T extends Loginable> implements LoginProv
 	 * 
 	 * @return
 	 */
-	abstract public Login getLogin();
+	public Login getLogin() {
+		String phone = getRequest(LOGIN_PHONE);
+		String code = getRequest(LOGIN_CODE);
+
+		return Login.from(phone, code);
+	};
 
 }

@@ -4,6 +4,9 @@ define([ 'module', '$' ], function(module, $) {
 		success : function(data) {
 		},
 		alert : function(data) {
+		},
+		toast : function() {
+
 		}
 	}
 
