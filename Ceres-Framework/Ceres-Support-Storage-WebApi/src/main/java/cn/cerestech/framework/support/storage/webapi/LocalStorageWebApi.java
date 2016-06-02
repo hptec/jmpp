@@ -1,4 +1,4 @@
-package cn.cerestech.framework.support.localstorage.webapi;
+package cn.cerestech.framework.support.storage.webapi;
 
 import java.io.IOException;
 import java.util.List;
