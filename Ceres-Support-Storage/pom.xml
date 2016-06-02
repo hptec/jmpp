@@ -6,22 +6,27 @@
     <artifactId>Ceres-Framework</artifactId>
     <version>3.0.2</version>
   </parent>
-  <artifactId>Ceres-Support-Persistence</artifactId>
+  <artifactId>Ceres-Support-Storage</artifactId>
   <version>${ceres.version}</version>
   <dependencies>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-jpa</artifactId>
-      <version>${spring.boot.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.34</version>
+      <groupId>cn.cerestech</groupId>
+      <artifactId>Ceres-Support-Persistence</artifactId>
+      <version>${ceres.version}</version>
     </dependency>
     <dependency>
       <groupId>cn.cerestech</groupId>
       <artifactId>Ceres-Core</artifactId>
+      <version>${ceres.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.cerestech</groupId>
+      <artifactId>Ceres-Support-Configuration</artifactId>
+      <version>${ceres.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.cerestech</groupId>
+      <artifactId>Ceres-Support-Platform</artifactId>
       <version>${ceres.version}</version>
     </dependency>
   </dependencies>
