@@ -27,8 +27,14 @@ define([ 'http', 'modal', '$' ], function(http, modal, $) {
 			});
 			http.load(req);
 		},
-		logout : function() {
-
+		logout : function(callback) {
+			http.load({
+				url : '/api/login/logout',
+				server : true,
+				complete : function() {
+					callback && callback();
+				}
+			});
 		}
 	};
 });
