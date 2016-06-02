@@ -9,7 +9,7 @@ import cn.cerestech.framework.core.utils.FileExtensions;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.framework.support.storage.QueryRequest;
 import cn.cerestech.framework.support.storage.enums.WatermarkConfigKey;
-import cn.cerestech.framework.support.storage.service.LocalStorageService;
+import cn.cerestech.framework.support.storage.service.StorageService;
 
 /**
  * TODO 这个filter还要等小春开发
@@ -25,7 +25,7 @@ public class WatermarkFilter implements Filter {
 	@Autowired
 	protected ConfigService configService;
 	@Autowired
-	LocalStorageService localstorageService;
+	StorageService localstorageService;
 
 	/**
 	 * 返回工程水印图片目录

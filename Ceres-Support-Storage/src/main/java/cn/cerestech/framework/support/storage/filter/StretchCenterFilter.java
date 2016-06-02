@@ -14,14 +14,14 @@ import com.google.common.primitives.Ints;
 import cn.cerestech.framework.core.images.Images;
 import cn.cerestech.framework.core.utils.FileExtensions;
 import cn.cerestech.framework.support.storage.QueryRequest;
-import cn.cerestech.framework.support.storage.service.LocalStorageService;
+import cn.cerestech.framework.support.storage.service.StorageService;
 
 @Component
 public class StretchCenterFilter implements Filter {
 	private Logger log = LogManager.getLogger();
 
 	@Autowired
-	LocalStorageService localstorageService;
+	StorageService localstorageService;
 
 	@Override
 	public Boolean extMatchs(String ext) {

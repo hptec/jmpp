@@ -1,0 +1,12 @@
+{
+	name:"Ceres-Support-Storage",
+	desc:"平台存储管理模块",
+	jsModules:[
+		{
+			name:"storage",
+			uri:"/api/classpath/query/support/storage/js/storage",
+			exports:"storage"
+		}
+		
+	]
+}

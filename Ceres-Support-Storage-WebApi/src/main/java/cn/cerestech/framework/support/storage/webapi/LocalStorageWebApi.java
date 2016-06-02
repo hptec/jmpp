@@ -21,25 +21,25 @@ import com.google.common.io.Files;
 
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.storage.entity.LocalFile;
-import cn.cerestech.framework.support.storage.service.LocalStorageService;
+import cn.cerestech.framework.support.storage.service.StorageService;
 import cn.cerestech.framework.support.web.ContentType;
 import cn.cerestech.framework.support.webapi.WebApi;
 
 @RestController
-@RequestMapping("api/localstorage")
+@RequestMapping("api/storage")
 public class LocalStorageWebApi extends WebApi {
 
 	private Logger log = LogManager.getLogger();
 	@Autowired
-	LocalStorageService localstorageService;
+	StorageService storageService;
 
-	@RequestMapping("/query/**")
+	@RequestMapping("/get/**")
 	public void query() throws Throwable {
 		String srcKey = getRequest().getRequestURI();
-		srcKey = srcKey.substring("/api/localstorage/query/".length());
+		srcKey = srcKey.substring("/api/storage/get/".length());
 		log.trace("query local file: " + srcKey);
 
-		Optional<LocalFile> optionFile = localstorageService.queryCache(srcKey);
+		Optional<LocalFile> optionFile = storageService.queryCache(srcKey);
 		if (!optionFile.isPresent()) {
 			getResponse().sendError(404);
 		} else {
@@ -54,27 +54,24 @@ public class LocalStorageWebApi extends WebApi {
 	}
 
 	@RequestMapping("/upload")
-	public String resourceUpload(@RequestParam MultipartFile[] myfiles, HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
-		List<LocalFile> retList = Lists.newArrayList();
-
+	public void upload(@RequestParam MultipartFile[] myfiles, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		List<MultipartFile> files = Lists.newArrayList();
 		MultipartHttpServletRequest r = (MultipartHttpServletRequest) request;
 		r.getMultiFileMap().forEach((k, v) -> {
-			v.forEach(file -> {
-				LocalFile localFile;
-				try {
-					localFile = localstorageService.write(file.getOriginalFilename(), file.getBytes());
-					if (localFile != null) {
-						retList.add(localFile);
-					}
-				} catch (Exception e) {
-					log.catching(e);
-				}
-			});
+			files.addAll(v);
 		});
 
-		// return Jsons.toJson(retList);
-		return null;
+		List<LocalFile> ret = storageService.put(files);
+		if (ret.size() == 0) {
+			zipOut(Jsons.from(new Object()));
+		} else if (ret.size() == 1) {
+			zipOut(Jsons.from(ret.get(0)));
+		} else {
+			zipOut(ret);
+		}
+
+		zipOut(ret);
 	}
 
 }
