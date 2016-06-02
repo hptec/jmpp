@@ -52,7 +52,7 @@ public class LoginInterceptor
 				// 检查paltform,必须指定platfomr
 				PlatformCategory platform = getPlatformCategory();
 				if (platform == null) {
-					zipOut(Result.error(ErrorCodes.PLATFORM_CATEGORY_REQUIRED));
+					zipOut(Result.error(cn.cerestech.framework.platform.enums.ErrorCodes.PLATFORM_CATEGORY_REQUIRED));
 					return Boolean.FALSE;
 				}
 

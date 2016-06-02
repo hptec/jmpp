@@ -31,6 +31,9 @@ public class LoginService<T extends Loginable> implements PlatformOperator {
 		}
 
 		Result<Long> ret = provider.validate();
+		if (!ret.isSuccess()) {
+			return Result.error(ret);
+		}
 		LoginDao<T> dao = provider.getDao();
 		T t = dao.findOne(ret.getObject());
 		Login inDb = t.getLogin();
