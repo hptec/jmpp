@@ -11,8 +11,8 @@ import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.support.persistence.IdEntity;
 
 @Entity
-@Table(name = "$$sys_local_file")
-public class LocalFile extends IdEntity {
+@Table(name = "$$sys_storage")
+public class StorageFile extends IdEntity {
 
 	@Column(length = 255)
 	// title = "原文件名"
@@ -41,8 +41,8 @@ public class LocalFile extends IdEntity {
 	@Transient
 	private byte[] bytes;// 内容
 
-	public static LocalFile fromLocalUri(String localUri, String filterString, byte[] bytes, String uploaded_name) {
-		LocalFile newFile = new LocalFile();
+	public static StorageFile fromLocalUri(String localUri, String filterString, byte[] bytes, String uploaded_name) {
+		StorageFile newFile = new StorageFile();
 
 		// 生成新的本地文件名
 		String name = Files.getNameWithoutExtension(localUri);

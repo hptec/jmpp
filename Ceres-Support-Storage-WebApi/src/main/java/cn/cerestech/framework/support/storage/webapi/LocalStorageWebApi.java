@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.storage.entity.LocalFile;
+import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.service.StorageService;
 import cn.cerestech.framework.support.web.ContentType;
 import cn.cerestech.framework.support.webapi.WebApi;
@@ -39,11 +39,11 @@ public class LocalStorageWebApi extends WebApi {
 		srcKey = srcKey.substring("/api/storage/get/".length());
 		log.trace("query local file: " + srcKey);
 
-		Optional<LocalFile> optionFile = storageService.queryCache(srcKey);
+		Optional<StorageFile> optionFile = storageService.queryCache(srcKey);
 		if (!optionFile.isPresent()) {
 			getResponse().sendError(404);
 		} else {
-			LocalFile file = optionFile.get();
+			StorageFile file = optionFile.get();
 			if (file == null || file.getBytes() == null || file.getBytes().length == 0) {
 				getResponse().sendError(404);
 			} else {
@@ -62,7 +62,7 @@ public class LocalStorageWebApi extends WebApi {
 			files.addAll(v);
 		});
 
-		List<LocalFile> ret = storageService.put(files);
+		List<StorageFile> ret = storageService.put(files);
 		if (ret.size() == 0) {
 			zipOut(Jsons.from(new Object()));
 		} else if (ret.size() == 1) {
