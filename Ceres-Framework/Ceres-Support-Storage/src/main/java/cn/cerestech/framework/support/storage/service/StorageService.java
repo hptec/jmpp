@@ -27,7 +27,7 @@ import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.framework.support.storage.QueryRequest;
 import cn.cerestech.framework.support.storage.dao.LocalFileDao;
-import cn.cerestech.framework.support.storage.entity.LocalFile;
+import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.enums.LocalStorageConfigKey;
 
 @Service
@@ -35,15 +35,15 @@ public class StorageService {
 
 	private Logger log = LogManager.getLogger();
 
-	public static LoadingCache<String, Optional<LocalFile>> cachedKV = null;
+	public static LoadingCache<String, Optional<StorageFile>> cachedKV = null;
 
 	@PostConstruct
 	public void init() {
 		if (cachedKV == null) {
 			cachedKV = CacheBuilder.newBuilder().expireAfterWrite(3, TimeUnit.SECONDS)
-					.build(new CacheLoader<String, Optional<LocalFile>>() {
+					.build(new CacheLoader<String, Optional<StorageFile>>() {
 						@Override
-						public Optional<LocalFile> load(String httpUri) throws Exception {
+						public Optional<StorageFile> load(String httpUri) throws Exception {
 							return Optional.of(queryByHttpUri(httpUri));
 						}
 					});
@@ -97,7 +97,7 @@ public class StorageService {
 		return buffer.toString();
 	}
 
-	public Optional<LocalFile> queryCache(String httpUri) {
+	public Optional<StorageFile> queryCache(String httpUri) {
 		try {
 			return cachedKV.get(httpUri);
 		} catch (ExecutionException e) {
@@ -105,10 +105,10 @@ public class StorageService {
 		}
 	}
 
-	protected LocalFile queryByHttpUri(String httpUri) {
+	protected StorageFile queryByHttpUri(String httpUri) {
 
 		// 首先检测相同过滤器的文件是否已经存在
-		LocalFile file = localfileDao.findByHttpUri(httpUri);
+		StorageFile file = localfileDao.findByHttpUri(httpUri);
 		if (file == null) {
 			// 数据库记录不存在
 			QueryRequest request = QueryRequest.fromHttpUri(httpUri);// 格式化请求
@@ -125,7 +125,7 @@ public class StorageService {
 				}
 
 				// 生成文件名
-				LocalFile newFile = LocalFile.fromLocalUri(file.getLocalUri(), request.getFilterString(),
+				StorageFile newFile = StorageFile.fromLocalUri(file.getLocalUri(), request.getFilterString(),
 						file.getBytes(), file.getUploadName());
 				writeByLocalUri(newFile.getLocalUri(), newFile.getBytes());
 				localfileDao.save(newFile);
@@ -149,7 +149,7 @@ public class StorageService {
 		if (id == null) {
 			return;
 		}
-		LocalFile f = localfileDao.findOne(id);
+		StorageFile f = localfileDao.findOne(id);
 		if (f == null) {
 			return;
 		}
@@ -160,7 +160,7 @@ public class StorageService {
 		localfileDao.delete(id);
 	}
 
-	public LocalFile write(String orignalName, byte[] bytes) {
+	public StorageFile write(String orignalName, byte[] bytes) {
 
 		if (bytes == null || bytes.length == 0) {
 			return null;
@@ -173,7 +173,7 @@ public class StorageService {
 
 		String idPath = year + File.separator + month + File.separator + day + File.separator;
 
-		LocalFile localFile = new LocalFile();
+		StorageFile localFile = new StorageFile();
 
 		localFile.setBytes(bytes);
 		localFile.setExtensionName(Files.getFileExtension(orignalName));
@@ -214,9 +214,9 @@ public class StorageService {
 	 * @param fileId
 	 * @return
 	 */
-	protected LocalFile queryByLocalUri(String localUri) {
+	protected StorageFile queryByLocalUri(String localUri) {
 
-		LocalFile file = localfileDao.findByLocalUri(localUri);
+		StorageFile file = localfileDao.findByLocalUri(localUri);
 
 		byte[] bytes = new byte[0];
 		if (file == null) {
@@ -233,7 +233,7 @@ public class StorageService {
 						return null;
 					}
 					// 补完记录
-					file = new LocalFile();
+					file = new StorageFile();
 					file.setHttpUri(localUri);
 					file.setLocalUri(localUri);
 					file.setSimpleName(Files.getNameWithoutExtension(localUri) + "." + ext);
@@ -316,10 +316,10 @@ public class StorageService {
 		}
 	}
 
-	public List<LocalFile> put(List<MultipartFile> files) {
-		List<LocalFile> retList = Lists.newArrayList();
+	public List<StorageFile> put(List<MultipartFile> files) {
+		List<StorageFile> retList = Lists.newArrayList();
 		files.forEach(file -> {
-			LocalFile localFile;
+			StorageFile localFile;
 			try {
 				localFile = write(file.getOriginalFilename(), file.getBytes());
 				if (localFile != null) {

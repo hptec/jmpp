@@ -2,11 +2,11 @@ package cn.cerestech.framework.support.storage.dao;
 
 import org.springframework.data.repository.CrudRepository;
 
-import cn.cerestech.framework.support.storage.entity.LocalFile;
+import cn.cerestech.framework.support.storage.entity.StorageFile;
 
-public interface LocalFileDao extends CrudRepository<LocalFile, Long> {
+public interface LocalFileDao extends CrudRepository<StorageFile, Long> {
 
-	public LocalFile findByHttpUri(String httpUri);
+	public StorageFile findByHttpUri(String httpUri);
 
-	public LocalFile findByLocalUri(String local_uri);
+	public StorageFile findByLocalUri(String local_uri);
 }

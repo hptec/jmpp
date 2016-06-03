@@ -16,7 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.support.storage.QueryRequest;
-import cn.cerestech.framework.support.storage.entity.LocalFile;
+import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.filter.Channel;
 import cn.cerestech.framework.support.storage.filter.Filter;
 import cn.cerestech.framework.support.storage.filter.StretchCenterFilter;
@@ -40,7 +40,7 @@ public class FilterService {
 		filters.put(watermarkFilter.getName(), watermarkFilter);
 	}
 
-	public LocalFile filter(LocalFile file, String filterString) {
+	public StorageFile filter(StorageFile file, String filterString) {
 		if (file == null) {
 			return null;
 		}
