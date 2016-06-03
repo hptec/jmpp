@@ -1,5 +1,10 @@
 package cn.cerestech.framework.support.persistence.search;
 
+import java.util.Collection;
+import java.util.List;
+
+import javax.persistence.criteria.Predicate;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -42,6 +47,22 @@ public abstract class AbstractCriteria<T> implements Criteria<T>, Jsonable {
 
 	public void setPage(Paginated<T> page) {
 		this.page = page;
+	}
+
+	protected Predicate[] toArray(Collection<Predicate> col) {
+		Predicate[] ret = new Predicate[col.size()];
+		col.toArray(ret);
+		return ret;
+	}
+
+	/**
+	 * 过滤结果集
+	 * 
+	 * @param list
+	 * @return
+	 */
+	protected List<T> filter(List<T> list) {
+		return list;
 	}
 
 }
