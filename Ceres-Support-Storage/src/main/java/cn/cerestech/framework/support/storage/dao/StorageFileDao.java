@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import cn.cerestech.framework.support.storage.entity.StorageFile;
 
-public interface LocalFileDao extends CrudRepository<StorageFile, Long> {
+public interface StorageFileDao extends CrudRepository<StorageFile, Long> {
 
 	public StorageFile findByHttpUri(String httpUri);
 
