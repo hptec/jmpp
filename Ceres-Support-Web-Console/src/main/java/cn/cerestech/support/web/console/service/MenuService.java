@@ -2,6 +2,8 @@ package cn.cerestech.support.web.console.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ import cn.cerestech.support.web.console.entity.SysMenu;
 
 @Service
 public class MenuService {
-	//TODO 菜单的同步，排序ENTITY
+	// TODO 菜单的同步，排序ENTITY
 	@Autowired
 	ManifestService manifestService;
 
@@ -68,12 +70,22 @@ public class MenuService {
 
 		// 同步菜单
 		Map<String, SysMenu> flatMenus = getFlatDefaultMenus();
-		// 排除掉已经存在的
-		sysMenuDao.findAll().forEach(m -> {
-			flatMenus.remove(m.getKey());
-		});
+		Set<String> allKeyInManifest = flatMenus.values().stream().map(m -> m.getKey()).distinct()
+				.collect(Collectors.toSet());
 
-		sysMenuDao.save(flatMenus.values());
+		List<SysMenu> allInDb = sysMenuDao.findAll();
+		Set<String> allKeyInDb = allInDb.stream().map(m -> m.getKey()).distinct().collect(Collectors.toSet());
+
+		// 要删除的menu
+		Set<String> keyToDelete = allKeyInDb.stream().filter(k -> !allKeyInManifest.contains(k))
+				.collect(Collectors.toSet());
+		sysMenuDao.deleteByKeyIn(keyToDelete);
+
+		// 要添加的Menu
+		List<SysMenu> menuToAdd = allKeyInManifest.stream().filter(k -> !allKeyInDb.contains(k))
+				.map(k -> flatMenus.get(k)).collect(Collectors.toList());
+
+		sysMenuDao.save(menuToAdd);
 
 		platformMenuSynchronizedPool.put(1L, Boolean.TRUE);
 	}
