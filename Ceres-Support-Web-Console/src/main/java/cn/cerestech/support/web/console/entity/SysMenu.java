@@ -75,6 +75,7 @@ public class SysMenu extends IdEntity {
 	private String icon;
 	private String caption;
 	private String parent;
+	private String uri;
 	private Long sort;
 
 	@Transient
@@ -126,6 +127,14 @@ public class SysMenu extends IdEntity {
 
 	public void setSubmenus(List<SysMenu> submenus) {
 		this.submenus = submenus;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 }
