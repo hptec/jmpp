@@ -1,7 +1,7 @@
 {
 	name:"Ceres-Support-Web-Console",
 	desc:"平台后台管理基本模块",
-	menus:[
+	menus1:[
 		{
 			key:"TOP_SYSTEM_CONFIGURATION",
 			caption:"平台设置",
@@ -10,7 +10,6 @@
 			]
 			
 		}
-		
 	],
 	jsModules_console:[
 		{
@@ -208,12 +207,12 @@
 		},
 		{
 			name:"employee",
-			uri:"/api/classpath/query/support/web/console/js/employee",
+			uri:"/api/classpath/query/support/web/console/js/api/employee",
 			exports:"employee"
 		},
 		{
 			name:"menu",
-			uri:"/api/classpath/query/support/web/console/js/menu",
+			uri:"/api/classpath/query/support/web/console/js/api/menu",
 			exports:"menu"
 		}
 		
@@ -229,21 +228,18 @@
 				"icheck",
 				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css"
 			]
-			
-			
 		},
 		{
 			uri:"/workbench",
 			tpl:"/api/classpath/query/support/web/console/theme/homer/views/workbench.html",
 			deps:[
-				"/api/classpath/query/support/web/console/js/workbench.js",
+				"/api/classpath/query/support/web/console/js/pages/page-workbench.js",
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/helper",
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/animate.css/animate.min",
 				"metisMenu",
 				"angular-ui-bootstrap",
 				"bootstrap-scrollspy"
-				
 			]
 			
 		}

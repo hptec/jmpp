@@ -30,7 +30,7 @@ public abstract class PasswordLoginProvider<T extends Loginable> implements Logi
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
 
-		if (!inDb.comparePassword(fromLogin.getId())) {
+		if (!inDb.comparePassword(fromLogin.getPwd())) {
 			// 比对用户名密码
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}

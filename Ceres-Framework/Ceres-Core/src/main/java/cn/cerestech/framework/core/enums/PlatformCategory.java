@@ -4,7 +4,8 @@ public enum PlatformCategory implements DescribableEnum {
 	CONSOLE("console", "管理台"), //
 	APP("app", "手机移动端"), //
 	MP("mp", "微信公众号"), //
-	FRONTEND("frontend", "网站")
+	FRONTEND("frontend", "网站"), //
+	NULL("null", "无法识别")
 
 	;
 	private String key, desc;

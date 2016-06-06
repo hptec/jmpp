@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.web.annotation.Manifest;
 import cn.cerestech.framework.support.web.annotation.PlatformDefaultPage;
 import cn.cerestech.support.classpath.ClasspathService;
 import cn.cerestech.support.web.console.entity.SysMenu;
@@ -18,7 +17,6 @@ import cn.cerestech.support.web.console.service.MenuService;
 
 @RestController
 @RequestMapping("$$ceres_sys/console")
-@Manifest("support/web/console/manifest.json")
 public class DefaultWeb extends AbstractConsoleWeb {
 	private Logger log = LogManager.getLogger();
 
@@ -43,12 +41,6 @@ public class DefaultWeb extends AbstractConsoleWeb {
 
 		// menuService.doSynchronizedIfNecessary();
 		// return "".getBytes();
-	}
-
-	@RequestMapping("/menu.js")
-	public void menu() {
-
-		zipOutRequireJson(menuService.getDefaultMenus());
 	}
 
 }

@@ -6,18 +6,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.framework.support.web.enums.ModuleType;
 import cn.cerestech.framework.support.web.service.ManifestService;
 import cn.cerestech.support.web.console.dao.SysMenuDao;
 import cn.cerestech.support.web.console.entity.SysMenu;
 
 @Service
 public class MenuService {
-
+	//TODO 菜单的同步，排序ENTITY
 	@Autowired
 	ManifestService manifestService;
 
@@ -27,23 +26,32 @@ public class MenuService {
 	// 记录当前platform是否已经同步过菜单
 	private static Map<Long, Boolean> platformMenuSynchronizedPool = Maps.newHashMap();
 
-	public List<SysMenu> getDefaultMenus() {
-		List<SysMenu> allMenus = Lists.newArrayList();
-
-		manifestService.allManifest().forEach(root -> {
-			allMenus.addAll(extractMenus(root, "sdf"));
-		});
-
-		return allMenus;
-	}
-
+	/**
+	 * 获取Manifest中配置的所有菜单
+	 * 
+	 * @return
+	 */
 	public Map<String, SysMenu> getFlatDefaultMenus() {
-		return flatMenus(getDefaultMenus());
+		Map<String, SysMenu> buffer = Maps.newHashMap();
+
+		manifestService.getModule(ModuleType.MENU).stream().map(json -> json.to(SysMenu.class)).forEach(m -> {
+			if (buffer.containsKey(m.getKey())) {
+				throw new IllegalArgumentException("Menu conflict: " + Jsons.from(m).toPrettyJson());
+			} else {
+				buffer.put(m.getKey(), m);
+			}
+		});
+		return buffer;
 	}
 
+	/**
+	 * 读取登录用户的菜单
+	 * 
+	 * @return
+	 */
 	public List<SysMenu> getMyMenus() {
 		doSynchronizedIfNecessary();
-		return null;
+		return sysMenuDao.findAll();
 	}
 
 	/**
@@ -53,7 +61,7 @@ public class MenuService {
 	 */
 	public void doSynchronizedIfNecessary() {
 
-		if (platformMenuSynchronizedPool.containsKey(1L) && platformMenuSynchronizedPool.get(1L)) {
+		if (!platformMenuSynchronizedPool.isEmpty()) {
 			// 已经同步过了，无需同步，直接返回
 			return;
 		}
@@ -68,53 +76,6 @@ public class MenuService {
 		sysMenuDao.save(flatMenus.values());
 
 		platformMenuSynchronizedPool.put(1L, Boolean.TRUE);
-	}
-
-	private Map<String, SysMenu> flatMenus(List<SysMenu> menus) {
-		Map<String, SysMenu> flatMap = Maps.newHashMap();
-
-		menus.forEach(menu -> {
-			flatMenus(menu.getSubmenus()).forEach((k, m) -> {
-				if (flatMap.containsKey(m.getKey())) {
-					throw new IllegalArgumentException("Menu conflict: " + Jsons.from(m).toPrettyJson());
-				} else {
-					flatMap.put(m.getKey(), m);
-				}
-			});
-			menu.getSubmenus().clear();
-			if (flatMap.containsKey(menu.getKey())) {
-				throw new IllegalArgumentException("Menu conflict: " + Jsons.from(menu).toPrettyJson());
-			} else {
-				flatMap.put(menu.getKey(), menu);
-			}
-		});
-		return flatMap;
-	}
-
-	private List<SysMenu> extractMenus(Jsons root, String parentKey) {
-		List<SysMenu> thisMenus = Lists.newArrayList();
-
-		root.get("menus").asList().forEach(json -> {
-
-			// 提取菜单
-			String key = json.get("key").asString();
-			if (Strings.isNullOrEmpty(key)) {
-				throw new IllegalArgumentException("The 'key' of menu is required!");
-			}
-			String caption = json.get("caption").asString("未知菜单");
-			String parent = json.get("parent").asString(parentKey);
-			String icon = json.get("icon").asString("");
-
-			SysMenu m = new SysMenu();
-			m.setCaption(caption);
-			m.setIcon(icon);
-			m.setKey(key);
-			m.setParent(parent);
-			m.setSubmenus(extractMenus(json, key));
-			thisMenus.add(m);
-		});
-
-		return thisMenus;
 	}
 
 }
