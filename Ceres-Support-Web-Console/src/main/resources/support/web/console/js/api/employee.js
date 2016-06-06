@@ -1,4 +1,4 @@
-define([ 'http', 'modal', 'cache', 'platform', 'app' ], function(http, modal, cache, platform, app) {
+define([ 'http', 'modal', 'cache', 'platform', 'app', 'login' ], function(http, modal, cache, platform, app, login) {
 
 	return {
 		__currentUser : undefined,
@@ -6,12 +6,11 @@ define([ 'http', 'modal', 'cache', 'platform', 'app' ], function(http, modal, ca
 			if (loginId == undefined || loginId == "" || loginPwd == undefined || loginPwd == "") {
 
 			} else {
-				http.load({
-					url : '/api/employee/doLogin',
+				login.login({
 					data : {
-						loginId : loginId,
-						loginPwd : loginPwd,
-						remember : remember == undefined ? false : remember
+						usr : loginId,
+						pwd : loginPwd,
+						remember : remember
 					},
 					context : this,
 					success : function(result, context) {
@@ -24,7 +23,7 @@ define([ 'http', 'modal', 'cache', 'platform', 'app' ], function(http, modal, ca
 							funcCallback(result);
 						}
 					}
-				});
+				})
 			}
 		},
 		getCurrentUser : function() {

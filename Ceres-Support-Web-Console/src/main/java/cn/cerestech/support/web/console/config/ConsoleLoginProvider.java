@@ -1,4 +1,4 @@
-package cn.cerestech.support.web.console;
+package cn.cerestech.support.web.console.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

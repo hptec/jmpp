@@ -4,184 +4,122 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Strings;
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
 import com.google.gson.JsonElement;
 
-import cn.cerestech.framework.core.components.ComponentDispatcher;
 import cn.cerestech.framework.core.enums.PlatformCategory;
-import cn.cerestech.framework.core.environment.OsInfo;
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.web.annotation.Manifest;
+import cn.cerestech.framework.support.web.enums.ModuleType;
+import cn.cerestech.framework.support.web.operator.PlatformOperator;
 
 @Service
-public class ManifestService implements ComponentDispatcher {
+public class ManifestService implements PlatformOperator {
 
 	private Logger log = LogManager.getLogger();
 
-	private Map<String, Jsons> manifestPaths = Maps.newHashMap();
-
 	// 数据缓存
-	List<Jsons> cacheManifests = Lists.newArrayList();
-	Map<PlatformCategory, List<JsonElement>> cacheJsModules = Maps.newHashMap();
-	Map<PlatformCategory, JsonElement> cacheStarterMap = Maps.newHashMap();
-	Map<String, String> cachePathsMap = Maps.newHashMap();
-	Map<PlatformCategory, List<JsonElement>> cachePages = Maps.newHashMap();
+	private List<Jsons> cacheManifests = Lists.newArrayList();
+	private Map<PlatformCategory, Map<ModuleType, List<Jsons>>> cacheModules = Maps.newHashMap();
 
-	@Override
-	public void recive(String beanName, Object bean) {
-		if (bean.getClass().isAnnotationPresent(Manifest.class)) {
-			Manifest mf = bean.getClass().getAnnotation(Manifest.class);
-			if (mf != null) {
-				String path = mf.value();
-				if (Strings.isNullOrEmpty(path)) {
-					log.warn("Manifest from " + bean.getClass().getCanonicalName() + " is empty");
-				} else {
-					log.trace("Found manifest json: " + path);
-					try {
-						String content = Resources.toString(Resources.getResource(path), OsInfo.charset());
-						manifestPaths.put(path, Jsons.from(content));
-					} catch (IOException e) {
-						log.catching(e);
-					}
-				}
-
-			}
-		}
-	}
-
-	public List<Jsons> allManifest() {
+	private List<Jsons> getManifest() {
 		if (cacheManifests.isEmpty()) {
-			cacheManifests.addAll(manifestPaths.values());
+			log.trace("Manifest 未初始化，进行初始化..");
+			ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+			try {
+				Resource[] resources = resourcePatternResolver.getResources("classpath*:**/manifest.json");
+				for (Resource res : resources) {
+					log.trace(res);
+					String str = Resources.toString(res.getURL(), Charset.defaultCharset());
+					cacheManifests.add(Jsons.from(str));
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} finally {
+				log.trace("Manifest 初始化完成.");
+			}
 		}
 		return cacheManifests;
 	}
 
-	private List<Jsons> findElement(String nodeName, PlatformCategory category) {
-		List<Jsons> list = Lists.newArrayList();
-		// 找到应用于所有的
-		allManifest().forEach(manifest -> {
-			Jsons json = manifest.get(nodeName);
-			if (json.isObject()) {
-				list.add(json);
-			} else if (json.isArray()) {
-				list.addAll(json.asList());
-			}
-		});
-		// 找到应用于特定platform的
-		if (category != null) {
-			allManifest().forEach(manifest -> {
-				Jsons json = manifest.get(nodeName + "_" + category.key());
-				if (json.isObject()) {
-					list.add(json);
-				} else if (json.isArray()) {
-					list.addAll(json.asList());
+	public List<Jsons> getModule(ModuleType type) {
+		List<Jsons> ret = getCache(type);
+		if (ret == null) {
+			PlatformCategory category = getPlatformCategory();
+			List<Jsons> list = Lists.newArrayList();
+			// 找到应用于所有的
+			getManifest().forEach(manifest -> {
+				if (log.isTraceEnabled()) {
+					String key = manifest.get("name").asString();
+					String desc = manifest.get("desc").asString();
+					log.trace("开始扫描[" + type.desc() + "]：" + key + " - " + desc);
 				}
-			});
-		}
-		return list;
-	}
-
-	public List<JsonElement> getPages(PlatformCategory category) {
-		if (category == null) {
-			throw new IllegalArgumentException("PlatformCategory is required");
-		}
-
-		if (!cachePages.containsKey(category)) {
-			List<JsonElement> cateList = Lists.newArrayList();
-			findElement("pages", category).forEach(pg -> {
-				cateList.add(pg.getRoot());
-			});
-			cachePages.put(category, cateList);
-		}
-
-		return cachePages.get(category);
-	}
-
-	public List<JsonElement> getJsModules(PlatformCategory category) {
-		if (category == null) {
-			throw new IllegalArgumentException("PlatformCategory is required");
-		}
-		if (!cacheJsModules.containsKey(category)) {
-			Map<String, JsonElement> moduleMap = Maps.newHashMap();
-			List<String> conflict = Lists.newArrayList();
-
-			findElement("jsModules", category).forEach(m -> {
-				String name = m.get("name").asString();
-				if (moduleMap.containsKey(name)) {
-					conflict.add(m.toPrettyJson());
-				} else {
-					moduleMap.put(name, m.getRoot());
-				}
-			});
-
-			// 检测是否有冲突
-			if (!conflict.isEmpty()) {
-				throw new IllegalArgumentException("jsModule conflict:" + Jsons.from(conflict).toPrettyJson());
-			}
-
-			cacheJsModules.put(category, moduleMap.values().stream().collect(Collectors.toList()));
-
-			// 检测是否有依赖未注入
-			List<String> noDeps = Lists.newArrayList();
-			cacheJsModules.get(category).forEach(root -> {
-				Jsons json = Jsons.from(root);
-				json.get("deps").asList().forEach(str -> {
-					if (!moduleMap.containsKey(str.asString()) && str.asString().length() < 30) {
-						// 大于30用于过滤链接类的
-						noDeps.add(str.asString());
+				List<Jsons> cur = manifest.getRoot().getAsJsonObject().entrySet().stream().filter(entry -> {
+					// 是否不带platform限定的
+					log.trace("发现模块 " + entry.getKey() + " - " + type.key());
+					return entry.getKey().startsWith(type.key());
+				}).filter(entry -> {
+					// 检查模块是否包含对应的平台规定关系
+					if (entry.getKey().equals(type.key())) {
+						// 没有PlatformCategory后缀则应用与全部
+						return Boolean.TRUE;
 					}
-				});
-			});
 
-			if (!noDeps.isEmpty()) {
-				throw new IllegalArgumentException("The jsModule not exist: \n" + Jsons.from(noDeps).toPrettyJson());
-			}
-
-			log.trace("Modules: \n" + Jsons.from(cacheJsModules).toPrettyJson());
-		}
-		return cacheJsModules.get(category);
-
-	}
-
-	/**
-	 * 获取启动器
-	 * 
-	 * @param category2
-	 * 
-	 * @return
-	 */
-	public JsonElement getStarters(PlatformCategory category) {
-		if (category == null) {
-			throw new IllegalArgumentException("PlatformCategory is required");
-		}
-		if (!cacheStarterMap.containsKey(category)) {
-			findElement("starter", category).forEach(starter -> {
-				String platformStr = starter.get("platform").asString();
-				if (!Strings.isNullOrEmpty(platformStr) && category.key().equals(platformStr)) {
-					if (cacheStarterMap.containsKey(platformStr)) {
-						throw new IllegalArgumentException(
-								"The Starter for " + platformStr + " conflict: \n" + starter.toPrettyJson());
+					// 拆分Platform Category
+					if (category != null) {
+						List<String> categorys = Splitter.on("_").omitEmptyStrings().trimResults()
+								.splitToList(entry.getKey());
+						return categorys.contains(category.key());
 					} else {
-						cacheStarterMap.put(category, starter.getRoot());
+						return Boolean.FALSE;
 					}
+				}).map(entry -> Jsons.from(entry.getValue())).flatMap(json -> json.asList().stream())
+						.collect(Collectors.toList());
+				list.addAll(cur);
+				if (log.isTraceEnabled()) {
+					log.trace("发现记录" + cur.size() + "条");
 				}
 			});
+			putCache(type, list);
+			ret = list;
 		}
-
-		return cacheStarterMap.get(category);
+		return ret;
 	}
 
-	@Override
-	public void onComplete() {
+	public List<JsonElement> getModuleElement(ModuleType type) {
+		return getModule(type).stream().map(json -> json.getRoot()).collect(Collectors.toList());
+	}
+
+	private void putCache(ModuleType type, List<Jsons> json) {
+		PlatformCategory category = getPlatformCategory();
+		Map<ModuleType, List<Jsons>> cateCache = cacheModules.get(category);
+		if (cateCache == null) {
+			cateCache = Maps.newHashMap();
+			cacheModules.put(category, cateCache);
+		}
+		cateCache.put(type, json);
+	}
+
+	private List<Jsons> getCache(ModuleType type) {
+		PlatformCategory category = getPlatformCategory();
+		Map<ModuleType, List<Jsons>> cateCache = cacheModules.get(category);
+		if (cateCache != null && cateCache.containsKey(type)) {
+			return cateCache.get(type);
+		} else {
+			return null;
+		}
 	}
 
 }

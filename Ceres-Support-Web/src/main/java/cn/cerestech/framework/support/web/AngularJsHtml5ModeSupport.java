@@ -18,12 +18,10 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.web.util.WebUtils;
 
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.components.ComponentDispatcher;
-import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.support.web.annotation.PlatformDefaultPage;
 import cn.cerestech.framework.support.web.operator.PlatformOperator;

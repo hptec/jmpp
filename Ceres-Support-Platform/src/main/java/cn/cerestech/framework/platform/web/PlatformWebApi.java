@@ -10,11 +10,9 @@ import cn.cerestech.framework.platform.entity.Platform;
 import cn.cerestech.framework.platform.enums.ErrorCodes;
 import cn.cerestech.framework.platform.service.PlatformService;
 import cn.cerestech.framework.support.web.WebSupport;
-import cn.cerestech.framework.support.web.annotation.Manifest;
 
 @RestController
 @RequestMapping("api/platform")
-@Manifest("support/platform/manifest.json")
 public class PlatformWebApi extends WebSupport {
 
 	@Autowired

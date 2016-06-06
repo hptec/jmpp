@@ -137,15 +137,14 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 				// }
 				mui.ajax(sendRequest.url, sendRequest);
 			} else {
-				//
-				// $.cookie("ceres_platform", moduleConfig.platform, {
-				// expired : 7,
-				// path : '/'
-				// });
-				// $.cookie("ceres_platform_authcode", moduleConfig.authcode, {
-				// expired : 7,
-				// path : '/'
-				// });
+				$.cookie("ceres_platform", moduleConfig.platform, {
+					expired : 7,
+					path : '/'
+				});
+				$.cookie("ceres_platform_authcode", moduleConfig.authcode, {
+					expired : 7,
+					path : '/'
+				});
 				$.ajax(sendRequest);
 			}
 		}

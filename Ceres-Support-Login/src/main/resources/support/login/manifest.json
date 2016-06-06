@@ -1,0 +1,12 @@
+{
+	name:"Ceres-Support-Login",
+	desc:"平台登录管理模块",
+	jsModules:[
+		{
+			name:"login",
+			uri:"/api/classpath/query/support/login/js/login",
+			exports:"login"
+		}
+		
+	]
+}

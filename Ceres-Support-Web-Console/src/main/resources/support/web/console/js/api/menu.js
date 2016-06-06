@@ -1,6 +1,6 @@
 define([ 'http', 'cache', 'platform' ], function(http, cache, platform) {
 
-	var obj = {
+	return {
 		/**
 		 * 获取本人的菜单
 		 */
@@ -8,7 +8,7 @@ define([ 'http', 'cache', 'platform' ], function(http, cache, platform) {
 			var key = "EMPLOYEE_MINE_MENUS_" + platform.category();
 			if (func != undefined) {
 				http.load({
-					url : '/api/menu/mine',
+					url : '/api/console/menu/mine',
 					success : function(result) {
 						cache.set(key, result)
 						if (func) {
@@ -23,5 +23,4 @@ define([ 'http', 'cache', 'platform' ], function(http, cache, platform) {
 		}
 	}
 
-	return obj;
 });
