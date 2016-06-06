@@ -34,7 +34,7 @@
 
     <ul side-navigation class="nav" id="side-menu">
         <li ui-sref-active="active" ng-repeat="topMenu in menus">
-            <a href="#" ><i ng-class="topMenu.icon"></i> <span class="nav-label" ng-bind="topMenu.caption"></span> <span class="fa arrow" ng-if="topMenu.submenus.length > 0"></span> </a>
+            <a ng-href="/$$ceres_sys/console{{topMenu.uri}}" ><i ng-class="topMenu.icon"></i> <span class="nav-label" ng-bind="topMenu.caption"></span> <span class="fa arrow" ng-if="topMenu.submenus.length > 0"></span> </a>
             
             <ul class="nav nav-second-level" ng-class="{in: $state.includes('interface')}" ng-if="topMenu.submenus.length > 0">
                 <li ui-sref-active="active" ng-repeat="secondMenu in topMenu.submenus track by $index">
