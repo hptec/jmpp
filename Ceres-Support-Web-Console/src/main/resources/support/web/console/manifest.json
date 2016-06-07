@@ -144,8 +144,7 @@
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-bootstrap/ui-bootstrap.min",
 			deps:[
 				"angular",
-				"angular-local",
-				"angular-ui-bootstrap-tpls"
+				"angular-local"
 			],
 			angularModule:"ui.bootstrap"
 		},
@@ -154,7 +153,8 @@
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-bootstrap/ui-bootstrap-tpls.min",
 			deps:[
 				"angular",
-				"angular-local"
+				"angular-local",
+				"angular-ui-bootstrap"
 			]
 			
 		},
@@ -272,7 +272,7 @@
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/animate.css/animate.min",
 				"metisMenu",
-				"angular-ui-bootstrap",
+				"angular-ui-bootstrap-tpls",
 				"bootstrap-scrollspy"
 			]
 			
