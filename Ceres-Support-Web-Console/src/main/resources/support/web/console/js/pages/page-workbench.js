@@ -15,9 +15,7 @@ define([ 'app', 'platform', 'employee', 'menu', 'pages', 'login' ], function(app
 		});
 		$scope.logout = function() {
 			login.logout(function() {
-				pages.open({
-					url : "/login"
-				});
+				pages.open("login");
 			});
 		}
 	} ]);

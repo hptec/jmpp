@@ -33,6 +33,9 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 				templateUrl : pg.tpl,
 				data : pg.data
 			}
+			if (pg.abstract != undefined && pg.abstract == true) {
+				opt.abstract = true;
+			}
 
 			if (pg.deps != undefined) {
 				var js = new Array();
@@ -54,7 +57,8 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 				}
 				opt.resolve = resolve;
 			}
-			$stateProvider.state(pg.uri, opt);
+			console.log("页面:" + pg.name, opt);
+			$stateProvider.state(pg.name == undefined ? pg.uri : pg.name, opt);
 
 		}
 

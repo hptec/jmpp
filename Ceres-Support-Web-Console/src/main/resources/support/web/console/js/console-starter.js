@@ -1,5 +1,5 @@
 // 加载各种配置和启动前文件
-define([ 'platform'], function(platform) {
+define([ 'platform' ], function(platform) {
 	console.log("平台信息", platform.get());
 
 	require([ 'http', 'app' ], function(http, app) {
@@ -11,14 +11,12 @@ define([ 'platform'], function(platform) {
 
 			$(".splash").hide();
 		}
-		app.controller("appcmd", [ "$scope", "$location", function($scope, $location) {
+		app.controller("appcmd", [ "$scope", "$location", "$state", function($scope, $location, $state) {
 			var pages = require('pages');
-
-			console.log("pages", pages);
 
 			$scope.pages = pages.pages();
 			$scope.jump = function(url) {
-				$location.path(url);
+				$state.go(url);
 			}
 		} ]);
 		app.start(afterStart);
