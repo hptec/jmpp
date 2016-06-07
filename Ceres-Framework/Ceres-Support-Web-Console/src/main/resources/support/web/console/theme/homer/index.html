@@ -43,8 +43,8 @@
 	<!-- Page view wrapper -->
 	<div ui-view autoscroll="true"></div>
 	<div ng-controller="appcmd" style="display: none;">
-		<a href="javascript:void(0);" ng-click="jump(pg.uri)"
-			ng-repeat="pg in pages" ng-bind="pg.uri"></a>
+		<a href="javascript:void(0);" ng-click="jump(pg.name)"
+			ng-repeat="pg in pages" ng-bind="pg.name"></a>
 	</div>
 </body>
 <script>
@@ -63,9 +63,7 @@
 			http : {
 				onLoginRequired : function() {
 					require([ 'pages' ], function(pages) {
-						pages.open({
-							url : '/login'
-						})
+						pages.open("login");
 					});
 
 				}

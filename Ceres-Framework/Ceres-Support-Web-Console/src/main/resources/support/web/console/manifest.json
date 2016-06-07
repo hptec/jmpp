@@ -191,6 +191,37 @@
 			
 		},
 		{
+			name:"moment",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/moment/min/moment-with-locales.min",
+			deps:[
+				"jquery"
+			]
+			
+		},
+		{
+			name:"angular-ui-calendar",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-ui-calendar/src/calendar",
+			deps:[
+				"fullcalendar-zh-cn"
+			],
+			angularModule:"ui.calendar"
+		},
+		{
+			name:"fullcalendar-zh-cn",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/fullcalendar/dist/lang/zh-cn",
+			deps:[
+				"fullcalendar"	
+			]
+		},
+		{
+			name:"fullcalendar",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/fullcalendar/dist/fullcalendar.min",
+			deps:[
+				"jquery",
+				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/fullcalendar/dist/fullcalendar.min"
+			]
+		},
+		{
 			name:"console-starter",
 			uri:"/api/classpath/query/support/web/console/js/console-starter",
 			deps:[
@@ -220,16 +251,19 @@
 	],
 	pages_console:[
 		{
+			name:"login",			
 			uri:"/login",
 			tpl:"/api/classpath/query/support/web/console/theme/homer/views/common_app/login.html",
 			defaultPage:true,
 			deps:[
-				"/api/classpath/query/support/web/console/controller/login-ctrl.js",
+				"/api/classpath/query/support/web/console/js/pages/page-login.js",
 				"icheck",
 				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css"
 			]
 		},
 		{
+			name:"workbench",	
+			abstract:true,		
 			uri:"/workbench",
 			tpl:"/api/classpath/query/support/web/console/theme/homer/views/workbench.html",
 			deps:[
