@@ -1,12 +1,10 @@
 define([ 'app', 'platform', 'employee', 'menu', 'pages', 'login' ], function(app, platform, employee, menu, pages, login) {
 
-	app.controller('workbenchCtrl', [ '$scope', '$location', function($scope, $location) {
+	app.controller('workbenchCtrl', [ '$scope', '$location', '$state', function($scope, $location, $state) {
 		$scope.platform = platform.get();
 		$scope.currentUser = employee.getCurrentUser();
 		$scope.jump = function(url) {
-			pages.open({
-				url : url
-			});
+			$state.go(url);
 		}
 		$scope.menus = menu.getMine(function(result) {
 			$scope.menus = result;
