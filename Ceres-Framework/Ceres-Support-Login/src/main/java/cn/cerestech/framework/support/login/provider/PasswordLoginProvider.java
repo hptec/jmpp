@@ -1,8 +1,13 @@
 package cn.cerestech.framework.support.login.provider;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.Login;
+import cn.cerestech.framework.support.login.entity.LoginField;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
 
@@ -19,7 +24,7 @@ public abstract class PasswordLoginProvider<T extends Loginable> implements Logi
 		}
 
 		// 从数据库获取用户对象
-		T t = dao.findUniqueByLoginId(fromLogin.getId());
+		T t = dao.findUniqueByLoginIdIgnoreCase(fromLogin.getId());
 		if (t == null) {
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
@@ -42,6 +47,14 @@ public abstract class PasswordLoginProvider<T extends Loginable> implements Logi
 		String usr = getRequest(LOGIN_ID);
 		String pwd = getRequest(LOGIN_PWD);
 		return Login.from(usr, pwd);
+	}
+
+	@Override
+	public List<LoginField> getLoginFields() {
+		List<LoginField> retList = Lists.newArrayList();
+		retList.add(new LoginField("text", LOGIN_ID, "登录用户名"));
+		retList.add(new LoginField("password", LOGIN_PWD, "登录密码"));
+		return retList;
 	}
 
 }

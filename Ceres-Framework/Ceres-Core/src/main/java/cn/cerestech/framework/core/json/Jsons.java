@@ -8,6 +8,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,6 +22,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 public class Jsons {
+
+	private Logger log = LogManager.getLogger();
 
 	private JsonElement root;
 	private Boolean serializeNull = Boolean.FALSE;
@@ -58,8 +63,8 @@ public class Jsons {
 	public <T> T to(Class<T> clazz) {
 		return getGson().fromJson(toJson(), clazz);
 	}
-	
-	public <T> T to(TypeToken<T> typeToken){
+
+	public <T> T to(TypeToken<T> typeToken) {
 		return getGson().fromJson(toJson(), typeToken.getType());
 	}
 
@@ -88,6 +93,15 @@ public class Jsons {
 		me.root = me.getGson().toJsonTree(obj);
 
 		return me;
+	}
+
+	/**
+	 * 返回一个空的Jsons对象
+	 * 
+	 * @return
+	 */
+	public static Jsons empty() {
+		return Jsons.from("{}");
 	}
 
 	/**
@@ -137,6 +151,11 @@ public class Jsons {
 		Jsons me = new Jsons();
 		me.root = root;
 		return me.prettyPrint().toJson();
+	}
+
+	public Jsons printPrettyJson() {
+		log.trace(this.toPrettyJson());
+		return this;
 	}
 
 	public Jsons get(String... nodeName) {
@@ -316,5 +335,25 @@ public class Jsons {
 	@Override
 	public String toString() {
 		return this.toPrettyJson();
+	}
+
+	/**
+	 * 添加值
+	 * 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public Jsons put(String key, Object value) {
+		if (value == null) {
+			return this;
+		} else if (value instanceof Jsons) {
+			root.getAsJsonObject().add(key, ((Jsons) value).getRoot());
+		} else if (value instanceof String) {
+			root.getAsJsonObject().addProperty(key, (String) value);
+		} else {
+			put(key, Jsons.from(value));
+		}
+		return this;
 	}
 }

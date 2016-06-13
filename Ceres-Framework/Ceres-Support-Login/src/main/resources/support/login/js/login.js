@@ -35,6 +35,16 @@ define([ 'http', 'modal', '$' ], function(http, modal, $) {
 					callback && callback();
 				}
 			});
+		},
+		getDefinition : function(option) {
+			var req = {};
+			req = $.extend(req, option);
+			req = $.extend(req, {
+				url : "/api/login/definition",
+				server : true
+			});
+
+			http.load(req);
 		}
 	};
 });

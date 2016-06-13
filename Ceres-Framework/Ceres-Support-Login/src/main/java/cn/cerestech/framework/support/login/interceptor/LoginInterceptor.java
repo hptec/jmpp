@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,9 +25,13 @@ import cn.cerestech.framework.support.web.operator.SessionOperator;
 import cn.cerestech.framework.support.web.operator.ZipOutOperator;
 
 @Component
-public class LoginInterceptor implements HandlerInterceptor, ZipOutOperator, SessionOperator, PlatformOperator,UserSessionOperator {
+public class LoginInterceptor
+		implements HandlerInterceptor, ZipOutOperator, SessionOperator, PlatformOperator, UserSessionOperator {
 
 	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
+
+	@Autowired
+	LoginProviderConfiguration loginProviders;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -71,7 +76,7 @@ public class LoginInterceptor implements HandlerInterceptor, ZipOutOperator, Ses
 					}
 
 					// 校验登录
-					LoginDao dao = LoginProviderConfiguration.getProvider(platform).getDao();
+					LoginDao dao = loginProviders.getProvider(platform).getDao();
 					if (dao != null && dao.findUniqueByIdAndLoginRememberTokenAndLoginRememberExpiredGreaterThan(id,
 							token, new Date()) != null) {
 						// 校验通过，记录入Session

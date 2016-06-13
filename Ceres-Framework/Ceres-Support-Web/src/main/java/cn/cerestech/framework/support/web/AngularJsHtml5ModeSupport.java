@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.google.common.collect.Maps;
 
-import cn.cerestech.framework.core.components.ComponentDispatcher;
+import cn.cerestech.framework.core.components.ComponentListener;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.support.web.annotation.PlatformDefaultPage;
 import cn.cerestech.framework.support.web.operator.PlatformOperator;
@@ -31,7 +31,7 @@ import cn.cerestech.support.classpath.ClasspathService;
 @ControllerAdvice
 @Configuration
 public class AngularJsHtml5ModeSupport extends ResponseEntityExceptionHandler
-		implements ComponentDispatcher, PlatformOperator {
+		implements ComponentListener, PlatformOperator {
 
 	private static Map<PlatformCategory, Object> indexPages = Maps.newHashMap();
 	private Logger log = LogManager.getLogger();

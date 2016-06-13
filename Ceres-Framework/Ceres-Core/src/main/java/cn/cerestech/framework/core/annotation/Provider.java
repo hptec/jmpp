@@ -26,4 +26,11 @@ public @interface Provider {
 	 * @return
 	 */
 	PlatformCategory value();
+
+	/**
+	 * 如果为true会强制覆盖掉同类的登录器
+	 * 
+	 * @return
+	 */
+	boolean important() default false;
 }
