@@ -1,48 +1,65 @@
 package cn.cerestech.framework.support.login.config;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Maps;
 
+import cn.cerestech.framework.core.annotation.Provider;
+import cn.cerestech.framework.core.components.ComponentListener;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.operator.ProviderOperator;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.provider.LoginProvider;
 
-public abstract class LoginProviderConfiguration<T extends Loginable> implements ApplicationRunner, ProviderOperator {
+@Component
+public class LoginProviderConfiguration<T extends Loginable> implements ComponentListener, ProviderOperator {
 
-	private static Map<PlatformCategory, LoginProvider> providerPool = Maps.newHashMap();
+	private Map<PlatformCategory, LoginProvider<T>> providerPool = Maps.newHashMap();
 
 	protected Logger log = LogManager.getLogger();
 
+	public LoginProvider<T> getProvider(PlatformCategory category) {
+		return providerPool.get(category);
+	}
+
+	@SuppressWarnings({ "unused", "unchecked" })
 	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	public void recive(String beanName, Object bean) {
+		if (bean != null && bean.getClass().isAnnotationPresent(Provider.class) && bean instanceof LoginProvider) {
 
-		PlatformCategory category = forCategory();
-		if (category == null) {
-			log.warn("No PlatformCategory found!");
-			return;
+			Provider providerAnno = bean.getClass().getAnnotation(Provider.class);
+
+			PlatformCategory category = ((ProviderOperator) bean).forCategory();
+			if (category == null) {
+				log.warn("No PlatformCategory found!");
+				return;
+			}
+
+			LoginProvider<T> provider = (LoginProvider<T>) bean;
+			if (provider == null) {
+				log.warn("No LoginProvider found!");
+			}
+
+			if (providerAnno.important()) {
+				// 要求强制覆盖
+				providerPool.put(category, provider);
+			} else {
+				// 判断是否冲突
+				if (providerPool.containsKey(category)) {
+					throw new IllegalArgumentException("LoginProvider Conflict:" + category);
+				}
+			}
+
 		}
-
-		LoginProvider<T> provider = getProvider();
-		if (provider == null) {
-			log.warn("No LoginProvider found!");
-			return;
-		}
-
-		providerPool.put(category, provider);
 
 	}
 
-	public abstract LoginProvider<T> getProvider();
+	@Override
+	public void onComplete() {
 
-	public static LoginProvider getProvider(PlatformCategory category) {
-		return providerPool.get(category);
 	}
 }

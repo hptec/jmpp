@@ -1,7 +1,11 @@
 package cn.cerestech.framework.support.login.provider;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.Lists;
 
 import cn.cerestech.framework.core.parser.DefaultPropertiesTemplateParser;
 import cn.cerestech.framework.core.service.Result;
@@ -9,6 +13,7 @@ import cn.cerestech.framework.core.utils.KV;
 import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.Login;
+import cn.cerestech.framework.support.login.entity.LoginField;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
 import cn.cerestech.framework.support.web.operator.RequestOperator;
@@ -63,7 +68,7 @@ public abstract class SmsLoginProvider<T extends Loginable>
 		Long id = onRegisterRequired(fromLogin);
 		if (id == null) {
 			// 从数据库获取用户对象
-			T t = dao.findUniqueByLoginId(fromLogin.getId());
+			T t = dao.findUniqueByLoginIdIgnoreCase(fromLogin.getId());
 			if (t == null) {
 				return Result.error(ErrorCodes.LOGIN_FAILED);
 			}
@@ -105,5 +110,13 @@ public abstract class SmsLoginProvider<T extends Loginable>
 	abstract public String getSmsCodeTemplate();
 
 	abstract public SmsService getSmsService();
+
+	@Override
+	public List<LoginField> getLoginFields() {
+		List<LoginField> fields = Lists.newArrayList();
+		fields.add(new LoginField("tel", LOGIN_PHONE, "登录电话号码"));
+		fields.add(new LoginField("tel", LOGIN_CODE, "验证码"));
+		return fields;
+	}
 
 }

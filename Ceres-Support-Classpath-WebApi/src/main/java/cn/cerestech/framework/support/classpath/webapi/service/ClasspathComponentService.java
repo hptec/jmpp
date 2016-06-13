@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
-import cn.cerestech.framework.core.components.ComponentDispatcher;
+import cn.cerestech.framework.core.components.ComponentListener;
 import cn.cerestech.framework.support.classpath.webapi.ClasspathUriProvider;
 
 @Service
-public class ClasspathComponentService implements ComponentDispatcher {
+public class ClasspathComponentService implements ComponentListener {
 
 	private static ConcurrentMap<String, ClasspathUriProvider> providerPools = Maps.newConcurrentMap();
 

@@ -13,7 +13,7 @@ public interface LoginDao<T> extends CrudRepository<T, Long> {
 	 * @param loginId
 	 * @return
 	 */
-	T findUniqueByLoginId(String loginId);
+	T findUniqueByLoginIdIgnoreCase(String loginId);
 
 	T findUniqueByIdAndLoginRememberTokenAndLoginRememberExpiredGreaterThan(Long id, String remmeberToken,
 			Date rememberExpired);

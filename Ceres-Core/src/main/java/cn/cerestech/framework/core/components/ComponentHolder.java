@@ -17,7 +17,7 @@ import com.google.common.collect.Maps;
 @Component
 public class ComponentHolder implements BeanPostProcessor, ApplicationListener<ContextRefreshedEvent> {
 	protected static final Map<String, Object> componentMap = Maps.newHashMap();
-	protected static final List<ComponentDispatcher> dispatchers = Lists.newArrayList();
+	protected static final List<ComponentListener> dispatchers = Lists.newArrayList();
 
 	private Logger log = LogManager.getLogger();
 
@@ -30,8 +30,8 @@ public class ComponentHolder implements BeanPostProcessor, ApplicationListener<C
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		componentMap.put(beanName, bean);
 
-		if (bean instanceof ComponentDispatcher) {
-			dispatchers.add((ComponentDispatcher) bean);
+		if (bean instanceof ComponentListener) {
+			dispatchers.add((ComponentListener) bean);
 		}
 //		log.trace("Bean [" + beanName + "]:" + bean);
 		return bean;
@@ -53,11 +53,11 @@ public class ComponentHolder implements BeanPostProcessor, ApplicationListener<C
 				+ componentMap.size() + "]");
 		componentMap.keySet().stream().forEach(key -> {
 			Object bean = componentMap.get(key);
-			for (ComponentDispatcher d : dispatchers) {
+			for (ComponentListener d : dispatchers) {
 				d.recive(key, bean);
 			}
 		});
-		for (ComponentDispatcher d : dispatchers) {
+		for (ComponentListener d : dispatchers) {
 			d.onComplete();
 		}
 		log.trace("Complete dispatch component");

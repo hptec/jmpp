@@ -24,11 +24,13 @@ public class LoginWebApi extends WebApi {
 	@Autowired
 	LoginService loginService;
 
+	@Autowired
+	LoginProviderConfiguration loginProviders;
+
 	@RequestMapping("/doLogin")
 	@PlatformCategoryRequired
 	public void doLogin() {
-		PlatformCategory category = getPlatformCategory();
-		LoginProvider provider = LoginProviderConfiguration.getProvider(category);
+		LoginProvider provider = getProvider();
 		if (provider == null) {
 			zipOut(Result.error(ErrorCodes.PROVIDER_NOT_SUPPORT));
 		} else {
@@ -40,8 +42,7 @@ public class LoginWebApi extends WebApi {
 	@RequestMapping("/sms")
 	@PlatformCategoryRequired
 	public void sms(@RequestParam(name = "phone") String phone) {
-		PlatformCategory category = getPlatformCategory();
-		LoginProvider provider = LoginProviderConfiguration.getProvider(category);
+		LoginProvider provider = getProvider();
 		if (provider == null || !(provider instanceof SmsLoginProvider)) {
 			zipOut(Result.error(ErrorCodes.PROVIDER_NOT_SUPPORT));
 		} else {
@@ -54,13 +55,31 @@ public class LoginWebApi extends WebApi {
 	@RequestMapping("/logout")
 	@PlatformCategoryRequired
 	public void logout() {
-		PlatformCategory category = getPlatformCategory();
-		LoginProvider provider = LoginProviderConfiguration.getProvider(category);
+		LoginProvider provider = getProvider();
 		if (provider == null) {
 			zipOut(Result.error(ErrorCodes.PROVIDER_NOT_SUPPORT));
 		} else {
 			Result ret = loginService.logout();
 			zipOut(ret);
 		}
+	}
+
+	@RequestMapping("/definition")
+	@PlatformCategoryRequired
+	public void definition() {
+		LoginProvider provider = getProvider();
+		if (provider == null) {
+			zipOut(Result.error(ErrorCodes.PROVIDER_NOT_SUPPORT));
+		} else {
+			zipOut(provider.getLoginFields());
+		}
+	}
+
+	private LoginProvider getProvider() {
+		PlatformCategory category = getPlatformCategory();
+		if (category == null) {
+			return null;
+		}
+		return loginProviders.getProvider(category);
 	}
 }

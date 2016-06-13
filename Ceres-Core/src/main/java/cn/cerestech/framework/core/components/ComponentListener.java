@@ -1,6 +1,6 @@
 package cn.cerestech.framework.core.components;
 
-public interface ComponentDispatcher {
+public interface ComponentListener {
 
 	void recive(String beanName, Object bean);
 

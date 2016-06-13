@@ -2,16 +2,12 @@ define([ 'http', 'modal', 'cache', 'platform', 'app', 'login' ], function(http, 
 
 	return {
 		__currentUser : undefined,
-		login : function(loginId, loginPwd, remember, funcCallback) {
-			if (loginId == undefined || loginId == "" || loginPwd == undefined || loginPwd == "") {
+		login : function(loginEntity, funcCallback) {
+			if (loginEntity == undefined) {
 
 			} else {
 				login.login({
-					data : {
-						usr : loginId,
-						pwd : loginPwd,
-						remember : remember
-					},
+					data : loginEntity,
 					context : this,
 					success : function(result, context) {
 						if (result.isSuccess) {
