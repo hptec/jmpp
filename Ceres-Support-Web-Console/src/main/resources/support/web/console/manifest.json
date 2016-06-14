@@ -35,6 +35,7 @@
 			]
 			
 		},
+		
 		{
 			name:"jquery-sparkline",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery-sparkline/dist/jquery.sparkline.min",

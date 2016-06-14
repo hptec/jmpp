@@ -21,10 +21,11 @@ define([], function() {
 					appid : '',
 					appsecret : '',
 					baseUrl : cfg.baseUrl == undefined ? '' : cfg.baseUrl,
-					waitSeconds : 50,
+					waitSeconds : 10,
 					map : {
 						'*' : {
-							'css' : 'require-css'
+							'css' : 'require-css',
+							'style' : 'require-less'
 						}
 					}
 				}
@@ -98,6 +99,10 @@ define([], function() {
 				require.config(cfg);
 
 				var configObj = {
+					'require-less' : {
+						path : "../../../.",
+						rootPath : ""
+					},
 					'app' : {
 						jsModules : sysConfig.jsModules,
 						pages : sysConfig.pages,
