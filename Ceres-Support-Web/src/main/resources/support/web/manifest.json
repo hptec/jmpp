@@ -68,6 +68,10 @@
 			]
 		},
 		{
+			name:"require-async",
+			uri:"/api/classpath/query/support/web/bower_components/requirejs-plugins/src/async"
+		},
+		{
 			name:"text",
 			uri:"/api/classpath/query/support/web/bower_components/requirejs-text/text"
 		},

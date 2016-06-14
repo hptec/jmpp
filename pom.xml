@@ -80,6 +80,7 @@
     
     <module>Ceres-Support-Storage</module>
     <module>Ceres-Support-Storage-WebApi</module>
+    <module>Ceres-Middleware-Baidu-Map</module>
   </modules>
   <version>3.0.2</version>
   <dependencies>
