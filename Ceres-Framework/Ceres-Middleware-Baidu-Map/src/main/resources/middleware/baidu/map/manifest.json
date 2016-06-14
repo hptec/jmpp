@@ -1,0 +1,11 @@
+{
+	name:"Ceres-Middleware-Baidu-Map",
+	desc:"百度地图支持模块",
+	jsModules:[
+		{
+			name:"bmap",
+			uri:"/api/classpath/query/middleware/baidu/map/bmap"
+		}
+		
+	]
+}

@@ -25,7 +25,8 @@ define([], function() {
 					map : {
 						'*' : {
 							'css' : 'require-css',
-							'style' : 'require-less'
+							'style' : 'require-less',
+							'async' : 'require-async'
 						}
 					}
 				}
