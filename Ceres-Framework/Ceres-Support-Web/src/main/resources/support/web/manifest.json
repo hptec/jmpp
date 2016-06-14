@@ -52,8 +52,24 @@
 			exports:"app"
 		},
 		{
+			name:"less",
+			uri:"/api/classpath/query/support/web/bower_components/less/dist/less-1.7.5.min"
+		},
+		{
 			name:"require-css",
 			uri:"/api/classpath/query/support/web/bower_components/require-css/css.min"
+		},
+		{
+			name:"require-less",
+			uri:"/api/classpath/query/support/web/bower_components/requirejs-less/style",
+			deps:[
+				"less",
+				"text",
+			]
+		},
+		{
+			name:"text",
+			uri:"/api/classpath/query/support/web/bower_components/requirejs-text/text"
 		},
 		{
 			name:"http",
