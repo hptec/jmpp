@@ -23,9 +23,10 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
+import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.framework.support.storage.QueryRequest;
-import cn.cerestech.framework.support.storage.dao.StorageFileDao;
+import cn.cerestech.framework.support.storage.dao.StorageDao;
 import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.enums.LocalStorageConfigKey;
 
@@ -43,7 +44,7 @@ public class StorageService {
 					.build(new CacheLoader<String, Optional<StorageFile>>() {
 						@Override
 						public Optional<StorageFile> load(String httpUri) throws Exception {
-							return Optional.of(queryByHttpUri(httpUri));
+							return Optional.ofNullable(queryByHttpUri(httpUri));
 						}
 					});
 		}
@@ -53,7 +54,7 @@ public class StorageService {
 	protected ConfigService configService;
 
 	@Autowired
-	protected StorageFileDao storageFileDao;
+	protected StorageDao storageDao;
 
 	@Autowired
 	protected FilterService filterService;
@@ -107,7 +108,7 @@ public class StorageService {
 	protected StorageFile queryByHttpUri(String httpUri) {
 
 		// 首先检测相同过滤器的文件是否已经存在
-		StorageFile file = storageFileDao.findByHttpUri(httpUri);
+		StorageFile file = storageDao.findUniqueByHttpUri(httpUri);
 		if (file == null) {
 			// 数据库记录不存在
 			QueryRequest request = QueryRequest.fromHttpUri(httpUri);// 格式化请求
@@ -127,7 +128,7 @@ public class StorageService {
 				StorageFile newFile = StorageFile.fromLocalUri(file.getLocalUri(), request.getFilterString(),
 						file.getBytes(), file.getUploadName());
 				writeByLocalUri(newFile.getLocalUri(), newFile.getBytes());
-				storageFileDao.save(newFile);
+				storageDao.save(newFile);
 				return newFile;
 			}
 
@@ -148,7 +149,7 @@ public class StorageService {
 		if (id == null) {
 			return;
 		}
-		StorageFile f = storageFileDao.findOne(id);
+		StorageFile f = storageDao.findOne(id);
 		if (f == null) {
 			return;
 		}
@@ -156,10 +157,10 @@ public class StorageService {
 		// 删除文件
 		removeFile(f.getLocalUri());
 
-		storageFileDao.delete(id);
+		storageDao.delete(id);
 	}
 
-	public StorageFile write(String orignalName, byte[] bytes) {
+	public StorageFile put(String orignalName, byte[] bytes) {
 
 		if (bytes == null || bytes.length == 0) {
 			return null;
@@ -185,7 +186,31 @@ public class StorageService {
 		// 保存文件内容
 		writeByLocalUri(localFile.getLocalUri(), bytes);
 		// 保存文件记录
-		storageFileDao.save(localFile);
+		storageDao.save(localFile);
+
+		return localFile;
+	}
+
+	public StorageFile put(String uri, String orignalName, byte[] bytes) {
+
+		if (bytes == null || bytes.length == 0) {
+			return null;
+		}
+
+		StorageFile localFile = new StorageFile();
+
+		localFile.setBytes(bytes);
+		localFile.setExtensionName(Files.getFileExtension(uri));
+		localFile.setSimpleName(Files.getNameWithoutExtension(uri) + "." + Files.getFileExtension(uri));
+		localFile.setLocalUri(uri);
+		localFile.setHttpUri(localFile.getLocalUri());
+		localFile.setSize(bytes.length + 0L);
+		localFile.setUploadName(orignalName);
+
+		// 保存文件内容
+		writeByLocalUri(localFile.getLocalUri(), bytes);
+		// 保存文件记录
+		storageDao.save(localFile);
 
 		return localFile;
 	}
@@ -215,7 +240,7 @@ public class StorageService {
 	 */
 	protected StorageFile queryByLocalUri(String localUri) {
 
-		StorageFile file = storageFileDao.findByLocalUri(localUri);
+		StorageFile file = storageDao.findUniqueByLocalUri(localUri);
 
 		byte[] bytes = new byte[0];
 		if (file == null) {
@@ -239,7 +264,7 @@ public class StorageService {
 					file.setExtensionName(ext);
 					file.setSize(bytes.length + 0L);
 					file.setUploadName(null);
-					storageFileDao.save(file);
+					storageDao.save(file);
 					file.setBytes(bytes);
 					return file;
 				}
@@ -249,7 +274,7 @@ public class StorageService {
 			if (!fileExist(localUri)) {
 				// 记录存在文件不存在
 				// 源不存在，记录存在，则删除记录
-				storageFileDao.delete(file.getId());
+				storageDao.delete(file.getId());
 			} else {
 				// 记录存在，文件存在
 				bytes = readFileSystem(localUri);
@@ -320,7 +345,7 @@ public class StorageService {
 		files.forEach(file -> {
 			StorageFile localFile;
 			try {
-				localFile = write(file.getOriginalFilename(), file.getBytes());
+				localFile = put(file.getOriginalFilename(), file.getBytes());
 				if (localFile != null) {
 					retList.add(localFile);
 				}
@@ -361,6 +386,44 @@ public class StorageService {
 
 		return Boolean.TRUE;
 
+	}
+
+	/**
+	 * 从互联网上下载一个文件，如果本地已经下载则直接返回
+	 * 
+	 * @param uri
+	 * @param putToDir
+	 *            指定放入哪个目录
+	 * @return
+	 */
+	public StorageFile download(String uri, String putToDir) {
+		StorageFile file = storageDao.findUniqueByUploadName(uri);
+		if (file == null) {
+			// 没有找到，则下载新增
+			byte[] bytes = Https.of().get(uri).readByte();
+			String simpleName = Files.getNameWithoutExtension(uri) + "." + Files.getFileExtension(uri);
+			if (!putToDir.endsWith(File.separator)) {
+				putToDir = putToDir + File.separator;
+			}
+			file = put(putToDir + simpleName, uri, bytes);
+		}
+		return file;
+	}
+
+	/**
+	 * 从互联网上下载一个文件，如果本地已经下载则直接返回
+	 * 
+	 * @param uri
+	 * @return
+	 */
+	public StorageFile download(String uri) {
+		Calendar cale = Calendar.getInstance();
+		int year = cale.get(Calendar.YEAR);
+		int month = cale.get(Calendar.MONTH) + 1;
+		int day = cale.get(Calendar.DATE);
+
+		String idPath = year + File.separator + month + File.separator + day + File.separator;
+		return download(uri, idPath);
 	}
 
 }

@@ -30,11 +30,9 @@ public class StorageFile extends IdEntity {
 	// title = "大小"
 	private Long size;
 
-	@Column()
 	// 包含名字和扩展名但是不包含路径
 	private String simpleName;
 
-	@Column()
 	// title = "扩展名"
 	private String extensionName;
 
