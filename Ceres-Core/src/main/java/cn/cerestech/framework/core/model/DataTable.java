@@ -2,7 +2,6 @@ package cn.cerestech.framework.core.model;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
@@ -16,20 +15,19 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.google.common.collect.Lists;
-import com.google.gson.JsonElement;
 
 import cn.cerestech.framework.core.json.Jsons;
 
-public class DataTable<T> {
+public class DataTable {
 
-	private List<T> dataSet = Lists.newArrayList();
+	private List<Jsons> dataSet = Lists.newArrayList();
 	private List<DataColumn> columns = Lists.newArrayList();
 
 	/**
 	 * 如果不设置此选项，则默认的Json直接对应的方式<br/>
 	 * 如果设置此选项，则自己处理对象转换，比如复杂对象的转换问题。
 	 */
-	private Function<Jsons, T> mapper;
+	// private Function<Jsons, T> mapper;
 
 	/**
 	 * 数据从第几行开始，如果第一行为标题行，数据则从1（第2行）开始。
@@ -37,8 +35,8 @@ public class DataTable<T> {
 	private int rowStart = 0;
 	private int sheetAt = 0;
 
-	public static <T> DataTable<T> of() {
-		DataTable<T> dt = new DataTable<T>();
+	public static DataTable of() {
+		DataTable dt = new DataTable();
 		return dt;
 	}
 
@@ -49,18 +47,16 @@ public class DataTable<T> {
 	 * @param title
 	 * @return
 	 */
-	public DataTable<T> column(String property, String title) {
+	public DataTable column(String property, String title) {
 		DataColumn dc = DataColumn.from(property, title);
 		columns.add(dc);
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
-	public DataTable<T> from(XSSFWorkbook book) {
+	public DataTable from(XSSFWorkbook book) {
 		XSSFSheet sheet = book.getSheetAt(sheetAt);
 		int rownum = sheet.getLastRowNum();
-		List<T> data = Lists.newArrayList();
-		List<JsonElement> eleList = Lists.newArrayList();
+		List<Jsons> data = Lists.newArrayList();
 		for (int i = rowStart; i < rownum; i++) {
 			// 解析每一行
 			XSSFRow row = sheet.getRow(i);
@@ -105,17 +101,9 @@ public class DataTable<T> {
 				}
 			}
 
-			// 转化为对象
-			if (mapper != null) {
-				data.add(mapper.apply(rowJson));
-			} else {
-				eleList.add(rowJson.getRoot());
-			}
+			data.add(rowJson);
 		}
 
-		if (mapper == null) {
-			data = Jsons.from(eleList).to(data.getClass());
-		}
 		dataSet.clear();
 		dataSet.addAll(data);
 
@@ -123,11 +111,10 @@ public class DataTable<T> {
 
 	}
 
-	public DataTable<T> from(HSSFWorkbook book) {
+	public DataTable from(HSSFWorkbook book) {
 		HSSFSheet sheet = book.getSheetAt(sheetAt);
 		int rownum = sheet.getLastRowNum();
-		List<T> data = Lists.newArrayList();
-		List<JsonElement> eleList = Lists.newArrayList();
+		List<Jsons> data = Lists.newArrayList();
 		for (int i = rowStart; i < rownum; i++) {
 			// 解析每一行
 			HSSFRow row = sheet.getRow(i);
@@ -172,45 +159,33 @@ public class DataTable<T> {
 				}
 			}
 
-			// 转化为对象
-			if (mapper != null) {
-				data.add(mapper.apply(rowJson));
-			} else {
-				eleList.add(rowJson.getRoot());
-			}
+			data.add(rowJson);
 		}
 
-		if (mapper == null) {
-			data = Jsons.from(eleList).to(data.getClass());
-		}
 		dataSet.clear();
 		dataSet.addAll(data);
 
 		return this;
 	}
 
-	public DataTable<T> from(Collection<T> data) {
+	public DataTable from(Collection<Jsons> data) {
 		dataSet.clear();
 		dataSet.addAll(data);
 		return this;
 	}
 
-	public DataTable<T> rowStart(int start) {
+	public DataTable rowStart(int start) {
 		rowStart = start;
 		return this;
 	}
 
-	public DataTable<T> sheetAt(int at) {
+	public DataTable sheetAt(int at) {
 		sheetAt = at;
 		return this;
 	}
 
-	public List<T> getDataSet() {
+	public List<Jsons> getDataSet() {
 		return dataSet;
 	}
 
-	public DataTable<T> map(Function<Jsons, T> func) {
-		mapper = func;
-		return this;
-	}
 }

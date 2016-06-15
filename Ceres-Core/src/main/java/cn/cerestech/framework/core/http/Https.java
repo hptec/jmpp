@@ -42,115 +42,119 @@ import com.google.common.collect.Maps;
 import cn.cerestech.framework.core.json.Jsons;
 
 public class Https {
-	
+
 	private String encoding = "UTF-8";
 	private CookieStore cookieStore = new BasicCookieStore();;
 	private HttpClient client;
 	private List<Header> headers = Lists.newArrayList();
 	private HttpRoutePlanner proxy;
-	
-	public static Https of(){
+
+	public static Https of() {
 		Https https = new Https(null, null, null, 80);
 		return https;
 	}
-	
-	public static Https of(String encoding){
+
+	public static Https of(String encoding) {
 		Https https = new Https(null, null, null, 80);
 		https.encoding(encoding);
 		return https;
 	}
-	
-	public static Https of(String proxyHost, int port, List<Cookie> cookies, List<Header> headers){
+
+	public static Https of(String proxyHost, int port, List<Cookie> cookies, List<Header> headers) {
 		Https https = new Https(cookies, headers, proxyHost, port);
 		return https;
 	}
-	
-	public Https encoding(String encoding){
-		if(!Strings.isNullOrEmpty(encoding) && Charset.isSupported(encoding)){
+
+	public Https encoding(String encoding) {
+		if (!Strings.isNullOrEmpty(encoding) && Charset.isSupported(encoding)) {
 			this.encoding = encoding;
 		}
 		return this;
 	}
-	
-	private Https(List<Cookie> cookies, List<Header> headers, String proxyHost, int port){
-		if(cookies != null && !cookies.isEmpty()){
-			cookies.forEach(cookie->{
+
+	private Https(List<Cookie> cookies, List<Header> headers, String proxyHost, int port) {
+		if (cookies != null && !cookies.isEmpty()) {
+			cookies.forEach(cookie -> {
 				cookieStore.addCookie(cookie);
 			});
 		}
-		if(headers != null && !headers.isEmpty()){
+		if (headers != null && !headers.isEmpty()) {
 			this.headers.addAll(headers);
 		}
 		RequestConfig clientConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.DEFAULT).build();
-		HttpClientBuilder builder = HttpClientBuilder.create().setDefaultRequestConfig(clientConfig).setDefaultHeaders(this.headers).setDefaultCookieStore(this.cookieStore);
-		//代理设置
-		if(!Strings.isNullOrEmpty(proxyHost)){
+		HttpClientBuilder builder = HttpClientBuilder.create().setDefaultRequestConfig(clientConfig)
+				.setDefaultHeaders(this.headers).setDefaultCookieStore(this.cookieStore);
+		// 代理设置
+		if (!Strings.isNullOrEmpty(proxyHost)) {
 			this.proxy = new HttpRoutePlanner() {
 				@Override
-				public HttpRoute determineRoute(HttpHost target, HttpRequest request, HttpContext context) throws HttpException {
-					return new HttpRoute(target, null,  new HttpHost(proxyHost, port),
+				public HttpRoute determineRoute(HttpHost target, HttpRequest request, HttpContext context)
+						throws HttpException {
+					return new HttpRoute(target, null, new HttpHost(proxyHost, port),
 							"https".equalsIgnoreCase(target.getSchemeName()));
 				}
 			};
 			builder.setRoutePlanner(this.proxy);
 		}
-		
+
 		this.client = builder.build();
 	}
-	
-	public Response get(String url, Map<String, String> params, List<Cookie> cookies, List<Header> headers){
-		if(Strings.isNullOrEmpty(url)){
+
+	public Response get(String url, Map<String, String> params, List<Cookie> cookies, List<Header> headers) {
+		if (Strings.isNullOrEmpty(url)) {
 			return Response.of(null);
 		}
 		HttpGet get = new HttpGet(url(url, "", params));
-		if(headers != null && !headers.isEmpty()){
-			headers.forEach(itm->{
+		if (headers != null && !headers.isEmpty()) {
+			headers.forEach(itm -> {
 				get.addHeader(itm);
 			});
 		}
-		
-		if(cookies != null && !cookies.isEmpty()){
-			cookies.forEach(cookie->{
+
+		if (cookies != null && !cookies.isEmpty()) {
+			cookies.forEach(cookie -> {
 				this.cookieStore.addCookie(cookie);
 			});
 		}
-		
+
 		try {
-			Response res = Response.of(this.client.execute(get)); 
+			Response res = Response.of(this.client.execute(get));
 			return res;
 		} catch (Exception e) {
 			return Response.of(null);
 		}
 	}
-	
-	public Response get(String url, Map<String , String> params){
+
+	public Response get(String url, Map<String, String> params) {
 		return get(url, params, null, null);
 	}
-	public Response get(String url){
+
+	public Response get(String url) {
 		return get(url, null, null, null);
 	}
-	
-	public Response post(String url, HttpEntity entity, List<Cookie> cookies, List<Header> headers){
-		if(Strings.isNullOrEmpty(url)){
+
+	public Response post(String url, HttpEntity entity, List<Cookie> cookies, List<Header> headers) {
+		if (Strings.isNullOrEmpty(url)) {
 			return new Response(null);
 		}
 		HttpPost post = new HttpPost(url);
-		if(headers != null && !headers.isEmpty()){
-			headers.forEach(itm->{
+		if (headers != null && !headers.isEmpty()) {
+			headers.forEach(itm -> {
 				post.addHeader(itm);
 			});
 		}
-		if(cookies != null && !cookies.isEmpty()){
-			cookies.forEach(cookie->{
+		if (cookies != null && !cookies.isEmpty()) {
+			cookies.forEach(cookie -> {
 				this.cookieStore.addCookie(cookie);
 			});
 		}
-		if(entity != null){
+		if (entity != null) {
 			post.setEntity(entity);
 		}
 		try {
 			HttpResponse response = this.client.execute(post);
-			if(response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY || response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_PERMANENTLY){
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_TEMPORARILY
+					|| response.getStatusLine().getStatusCode() == HttpStatus.SC_MOVED_PERMANENTLY) {
 				String url_redirect = response.getLastHeader("Location").getValue();
 				return post(url_redirect, entity, cookies, headers);
 			}
@@ -160,14 +164,14 @@ public class Https {
 			return Response.of(null);
 		}
 	}
-	
-	public Response post(String url, Map<String, Object> params, List<Cookie> cookies, List<Header> headers){
+
+	public Response post(String url, Map<String, Object> params, List<Cookie> cookies, List<Header> headers) {
 		HttpEntity entity = null;
-		
-		if(params != null && !params.isEmpty()){
+
+		if (params != null && !params.isEmpty()) {
 			List<BasicNameValuePair> nvp = Lists.newArrayList();
-//			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-			params.forEach((k,v)->{
+			// MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			params.forEach((k, v) -> {
 				String val = Jsons.from(v).disableUnicode().toJson();
 				val = Strings.nullToEmpty(val);
 				if (val.startsWith("\"")) {
@@ -177,7 +181,9 @@ public class Https {
 					val = val.substring(0, val.length() - 1);
 				}
 				try {
-					//builder.addPart(FormBodyPartBuilder.create(k, new StringBody(val, ContentType.APPLICATION_FORM_URLENCODED.withCharset(encoding))).build());
+					// builder.addPart(FormBodyPartBuilder.create(k, new
+					// StringBody(val,
+					// ContentType.APPLICATION_FORM_URLENCODED.withCharset(encoding))).build());
 					nvp.add(new BasicNameValuePair(k, val));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -189,43 +195,43 @@ public class Https {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return post(url, entity, cookies, headers);
 	}
-	
-	public Response post(String url, String postContent){
+
+	public Response post(String url, String postContent) {
 		return post(url, new ByteArrayEntity(postContent.getBytes()));
 	}
-	
-	public Response post(String url, HttpEntity entity){
+
+	public Response post(String url, HttpEntity entity) {
 		return post(url, entity, null, null);
 	}
-	
-	public Response post(String url, Map<String, Object> params){
+
+	public Response post(String url, Map<String, Object> params) {
 		return post(url, params, null, null);
 	}
-	
-	public Response post(String url){
-		return post(url, (HttpEntity)null, null, null);
+
+	public Response post(String url) {
+		return post(url, (HttpEntity) null, null, null);
 	}
-	
-	public String url(String host, String uri, Map<String, String> params){
+
+	public String url(String host, String uri, Map<String, String> params) {
 		StringBuffer buffer = new StringBuffer();
 		if (!Pattern.compile("(?i)^http(s{0,1})://.{0,}").matcher(host).matches()) {
 			buffer.append("http://");
 		}
 		buffer.append(host);
-		if(!Strings.isNullOrEmpty(uri)){
-			uri = uri.startsWith("/")?uri.substring(1):uri;
-			if(!host.endsWith("/")){
+		if (!Strings.isNullOrEmpty(uri)) {
+			uri = uri.startsWith("/") ? uri.substring(1) : uri;
+			if (!host.endsWith("/")) {
 				buffer.append("/");
 			}
 			buffer.append(uri);
 		}
 		StringBuffer psb = new StringBuffer();
-		if(params != null && !params.isEmpty()){
-			params.forEach((k,v)->{
-				if(psb.length() > 0){
+		if (params != null && !params.isEmpty()) {
+			params.forEach((k, v) -> {
+				if (psb.length() > 0) {
 					psb.append("&");
 				}
 				try {
@@ -234,45 +240,47 @@ public class Https {
 				}
 			});
 		}
-		
-		if(psb.length()>0){
-			if(buffer.indexOf("?") > 0){
+
+		if (psb.length() > 0) {
+			if (buffer.indexOf("?") > 0) {
 				buffer.append("&").append(psb);
-			}else{
+			} else {
 				buffer.append("?").append(psb);
 			}
 		}
 		return buffer.toString();
 	}
-	
-	public static class Response{
+
+	public static class Response {
 		private HttpResponse response;
-		/*private String response_encoding = "ISO-8859-1";*/
-		
-		public static Response of(HttpResponse response){
+		/* private String response_encoding = "ISO-8859-1"; */
+
+		public static Response of(HttpResponse response) {
 			return new Response(response);
 		}
-		private Response(HttpResponse response){
+
+		private Response(HttpResponse response) {
 			this.response = response;
 			parseEncoding();
 		}
-		
-		private void parseEncoding(){
-			if(response != null){
-				//TODO 解析网页的编码格式
+
+		private void parseEncoding() {
+			if (response != null) {
+				// TODO 解析网页的编码格式
 			}
 		}
-		
-		public String readString(){
+
+		public String readString() {
 			return readString(null);
 		}
-		public String readString(String charEncoding){
+
+		public String readString(String charEncoding) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			readByte(out);
 			try {
-				if(Strings.isNullOrEmpty(charEncoding)){
+				if (Strings.isNullOrEmpty(charEncoding)) {
 					return new String(out.toByteArray());
-				}else{
+				} else {
 					return new String(out.toByteArray(), charEncoding);
 				}
 			} catch (UnsupportedEncodingException e) {
@@ -280,25 +288,26 @@ public class Https {
 				return new String(out.toByteArray());
 			}
 		}
-		public void readByte(OutputStream out){
-			if(this.response == null){
+
+		public void readByte(OutputStream out) {
+			if (this.response == null) {
 				return;
 			}
-			if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){//请求成功
-				System.out.println("【网络请求失败：】返回码"+response.getStatusLine().getStatusCode());
+			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {// 请求成功
+				System.out.println("【网络请求失败：】返回码" + response.getStatusLine().getStatusCode());
 				return;
 			}
-			
+
 			HttpEntity entity = this.response.getEntity();
 			InputStream inputStream;
 			try {
 				inputStream = entity.getContent();
-                
+
 				Header header = response.getFirstHeader("Content-Encoding");
 				if (header != null && header.getValue().toLowerCase().indexOf("gzip") > -1) {
 					inputStream = new GZIPInputStream(inputStream);
 				}
-				
+
 				int readBytes = 0;
 				byte[] sBuffer = new byte[512];
 				while ((readBytes = inputStream.read(sBuffer)) != -1) {
@@ -306,31 +315,42 @@ public class Https {
 					out.flush();
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-		public void readFile(FileOutputStream fout){
+
+		public byte[] readByte() {
+			ByteArrayOutputStream ba = new ByteArrayOutputStream();
+			readByte(ba);
+			return ba.toByteArray();
+		}
+
+		public void readFile(FileOutputStream fout) {
 			readByte(fout);
 		}
 	}
-	
+
 	public static void main(String[] args) throws UnsupportedEncodingException {
-//		System.out.println(Https.of().get("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN").readString());
-//		System.out.println(HttpUtils.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN"));
-		
-//		Map<String, Object> params = Maps.newHashMap();
-//		params.put("financial_product_id", "ALLLAL");
-//		Response ret = Https.of().post("http://ranxc.e7db.com/loan/datas", params);
+		// System.out.println(Https.of().get("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN").readString());
+		// System.out.println(HttpUtils.post("https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN"));
+
+		// Map<String, Object> params = Maps.newHashMap();
+		// params.put("financial_product_id", "ALLLAL");
+		// Response ret = Https.of().post("http://ranxc.e7db.com/loan/datas",
+		// params);
 		Map<String, Object> params = Maps.newHashMap();
-//		params.put("financial_product_id", "ALLLAL");
-//		Response ret = Https.of().post("http://ranxc.e7db.com/loan/datas", params);
-		//System.out.println(Https.of().get("http://wx.idsh.cn/sdfsdfd").readString("gbk"));;
-		
-//		params.put("acc", "15281036309");
-//		params.put("pwd","123qwe");
-//		params.put("phoneCode","1111");
-//		params.put("user_register", "15281036309");
-//		params.put("user_register_phone", "1111");
-		System.out.println(Https.of().post("http://www.baidu.com",params/*, cookies, null*/).readString());
-//		System.out.println(Charset.isSupported("fsdf  sd"));
+		// params.put("financial_product_id", "ALLLAL");
+		// Response ret = Https.of().post("http://ranxc.e7db.com/loan/datas",
+		// params);
+		// System.out.println(Https.of().get("http://wx.idsh.cn/sdfsdfd").readString("gbk"));;
+
+		// params.put("acc", "15281036309");
+		// params.put("pwd","123qwe");
+		// params.put("phoneCode","1111");
+		// params.put("user_register", "15281036309");
+		// params.put("user_register_phone", "1111");
+		System.out.println(Https.of()
+				.post("http://www.baidu.com", params/* , cookies, null */).readString());
+		// System.out.println(Charset.isSupported("fsdf sd"));
 	}
 }
