@@ -34,13 +34,4 @@ public interface LoginProvider<T extends Loginable> extends RequestOperator, Pro
 
 	List<LoginField> getLoginFields();
 
-	// default public KV getLoginParameters() {
-	// KV params = KV.on();
-	// getLoginFields().forEach(lf -> {
-	// params.put(lf.getName(), getRequest().getParameter(lf.getName()));
-	// });
-	//
-	// params.put(LOGIN_REMEMBER, getRemember());
-	// return params;
-	// }
 }

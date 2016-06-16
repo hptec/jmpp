@@ -24,7 +24,7 @@ public abstract class PasswordLoginProvider<T extends Loginable> implements Logi
 		}
 
 		// 从数据库获取用户对象
-		T t = dao.findUniqueByLoginIdIgnoreCase(fromLogin.getId());
+		T t = getLoginFromDB(fromLogin);
 		if (t == null) {
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
@@ -55,6 +55,10 @@ public abstract class PasswordLoginProvider<T extends Loginable> implements Logi
 		retList.add(new LoginField("text", LOGIN_ID, "登录用户名"));
 		retList.add(new LoginField("password", LOGIN_PWD, "登录密码"));
 		return retList;
+	}
+
+	public T getLoginFromDB(Login fromLogin) {
+		return getDao().findUniqueByLoginIdIgnoreCase(fromLogin.getId());
 	}
 
 }

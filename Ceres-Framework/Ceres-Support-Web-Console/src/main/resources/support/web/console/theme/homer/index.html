@@ -43,6 +43,10 @@
 
 	<!-- Page view wrapper -->
 	<div ui-view autoscroll="true"></div>
+	<div ng-controller="appcmd" style="display: none;">
+		<a href="javascript:void(0);" ng-click="jump(pg.name)"
+			ng-repeat="pg in pages" ng-bind="pg.name"></a>
+	</div>
 </body>
 <script>
 	require([ '/api/classpath/query/support/web/js/core.js' ], function(core) {

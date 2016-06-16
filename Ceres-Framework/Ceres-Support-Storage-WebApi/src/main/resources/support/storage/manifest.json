@@ -5,6 +5,9 @@
 		{
 			name:"storage",
 			uri:"/api/classpath/query/support/storage/js/storage",
+			deps:[
+				"/api/classpath/query/support/storage/js/directives-storage.js"
+			],
 			exports:"storage"
 		}
 		
