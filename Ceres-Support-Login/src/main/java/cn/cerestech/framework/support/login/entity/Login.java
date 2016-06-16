@@ -85,7 +85,7 @@ public class Login {
 	}
 
 	public Boolean comparePassword(String password) {
-		return Strings.nullToEmpty(pwd).equals(Encrypts.md5(password));
+		return Strings.nullToEmpty(pwd).equals(Encrypts.md5(Encrypts.md5(password)));
 	}
 
 	public Date getThisLoginTime() {

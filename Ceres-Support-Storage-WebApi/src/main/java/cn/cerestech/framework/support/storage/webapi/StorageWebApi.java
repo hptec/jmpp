@@ -27,16 +27,16 @@ import cn.cerestech.framework.support.webapi.WebApi;
 
 @RestController
 @RequestMapping("api/storage")
-public class LocalStorageWebApi extends WebApi {
+public class StorageWebApi extends WebApi {
 
 	private Logger log = LogManager.getLogger();
 	@Autowired
 	StorageService storageService;
 
-	@RequestMapping("/get/**")
+	@RequestMapping("/query/**")
 	public void query() throws Throwable {
 		String srcKey = getRequest().getRequestURI();
-		srcKey = srcKey.substring("/api/storage/get/".length());
+		srcKey = srcKey.substring("/api/storage/query/".length());
 		log.trace("query local file: " + srcKey);
 
 		Optional<StorageFile> optionFile = storageService.queryCache(srcKey);

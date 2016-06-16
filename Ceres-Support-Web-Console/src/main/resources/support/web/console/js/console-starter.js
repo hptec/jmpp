@@ -11,6 +11,14 @@ define([ 'platform' ], function(platform) {
 
 			$(".splash").hide();
 		}
+		app.controller("appcmd", [ "$scope", "$location", "$state", function($scope, $location, $state) {
+			var pages = require('pages');
+
+			$scope.pages = pages.pages();
+			$scope.jump = function(url) {
+				$state.go(url);
+			}
+		} ]);
 		app.start(afterStart);
 
 	});

@@ -9,6 +9,7 @@ import cn.cerestech.framework.core.enums.DescribableEnum;
  * 
  */
 public enum Direction8 implements DescribableEnum {
+	CENTER("CENTER", "中心"), //
 	EAST("EAST", "东"), //
 	SOUTHEAST("SOUTHEAST", "东南"), //
 	SOUTH("SOUTH", "南"), //
