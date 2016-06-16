@@ -60,6 +60,10 @@ public class ColApi extends BdApi {
 		return Status.as(ret);
 	}
 	
+	public Status<String> create(Class cls){
+		
+		return null;
+	}
 	
 
 }
