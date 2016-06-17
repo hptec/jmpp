@@ -32,6 +32,7 @@ public class Col {
 	
 	private String name;//	column的属性中文名称	string(45)	必选
 	private String key;//	column存储的属性key	string(45)	必选，同一个geotable内的名字不能相同
+	private long geotable_id;//	所属于的geotable_id	string(50)	
 	private Type type = Type.STRING;//	存储的值的类型	uint32	必选，枚举值1:Int64, 2:double, 3:string, 4:在线图片url
 	private int max_length = 50;//	最大长度	uint32	最大值2048，最小值为1。当type为string该字段有效，此时该字段必填。此值代表utf8的汉字个数，不是字节个数
 	private String default_value;//	默认值	string(45)	设置默认值
@@ -39,7 +40,6 @@ public class Col {
 	private boolean is_search_field = false;//	是否检索引擎的文本检索字段	uint32	必选 1代表支持，0为不支持。只有type为string时可以设置检索字段，只能用于字符串类型的列且最大长度不能超过512个字节
 	private boolean is_index_field = false;//	是否存储引擎的索引字段		uint32	必选 用于存储接口查询:1代表支持，0为不支持 注：is_index_field=1 时才能在根据该列属性值检索时检索到数据
 	private boolean is_unique_field = false;//	是否云存储唯一索引字段，方便更新，删除，查询	uint32	可选，1代表是，0代表否。设置后将在数据创建和更新时进行该字段唯一性检查，并可以以此字段为条件进行数据的更新、删除和查询。最多设置1个
-	private long geotable_id;//	所属于的geotable_id	string(50)	
 	
 	private Col(String name, String key){
 		this.key = key;
