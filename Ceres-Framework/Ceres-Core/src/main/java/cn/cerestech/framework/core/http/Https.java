@@ -1,6 +1,7 @@
 package cn.cerestech.framework.core.http;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,6 +31,11 @@ import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.routing.HttpRoutePlanner;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.FormBodyPartBuilder;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -213,6 +219,48 @@ public class Https {
 
 	public Response post(String url) {
 		return post(url, (HttpEntity) null, null, null);
+	}
+	
+	public Response upload(String url, List<Cookie> cookies, List<Header> headers, Map<String, Object> params, String fileBodyNameSpec, File...files){
+		HttpEntity entity = null;
+		
+		MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+		if(params != null && !params.isEmpty()){
+			params.forEach((k,v)->{
+				String val = Jsons.from(v).disableUnicode().toJson();
+				val = Strings.nullToEmpty(val);
+				if (val.startsWith("\"")) {
+					val = val.substring(1, val.length());
+				}
+				if (val.endsWith("\"")) {
+					val = val.substring(0, val.length() - 1);
+				}
+				try {
+					builder.addPart(FormBodyPartBuilder.create(k, new StringBody(val, ContentType.MULTIPART_FORM_DATA.withCharset(encoding))).build());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+		}
+		
+		if(files != null && files.length > 0){
+			for (File file : files) {
+				try{
+//					builder.addBinaryBody(file.getName(), new FileInputStream(file), ContentType.MULTIPART_FORM_DATA, file.getName());
+					builder.addPart(FormBodyPartBuilder.create(Strings.isNullOrEmpty(fileBodyNameSpec)?file.getName():fileBodyNameSpec,new FileBody(file)).build());
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		entity = builder.build();
+		
+		return post(url, entity);
+	}
+	
+	public Response upload(String url, Map<String, Object> params, String fileBodySpecName, File...files){
+		return upload(url, null, null, params,fileBodySpecName, files);
 	}
 
 	public String url(String host, String uri, Map<String, String> params) {
