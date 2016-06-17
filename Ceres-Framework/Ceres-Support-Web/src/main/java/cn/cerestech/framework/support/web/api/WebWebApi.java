@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.utils.KV;
 import cn.cerestech.framework.support.web.WebSupport;
 import cn.cerestech.framework.support.web.enums.ModuleType;
@@ -31,6 +32,18 @@ public class WebWebApi extends WebSupport {
 		defMap.put("pages", manifestService.getModuleElement(ModuleType.PAGES));
 
 		zipOutRequireJson(defMap);
+	}
+
+	/**
+	 * 输出系统中配置的所有DescribableEnum枚举
+	 */
+	@RequestMapping("enums")
+	public void enums() {
+		KV retMap = KV.on();
+		EnumCollector.allEnums().stream().forEach(ec -> {
+			retMap.put(ec.getName().replace('.', '_'), ec.toList());
+		});
+		zipOut(retMap);
 	}
 
 }

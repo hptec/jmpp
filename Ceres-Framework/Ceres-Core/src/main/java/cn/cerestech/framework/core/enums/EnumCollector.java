@@ -92,36 +92,38 @@ public class EnumCollector {
 
 		return null;
 	}
-	//
-	// public List<KV> toList() {
-	// if (list == null) {
-	// list = Lists.newArrayList();
-	// Object[] values = (Object[]) values();
-	// if (values != null) {
-	// for (Object v : values) {
-	// if (isDescribableEnum()) {
-	// DescribableEnum de = (DescribableEnum) v;
-	// KV kv = KV.on().put("key", de.key()).put("desc", de.desc());
-	// list.add(kv);
-	// } else if (isConfigKey()) {
-	// ConfigKey ck = (ConfigKey) v;
-	// KV kv = KV.on().put("key", ck.key()).put("desc", ck.desc()).put("value",
-	// ck.defaultValue());
-	// list.add(kv);
-	// } else if (isCategoryDescribableEnum()) {
-	// CategoryDescribableEnum ck = (CategoryDescribableEnum) v;
-	// KV kv = KV.on().put("key", ck.key()).put("desc",
-	// ck.desc()).put("category", ck.getCategory());
-	// list.add(kv);
-	// } else {
-	// KV kv = KV.on().put(v.toString(), v);
-	// list.add(kv);
-	// }
-	// }
-	// }
-	// }
-	// return list;
-	// }
+
+	public List<KV> toList() {
+		if (list == null) {
+			list = Lists.newArrayList();
+			Object[] values = (Object[]) values();
+			if (values != null) {
+				for (Object v : values) {
+					KV kv = KV.on();
+					if (v instanceof DescribableEnum) {
+						DescribableEnum de = (DescribableEnum) v;
+						kv.put("key", de.key()).put("desc", de.desc());
+					}
+					// if (v instanceof ConfigKey) {
+					// ConfigKey ck = (ConfigKey) v;
+					// KV kv = KV.on().put("key", ck.key()).put("desc",
+					// ck.desc()).put("value", ck.defaultValue());
+					// list.add(kv);
+					// } else if (isCategoryDescribableEnum()) {
+					// CategoryDescribableEnum ck = (CategoryDescribableEnum) v;
+					// KV kv = KV.on().put("key", ck.key()).put("desc",
+					// ck.desc()).put("category", ck.getCategory());
+					// list.add(kv);
+					// } else {
+					// KV kv = KV.on().put(v.toString(), v);
+					// list.add(kv);
+					// }
+					list.add(kv);
+				}
+			}
+		}
+		return list;
+	}
 
 	public DescribableEnum[] values() {
 		if (values == null) {

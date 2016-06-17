@@ -1,14 +1,19 @@
 define([ '$', 'app' ], function($, app) {
 
 	app.directive('cuiStorage', function($rootScope, $timeout) {
+		// 把image 转换为 canvas对象
+		function getImageData(image) {
+			// 创建canvas DOM元素，并设置其宽高和图片一样
+			var canvas = document.createElement("canvas");
+			canvas.width = image.width;
+			canvas.height = image.height;
+			// 坐标(0,0) 表示从此处开始绘制，相当于偏移。
+			canvas.getContext("2d").drawImage(image, 0, 0);
+			return canvas;
+		}
+
 		return {
-			restrict : "A", // 指令是一个元素 (并非属性)
-			scope : { // 设置指令对于的scope
-				name : "@", // name 值传递 （字符串，单向绑定）
-				amount : "=", // amount 引用传递（双向绑定）
-				save : "&" // 保存操作
-			},
-			transclude : true, // 不复制原始HTML内容
+			restrict : "A",
 			controller : [ "$scope", function($scope) {
 
 			} ],
@@ -17,6 +22,9 @@ define([ '$', 'app' ], function($, app) {
 				var obj = JSON.parse(attrs.cuiStorage);
 				if (tagName == "IMG") {
 					element.attr("src", "/api/storage/query" + obj.localUri);
+					element.bind("load", function(e) {
+						var imgData = getImageData(e.target);
+					})
 				} else {
 					console.log("发现未识别标记");
 				}

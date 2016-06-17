@@ -42,6 +42,49 @@
 			
 		},
 		{
+			name:"blueimp-helper",
+			uri:"/api/classpath/query/support/web/bower_components/blueimp-gallery/js/blueimp-helper",
+			deps:[
+				"$"
+			]
+			
+		},
+		{
+			name:"blueimp-gallery",
+			uri:"/api/classpath/query/support/web/bower_components/blueimp-gallery/js/blueimp-gallery",
+			deps:[
+				"$"
+			]
+			
+		},
+		{
+			name:"jquery.blueimp-gallery",
+			uri:"/api/classpath/query/support/web/bower_components/blueimp-gallery/js/jquery.blueimp-gallery",
+			deps:[
+				"$",
+				"blueimp-gallery",
+				"css!/api/classpath/query/support/web/bower_components/blueimp-gallery/css/blueimp-gallery"
+			]
+			
+		},
+		{
+			name:"x-editable",
+			uri:"/api/classpath/query/support/web/bower_components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable",
+			deps:[
+				"$",				
+				"css!/api/classpath/query/support/web/bower_components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable"	
+			]
+		},
+		{
+			name:"angular-xeditable",
+			uri:"/api/classpath/query/support/web/bower_components/angular-xeditable/dist/js/xeditable.min",
+			deps:[
+				"angular",
+				"css!/api/classpath/query/support/web/bower_components/angular-xeditable/dist/css/xeditable.min"	
+			],
+			angularModule:"xeditable"
+		},
+		{
 			name:"md5",
 			uri:"/api/classpath/query/support/web/bower_components/js-md5/build/md5.min",
 			exports:"md5"
@@ -89,6 +132,11 @@
 			name:"cache",
 			uri:"/api/classpath/query/support/web/js/cache",
 			exports:"cache"
+		},
+		{
+			name:"enums",
+			uri:"/api/classpath/query/support/web/js/enums",
+			exports:"enums"
 		},
 		{
 			name:"modal",
