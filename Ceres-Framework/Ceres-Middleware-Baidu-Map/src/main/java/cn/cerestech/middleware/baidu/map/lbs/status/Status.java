@@ -89,7 +89,9 @@ public class Status<T> {
 			int  cd = obj.get("status").getAsInt();
 			// 错误消息
 			s.setCode(cd);
-			s.setMsg(obj.get("message").getAsString());
+			if(obj.get("message") != null){
+				s.setMsg(obj.get("message").getAsString());
+			}
 			s.success = cd == 0 || Boolean.FALSE;
 			return s;
 		}
