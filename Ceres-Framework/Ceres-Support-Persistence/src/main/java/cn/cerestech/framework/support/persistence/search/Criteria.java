@@ -10,7 +10,7 @@ public interface Criteria<T> {
 	 * 
 	 * @return
 	 */
-	default Sort getSort(){
+	default Sort sort(){
 		return null;
 	};
 
@@ -19,7 +19,7 @@ public interface Criteria<T> {
 	 * 
 	 * @return
 	 */
-	Specification<T> getSpecification();
+	Specification<T> specification();
 
 	Paginated<T> getPage();
 
