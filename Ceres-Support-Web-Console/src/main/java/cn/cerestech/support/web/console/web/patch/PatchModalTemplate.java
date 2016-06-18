@@ -1,8 +1,8 @@
 package cn.cerestech.support.web.console.web.patch;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.support.web.WebSupport;
 import cn.cerestech.support.classpath.ClasspathService;
@@ -12,8 +12,8 @@ import cn.cerestech.support.classpath.ClasspathService;
  * @author harryhe
  *
  */
-@Controller
-@RequestMapping("$$ceres_sys/console")
+@RestController
+@RequestMapping("$$ceres_sys/console/uib")
 public class PatchModalTemplate extends WebSupport {
 	@Autowired
 	ClasspathService classpathService;
@@ -21,7 +21,7 @@ public class PatchModalTemplate extends WebSupport {
 	/**
 	 * angular ui boostrap modal不可以加载模板的补丁
 	 */
-	@RequestMapping("uib/**")
+	@RequestMapping("**")
 	public void uibPatch() {
 		String srcKey = getRequest().getRequestURI();
 		srcKey = srcKey.substring("/$$ceres_sys/console/uib/".length());

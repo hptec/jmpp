@@ -66,11 +66,6 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 
 	app.config(configState);
 
-	app.run(function(editableOptions) {
-		editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2',
-										// 'default'
-	});
-
 	app.start = function(callbackFunc) {
 		angular.element(document).ready(function() {
 			angular.bootstrap(document, [ 'app' ]);

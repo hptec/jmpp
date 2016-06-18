@@ -60,6 +60,10 @@ public class Divisions {
 		return null;
 	}
 
+	public static Jsons getRootJson() {
+		return jsonData;
+	}
+
 	// /**
 	// * 获得行政区划的简单代码（要去除右边的0)<br/>
 	// * 如北京代码为11

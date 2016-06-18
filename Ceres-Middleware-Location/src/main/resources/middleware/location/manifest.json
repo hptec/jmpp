@@ -1,0 +1,11 @@
+{
+	name:"Ceres-Middleware-Location",
+	desc:"跟地理位置相关的各种操作",
+	jsModules:[
+		{
+			name:"division",
+			uri:"/api/classpath/query/middleware/location/js/division"
+		}
+		
+	]
+}

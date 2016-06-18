@@ -4,6 +4,12 @@ define([ 'platform' ], function(platform) {
 
 	require([ 'http', 'app' ], function(http, app) {
 
+		app.run(function(editableOptions) {
+			editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also
+											// 'bs2',
+			// 'default'
+		});
+
 		var afterStart = function() {
 
 			console.log("后台启动器加载");
