@@ -10,9 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import cn.cerestech.framework.core.json.Jsonable;
-
-public abstract class AbstractCriteria<T> implements Criteria<T>, Jsonable {
+public abstract class AbstractCriteria<T> implements Criteria<T>{
 
 	protected Paginated<T> page;
 
@@ -22,14 +20,14 @@ public abstract class AbstractCriteria<T> implements Criteria<T>, Jsonable {
 		}
 
 		PageRequest pageRequest = null;
-		Sort sort = getSort();
+		Sort sort = sort();
 		if (sort != null) {
 			pageRequest = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
 		} else {
 			pageRequest = new PageRequest(page.getPageNumber(), page.getPageSize());
 		}
 
-		Page<T> ret = executer.findAll(getSpecification(), pageRequest);
+		Page<T> ret = executer.findAll(specification(), pageRequest);
 
 		page.setData(ret.getContent());
 		page.setNumberOfElements(ret.getNumberOfElements());
