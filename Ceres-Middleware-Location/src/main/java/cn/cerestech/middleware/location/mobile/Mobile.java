@@ -90,4 +90,22 @@ public class Mobile {
 		return "+" + code.key() + number;
 	}
 
+	
+	public CallingCode getCode() {
+		return code;
+	}
+
+	public void setCode(CallingCode code) {
+		this.code = code;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	
 }
