@@ -24,10 +24,13 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
 import cn.cerestech.framework.core.http.Https;
+import cn.cerestech.framework.core.service.Result;
+import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.framework.support.storage.QueryRequest;
 import cn.cerestech.framework.support.storage.dao.StorageDao;
 import cn.cerestech.framework.support.storage.entity.StorageFile;
+import cn.cerestech.framework.support.storage.enums.ErrorCodes;
 import cn.cerestech.framework.support.storage.enums.LocalStorageConfigKey;
 
 @Service
@@ -178,7 +181,7 @@ public class StorageService {
 		localFile.setBytes(bytes);
 		localFile.setExtensionName(Files.getFileExtension(orignalName));
 		localFile.setSimpleName(Files.getNameWithoutExtension(orignalName) + "." + Files.getFileExtension(orignalName));
-		localFile.setLocalUri(idPath + localFile.getSimpleName());
+		localFile.setLocalUri(idPath + Random.uuid());
 		localFile.setHttpUri(localFile.getLocalUri());
 		localFile.setSize(bytes.length + 0L);
 		localFile.setUploadName(orignalName);
@@ -195,6 +198,10 @@ public class StorageService {
 
 		if (bytes == null || bytes.length == 0) {
 			return null;
+		}
+
+		if (uri.startsWith("/")) {
+			uri = uri.substring(1, uri.length());
 		}
 
 		StorageFile localFile = new StorageFile();
@@ -424,6 +431,18 @@ public class StorageService {
 
 		String idPath = year + File.separator + month + File.separator + day + File.separator;
 		return download(uri, idPath);
+	}
+
+	public Result<StorageFile> queryById(Long id) {
+		if (id == null) {
+			return Result.error(ErrorCodes.FILE_NOT_FOUND);
+		}
+		StorageFile file = storageDao.findOne(id);
+		if (file == null) {
+			return Result.error(ErrorCodes.FILE_NOT_FOUND);
+		}
+
+		return Result.success(file);
 	}
 
 }
