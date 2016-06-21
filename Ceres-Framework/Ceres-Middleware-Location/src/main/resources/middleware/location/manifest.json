@@ -5,6 +5,10 @@
 		{
 			name:"division",
 			uri:"/api/classpath/query/middleware/location/js/division"
+		},
+		{
+			name:"address",
+			uri:"/api/classpath/query/middleware/location/js/address"
 		}
 		
 	]

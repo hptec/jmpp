@@ -1,8 +1,46 @@
 var __bmapKey = bmapKey == undefined ? "Lze0SUAqOAebwUuNP0TEIf43" : bmapKey;
-define([ 'http://api.map.baidu.com/getscript?v=2.0&ak=' + __bmapKey ], function() {
+define([ 'division', 'address', 'http://api.map.baidu.com/getscript?v=2.0&ak=' + __bmapKey ], function(division, address) {
 
-	return function(element) {
-		return new BMap.Map(element); // 创建Map实例
+	return {
+		/**
+		 * 根据坐标点得到街道地址
+		 * 
+		 * @param point
+		 * @param opt
+		 * @returns
+		 */
+		__geoc : new BMap.Geocoder(),
+		getAddress : function(point, opt) {
+			this.__geoc.getLocation(point, function(rs) {
+				console.log("百度地址查询结果", rs);
+				var addComp = rs.addressComponents;
+				var retObj = {
+					province : {
+						name : addComp.province,
+						code : division.nameOf(addComp.province).code
+					},
+					city : {
+						name : addComp.city,
+						code : division.nameOf(addComp.city).code
+					},
+					county : {
+						name : addComp.district,
+						code : division.nameOf(addComp.district).code
+					},
+					coordinate : {
+						standard : "BD09",
+						latitude : rs.point.lat,
+						longitude : rs.point.lng
+					},
+					street : addComp.street,
+					streetNumber : addComp.streetNumber
+				}
+				var ret = address.fromObject(retObj);
+				if (opt && opt.success) {
+					opt.success(ret);
+				}
+			});
+		}
 	}
 
 });

@@ -67,7 +67,13 @@
 					require([ 'pages' ], function(pages) {
 						pages.open("login");
 					});
-
+				},
+				onHttpError : function(a, b, c) {
+					console.log("Http错误:", {
+						a : a,
+						b : b,
+						c : c
+					});
 				}
 			},
 			modal : {

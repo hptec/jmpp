@@ -27,6 +27,8 @@ public class Address extends IdEntity {
 
 	private String street;
 
+	private String streetNumber;
+
 	private String zipcode;
 
 	public Coordinate getCoordinate() {
@@ -59,6 +61,14 @@ public class Address extends IdEntity {
 
 	public void setCounty(Division county) {
 		this.county = county;
+	}
+
+	public String getStreetNumber() {
+		return streetNumber;
+	}
+
+	public void setStreetNumber(String streetNumber) {
+		this.streetNumber = streetNumber;
 	}
 
 	public String getStreet() {
