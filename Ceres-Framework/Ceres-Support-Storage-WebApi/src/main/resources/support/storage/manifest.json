@@ -6,9 +6,18 @@
 			name:"storage",
 			uri:"/api/classpath/query/support/storage/js/storage",
 			deps:[
-				"/api/classpath/query/support/storage/js/directives-storage.js"
+				"/api/classpath/query/support/storage/js/directives-storage.js",
+				"ng-file-upload"
 			],
 			exports:"storage"
+		},
+		{
+			name:"ng-file-upload",
+			uri:"/api/classpath/query/support/storage/bower_components/ng-file-upload/ng-file-upload-all.min",
+			deps:[
+				"angular"
+			],
+			angularModule:"ngFileUpload"
 		}
 		
 	]

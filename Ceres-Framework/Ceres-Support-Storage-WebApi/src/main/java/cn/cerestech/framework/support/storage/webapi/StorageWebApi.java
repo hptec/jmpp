@@ -66,6 +66,7 @@ public class StorageWebApi extends WebApi {
 		if (ret.size() == 0) {
 			zipOut(Jsons.from(new Object()));
 		} else if (ret.size() == 1) {
+			ret.get(0).setBytes(null);
 			zipOut(Jsons.from(ret.get(0)));
 		} else {
 			zipOut(ret);

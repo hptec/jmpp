@@ -3,6 +3,28 @@ define([ 'division', 'address', 'http://api.map.baidu.com/getscript?v=2.0&ak=' +
 
 	return {
 		/**
+		 * 等待加载完成以后才返回
+		 */
+		ready : function(func) {
+			if (func == undefined) {
+				return;
+			}
+
+			if (BMap != undefined) {
+				func(BMap)
+				return;
+			}
+
+			var watchThread = function() {
+				if (BMap != undefined) {
+					func(BMap)
+				} else {
+					setTimeout(watchThread, 10)
+				}
+			}
+			setTimeout(watchThread, 10);
+		},
+		/**
 		 * 根据坐标点得到街道地址
 		 * 
 		 * @param point
@@ -33,7 +55,7 @@ define([ 'division', 'address', 'http://api.map.baidu.com/getscript?v=2.0&ak=' +
 						longitude : rs.point.lng
 					},
 					street : addComp.street,
-					streetNumber : addComp.streetNumber
+					streetNumber : addComp.streetNumber == undefined ? "" : addComp.streetNumber
 				}
 				var ret = address.fromObject(retObj);
 				if (opt && opt.success) {

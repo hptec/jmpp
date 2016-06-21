@@ -21,7 +21,11 @@ define([ '$', 'app' ], function($, app) {
 				var tagName = element[0].tagName;
 				var obj = JSON.parse(attrs.cuiStorage);
 				if (tagName == "IMG") {
-					element.attr("src", "/api/storage/query" + obj.localUri);
+					var prefixUri = "/api/storage/query";
+					if (obj.localUri.substring(0, 1) != "/") {
+						prefixUri += "/"
+					}
+					element.attr("src", prefixUri + obj.localUri);
 					element.bind("load", function(e) {
 						var imgData = getImageData(e.target);
 					})
