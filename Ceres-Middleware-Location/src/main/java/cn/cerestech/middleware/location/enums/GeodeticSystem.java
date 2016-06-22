@@ -23,5 +23,14 @@ public enum GeodeticSystem implements DescribableEnum {
 	public String desc() {
 		return desc;
 	}
+	
+	public static GeodeticSystem keyOf(String key){
+		for (GeodeticSystem geo : GeodeticSystem.values()) {
+			if(geo.key().equalsIgnoreCase(key)){
+				return geo;
+			}
+		}
+		return null;
+	}
 
 }
