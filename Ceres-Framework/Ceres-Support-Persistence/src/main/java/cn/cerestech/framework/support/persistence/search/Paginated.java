@@ -9,8 +9,8 @@ public class Paginated<T> {
 	public static final int DEFAULT_PAGE_SIZE = 15;
 
 	// 参数属性集
-	private Integer pageNumber = DEFAULT_PAGE_NUMBER;// 当前页
-	private Integer pageSize = DEFAULT_PAGE_SIZE;// 每页记录数
+	private Integer pageNumber;// 当前页
+	private Integer pageSize;// 每页记录数
 
 	// 结果属性集
 	private Integer numberOfElements;// 本页中记录的数量
