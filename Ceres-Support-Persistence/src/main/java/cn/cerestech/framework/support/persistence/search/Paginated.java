@@ -11,6 +11,7 @@ public class Paginated<T> {
 	// 参数属性集
 	private Integer pageNumber;// 当前页
 	private Integer pageSize;// 每页记录数
+	private Integer offset;
 
 	// 结果属性集
 	private Integer numberOfElements;// 本页中记录的数量
@@ -65,6 +66,14 @@ public class Paginated<T> {
 
 	public void setData(List<T> data) {
 		this.data = data;
+	}
+
+	public Integer getOffset() {
+		return offset;
+	}
+
+	public void setOffset(Integer offset) {
+		this.offset = offset;
 	}
 
 }
