@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public abstract class AbstractCriteria<T> implements Criteria<T>{
+public abstract class AbstractCriteria<T> implements Criteria<T> {
 
 	protected Paginated<T> page;
 
@@ -21,10 +21,12 @@ public abstract class AbstractCriteria<T> implements Criteria<T>{
 
 		PageRequest pageRequest = null;
 		Sort sort = sort();
+		int pn = page.getPageNumber() == null ? Paginated.DEFAULT_PAGE_NUMBER : page.getPageNumber();
+		int ps = page.getPageSize() == null ? Paginated.DEFAULT_PAGE_SIZE : page.getPageSize();
 		if (sort != null) {
-			pageRequest = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
+			pageRequest = new PageRequest(pn, ps, sort);
 		} else {
-			pageRequest = new PageRequest(page.getPageNumber(), page.getPageSize());
+			pageRequest = new PageRequest(pn, ps);
 		}
 
 		Page<T> ret = executer.findAll(specification(), pageRequest);
