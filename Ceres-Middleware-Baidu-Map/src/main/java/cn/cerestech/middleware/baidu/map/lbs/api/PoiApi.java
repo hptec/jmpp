@@ -8,6 +8,7 @@ import com.beust.jcommander.internal.Maps;
 import com.google.common.base.Strings;
 
 import cn.cerestech.framework.core.http.Https;
+import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.middleware.baidu.map.lbs.entity.Poi;
 import cn.cerestech.middleware.baidu.map.lbs.status.Status;
 
@@ -51,6 +52,8 @@ public class PoiApi extends BdApi {
 		Map<String, Object> params = t.toParams();
 		params.put("ak", this.getAccess_key());
 		params.put("sn", Strings.nullToEmpty(sn));
+		
+		System.out.println(Jsons.from(params).toPrettyJson());
 
 		String ret = Https.of().post(URL_CREATE, params).readString();
 		return Status.as(ret);
@@ -301,5 +304,44 @@ public class PoiApi extends BdApi {
 
 		return Status.as(ret);
 	}
-
+	
+	public static void main(String[] args) {
+		PoiApi poi = new PoiApi("khllc7E6PoLsgl6kpxY4SB9LVu9G7Akn");
+		
+//		Dinner dinn = new Dinner();
+//		dinn.setCoord_type(3);
+//		dinn.setGeotable_id(142975L);
+//		dinn.setHotel_id(1);
+//		dinn.setHotel_name("某某酒店");
+//		dinn.setSearch_tag("宴会宝场地");
+//		dinn.setLatitude(30.66541);//104.070354,30.66541
+//		dinn.setLongitude(104.070354);
+//		dinn.setTitle("某某酒店");
+//		System.out.println(poi.create(dinn, null).asString());;
+		
+		System.out.println(poi.delete(142975L, null, true, null).asString());
+	}
+	public static class Dinner extends Poi{
+		private String hotel_name;
+		private long hotel_id;
+		private String search_tag;
+		public String getHotel_name() {
+			return hotel_name;
+		}
+		public void setHotel_name(String hotel_name) {
+			this.hotel_name = hotel_name;
+		}
+		public long getHotel_id() {
+			return hotel_id;
+		}
+		public void setHotel_id(long hotel_id) {
+			this.hotel_id = hotel_id;
+		}
+		public String getSearch_tag() {
+			return search_tag;
+		}
+		public void setSearch_tag(String search_tag) {
+			this.search_tag = search_tag;
+		}
+	}
 }
