@@ -14,7 +14,7 @@ import com.google.common.io.Files;
 
 import cn.cerestech.framework.support.classpath.webapi.service.ClasspathComponentService;
 import cn.cerestech.framework.support.web.ContentType;
-import cn.cerestech.framework.support.webapi.WebApi;
+import cn.cerestech.framework.support.web.web.WebApi;
 import cn.cerestech.support.classpath.ClasspathService;
 
 @RestController

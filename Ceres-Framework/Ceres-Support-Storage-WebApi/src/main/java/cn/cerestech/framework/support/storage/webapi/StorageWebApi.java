@@ -23,7 +23,7 @@ import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.service.StorageService;
 import cn.cerestech.framework.support.web.ContentType;
-import cn.cerestech.framework.support.webapi.WebApi;
+import cn.cerestech.framework.support.web.web.WebApi;
 
 @RestController
 @RequestMapping("api/storage")
