@@ -181,7 +181,7 @@ define([ 'jquery', 'app', 'icheck' ], function($) {
 		return {
 			restrict : 'A',
 			scope : true,
-			templateUrl : 'views/common/panel_tools_fullscreen.html',
+			templateUrl : '/api/classpath/query/support/web/console/theme/homer/views/common/panel_tools_fullscreen.html',
 			controller : function($scope, $element) {
 				// Function for collapse ibox
 				$scope.showhide = function() {

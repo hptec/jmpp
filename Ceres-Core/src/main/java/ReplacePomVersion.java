@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
 
 public class ReplacePomVersion {
 
-	public static final String VERSION = "3.0.2";
+	public static final String VERSION = "3.0.3";
 
 	public static final String DPLOY_CMD = "mvn clean deploy -Dmaven.test.skip=true";
 
