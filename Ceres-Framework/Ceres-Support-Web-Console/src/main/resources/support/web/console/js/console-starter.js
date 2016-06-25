@@ -2,9 +2,10 @@
 define([ 'platform' ], function(platform) {
 	console.log("平台信息", platform.get());
 
-	require([ 'http', 'app' ], function(http, app) {
+	require([ 'http', 'app' ,'css!/api/classpath/query/support/web/console/theme/homer/styles/style'], function(http, app) {
 
-		app.run(function(editableOptions) {
+		app.run(function($rootScope,$state,editableOptions) {
+			 $rootScope.$state = $state;
 			editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also
 											// 'bs2',
 			// 'default'

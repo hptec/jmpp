@@ -8,10 +8,10 @@
 <title page-title></title>
 <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 <!--<link rel="shortcut icon" type="image/ico" href="favicon.ico" />-->
-<link
-	rel="/api/classpath/query/support/web/console/theme/homer/styles/style.css" />
+<!-- <script type="text/javascript" cui-load-script="requirejs"
+	src="/api/classpath/query/support/web/bower_components/requirejs/require.js"></script> -->
 <script type="text/javascript"
-	src="/api/classpath/query/support/web/bower_components/requirejs/require.js"></script>
+	src="/api/classpath/query/support/web/js/cui.js"></script>
 
 
 </head>
@@ -50,38 +50,33 @@
 	</div>
 </body>
 <script>
-	require([ '/api/classpath/query/support/web/js/core.js' ], function(core) {
-		console.log("页面核心", core);
-		core.bootstrap({
-			starter : {
-				name : "console-starter",
-				html5mode : true
+	cui.config({
+		platform : {
+			category : "console"
+		},
+		html5mode : true,
+		http : {
+			onLoginRequired : function() {
+				require([ 'pages' ], function(pages) {
+					pages.open("login");
+				});
 			},
-			platform : {
-				category : 'console',
-				key : '19d06a2bbbcd4c12b925ebf6deacaa5a',
-				secret : 'e485e7e485e70bfa82400eb355a8e1bd7cd004'
-			},
-			http : {
-				onLoginRequired : function() {
-					require([ 'pages' ], function(pages) {
-						pages.open("login");
-					});
-				},
-				onHttpError : function(a, b, c) {
-					console.log("Http错误:", {
-						a : a,
-						b : b,
-						c : c
-					});
-				}
-			},
-			modal : {
-				alert : function(option) {
-					alert(option.title);
-				}
+			onHttpError : function(a, b, c) {
+				console.log("Http错误:", {
+					a : a,
+					b : b,
+					c : c
+				});
 			}
-		});
+		},
+		modal : {
+			alert : function(option) {
+				alert(option.title);
+			}
+		}
+	})
+	cui.ready([ "console-starter" ], function() {
+		console.log("cui.ready")
 	});
 </script>
 </html>
