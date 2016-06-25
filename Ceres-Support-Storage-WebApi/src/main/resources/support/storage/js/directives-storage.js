@@ -14,12 +14,20 @@ define([ '$', 'app' ], function($, app) {
 
 		return {
 			restrict : "A",
+			scope : {
+				cuiStorage : "&"
+			},
 			controller : [ "$scope", function($scope) {
 
 			} ],
 			link : function(scope, element, attrs, controller) {
 				var tagName = element[0].tagName;
-				var obj = JSON.parse(attrs.cuiStorage);
+				if (scope.cuiStorage() == undefined) {
+					console.log("[cui-storage] 未发现存储文件");
+					return;
+				}
+				var obj = scope.cuiStorage();
+
 				if (tagName == "IMG") {
 					var prefixUri = "/api/storage/query";
 					if (obj.localUri.substring(0, 1) != "/") {

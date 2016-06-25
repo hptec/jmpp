@@ -132,7 +132,11 @@ public class Jsons {
 						try {
 							return DateFormat.getDateInstance().parse(json.toString());
 						} catch (ParseException e1) {
-							e1.printStackTrace();
+							try {
+								return new Date(json.getAsLong());
+							} catch (Exception e2) {
+								e2.printStackTrace();
+							}
 						}
 					}
 				}
