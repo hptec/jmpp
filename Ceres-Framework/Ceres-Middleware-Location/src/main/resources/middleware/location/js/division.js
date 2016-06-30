@@ -5,6 +5,7 @@ define([ 'http', 'cache', '$' ], function(http, cache, $) {
 	if (data == undefined) {
 		http.load({
 			url : '/api/location/divisions',
+			server: true,
 			success : function(ret) {
 
 				cache.set(cacheKey, ret);
@@ -88,7 +89,7 @@ define([ 'http', 'cache', '$' ], function(http, cache, $) {
 			default:
 				throw new Error("长度不正确");
 			}
-			$.each(this.__combineTmp(), function(obj, i) {
+			$.each(this.__combineTmp(), function(key, obj) {
 				if (obj.code != undefined && obj.code.length == compareLen) {
 					retList.push(obj);
 				}
