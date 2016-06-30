@@ -1,4 +1,4 @@
-define([ 'http', 'cache' ], function(http, cache) {
+define([ 'http', 'cache', '$' ], function(http, cache, $) {
 
 	var cacheKey = "MIDDLEWARE_LOCATION_DIVISION_JSONDATA";
 	var data = cache.get(cacheKey);
@@ -66,6 +66,34 @@ define([ 'http', 'cache' ], function(http, cache) {
 				}
 			}
 			return undefined;
+		},
+		/**
+		 * level=0 根 level=1 省 level=2 市 level=3 县
+		 */
+		findByLevel : function(level) {
+			var retList = new Array();
+			var compareLen = 2;
+			switch (level) {
+			case 0:
+				return this.__get();
+			case 1:
+				compareLen = 2;
+				break;
+			case 2:
+				compareLen = 4;
+				break;
+			case 3:
+				compareLen = 6;
+				break;
+			default:
+				throw new Error("长度不正确");
+			}
+			$.each(this.__combineTmp(), function(obj, i) {
+				if (obj.code != undefined && obj.code.length == compareLen) {
+					retList.push(obj);
+				}
+			});
+			return retList;
 		}
 	}
 
