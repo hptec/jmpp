@@ -52,6 +52,7 @@ public class LoginProviderConfiguration<T extends Loginable> implements Componen
 				if (providerPool.containsKey(category)) {
 					throw new IllegalArgumentException("LoginProvider Conflict:" + category);
 				}
+				providerPool.put(category, provider);
 			}
 
 		}

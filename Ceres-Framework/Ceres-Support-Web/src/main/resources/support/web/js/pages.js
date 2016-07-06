@@ -12,7 +12,7 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 			if (context == undefined) {
 				throw new Error("context is required!");
 			}
-			
+
 			if (typeof (context) == "string") {
 				context = {
 					url : context
@@ -56,6 +56,7 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 				// mui的open
 				var mui = require("mui");
 				var pg = this.__windows[context.url];
+
 				if (pg != undefined) {
 					if (pg.options != undefined) {
 						options = $.extend(true, options, pg.options);
@@ -72,8 +73,23 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 					options.url = pg.tpl;
 					options.id = pg.uri;
 				}
-				
-				mui.openWindow(options);
+
+				// 校验是否需要登录
+				if (options != undefined && options.loginRequired != undefined && options.loginRequired == true) {
+					console.log("验证用户登录");
+					console.log("http:" + (typeof (http)));
+					require('login').validate({
+						success : function(ret) {
+							if (ret.isSuccess) {
+								mui.openWindow(options);
+							}
+						}
+					});
+				} else {
+					console.log("无需验证用户登录")
+					mui.openWindow(options);
+				}
+
 			} else {
 				$("div[ng-controller='appcmd']").find("a").each(function(i, obj) {
 					var o = $(obj);
