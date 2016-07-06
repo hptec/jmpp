@@ -1,4 +1,4 @@
-define([ 'http', 'modal', '$' ], function(http, modal, $) {
+define([ 'modal', '$', 'http' ], function(modal, $, http) {
 	return {
 		login : function(option) {
 			if (option == undefined) {
@@ -13,6 +13,23 @@ define([ 'http', 'modal', '$' ], function(http, modal, $) {
 				server : true
 			});
 
+			http.load(req);
+		},
+		/**
+		 * 向服务器发出验证请求，验证用户是否登录
+		 */
+		validate : function(option) {
+			if (option == undefined) {
+				modal.toast("传入的验证参数为空");
+				return;
+			}
+
+			var req = {};
+			req = $.extend(req, option);
+			req = $.extend(req, {
+				url : "/api/login/validate",
+				server : true
+			});
 			http.load(req);
 		},
 		/**

@@ -126,6 +126,7 @@
 		{
 			name:"pages",
 			uri:"/api/classpath/query/support/web/js/pages",
+			deps:["login"],
 			exports:"pages"
 		},
 		{
