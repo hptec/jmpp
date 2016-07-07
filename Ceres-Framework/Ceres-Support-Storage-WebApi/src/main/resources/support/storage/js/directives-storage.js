@@ -1,15 +1,15 @@
-define([ '$', 'app' ], function($, app) {
+define([ '$', 'app', 'cache', 'http' ], function($, app, cache, http) {
 
 	app.directive('cuiStorage', function($rootScope, $timeout) {
-		// 把image 转换为 canvas对象
-		function getImageData(image) {
-			// 创建canvas DOM元素，并设置其宽高和图片一样
-			var canvas = document.createElement("canvas");
-			canvas.width = image.width;
-			canvas.height = image.height;
-			// 坐标(0,0) 表示从此处开始绘制，相当于偏移。
-			canvas.getContext("2d").drawImage(image, 0, 0);
-			return canvas;
+		// 得到文件名
+		var getFilename = function(file) {
+			return file.replace(/.*(\/|\\)/, "");
+		}
+
+		// 得到文件扩展名
+		var getExtension = function(filename) {
+			var point = filename.lastIndexOf(".");
+			return point == -1 ? "" : filename.substr(point);
 		}
 
 		return {
@@ -26,17 +26,60 @@ define([ '$', 'app' ], function($, app) {
 					console.log("[cui-storage] 未发现存储文件");
 					return;
 				}
+
 				var obj = scope.cuiStorage();
 
+				// 拼装资源文件的标识key
+				var filename = obj.localUri;
+
+				// 检查是否指定filter
+				if (attrs.cuiFilter != undefined && attrs.cuiFilter != "") {
+					var ext = getExtension(filename);
+					var filenameWithoutExt = filename.substring(0, filename.length - ext.length);
+					filename = filenameWithoutExt + "@" + attrs.cuiFilter + ext;
+				}
+
+				var preKey = "SUPPORT_STORAGE_IMAGE_DATA_";
 				if (tagName == "IMG") {
-					var prefixUri = "/api/storage/query";
-					if (obj.localUri.substring(0, 1) != "/") {
-						prefixUri += "/"
+					// 检测本本地缓存
+					var key = preKey + filename;
+					var obj = cache.get(key);
+					if (obj == undefined) {
+						// 缓存不存在，到服务器申请
+						var url = "/api/storage/query";
+						if (filename.substring(0, 1) != "/") {
+							url += "/"
+						}
+						http.load({
+							url : url + filename,
+							data : {
+								toImageData : true
+							},
+							success : function(ret) {
+								// 存入本地
+								cache.set(key, {
+									data : ret
+								});
+
+								element.attr("src", ret);
+							}
+						})
+					} else {
+						console.log("Storage 读取本地缓存 [" + key + "]", obj);
+						element.attr("src", obj.data);
 					}
-					element.attr("src", prefixUri + obj.localUri);
-					element.bind("load", function(e) {
-						var imgData = getImageData(e.target);
-					})
+
+					// 从服务器获取ImageData格式的内容
+
+					// return;
+					// var prefixUri = "/api/storage/query";
+					// if (filename.substring(0, 1) != "/") {
+					// prefixUri += "/"
+					// }
+					// element.attr("src", prefixUri + filename);
+					// element.bind("load", function(e) {
+					// var imgData = getImageData(e.target);
+					// })
 				} else {
 					console.log("发现未识别标记");
 				}

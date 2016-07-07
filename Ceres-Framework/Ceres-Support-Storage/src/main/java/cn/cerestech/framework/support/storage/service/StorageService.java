@@ -181,7 +181,7 @@ public class StorageService {
 		localFile.setBytes(bytes);
 		localFile.setExtensionName(Files.getFileExtension(orignalName));
 		localFile.setSimpleName(Files.getNameWithoutExtension(orignalName) + "." + Files.getFileExtension(orignalName));
-		localFile.setLocalUri(idPath + Random.uuid());
+		localFile.setLocalUri(idPath + Random.uuid() + "." + Files.getFileExtension(orignalName));
 		localFile.setHttpUri(localFile.getLocalUri());
 		localFile.setSize(bytes.length + 0L);
 		localFile.setUploadName(orignalName);
