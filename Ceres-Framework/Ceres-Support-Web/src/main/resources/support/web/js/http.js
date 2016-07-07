@@ -47,7 +47,7 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 			context.data.ceres_platform_authcode = moduleConfig.authcode;
 			var sendRequest = {
 				url : prefix + context.url,
-				type : "POST",
+				type : context.type||"POST",
 				async : context.async == undefined ? true : context.async,
 				dataType : "text",
 				data : context.data,
