@@ -56,17 +56,14 @@ define([ '$', 'app', 'cache', 'http' ], function($, app, cache, http) {
 								toImageData : true
 							},
 							success : function(ret) {
-								// 存入本地
-								cache.set(key, {
-									data : ret
-								});
+								// 存入本地,默认存储30天
+								cache.set(key, ret, new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000));
 
 								element.attr("src", ret);
 							}
 						})
 					} else {
-						console.log("Storage 读取本地缓存 [" + key + "]", obj);
-						element.attr("src", obj.data);
+						element.attr("src", obj);
 					}
 
 					// 从服务器获取ImageData格式的内容
