@@ -37,7 +37,7 @@
 				// 检测reqiure文件是否加载
 				this.loadScript(this.__config.defaultUri.requirejs, function() {
 					console.log("[INFO] RequireJs成功加载");
-					require([ cui.__config.defaultUri.systemconfig + '?platform=' + cui.__config.platform.category ], function(sysConfig) {
+					require([ cui.__config.defaultUri.systemconfig + '?ceres_platform=' + cui.__config.platform.category ], function(sysConfig) {
 
 						console.log("[INFO] 默认配置成功加载", cui.__config);
 						require.config(cui.__config);
