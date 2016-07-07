@@ -23,7 +23,7 @@ public class WebWebApi extends WebSupport {
 	ManifestService manifestService;
 
 	@RequestMapping("systemconfigs.js")
-	public void systemConfigs(@RequestParam("platform") String platformKey) {
+	public void systemConfigs(@RequestParam("ceres_platform") String platformKey) {
 
 		KV defMap = KV.on();
 		defMap.put("jsModules", manifestService.getModuleElement(ModuleType.JAVASCRIPT));

@@ -1,4 +1,4 @@
-define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function(angular, module) {
+define([ 'angular', 'module', 'angular-ui-router', 'angular-require', 'angularFn' ], function(angular, module) {
 	var angularModule = new Array();
 	var config = module.config();
 
