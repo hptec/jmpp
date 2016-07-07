@@ -51,14 +51,12 @@ public class StretchCenterFilter implements Filter {
 			}
 		}
 
-		if (w == null || h == null) {
-			// log.error("parameter error for StretchCenterFilter: " +
-			// paramString + "\nContext: " + context.toPretty());
+		if (w != null || h != null) {
+			Images img = Images.of(inputBuffer, context.getExt());
+			return img.stretchCenterClip(w, h).toBytes();
+		} else {
 			return inputBuffer;
 		}
-		// Images img = new Images(inputBuffer, context.getExt());
-		// return img.stretchCenterClip(w, h).toBytes();
-		return null;
 	}
 
 	@Override

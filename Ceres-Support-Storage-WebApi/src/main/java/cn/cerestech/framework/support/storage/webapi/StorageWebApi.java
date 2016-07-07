@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
+import cn.cerestech.framework.core.images.Images;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.service.StorageService;
@@ -34,7 +35,9 @@ public class StorageWebApi extends WebApi {
 	StorageService storageService;
 
 	@RequestMapping("/query/**")
-	public void query() throws Throwable {
+	public void query(
+			@RequestParam(value = "toImageData", required = false, defaultValue = "false") Boolean toImageData)
+			throws Throwable {
 		String srcKey = getRequest().getRequestURI();
 		srcKey = srcKey.substring("/api/storage/query/".length());
 		log.trace("query local file: " + srcKey);
@@ -46,6 +49,9 @@ public class StorageWebApi extends WebApi {
 			StorageFile file = optionFile.get();
 			if (file == null || file.getBytes() == null || file.getBytes().length == 0) {
 				getResponse().sendError(404);
+			} else if (toImageData) {
+				Images img = Images.of(file.getBytes(), file.getExtensionName());
+				zipOut(img.toImageData(), ContentType.getByExtension("html"));
 			} else {
 				String ext = Files.getFileExtension(srcKey);
 				zipOut(file.getBytes(), ContentType.getByExtension(ext));

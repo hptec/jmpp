@@ -57,11 +57,16 @@ public class FilterService {
 		}
 
 		// 拼装HttpUri
-		StringBuffer strBuf = new StringBuffer(file.getLocalUri());
-		strBuf.delete(strBuf.length() - file.getExtensionName().length() - 1, strBuf.length());
-		strBuf.append("@" + filterString);
-		strBuf.append("." + file.getExtensionName());
-		log.trace("filter [" + file.getLocalUri() + "] to [" + file.getHttpUri() + "]");
+//		StringBuffer strBuf = new StringBuffer(file.getLocalUri());
+//		strBuf.delete(strBuf.length() - file.getExtensionName().length() - 1, strBuf.length());
+//		strBuf.append("@" + filterString);
+//		strBuf.append("." + file.getExtensionName());
+//		file.setHttpUri(strBuf.toString());
+		
+		//存储到本地
+		
+		
+//		log.trace("filter [" + file.getLocalUri() + "] to [" + file.getHttpUri() + "]");
 
 		return file;
 	}
