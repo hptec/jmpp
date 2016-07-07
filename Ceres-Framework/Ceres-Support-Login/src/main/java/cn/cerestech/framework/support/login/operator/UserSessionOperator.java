@@ -34,7 +34,7 @@ public interface UserSessionOperator extends SessionOperator, PlatformOperator, 
 	default Long getRememberId() {
 		String cKey = COOKIE_REMEMBER_ID + getPlatformCategory().key();
 		Cookies cookies = Cookies.from(getRequest());
-		return Longs.tryParse(cookies.getValue(cKey));
+		return cookies.exist(cKey) ? Longs.tryParse(cookies.getValue(cKey)) : null;
 	}
 
 	default void putRemember(Long id, String token) {
