@@ -232,8 +232,7 @@
 				"metisMenu",
 				"bootstrap-scrollspy",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/font-awesome/css/font-awesome.min",
-				"$cookie",
-				"pages"
+				"$cookie"
 			]
 		},
 		{
