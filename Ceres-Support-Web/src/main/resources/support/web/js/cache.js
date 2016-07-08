@@ -13,13 +13,14 @@ define([ 'module', '$' ], function(module, $) {
 				if (__value == undefined) {
 					return undefined;
 				} else {
+					console.log("数据："+__value);
 					if(typeof __value != 'object'){
 						try{
 							__value = JSON.parse(__value);
 						}catch(e){}
 					}
 					// 检查是否过期，默认存储30天
-					if (__value.__expired != undefined && new Date().getTime() > __value.__expired.getTime()) {
+					if (__value.__expired != undefined && new Date().getTime() > __value.__expired) {
 						// 没有记录过期时间，或者超过默认过期时间，则删除此记录
 						localStorage.removeItem(__key);
 						return undefined;
@@ -61,7 +62,7 @@ define([ 'module', '$' ], function(module, $) {
 					// 封装value;
 					var __value = {
 						__data : value,
-						__expired : expired
+						__expired : expired&&expired.getTime?expired.getTime():null
 					// 保存出入时间用来检查是否过期
 					}
 
