@@ -9,7 +9,7 @@ define([ 'module', '$' ], function(module, $) {
 
 			var __value = undefined;
 			if (this.isLocalStorageSupport()) {
-				__value = localStorage[__key];
+				__value = localStorage.getItem(__key);//[__key];
 				if (__value == undefined) {
 					return undefined;
 				} else {
@@ -19,18 +19,22 @@ define([ 'module', '$' ], function(module, $) {
 						localStorage.removeItem(__key);
 						return undefined;
 					} else {
-						return JSON.parse(__value).__data;
+						return __value.__data;//JSON.parse(__value).__data;
 					}
 				}
 			} else {
 				value = $.cookie(__key);
+				try{
+					value = JSON.parse(value);
+				}catch(e){}
 			}
 
-			if (value != undefined) {
-				return JSON.parse(value);
-			} else {
-				return null;
-			}
+//			if (value != undefined) {
+//				return JSON.parse(value);
+//			} else {
+//				return null;
+//			}
+			return value;
 
 		},
 		/**
@@ -50,13 +54,13 @@ define([ 'module', '$' ], function(module, $) {
 					localStorage.removeItem(__key);
 				} else {
 					// 封装value;
-					__value = {
+					var __value = {
 						__data : value,
 						__expired : expired
 					// 保存出入时间用来检查是否过期
 					}
 
-					localStorage[__key] = JSON.stringify(__value);
+					localStorage.setItem(__key, __value);//[__key] = JSON.stringify(__value);
 				}
 
 			} else {
@@ -67,8 +71,15 @@ define([ 'module', '$' ], function(module, $) {
 						path : '/'
 					});
 				}
+				var v = JSON.stringify(value);
+				if(/^"/.test(v)){
+					v = v.substring(1);
+				}
+				if(/"$/.test(v)){
+					v = v.substring(0, v.length -1);
+				}
 
-				$.cookie(__key, JSON.stringify(value), {
+				$.cookie(__key, v, {
 					expires : 30 * 3,
 					path : '/'
 				});
