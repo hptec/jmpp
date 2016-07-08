@@ -9,10 +9,15 @@ define([ 'module', '$' ], function(module, $) {
 
 			var __value = undefined;
 			if (this.isLocalStorageSupport()) {
-				__value = localStorage.getItem(__key);//[__key];
+				var __value = localStorage.getItem(__key);//[__key];
 				if (__value == undefined) {
 					return undefined;
 				} else {
+					if(typeof __value != 'object'){
+						try{
+							__value = JSON.parse(__value);
+						}catch(e){}
+					}
 					// 检查是否过期，默认存储30天
 					if (__value.__expired != undefined && new Date().getTime() > __value.__expired.getTime()) {
 						// 没有记录过期时间，或者超过默认过期时间，则删除此记录
@@ -60,7 +65,7 @@ define([ 'module', '$' ], function(module, $) {
 					// 保存出入时间用来检查是否过期
 					}
 
-					localStorage.setItem(__key, __value);//[__key] = JSON.stringify(__value);
+					localStorage.setItem(__key, JSON.stringify(__value));//[__key] = JSON.stringify(__value);
 				}
 
 			} else {
