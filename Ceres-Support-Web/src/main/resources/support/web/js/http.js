@@ -80,7 +80,7 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 							var dataObj = content;
 						}
 
-						console.log("Http模块: 返回内容", dataObj);
+						//console.log("Http模块: 返回内容", dataObj);
 
 						if (this.success != null) {
 							this.success(dataObj, this.context == undefined ? this : this.context);
@@ -146,6 +146,30 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 					path : '/'
 				});
 				$.ajax(sendRequest);
+			}
+		},
+		toUrl: function(uri){
+			if(/^http/.test(uri)){
+				return uri;
+			}else{
+				var host = moduleConfig.host;
+				var url = host.server||"";
+				if(!/^http/.test(url)){
+					url = (host.protocal&&host.protocal||"http") + "://" + url;
+				}
+				if(host.port && !new RegExp("/:"+host.port + "$").test(url)){
+					url += ":"+host.port;
+				}
+				if(!/\/$/.test(url)){
+					url += "/";
+				}
+				
+				if(/^\//.test(uri)){
+					url += uri.substring(1);
+				}else{
+					url += uri;
+				}
+				return url;
 			}
 		}
 	}
