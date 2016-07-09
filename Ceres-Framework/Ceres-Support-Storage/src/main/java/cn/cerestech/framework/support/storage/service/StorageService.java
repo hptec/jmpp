@@ -174,7 +174,7 @@ public class StorageService {
 		int month = cale.get(Calendar.MONTH) + 1;
 		int day = cale.get(Calendar.DATE);
 
-		String idPath = year + File.separator + month + File.separator + day + File.separator;
+		String idPath = File.separator + year + File.separator + month + File.separator + day + File.separator;
 
 		StorageFile localFile = new StorageFile();
 
