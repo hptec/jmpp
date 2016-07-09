@@ -18,6 +18,8 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 					url : context
 				}
 			}
+			
+			console.log("窗口参数Context", JSON.stringify(context));
 
 			if (moduleConfig.platform == "app") {
 
@@ -62,8 +64,10 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 						options = $.extend(true, options, pg.options);
 					}
 				}
+				console.log("窗口参数", JSON.stringify(options));
 
 				options = $.extend(true, options, context);
+				console.log("窗口参数", JSON.stringify(options));
 
 				if (pg == undefined) {
 					// 没有配置pages设置，直接使用html
@@ -86,8 +90,13 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 						}
 					});
 				} else {
-					console.log("无需验证用户登录")
-					mui.openWindow(options);
+					console.log("无需验证用户登录");
+					console.log("窗口参数", JSON.stringify(options));
+					try {
+						mui.openWindow(options);
+					} catch (e) {
+						console.log("错误", JSON.stringify(e));
+					}
 				}
 
 			} else {
