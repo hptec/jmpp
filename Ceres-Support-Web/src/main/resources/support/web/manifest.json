@@ -86,7 +86,7 @@
 		},
 		{
 			name:"md5",
-			uri:"/api/classpath/query/support/web/bower_components/js-md5/build/md5.min",
+			uri:"/api/classpath/query/support/web/bower_components/js-md5/js/md5.min",
 			exports:"md5"
 		},
 		{
