@@ -47,7 +47,10 @@
 							"shim" : {
 
 							},
-							"paths" : sysConfig.paths == undefined ? {} : sysConfig.paths
+							"paths" : sysConfig.paths == undefined ? {} : sysConfig.paths,
+							"putShim" : function(jsModule) {
+
+							}
 						}
 
 						var angularModule = new Array();
@@ -55,6 +58,7 @@
 						if (sysConfig.jsModules != undefined) {
 							for (i in sysConfig.jsModules) {
 								var jsModule = sysConfig.jsModules[i];
+								console.log("加载JSMODULE ["+jsModule.name+"]",jsModule);
 								if (shimConfig.shim[jsModule.name] == undefined) {
 									shimConfig.shim[jsModule.name] = {};
 								}
@@ -96,6 +100,7 @@
 								// 判读那些模块需要预先加载
 								if (jsModule.angularModule != undefined) {
 									angularModule.push(jsModule.name);
+
 								}
 
 							}
