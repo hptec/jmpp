@@ -1,4 +1,4 @@
-define([ 'module', '$' ], function(module, $) {
+define([ 'module', '$' , 'md5'], function(module, $, md5) {
 	return {
 		get : function(key) {
 			var __key = "CUI_CACHE_" + key
@@ -13,7 +13,6 @@ define([ 'module', '$' ], function(module, $) {
 				if (__value == undefined) {
 					return undefined;
 				} else {
-					console.log("数据："+__value);
 					if(typeof __value != 'object'){
 						try{
 							__value = JSON.parse(__value);
@@ -98,6 +97,40 @@ define([ 'module', '$' ], function(module, $) {
 				return true;
 			} else {
 				return false;
+			}
+		},
+		/**
+		 * @Param url： 带HTTP头的全路径URL
+		 * @Param back: back(本地路径/字符串数据, state)
+		 */
+		file: function(url, back){
+			if(!url){
+				back&&back(url, -1);
+				return;
+			}
+			var key = md5(url);
+			
+			var FDBS = this.get("CERES_FILE_DB");
+			if(!FDBS){
+				FDBS = {};
+				FDBS[key] = new Date().getTime();
+			}
+			if(!FDBS[key]){
+				FDBS[key] = new Date().getTime();
+			}
+			var expired = FDBS[key]?(FDBS[key]+30*24*3600*1000 < new Date().getTime()):false;
+			
+			this.set("CERES_FILE_DB",  FDBS);
+			
+			var platform = require('platform');
+			if(platform && platform.category() == "app"){
+				var Files =  require('Files');
+				Files&&Files.get(url, back, expired);
+				if(!Files){
+					back&&back(url, -1);
+				}
+			}else{
+				back&&back(url, 0);
 			}
 		}
 	}
