@@ -1,4 +1,10 @@
-var __bmapKey = bmapKey == undefined ? "Lze0SUAqOAebwUuNP0TEIf43" : bmapKey;
+var __bmapKey = undefined;
+var bmapKey = bmapKey;
+if (bmapKey == undefined) {
+	__bmapKey = "Lze0SUAqOAebwUuNP0TEIf43";
+} else {
+	__bmapKey = bmapKey;
+}
 define([ 'division', 'address', 'http://api.map.baidu.com/getscript?v=2.0&ak=' + __bmapKey ], function(division, address) {
 
 	return {

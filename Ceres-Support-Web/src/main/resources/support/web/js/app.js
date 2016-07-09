@@ -9,7 +9,7 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 			angularModule.push(m.angularModule);
 		}
 	}
-
+	
 	console.log("angularModule:", angularModule);
 	var app = angular.module('app', angularModule);
 

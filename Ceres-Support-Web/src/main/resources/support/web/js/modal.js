@@ -1,4 +1,4 @@
-define([ 'module', '$' ], function(module, $) {
+define([ 'module', 'jquery' ], function(module, $) {
 
 	var obj = {
 		success : function(data) {

@@ -2,7 +2,7 @@
  * HOMER - Responsive Admin Theme Copyright 2015 Webapplayers.com
  * 
  */
-define([ 'jquery', 'app', 'icheck' ], function($) {
+define([ '$', 'app', 'icheck' ], function($) {
 	angular.module('app').directive('pageTitle', pageTitle).directive('sideNavigation', sideNavigation).directive('minimalizaMenu', minimalizaMenu).directive('sparkline', sparkline).directive(
 			'icheck', icheck).directive('panelTools', panelTools).directive('panelToolsFullscreen', panelToolsFullscreen).directive('smallHeader', smallHeader).directive('animatePanel', animatePanel)
 			.directive('landingScrollspy', landingScrollspy).directive('clockPicker', clockPicker).directive('dateTimePicker', dateTimePicker)

@@ -1,4 +1,4 @@
-define([ 'module', '$' , 'md5'], function(module, $, md5) {
+define([ 'module', 'jquery' , 'md5'], function(module, $, md5) {
 	return {
 		get : function(key) {
 			var __key = "CUI_CACHE_" + key

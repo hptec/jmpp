@@ -163,14 +163,16 @@
 			name:"directives",
 			uri:"/api/classpath/query/support/web/console/theme/homer/scripts/directives/directives",
 			deps:[
-				"bootstrap"
+				"bootstrap",
+				"icheck"
 			]
 			
 		},
 		{
 			name:"icheck",
-			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/iCheck/icheck.min",
+			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/iCheck/icheck",
 			deps:[
+				"jquery",				
 				"bootstrap"
 			]
 			
@@ -203,6 +205,7 @@
 			name:"angular-ui-calendar",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-ui-calendar/src/calendar",
 			deps:[
+				"angular",				
 				"fullcalendar-zh-cn"
 			],
 			angularModule:"ui.calendar"
@@ -226,13 +229,8 @@
 			name:"console-starter",
 			uri:"/api/classpath/query/support/web/console/js/console-starter",
 			deps:[
-				"bootstrap",	
-				"icheck",
-				"directives",
-				"metisMenu",
-				"bootstrap-scrollspy",
+				"bootstrap",				
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/font-awesome/css/font-awesome.min",
-				"$cookie"
 			]
 		},
 		{
@@ -256,8 +254,8 @@
 			defaultPage:true,
 			deps:[
 				"/api/classpath/query/support/web/console/js/pages/page-login.js",
-				"icheck",
-				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css"
+				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
+				"directives"
 			]
 		},
 		{
@@ -270,6 +268,7 @@
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/helper",
 				"css!/api/classpath/query/support/web/console/theme/homer/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/animate.css/animate.min",
+				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
 				"metisMenu",
 				"angular-ui-bootstrap-tpls",
 				"bootstrap-scrollspy"

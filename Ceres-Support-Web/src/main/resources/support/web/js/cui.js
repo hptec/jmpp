@@ -1,7 +1,6 @@
 (function(window, undefined) {
 
 	var cui = (function() {
-		// 构建jQuery对象
 		var cui = {
 			__config : {
 				defaultUri : {
@@ -21,18 +20,11 @@
 			config : function(opt) {
 				this.__config = this.extend(true, this.__config, opt);
 			},
-			ready : function(reqArgs, callFunc) {
+			ready : function(callFunc) {
 				if (this.__config.platform == undefined || this.__config.platform.category == undefined) {
 					// 强制指定运行平台
 					throw new Error("[ERROR] platform未指定");
 				}
-				// 配置启动器
-				cui.config({
-					starter : {
-						args : cui.isFunction(reqArgs) ? undefined : reqArgs,
-						func : cui.isFunction(reqArgs) ? reqArgs : callFunc
-					}
-				})
 
 				// 检测reqiure文件是否加载
 				this.loadScript(this.__config.defaultUri.requirejs, function() {
@@ -53,59 +45,63 @@
 							}
 						}
 
-						var angularModule = new Array();
-						// 根据jsModule设置requriejs的配置
-						if (sysConfig.jsModules != undefined) {
-							for (i in sysConfig.jsModules) {
-								var jsModule = sysConfig.jsModules[i];
-								console.log("加载JSMODULE ["+jsModule.name+"]",jsModule);
-								if (shimConfig.shim[jsModule.name] == undefined) {
-									shimConfig.shim[jsModule.name] = {};
-								}
+						var initModule = new Array();// 哪些jsModule是是在要求启动的时候就加载的；
 
-								if (jsModule["exports"] != undefined) {
-									shimConfig.shim[jsModule.name]["exports"] = jsModule["exports"];
-								}
-								if (jsModule["deps"] != undefined) {
-									shimConfig.shim[jsModule.name]["deps"] = jsModule["deps"];
-								}
-								if (jsModule["uri"] != undefined) {
-									var uri = jsModule["uri"];
-									if (uri instanceof Object) {
-										// 对象，要判断开发模式，如果是dev模式，则从服务器映射文件
-										if (cfg.devMode != undefined && cfg.devMode == "dev") {
-											// 开发模式，从远端加载js
-											var remote = jsModule.uri.remote;
-											if (cfg.host != undefined) {
-												var p = (cfg.host.protocal == undefined ? "http" : cfg.host.protocal) + "://";
-												if (cfg.host.server != undefined) {
-													p = p + cfg.host.server;
-													if (cfg.host.port != undefined) {
-														p = p + ":" + cfg.host.port;
-													}
+						var putShim = function(jsModule) {
+//							console.log("加载JSMODULE [" + jsModule.name + "]", jsModule);
+							if (shimConfig.shim[jsModule.name] == undefined) {
+								shimConfig.shim[jsModule.name] = {};
+							}
+							if (jsModule["exports"] != undefined) {
+								shimConfig.shim[jsModule.name]["exports"] = jsModule["exports"];
+							}
+							if (jsModule["deps"] != undefined) {
+								shimConfig.shim[jsModule.name]["deps"] = jsModule["deps"];
+							}
+							if (jsModule["uri"] != undefined) {
+								var uri = jsModule["uri"];
+								if (uri instanceof Object) {
+									// 对象，要判断开发模式，如果是dev模式，则从服务器映射文件
+									if (cfg.devMode != undefined && cfg.devMode == "dev") {
+										// 开发模式，从远端加载js
+										var remote = jsModule.uri.remote;
+										if (cfg.host != undefined) {
+											var p = (cfg.host.protocal == undefined ? "http" : cfg.host.protocal) + "://";
+											if (cfg.host.server != undefined) {
+												p = p + cfg.host.server;
+												if (cfg.host.port != undefined) {
+													p = p + ":" + cfg.host.port;
 												}
-												remote = p + remote;
 											}
-											console.log("开发者模式：使用服务器端文件 [" + remote + "]");
-											shimConfig.paths[jsModule.name] = remote;
-										} else {
-											console.log("生产模式：使用本地文件 [" + jsModule.uri.local + "]")
-											shimConfig.paths[jsModule.name] = jsModule.uri.local;
+											remote = p + remote;
 										}
+										console.log("开发者模式：使用服务器端文件 [" + remote + "]");
+										shimConfig.paths[jsModule.name] = remote;
 									} else {
-										shimConfig.paths[jsModule.name] = jsModule.uri;
+										console.log("生产模式：使用本地文件 [" + jsModule.uri.local + "]")
+										shimConfig.paths[jsModule.name] = jsModule.uri.local;
 									}
-
-								}
-								// 判读那些模块需要预先加载
-								if (jsModule.angularModule != undefined) {
-									angularModule.push(jsModule.name);
-
+								} else {
+									shimConfig.paths[jsModule.name] = jsModule.uri;
 								}
 
 							}
+							// 判读那些模块需要预先加载
+							if (jsModule.angularModule != undefined) {
+								// angularModule.push(jsModule.name);
+								initModule.push(jsModule.name);
+							}
+
+							// initModule.push(jsModule.name);
 						}
 
+						// 根据jsModule设置requriejs的配置
+						if (sysConfig.jsModules != undefined) {
+							for (i in sysConfig.jsModules) {
+								var jm = sysConfig.jsModules[i];
+								putShim(jm);
+							}
+						}
 						console.log("RequireJs配置", shimConfig);
 						require.config(shimConfig);
 
@@ -142,19 +138,26 @@
 							config : configObj
 						});
 
-						var boot = cui.__config.starter;
-						if (boot != undefined) {
-							console.log("启动应用程序", boot);
-							if (cui.isArray(boot.args)) {
-								for (argsIndex in boot.args) {
-									angularModule.push(boot.args[argsIndex]);
-								}
-							}
+						// 执行启动过程，加载必须文件
+						require(initModule, function() {
+							require([ "directives-web", "angular-require" ], function() {
+								// 检查platform模块
+								require([ "platform" ], function(platform) {
+									platform.ready(function(p) {
+										if (p == undefined) {
+											throw new Error("[ERROR] Platform对象为空");
+										} else {
+											require([ "app" ], function(app) {
+												app.start(callFunc);
+											});
+										}
+									});
+								});
 
-							require(angularModule, boot.func == undefined ? function() {
-								console.log("[WARN] 未指定启动函数");
-							} : boot.func);
-						}
+							});
+
+						});
+
 					});
 
 				});

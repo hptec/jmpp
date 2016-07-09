@@ -1,4 +1,4 @@
-define([ 'http', 'modal', 'cache', 'platform', 'app', 'login' ], function(http, modal, cache, platform, app, login) {
+define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'jquery' ], function(http, modal, cache, platform, app, login, $) {
 
 	return {
 		__currentUser : undefined,
