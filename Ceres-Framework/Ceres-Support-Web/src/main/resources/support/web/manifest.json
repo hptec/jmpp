@@ -6,7 +6,7 @@
 			exports:"angular",
 			deps:[
 				"require-css",
-				"jquery"
+				"$"
 			]
 			
 		},
@@ -134,8 +134,8 @@
 			exports:"pages"
 		},
 		{
-			name:"directives-web",
-			uri:"/api/classpath/query/support/web/js/directives-web"
+			name:"directives-pages",
+			uri:"/api/classpath/query/support/web/js/directives-pages"
 		},
 		{
 			name:"cache",

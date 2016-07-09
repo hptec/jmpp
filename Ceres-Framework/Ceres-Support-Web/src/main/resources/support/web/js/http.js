@@ -130,8 +130,10 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 			console.log("请求内容：" + JSON.stringify(sendRequest));
 
 			if (moduleConfig.platform == "app") {
-				var mui = require("mui");
-				mui.ajax(sendRequest.url, sendRequest);
+				require([ "mui" ], function(mui) {
+					mui.ajax(sendRequest.url, sendRequest);
+				});
+
 			} else {
 				$.ajax(sendRequest);
 
