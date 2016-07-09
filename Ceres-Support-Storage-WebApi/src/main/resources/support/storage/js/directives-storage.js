@@ -88,45 +88,49 @@ define([ '$', 'app', 'cache', 'platform', 'module', 'http'], function($, app, ca
 		return {
 			restrict : "A",
 			scope : {
-				cuiStorage : "&"
+				cuiStorage : "="
 			},
 			controller : [ "$scope", function($scope) {
 
 			} ],
 			link : function(scope, element, attrs, controller) {
-
-				var tagName = element[0].tagName;
-
-				if (scope.cuiStorage() == undefined) {
-					console.log("[cui-storage] 未发现存储文件");
-					return;
-				}
-
-				var obj = scope.cuiStorage();
-
-				// 拼装资源文件的标识key
-				var fetchUrl = undefined;
-				if (typeof (obj) == "object" && obj.localUri != undefined) {
-					// 对象方式
-					var fetchUrl = obj.localUri;
-
-					// 检查是否指定filter
-					if (attrs.cuiFilter != undefined && attrs.cuiFilter != "") {
-						var ext = getExtension(fetchUrl);
-						var filenameWithoutExt = fetchUrl.substring(0, fetchUrl.length - ext.length);
-						fetchUrl = filenameWithoutExt + "@" + attrs.cuiFilter + ext;
+				scope.$watch(function(){
+					return JSON.stringify(scope.cuiStorage);
+				}, function(o, n){
+					var tagName = element[0].tagName;
+					
+					if (scope.cuiStorage == undefined) {
+						console.log("[cui-storage] 未发现存储文件");
+						return;
 					}
-
-					// 内部url
-					var url = "/api/storage/query";
-					if (fetchUrl.substring(0, 1) != "/") {
-						url += "/"
+					element.attr("src", "");
+					
+					var obj = scope.cuiStorage;
+					
+					// 拼装资源文件的标识key
+					var fetchUrl = undefined;
+					if (typeof (obj) == "object" && obj.localUri != undefined) {
+						// 对象方式
+						var fetchUrl = obj.localUri;
+						
+						// 检查是否指定filter
+						if (attrs.cuiFilter != undefined && attrs.cuiFilter != "") {
+							var ext = getExtension(fetchUrl);
+							var filenameWithoutExt = fetchUrl.substring(0, fetchUrl.length - ext.length);
+							fetchUrl = filenameWithoutExt + "@" + attrs.cuiFilter + ext;
+						}
+						
+						// 内部url
+						var url = "/api/storage/query";
+						if (fetchUrl.substring(0, 1) != "/") {
+							url += "/"
+						}
+						fetchUrl = url + fetchUrl;
+						
 					}
-					fetchUrl = url + fetchUrl;
-
-				}
-				
-				download(element, fetchUrl);
+					
+					download(element, fetchUrl);
+				});
 			}
 		}
 	});
