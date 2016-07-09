@@ -5,11 +5,11 @@ define([ '$', 'app', 'cache', 'platform', 'module', 'http'], function($, app, ca
 //		return file.replace(/.*(\/|\\)/, "");
 //	}
 //
-//	// 得到文件扩展名
-//	var getExtension = function(filename) {
-//		var point = filename.lastIndexOf(".");
-//		return point == -1 ? "" : filename.substr(point);
-//	}
+	// 得到文件扩展名
+	var getExtension = function(filename) {
+		var point = filename.lastIndexOf(".");
+		return point == -1 ? "" : filename.substr(point);
+	}
 
 //	var loadImageData = function(url, callback) {
 ////		var tagName = element[0].tagName;
