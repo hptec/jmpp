@@ -47,7 +47,7 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 			context.data.ceres_platform_authcode = moduleConfig.authcode;
 			var sendRequest = {
 				url : prefix + context.url,
-				type : context.type||"POST",
+				type : context.type || "POST",
 				async : context.async == undefined ? true : context.async,
 				dataType : "text",
 				data : context.data,
@@ -80,7 +80,7 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 							var dataObj = content;
 						}
 
-						//console.log("Http模块: 返回内容", dataObj);
+						// console.log("Http模块: 返回内容", dataObj);
 
 						if (this.success != null) {
 							this.success(dataObj, this.context == undefined ? this : this.context);
@@ -131,42 +131,31 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 
 			if (moduleConfig.platform == "app") {
 				var mui = require("mui");
-				// sendRequest.headers = {
-				// 'COOKIE' : "ceres_platform=" + moduleConfig.platform +
-				// ";ceres_platform_authcode=" + moduleConfig.authcode + ";"
-				// }
 				mui.ajax(sendRequest.url, sendRequest);
 			} else {
-				$.cookie("ceres_platform", moduleConfig.platform, {
-					expired : 7,
-					path : '/'
-				});
-				$.cookie("ceres_platform_authcode", moduleConfig.authcode, {
-					expired : 7,
-					path : '/'
-				});
 				$.ajax(sendRequest);
+
 			}
 		},
-		toUrl: function(uri){
+		toUrl : function(uri) {
 			var host = moduleConfig.host;
-			if(/:\/\//.test(uri) || !host){
+			if (/:\/\//.test(uri) || !host) {
 				return uri;
-			}else{
-				var url = host&&host.server||"";
-				if(!/:\/\//.test(url)){
-					url = (host&&host.protocal&&host.protocal||"http") + "://" + url;
+			} else {
+				var url = host && host.server || "";
+				if (!/:\/\//.test(url)) {
+					url = (host && host.protocal && host.protocal || "http") + "://" + url;
 				}
-				if(host && host.port && !new RegExp("/:"+host.port + "$").test(url)){
-					url += ":"+host.port;
+				if (host && host.port && !new RegExp("/:" + host.port + "$").test(url)) {
+					url += ":" + host.port;
 				}
-				if(!/\/$/.test(url)){
+				if (!/\/$/.test(url)) {
 					url += "/";
 				}
-				
-				if(/^\//.test(uri)){
+
+				if (/^\//.test(uri)) {
 					url += uri.substring(1);
-				}else{
+				} else {
 					url += uri;
 				}
 				return url;

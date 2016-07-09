@@ -5,7 +5,8 @@
 			uri:"/api/classpath/query/support/web/bower_components/angular/angular",
 			exports:"angular",
 			deps:[
-				"require-css"
+				"require-css",
+				"jquery"
 			]
 			
 		},
@@ -71,16 +72,18 @@
 			name:"x-editable",
 			uri:"/api/classpath/query/support/web/bower_components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable",
 			deps:[
-				"$",				
-				"css!/api/classpath/query/support/web/bower_components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable"	
+				"bootstrap",
+				"$",
+				"css!/api/classpath/query/support/web/bower_components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable"
 			]
+			
 		},
 		{
 			name:"angular-xeditable",
 			uri:"/api/classpath/query/support/web/bower_components/angular-xeditable/dist/js/xeditable.min",
 			deps:[
 				"angular",
-				"css!/api/classpath/query/support/web/bower_components/angular-xeditable/dist/css/xeditable.min"	
+				"css!/api/classpath/query/support/web/bower_components/angular-xeditable/dist/css/xeditable.min"
 			],
 			angularModule:"xeditable"
 		},
@@ -108,7 +111,9 @@
 			deps:[
 				"less",
 				"text",
+				
 			]
+			
 		},
 		{
 			name:"require-async",
@@ -127,6 +132,10 @@
 			name:"pages",
 			uri:"/api/classpath/query/support/web/js/pages",
 			exports:"pages"
+		},
+		{
+			name:"directives-web",
+			uri:"/api/classpath/query/support/web/js/directives-web"
 		},
 		{
 			name:"cache",
@@ -148,10 +157,11 @@
 	jsModules_console:[
 		{
 			name:"$",
-			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery.min",
+			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery",
 			exports:"$",
 			deps:[
-				"/api/classpath/query/support/web/bower_components/string/dist/string.min.js"
+				"/api/classpath/query/support/web/bower_components/string/dist/string.min.js",
+				"$cookie"
 			]
 			
 		},
@@ -160,7 +170,6 @@
 			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery.min",
 			exports:"$",
 			deps:[
-				"/api/classpath/query/support/web/bower_components/string/dist/string.min.js"
 			]
 			
 		},
@@ -168,7 +177,7 @@
 			name:"$cookie",
 			uri:"/api/classpath/query/support/web/bower_components/jquery.cookie/jquery.cookie",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		}

@@ -44,10 +44,7 @@
 
 	<!-- Page view wrapper -->
 	<div ui-view autoscroll="true"></div>
-	<div ng-controller="appcmd" style="display: none;">
-		<a href="javascript:void(0);" ng-click="jump(pg.name)"
-			ng-repeat="pg in pages" ng-bind="pg.name"></a>
-	</div>
+	<cui-pages></cui-pages>
 </body>
 <script>
 	cui.config({
@@ -75,8 +72,9 @@
 			}
 		}
 	})
-	cui.ready([ "console-starter" ], function() {
-		console.log("cui.ready")
+	cui.ready(function() {
+		require([ "console-starter" ], function() {
+		});
 	});
 </script>
 </html>

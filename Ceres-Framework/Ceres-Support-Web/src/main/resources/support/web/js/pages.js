@@ -1,4 +1,4 @@
-define([ 'module', 'app', '$' ], function(module, app, $) {
+define([ 'module', 'app', 'jquery' ], function(module, app, jquery) {
 	var moduleConfig = module.config();
 
 	// 初始化工作
@@ -18,7 +18,7 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 					url : context
 				}
 			}
-			
+
 			console.log("窗口参数Context", JSON.stringify(context));
 
 			if (moduleConfig.platform == "app") {
@@ -61,12 +61,12 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 
 				if (pg != undefined) {
 					if (pg.options != undefined) {
-						options = $.extend(true, options, pg.options);
+						options = jquery.extend(true, options, pg.options);
 					}
 				}
 				console.log("窗口参数", JSON.stringify(options));
 
-				options = $.extend(true, options, context);
+				options = jquery.extend(true, options, context);
 				console.log("窗口参数", JSON.stringify(options));
 
 				if (pg == undefined) {
@@ -81,7 +81,6 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 				// 校验是否需要登录
 				if (options != undefined && options.loginRequired != undefined && options.loginRequired == true) {
 					console.log("验证用户登录");
-					console.log("http:" + (typeof (http)));
 					require('login').validate({
 						success : function(ret) {
 							if (ret.isSuccess) {
@@ -90,8 +89,6 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 						}
 					});
 				} else {
-					console.log("无需验证用户登录");
-					console.log("窗口参数", JSON.stringify(options));
 					try {
 						mui.openWindow(options);
 					} catch (e) {
@@ -100,10 +97,12 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 				}
 
 			} else {
-				$("div[ng-controller='appcmd']").find("a").each(function(i, obj) {
-					var o = $(obj);
+				jquery("cui-pages").find("a").each(function(i, obj) {
+					var o = jquery(obj);
 					if (o.text() == context.url) {
+						console.log(context, o);
 						o.trigger("click");
+						return;
 					}
 				})
 			}
