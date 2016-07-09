@@ -149,15 +149,15 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 			}
 		},
 		toUrl: function(uri){
-			if(/:\/\//.test(uri)){
+			var host = moduleConfig.host;
+			if(/:\/\//.test(uri) || !host){
 				return uri;
 			}else{
-				var host = moduleConfig.host;
-				var url = host.server||"";
+				var url = host&&host.server||"";
 				if(!/:\/\//.test(url)){
-					url = (host.protocal&&host.protocal||"http") + "://" + url;
+					url = (host&&host.protocal&&host.protocal||"http") + "://" + url;
 				}
-				if(host.port && !new RegExp("/:"+host.port + "$").test(url)){
+				if(host && host.port && !new RegExp("/:"+host.port + "$").test(url)){
 					url += ":"+host.port;
 				}
 				if(!/\/$/.test(url)){
