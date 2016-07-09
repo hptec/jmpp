@@ -1,4 +1,4 @@
-define([ 'module', 'app', 'jquery' ], function(module, app, jquery) {
+define([ 'module', 'app', '$' ], function(module, app, $) {
 	var moduleConfig = module.config();
 
 	// 初始化工作
@@ -20,8 +20,7 @@ define([ 'module', 'app', 'jquery' ], function(module, app, jquery) {
 			}
 
 			console.log("窗口参数Context", JSON.stringify(context));
-
-			if (moduleConfig.platform == "app") {
+			if (moduleConfig.platform.category == "app") {
 
 				var options = {
 					styles : {
@@ -61,13 +60,13 @@ define([ 'module', 'app', 'jquery' ], function(module, app, jquery) {
 
 				if (pg != undefined) {
 					if (pg.options != undefined) {
-						options = jquery.extend(true, options, pg.options);
+						options = $.extend(true, options, pg.options);
 					}
 				}
-				console.log("窗口参数", JSON.stringify(options));
+				console.log("窗口参数1", JSON.stringify(options));
 
-				options = jquery.extend(true, options, context);
-				console.log("窗口参数", JSON.stringify(options));
+				options = $.extend(true, options, context);
+				console.log("窗口参数2", JSON.stringify(options));
 
 				if (pg == undefined) {
 					// 没有配置pages设置，直接使用html
@@ -97,8 +96,8 @@ define([ 'module', 'app', 'jquery' ], function(module, app, jquery) {
 				}
 
 			} else {
-				jquery("cui-pages").find("a").each(function(i, obj) {
-					var o = jquery(obj);
+				$("cui-pages").find("a").each(function(i, obj) {
+					var o = $(obj);
 					if (o.text() == context.url) {
 						console.log(context, o);
 						o.trigger("click");

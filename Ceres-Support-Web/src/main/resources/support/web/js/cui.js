@@ -2,6 +2,7 @@
 
 	var cui = (function() {
 		var cui = {
+			__initState : undefined,
 			__config : {
 				defaultUri : {
 					requirejs : '/api/classpath/query/support/web/bower_components/requirejs/require.js',
@@ -20,7 +21,20 @@
 			config : function(opt) {
 				this.__config = this.extend(true, this.__config, opt);
 			},
-			ready : function(callFunc) {
+			ready : function(reqArgs, callFunc) {
+				if (cui.__initState == "loaded") {
+					// 已经初始化完成，直接返回ready;
+					require(reqArgs, callFunc);
+					return;
+				} else if (cui.__initState == "loading") {
+					// 正在加载，延迟等待
+					setTimeout(function() {
+						cui.ready(reqArgs, callFunc)
+					}, 200);
+					return;
+				}
+				cui.__initState = "loading";
+
 				if (this.__config.platform == undefined || this.__config.platform.category == undefined) {
 					// 强制指定运行平台
 					throw new Error("[ERROR] platform未指定");
@@ -48,7 +62,8 @@
 						var initModule = new Array();// 哪些jsModule是是在要求启动的时候就加载的；
 
 						var putShim = function(jsModule) {
-//							console.log("加载JSMODULE [" + jsModule.name + "]", jsModule);
+							// console.log("加载JSMODULE [" + jsModule.name + "]",
+							// jsModule);
 							if (shimConfig.shim[jsModule.name] == undefined) {
 								shimConfig.shim[jsModule.name] = {};
 							}
@@ -62,15 +77,15 @@
 								var uri = jsModule["uri"];
 								if (uri instanceof Object) {
 									// 对象，要判断开发模式，如果是dev模式，则从服务器映射文件
-									if (cfg.devMode != undefined && cfg.devMode == "dev") {
+									if (cui.__config.devMode != undefined && cui.__config.devMode == "dev") {
 										// 开发模式，从远端加载js
 										var remote = jsModule.uri.remote;
-										if (cfg.host != undefined) {
-											var p = (cfg.host.protocal == undefined ? "http" : cfg.host.protocal) + "://";
-											if (cfg.host.server != undefined) {
-												p = p + cfg.host.server;
-												if (cfg.host.port != undefined) {
-													p = p + ":" + cfg.host.port;
+										if (cui.__config.host != undefined) {
+											var p = (cui.__config.host.protocal == undefined ? "http" : cui.__config.host.protocal) + "://";
+											if (cui.__config.host.server != undefined) {
+												p = p + cui.__config.host.server;
+												if (cui.__config.host.port != undefined) {
+													p = p + ":" + cui.__config.host.port;
 												}
 											}
 											remote = p + remote;
@@ -116,7 +131,8 @@
 								html5mode : cui.__config.html5mode
 							},
 							'pages' : {
-								pages : sysConfig.pages
+								'pages' : sysConfig.pages,
+								'platform' : cui.__config.platform
 							},
 							'platform' : {
 								'platform' : cui.__config.platform.category,
@@ -140,20 +156,27 @@
 
 						// 执行启动过程，加载必须文件
 						require(initModule, function() {
-							require([ "directives-web", "angular-require" ], function() {
-								// 检查platform模块
-								require([ "platform" ], function(platform) {
-									platform.ready(function(p) {
-										if (p == undefined) {
-											throw new Error("[ERROR] Platform对象为空");
-										} else {
-											require([ "app" ], function(app) {
-												app.start(callFunc);
-											});
+							// 检查platform模块
+							require([ "platform" ], function(platform) {
+								platform.ready(function(p) {
+									if (p == undefined) {
+										throw new Error("[ERROR] Platform对象为空");
+									} else {
+										var list = [ "app" ];
+										// 如果是APP端，要加载mui
+										if (cui.__config.platform.category == "app") {
+											list.push("mui");
 										}
-									});
-								});
 
+										list = list.concat(reqArgs);
+										require(list, function(app) {
+											app.start(function() {
+												cui.__initState = "loaded";
+												require(reqArgs, callFunc);
+											});
+										});
+									}
+								});
 							});
 
 						});
