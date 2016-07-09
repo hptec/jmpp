@@ -149,12 +149,12 @@ define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
 			}
 		},
 		toUrl: function(uri){
-			if(/^http/.test(uri)){
+			if(/:\/\//.test(uri)){
 				return uri;
 			}else{
 				var host = moduleConfig.host;
 				var url = host.server||"";
-				if(!/^http/.test(url)){
+				if(!/:\/\//.test(url)){
 					url = (host.protocal&&host.protocal||"http") + "://" + url;
 				}
 				if(host.port && !new RegExp("/:"+host.port + "$").test(url)){
