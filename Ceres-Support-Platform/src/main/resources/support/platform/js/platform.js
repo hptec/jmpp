@@ -31,7 +31,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 		var async = false;
 		var obj = get();
 		if (obj != undefined && obj.lastUpdate != undefined && obj.lastUpdate + (24 * 60 * 60 * 1000) > new Date().getTime()) {
-			platform.__initState == 'loaded';
+			platform.__initState = 'loaded';
 			// 每24小时更新一次
 			return;
 		}
@@ -40,7 +40,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 			// 如果缓存中已经有数据，则使用异步更新
 			async = true;
 		}
-		platform.__initState == 'loading';
+		platform.__initState = 'loading';
 
 		http.load({
 			url : '/api/platform/query',
@@ -53,7 +53,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 
 				if (content.object == undefined) {
 					var errMsg = "未识别或者未授权的Key，请联系管理员!";
-					platform.__initState == 'failed';
+					platform.__initState = 'failed';
 					modal.toast(errMsg);
 					return;
 				}
@@ -65,10 +65,10 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 						}
 					}
 				});
-				platform.__initState == 'loaded';
+				platform.__initState = 'loaded';
 			},
 			onError: function(ctx, cnt){
-				platform.__initState == 'failed';
+				platform.__initState = 'failed';
 			}
 		});
 	}
