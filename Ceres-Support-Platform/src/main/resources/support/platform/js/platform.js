@@ -25,7 +25,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 		}
 	}
 	function get() {
-		return cache.get(module.config().appid + "_platform");
+		return cache.get(module.config().platform + "_platform");
 	}
 	function doSync() {
 		var async = false;
