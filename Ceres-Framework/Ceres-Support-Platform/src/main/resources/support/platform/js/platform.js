@@ -7,7 +7,8 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 		doSync : doSync,
 		category : function() {
 			return module.config().platform;
-		}
+		},
+		ready: ready
 	};
 	
 	function ready(callFunc){
