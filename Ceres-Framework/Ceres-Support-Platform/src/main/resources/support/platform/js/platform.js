@@ -12,7 +12,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 		};
 	function ready(callFunc){
 		if(platform.__initState == 'loaded'){
-			callFunc&&callFunc(platform);
+			callFunc&&callFunc(platform.get());
 			return;
 		}else if(platform.__initState == 'failed'){
 			console.log("platform 加载失败");
