@@ -49,7 +49,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 			data : module.config(),
 			success : function(content) {
 				content.object.lastUpdate = new Date().getTime();
-				cache.set(module.config().appid + "_platform", content.object);
+				cache.set(module.config().platform + "_platform", content.object);
 
 				if (content.object == undefined) {
 					var errMsg = "未识别或者未授权的Key，请联系管理员!";
