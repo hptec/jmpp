@@ -1,8 +1,32 @@
+
+
 define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, http, modal) {
+	var platform = {
+		__initState: undefined,
+		get : get,
+		doSync : doSync,
+		category : function() {
+			return module.config().platform;
+		}
+	};
+	
+	function ready(callFunc){
+		if(platform.__initState == 'loaded'){
+			callFunc&&callFunc(platform);
+			return;
+		}else if(platform.__initState == 'failed'){
+			console.log("platform 加载失败");
+			return;
+		}else(platform.__initState == 'loading'){
+			setTimeout(function(){
+				platform.ready(callFunc);
+			}, 200);
+			return;
+		}
+	}
 	function get() {
 		return cache.get(module.config().appid + "_platform");
 	}
-
 	function doSync() {
 		var async = false;
 		var obj = get();
@@ -15,6 +39,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 			// 如果缓存中已经有数据，则使用异步更新
 			async = true;
 		}
+		platform.__initState == 'loading';
 
 		http.load({
 			url : '/api/platform/query',
@@ -27,6 +52,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 
 				if (content.object == undefined) {
 					var errMsg = "未识别或者未授权的Key，请联系管理员!";
+					platform.__initState == 'failed';
 					modal.toast(errMsg);
 					return;
 				}
@@ -37,7 +63,11 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 							authcode : content.object.platformAuthCode
 						}
 					}
-				})
+				});
+				platform.__initState == 'loaded';
+			},
+			onError: function(ctx, cnt){
+				platform.__initState == 'failed';
 			}
 		});
 	}
