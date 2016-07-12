@@ -74,11 +74,5 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 	}
 	doSync();
 
-	return {
-		get : get,
-		doSync : doSync,
-		category : function() {
-			return module.config().platform;
-		}
-	}
+	return platform;
 });
