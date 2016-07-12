@@ -2,15 +2,14 @@
 
 define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, http, modal) {
 	var platform = {
-		__initState: undefined,
-		get : get,
-		doSync : doSync,
-		category : function() {
-			return module.config().platform;
-		},
-		ready: ready
-	};
-	
+			__initState: undefined,
+			get : get,
+			doSync : doSync,
+			category : function() {
+				return module.config().platform;
+			},
+			ready: ready
+		};
 	function ready(callFunc){
 		if(platform.__initState == 'loaded'){
 			callFunc&&callFunc(platform);
@@ -18,7 +17,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 		}else if(platform.__initState == 'failed'){
 			console.log("platform 加载失败");
 			return;
-		}else(platform.__initState == 'loading'){
+		}else{//(platform.__initState == 'loading') || platform.__initState == undefined
 			setTimeout(function(){
 				platform.ready(callFunc);
 			}, 200);
@@ -32,6 +31,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 		var async = false;
 		var obj = get();
 		if (obj != undefined && obj.lastUpdate != undefined && obj.lastUpdate + (24 * 60 * 60 * 1000) > new Date().getTime()) {
+			platform.__initState == 'loaded';
 			// 每24小时更新一次
 			return;
 		}
@@ -73,6 +73,5 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 		});
 	}
 	doSync();
-
 	return platform;
 });
