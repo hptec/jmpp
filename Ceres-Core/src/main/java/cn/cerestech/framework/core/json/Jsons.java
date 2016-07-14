@@ -90,6 +90,11 @@ public class Jsons {
 			return me;
 		}
 
+		if (obj instanceof Jsons) {
+			me.root = ((Jsons) obj).getRoot();
+			return me;
+		}
+
 		me.root = me.getGson().toJsonTree(obj);
 
 		return me;
@@ -359,5 +364,11 @@ public class Jsons {
 			put(key, Jsons.from(value));
 		}
 		return this;
+	}
+
+	public static void main(String[] argus) {
+		String json = "{\"pageNumber\":0,\"pageSize\":8,\"numberOfElements\":0,\"totalElements\":0,\"totalPages\":0,\"data\":[]}";
+		Jsons j = Jsons.from(json);
+		System.out.println(Jsons.from(j).toJson());
 	}
 }
