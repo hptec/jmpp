@@ -46,6 +46,7 @@
         _setDatePoint = function(setter) {
           return function(newValue) {
             if (_picker && newValue) {
+            	var moment = require('moment');
               return setter(moment(newValue));
             }
           };
@@ -108,6 +109,7 @@
         modelCtrl.$parsers.push(function(val) {
           var f, objValue, x;
           f = function(value) {
+        	  var moment = require('moment');
             return moment(value, opts.locale.format);
           };
           objValue = {

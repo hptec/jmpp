@@ -114,17 +114,9 @@
 			]
 		},
 		{
-			name:"moment-local",
-			uri:"/api/classpath/query/support/web/bower_components/moment/locale/zh-cn",
-			deps:[
-				"moment"
-			]
-		},
-		{
 			name:"moment",
-			uri:"/api/classpath/query/support/web/bower_components/moment/moment",
-			deps:[
-			]
+			uri:"/api/classpath/query/support/web/bower_components/moment/min/moment-with-locales.min",
+			exports:"moment"
 		},
 		{
 			name:"uuid",

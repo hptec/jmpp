@@ -47,7 +47,7 @@ define([ 'app', '/api/queryform/query','angular'], function(app, forms,angular) 
 							str += "<div class='input-group-addon'>";
 							str += "<i class='fa fa-calendar'></i>"
 							str += "</div>";
-							str += "<input type='text' readonly date-range-picker ceres-queryform-term-type='DATERANGE' ng-model='$$ceresQueryForm.terms." + term.key + "' class='form-control pull-right' placeholder='"
+							str += "<input type='text' readonly date-range-picker ceres-queryform-term-type='DATERANGE' ng-model='$$ceresQueryForm.terms." + term.key + "' class='form-control pull-right date-picker' placeholder='"
 									+ term.title + "'>";
 							str += "</div>";
 							str += "</div>";
@@ -76,12 +76,14 @@ define([ 'app', '/api/queryform/query','angular'], function(app, forms,angular) 
 					var str = "<div class='col-md-2 pull-right'><button class='btn btn-block btn-default' ng-click='$$ceresQueryForm.search()'><i class='fa fa-fw fa-search'></i>搜索</button></div>";
 					contTerm.append(str);
 				}
-
+				
+				
 				// 添加列
 				for ($ln in formDef.columns) {
+					break;
 					var col = formDef.columns[$ln];
 					// 添加列名
-					e.find("thead > tr").append("<th>" + col.title + "</th>");
+					element.find("thead > tr").append("<th>" + col.title + "</th>");
 					// 添加行字段
 					if (col.key != undefined && col.key != "") {
 						switch (col.type) {

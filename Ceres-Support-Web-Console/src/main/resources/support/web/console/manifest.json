@@ -30,7 +30,6 @@
 				"bootstrap-tab",
 				"bootstrap-affix",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/css/bootstrap.min",
-				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/css/bootstrap-theme.min",
 				"metisMenu",
 				"jquery-sparkline"
 			]
@@ -261,17 +260,17 @@
 			name:"directives-daterangepicker",
 			uri:"/api/classpath/query/support/web/console/bower_components/angular-daterangepicker/js/angular-daterangepicker",
 			deps:[
-				"daterangepicker"
+				"daterangepicker-js"
 			],
 			angularModule:"daterangepicker"
 		},
 		{
-			name:"daterangepicker",
+			name:"daterangepicker-js",
 			uri:"/api/classpath/query/support/web/console/bower_components/bootstrap-daterangepicker/daterangepicker",
 			deps:[
 				"bootstrap",
 				"jquery",
-				"moment-local",
+				"moment",
 				"css!/api/classpath/query/support/web/console/bower_components/bootstrap-daterangepicker/daterangepicker",
 			]
 		}
