@@ -88,36 +88,36 @@ define([ 'app', '/api/queryform/query','angular'], function(app, forms,angular) 
 					if (col.key != undefined && col.key != "") {
 						switch (col.type) {
 						case "DATE":
-							e.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | toDate | date:'" + col.pattern + "'\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | toDate | date:'" + col.pattern + "'\"></td>");
 							break;
 						case "CURRENCY":
-							e.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | currency\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | currency\"></td>");
 							break;
 						case "CURRENCYTENK":
-							e.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | currencyTenK\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | currencyTenK\"></td>");
 							break;
 						case "ENUM":
-							e.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | enums: '" + col.pattern + "'\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | enums: '" + col.pattern + "'\"></td>");
 							break;
 						case "IMAGE":
-							e.find("tbody > tr").append("<td><img resfs='{{row." + col.key + "}}' class='user-image img-circle'  width='" + col.width + "' height='" + col.height + "' ></td>");
+							element.find("tbody > tr").append("<td><img resfs='{{row." + col.key + "}}' class='user-image img-circle'  width='" + col.width + "' height='" + col.height + "' ></td>");
 							break;
 						case "IDIN":
-							e.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | idInList: " + col.pattern + " : '" + col.extra + "'\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | idInList: " + col.pattern + " : '" + col.extra + "'\"></td>");
 							break;
 						case "ICON":
-							e.find("tbody > tr").append("<td><i class='{{row." + col.key + "}}' ng-if='row." + col.key + "'></i></td>");
+							element.find("tbody > tr").append("<td><i class='{{row." + col.key + "}}' ng-if='row." + col.key + "'></i></td>");
 							break;
 						case "PERCENTAGE":
-							e.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | percentage \"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | percentage \"></td>");
 							break;
 						default:
 							// 默认TEXT
-							e.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " \"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " \"></td>");
 						}
 
 					} else {
-						e.find("tbody > tr").append("<td>&nbsp;</td>");
+						element.find("tbody > tr").append("<td>&nbsp;</td>");
 					}
 				}
 
@@ -198,41 +198,50 @@ define([ 'app', '/api/queryform/query','angular'], function(app, forms,angular) 
 
 				return {
 					pre : function(scope, element, attrs) {
-						var e = $(element);
-						// 添加枚举
-						if (formDef.terms.length > 0) {
-							for ($ln in formDef.terms) {
-								var term = formDef.terms[$ln];
-								if (term.type == "ENUM") {
-									scope[term.enumClass] = $c.enums[term.enumClass];
-								} else if (term.type == "REMOTELIST") {
-									(function() {
-										$c.load({
-											url : term.remoteList.remoteUrl,
-											data : {
-												listVarName : term.remoteList.listVarName
-											},
-											context : term,
-											success : function(ret, context) {
-												if (ret.data != undefined) {
-													scope[context.remoteList.listVarName] = ret.data;
-												} else {
-													scope[context.remoteList.listVarName] = ret;
-												}
+						//初始化默认参数
+						var formId=element.attr("cui-form");
+						//保存状态：location.href+formId
+						console.log(location.href);
+						
+						
+						
+//						// 添加枚举
+//						if (formDef.terms.length > 0) {
+//							for ($ln in formDef.terms) {
+//								var term = formDef.terms[$ln];
+//								if (term.type == "ENUM") {
+//									scope[term.enumClass] = $c.enums[term.enumClass];
+//								} else if (term.type == "REMOTELIST") {
+//									(function() {
+//										$c.load({
+//											url : term.remoteList.remoteUrl,
+//											data : {
+//												listVarName : term.remoteList.listVarName
+//											},
+//											context : term,
+//											success : function(ret, context) {
+//												if (ret.data != undefined) {
+//													scope[context.remoteList.listVarName] = ret.data;
+//												} else {
+//													scope[context.remoteList.listVarName] = ret;
+//												}
+//
+//												scope.$apply();
+//											}
+//										});
+//									}(this));
+//
+//								}
+//
+//							}
+//						}
 
-												scope.$apply();
-											}
-										});
-									}(this));
-
-								}
-
-							}
+						// 初始化默认条件
+						if(scope.__queryform==undefined){
+							scope.__queryform={};
 						}
-
-						// 初始化条件
-						scope.$$ceresQueryForm = {
-							targetId : e.attr("id"),
+						scope.__queryform[formId] = {
+							targetId :formId,
 							form : formDef,
 							terms : {},// 搜索条件
 							dataOriginal : [],
