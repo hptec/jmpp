@@ -1,4 +1,4 @@
-define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'jquery' ], function(http, modal, cache, platform, app, login, $) {
+define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'angular' ], function(http, modal, cache, platform, app, login, angular) {
 
 	return {
 		__currentUser : undefined,
@@ -26,7 +26,7 @@ define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'jquery' ], funct
 
 			if (this.__currentUser == undefined) {
 				// 检测是否有持久化缓存
-				var c = $.cookie("COOKIE_REMEMBER_TOKEN_" + platform.category());
+				var c = angular.element.cookie("COOKIE_REMEMBER_TOKEN_" + platform.category());
 				if (c != undefined) {
 					// 有记住用户名
 					var mine = this.getMine();
@@ -46,7 +46,7 @@ define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'jquery' ], funct
 		},
 		getMine : function() {
 			if (this.__currentUser == undefined) {
-				var id = $.cookie("COOKIE_REMEMBER_ID_" + platform.category());
+				var id = angular.element.cookie("COOKIE_REMEMBER_ID_" + platform.category());
 				http.load({
 					url : '/api/employee/get',
 					data : {

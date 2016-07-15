@@ -1,4 +1,4 @@
-define([ 'modal', '$', 'http' ], function(modal, $, http) {
+define([ 'modal', 'http' ], function(modal, http) {
 	return {
 		login : function(option) {
 			if (option == undefined) {
@@ -7,8 +7,8 @@ define([ 'modal', '$', 'http' ], function(modal, $, http) {
 			}
 
 			var req = {};
-			req = $.extend(req, option);
-			req = $.extend(req, {
+			req = cui.extend(req, option);
+			req = cui.extend(req, {
 				url : "/api/login/doLogin",
 				server : true
 			});
@@ -25,8 +25,8 @@ define([ 'modal', '$', 'http' ], function(modal, $, http) {
 			}
 
 			var req = {};
-			req = $.extend(req, option);
-			req = $.extend(req, {
+			req = cui.extend(req, option);
+			req = cui.extend(req, {
 				url : "/api/login/validate",
 				server : true
 			});
@@ -37,8 +37,8 @@ define([ 'modal', '$', 'http' ], function(modal, $, http) {
 		 */
 		sendSms : function(option) {
 			var req = {};
-			req = $.extend(req, option);
-			req = $.extend(req, {
+			req = cui.extend(req, option);
+			req = cui.extend(req, {
 				url : "/api/login/sms",
 				server : true
 			});
@@ -55,8 +55,8 @@ define([ 'modal', '$', 'http' ], function(modal, $, http) {
 		},
 		getDefinition : function(option) {
 			var req = {};
-			req = $.extend(req, option);
-			req = $.extend(req, {
+			req = cui.extend(req, option);
+			req = cui.extend(req, {
 				url : "/api/login/definition",
 				server : true
 			});

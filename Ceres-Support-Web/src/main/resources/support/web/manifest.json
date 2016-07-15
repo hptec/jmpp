@@ -6,7 +6,7 @@
 			exports:"angular",
 			deps:[
 				"require-css",
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -46,7 +46,7 @@
 			name:"blueimp-helper",
 			uri:"/api/classpath/query/support/web/bower_components/blueimp-gallery/js/blueimp-helper",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -54,7 +54,7 @@
 			name:"blueimp-gallery",
 			uri:"/api/classpath/query/support/web/bower_components/blueimp-gallery/js/blueimp-gallery",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -62,7 +62,7 @@
 			name:"jquery.blueimp-gallery",
 			uri:"/api/classpath/query/support/web/bower_components/blueimp-gallery/js/jquery.blueimp-gallery",
 			deps:[
-				"$",
+				"jquery",
 				"blueimp-gallery",
 				"css!/api/classpath/query/support/web/bower_components/blueimp-gallery/css/blueimp-gallery"
 			]
@@ -73,7 +73,7 @@
 			uri:"/api/classpath/query/support/web/bower_components/x-editable/dist/bootstrap3-editable/js/bootstrap-editable",
 			deps:[
 				"bootstrap",
-				"$",
+				"jquery",
 				"css!/api/classpath/query/support/web/bower_components/x-editable/dist/bootstrap3-editable/css/bootstrap-editable"
 			]
 			
@@ -111,9 +111,25 @@
 			deps:[
 				"less",
 				"text",
-				
 			]
-			
+		},
+		{
+			name:"moment-local",
+			uri:"/api/classpath/query/support/web/bower_components/moment/locale/zh-cn",
+			deps:[
+				"moment"
+			]
+		},
+		{
+			name:"moment",
+			uri:"/api/classpath/query/support/web/bower_components/moment/moment",
+			deps:[
+			]
+		},
+		{
+			name:"uuid",
+			uri:"/api/classpath/query/support/web/js/Math.uuid",
+			exports:"uuid"
 		},
 		{
 			name:"require-async",
@@ -156,19 +172,8 @@
 	],
 	jsModules_console:[
 		{
-			name:"$",
-			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery",
-			exports:"$",
-			deps:[
-				"/api/classpath/query/support/web/bower_components/string/dist/string.min.js",
-				"$cookie"
-			]
-			
-		},
-		{
 			name:"jquery",
 			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery.min",
-			exports:"$",
 			deps:[
 			]
 			
