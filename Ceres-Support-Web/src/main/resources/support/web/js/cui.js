@@ -170,10 +170,22 @@
 
 										list = list.concat(reqArgs);
 										require(list, function(app) {
-											app.start(function() {
-												cui.__initState = "loaded";
-												require(reqArgs, callFunc);
-											});
+											var startFunc = function() {
+												app.start(function() {
+													cui.__initState = "loaded";
+													require(reqArgs, callFunc);
+												});
+											}
+											if (cui.__config.platform.category == "app") {
+												// APP下要等mui.plusReady之后才开始
+												require("mui").plusReady(function() {
+													startFunc();
+												});
+											} else {
+												// 其他时候不用等待plusReady
+												startFunc();
+											}
+
 										});
 									}
 								});
