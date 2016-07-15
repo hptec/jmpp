@@ -1,6 +1,7 @@
-define([ 'module', '$', 'cache', 'pages' ], function(module, $, cache, pages) {
+define([ 'module', 'cache', 'pages' ,'angular'], function(module, cache, pages,angular) {
 	var moduleConfig = module.config();
-
+	var $=angular.element;
+	
 	var retObj = {
 		onLoginRequired : moduleConfig.onLoginRequired,
 		onHttpTimeout : moduleConfig.onHttpTimeout,

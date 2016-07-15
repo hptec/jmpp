@@ -1,4 +1,4 @@
-define([ '$' ], function($) {
+define([], function() {
 	return {
 		fromObject : function(obj) {
 			obj = obj == undefined ? {} : obj;

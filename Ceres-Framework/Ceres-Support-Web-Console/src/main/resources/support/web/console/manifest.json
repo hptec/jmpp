@@ -10,13 +10,14 @@
 			]
 			
 		}
+		
 	],
 	jsModules_console:[
 		{
 			name:"bootstrap",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/dist/js/bootstrap.min",
 			deps:[
-				"$",
+				"jquery",
 				"bootstrap-transition",
 				"bootstrap-alert",
 				"bootstrap-button",
@@ -35,20 +36,20 @@
 			]
 			
 		},
-		
 		{
 			name:"jquery-sparkline",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/jquery-sparkline/dist/jquery.sparkline.min",
 			deps:[
-				"$"
+				"jquery"
 			]
+			
 		},
 		{
 			name:"bootstrap-popover",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/popover",
 			deps:[
 				"bootstrap-tooltip",
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -56,7 +57,7 @@
 			name:"bootstrap-transition",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/transition",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -64,7 +65,7 @@
 			name:"bootstrap-alert",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/alert",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -72,7 +73,7 @@
 			name:"bootstrap-button",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/button",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -80,7 +81,7 @@
 			name:"bootstrap-carousel",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/carousel",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -88,7 +89,7 @@
 			name:"bootstrap-collapse",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/collapse",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -96,7 +97,7 @@
 			name:"bootstrap-dropdown",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/dropdown",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -104,7 +105,7 @@
 			name:"bootstrap-modal",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/modal",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -112,7 +113,7 @@
 			name:"bootstrap-tab",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/tab",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -120,7 +121,7 @@
 			name:"bootstrap-affix",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/affix",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -128,7 +129,7 @@
 			name:"bootstrap-tooltip",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/tooltip",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -136,7 +137,7 @@
 			name:"bootstrap-scrollspy",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/bootstrap/js/scrollspy",
 			deps:[
-				"$"
+				"jquery"
 			]
 			
 		},
@@ -172,7 +173,7 @@
 			name:"icheck",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/iCheck/icheck",
 			deps:[
-				"jquery",				
+				"jquery",
 				"bootstrap"
 			]
 			
@@ -205,7 +206,7 @@
 			name:"angular-ui-calendar",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/angular-ui-calendar/src/calendar",
 			deps:[
-				"angular",				
+				"angular",
 				"fullcalendar-zh-cn"
 			],
 			angularModule:"ui.calendar"
@@ -214,8 +215,9 @@
 			name:"fullcalendar-zh-cn",
 			uri:"/api/classpath/query/support/web/console/theme/homer/bower_components/fullcalendar/dist/lang/zh-cn",
 			deps:[
-				"fullcalendar"	
+				"fullcalendar"
 			]
+			
 		},
 		{
 			name:"fullcalendar",
@@ -224,31 +226,60 @@
 				"jquery",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/fullcalendar/dist/fullcalendar.min"
 			]
+			
 		},
 		{
 			name:"console-starter",
 			uri:"/api/classpath/query/support/web/console/js/console-starter",
 			deps:[
-				"bootstrap",				
+				"bootstrap",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/font-awesome/css/font-awesome.min"
 			]
+			
 		},
 		{
 			name:"employee",
 			uri:"/api/classpath/query/support/web/console/js/api/employee",
+			deps:["$cookie"],
 			exports:"employee"
 		},
 		{
 			name:"menu",
 			uri:"/api/classpath/query/support/web/console/js/api/menu",
 			exports:"menu"
+		},
+		{
+			name:"directives-queryform",
+			uri:"/api/classpath/query/support/web/console/js/directives/directives-queryform",
+			deps:[
+				"uuid",
+				"directives-daterangepicker"
+			]
+			
+		},
+		{
+			name:"directives-daterangepicker",
+			uri:"/api/classpath/query/support/web/console/bower_components/angular-daterangepicker/js/angular-daterangepicker",
+			deps:[
+				"daterangepicker"
+			],
+			angularModule:"daterangepicker"
+		},
+		{
+			name:"daterangepicker",
+			uri:"/api/classpath/query/support/web/console/bower_components/bootstrap-daterangepicker/daterangepicker",
+			deps:[
+				"bootstrap",
+				"jquery",
+				"moment-local",
+				"css!/api/classpath/query/support/web/console/bower_components/bootstrap-daterangepicker/daterangepicker",
+			]
 		}
-		
 		
 	],
 	pages_console:[
 		{
-			name:"login",			
+			name:"login",
 			uri:"/login",
 			tpl:"/api/classpath/query/support/web/console/theme/homer/views/common_app/login.html",
 			defaultPage:true,
@@ -257,10 +288,11 @@
 				"css!/api/classpath/query/support/web/console/theme/homer/styles/style.css",
 				"directives"
 			]
+			
 		},
 		{
-			name:"workbench",	
-			abstract:true,		
+			name:"workbench",
+			abstract:true,
 			uri:"/workbench",
 			tpl:"/api/classpath/query/support/web/console/theme/homer/views/workbench.html",
 			deps:[

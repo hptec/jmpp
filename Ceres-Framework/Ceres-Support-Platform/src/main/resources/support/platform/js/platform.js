@@ -1,24 +1,24 @@
 
-
-define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, http, modal) {
+define([ 'module', 'cache', 'http', 'modal' ], function(module, cache, http, modal) {
 	var platform = {
-			__initState: undefined,
-			get : get,
-			doSync : doSync,
-			category : function() {
-				return module.config().platform;
-			},
-			ready: ready
-		};
-	function ready(callFunc){
-		if(platform.__initState == 'loaded'){
-			callFunc&&callFunc(platform.get());
+		__initState : undefined,
+		get : get,
+		doSync : doSync,
+		category : function() {
+			return module.config().platform;
+		},
+		ready : ready
+	};
+	function ready(callFunc) {
+		if (platform.__initState == 'loaded') {
+			callFunc && callFunc(platform.get());
 			return;
-		}else if(platform.__initState == 'failed'){
+		} else if (platform.__initState == 'failed') {
 			console.log("platform 加载失败");
 			return;
-		}else{//(platform.__initState == 'loading') || platform.__initState == undefined
-			setTimeout(function(){
+		} else {// (platform.__initState == 'loading') || platform.__initState
+				// == undefined
+			setTimeout(function() {
 				platform.ready(callFunc);
 			}, 200);
 			return;
@@ -67,7 +67,7 @@ define([ 'module', 'cache', '$', 'http', 'modal' ], function(module, cache, $, h
 				});
 				platform.__initState = 'loaded';
 			},
-			onError: function(ctx, cnt){
+			onError : function(ctx, cnt) {
 				platform.__initState = 'failed';
 			}
 		});

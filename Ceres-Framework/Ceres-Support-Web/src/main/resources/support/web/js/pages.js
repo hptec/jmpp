@@ -1,4 +1,4 @@
-define([ 'module', 'app', '$' ], function(module, app, $) {
+define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 	var moduleConfig = module.config();
 
 	// 初始化工作
@@ -60,12 +60,12 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 
 				if (pg != undefined) {
 					if (pg.options != undefined) {
-						options = $.extend(true, options, pg.options);
+						options = cui.extend(true, options, pg.options);
 					}
 				}
 				console.log("窗口参数1", JSON.stringify(options));
 
-				options = $.extend(true, options, context);
+				options = cui.extend(true, options, context);
 				console.log("窗口参数2", JSON.stringify(options));
 
 				if (pg == undefined) {
@@ -96,8 +96,8 @@ define([ 'module', 'app', '$' ], function(module, app, $) {
 				}
 
 			} else {
-				$("cui-pages").find("a").each(function(i, obj) {
-					var o = $(obj);
+				angular.element("cui-pages").find("a").each(function(i, obj) {
+					var o = angular.element(obj);
 					if (o.text() == context.url) {
 						console.log(context, o);
 						o.trigger("click");
