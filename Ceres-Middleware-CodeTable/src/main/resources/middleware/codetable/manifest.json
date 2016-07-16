@@ -1,0 +1,11 @@
+{
+	name:"Ceres-Middleware-CodeTable",
+	desc:"字典表模块",
+	jsModules:[
+		{
+			name:"codetable",
+			uri:"/api/classpath/query/middleware/codetable/js/codetable",
+			exports:"codetable"
+		}
+	]
+}

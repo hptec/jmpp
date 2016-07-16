@@ -12,5 +12,15 @@
   		<artifactId>Ceres-Support-Persistence</artifactId>
   		<version>${ceres.version}</version>
   	</dependency>
+  	<dependency>
+  		<groupId>cn.cerestech</groupId>
+  		<artifactId>Ceres-Support-Web</artifactId>
+  		<version>${ceres.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>cn.cerestech</groupId>
+  		<artifactId>Ceres-Support-Login</artifactId>
+  		<version>${ceres.version}</version>
+  	</dependency>
   </dependencies>
 </project>

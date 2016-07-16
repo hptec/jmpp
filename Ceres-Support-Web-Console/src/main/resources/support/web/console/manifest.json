@@ -254,7 +254,12 @@
 				"uuid",
 				"directives-daterangepicker"
 			]
-			
+		},
+		{
+			name:"directives-codetable",
+			uri:"/api/classpath/query/support/web/console/js/directives/directives-codetable",
+			deps:[
+			]
 		},
 		{
 			name:"directives-daterangepicker",

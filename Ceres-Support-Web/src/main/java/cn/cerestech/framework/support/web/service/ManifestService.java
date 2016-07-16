@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,23 +34,44 @@ public class ManifestService implements PlatformOperator {
 	private Map<PlatformCategory, Map<ModuleType, List<Jsons>>> cacheModules = Maps.newHashMap();
 
 	private List<Jsons> getManifest() {
-		if (cacheManifests.isEmpty()) {
-			log.trace("Manifest 未初始化，进行初始化..");
-			ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-			try {
-				Resource[] resources = resourcePatternResolver.getResources("classpath*:**/manifest.json");
-				for (Resource res : resources) {
-					log.trace(res);
-					String str = Resources.toString(res.getURL(), Charset.defaultCharset());
-					cacheManifests.add(Jsons.from(str));
-				}
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			} finally {
-				log.trace("Manifest 初始化完成.");
+		cacheManifests.clear();
+		log.trace("Manifest 未初始化，进行初始化..");
+		ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+		try {
+			Resource[] resources = resourcePatternResolver.getResources("classpath*:**/manifest.json");
+			for (Resource res : resources) {
+				log.trace(res);
+				String str = Resources.toString(res.getURL(), Charset.defaultCharset());
+				cacheManifests.add(Jsons.from(str));
 			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			log.trace("Manifest 初始化完成.");
 		}
 		return cacheManifests;
+
+		// 每次重新扫描
+		// if (cacheManifests.isEmpty()) {
+		// log.trace("Manifest 未初始化，进行初始化..");
+		// ResourcePatternResolver resourcePatternResolver = new
+		// PathMatchingResourcePatternResolver();
+		// try {
+		// Resource[] resources =
+		// resourcePatternResolver.getResources("classpath*:**/manifest.json");
+		// for (Resource res : resources) {
+		// log.trace(res);
+		// String str = Resources.toString(res.getURL(),
+		// Charset.defaultCharset());
+		// cacheManifests.add(Jsons.from(str));
+		// }
+		// } catch (IOException e) {
+		// throw new RuntimeException(e);
+		// } finally {
+		// log.trace("Manifest 初始化完成.");
+		// }
+		// }
+		// return cacheManifests;
 	}
 
 	public List<Jsons> getModule(ModuleType type) {

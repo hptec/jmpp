@@ -1,0 +1,35 @@
+<div class="inmodal">
+    <div class="color-line"></div>
+    <div class="modal-header text-center">
+        <!--<i class="fa fa-sliders color-success h-modal-icon"></i>-->
+        <h4 class="modal-title" >字典管理</h4>
+    </div>
+    <div class="modal-body">
+    	<div class="row">
+	        <table class="table table-bordered table-striped" cellpadding="1" cellspacing="1">
+	            <thead>
+		            <tr>
+		                <th class="text-center">字典名称</th>
+		                <th class="text-center">选项数</th>
+		                <th class="text-center">操作</th>
+		            </tr>
+	            </thead>
+	            <tbody>
+		            <tr ng-repeat="cate in __codetable.categorys">
+		                <td ng-bind="cate.desc" class="text-center"></td>
+		                <td ng-bind="cate.count" class="text-center"></td>
+		                <td class="text-center" width="20%">
+		                	<button class="btn btn-default btn-xs" uib-popover="排序上移" popover-trigger="mouseenter"><i class="fa fa-arrow-up"></i></button>
+		                	<button class="btn btn-default btn-xs" uib-popover="排序下移" popover-trigger="mouseenter"><i class="fa fa-arrow-down"></i></button>
+		                	<button class="btn btn-default btn-xs" uib-popover="编辑详细内容" popover-trigger="mouseenter"><i class="fa fa-edit"></i></button>
+		                </td>
+		            </tr>
+	            </tbody>
+	        </table>
+    	</div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="cancel()">关闭</button>
+    </div>
+</div>
+

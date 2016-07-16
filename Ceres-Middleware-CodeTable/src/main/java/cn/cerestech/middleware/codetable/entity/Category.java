@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.framework.support.persistence.Owner;
+import cn.cerestech.framework.support.persistence.entity.HashTag;
 
 /**
  * 字典表分类表
@@ -35,8 +36,10 @@ public class Category extends IdEntity {
 	private String desc;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@OrderBy("sortIndex")
+	@OrderBy("sortIndex,id")
 	private List<Code> codes;
+
+	private String hashTag;
 
 	public Owner getOwner() {
 		return owner;
@@ -83,6 +86,14 @@ public class Category extends IdEntity {
 	 */
 	public void reCount() {
 		setCount(codes == null ? 0 : codes.size());
+	}
+
+	public String getHashTag() {
+		return hashTag;
+	}
+
+	public void setHashTag(String hashTag) {
+		this.hashTag = hashTag;
 	}
 
 }
