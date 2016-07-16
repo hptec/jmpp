@@ -28,6 +28,9 @@ public class Owner {
 		this.setType(type);
 	}
 
+	public Owner() {
+	}
+
 	public String getType() {
 		return type;
 	}
