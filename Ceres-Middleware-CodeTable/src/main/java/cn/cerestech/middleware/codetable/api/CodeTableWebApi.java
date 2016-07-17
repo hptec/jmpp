@@ -10,16 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.beust.jcommander.internal.Lists;
-import com.google.common.base.Strings;
 
+import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
-import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.framework.support.web.web.WebApi;
 import cn.cerestech.middleware.codetable.entity.Category;
 import cn.cerestech.middleware.codetable.entity.Code;
-import cn.cerestech.middleware.codetable.enums.ErrorCodes;
 import cn.cerestech.middleware.codetable.service.CodeTableService;
 
 @RestController
@@ -37,13 +35,8 @@ public class CodeTableWebApi extends WebApi implements UserSessionOperator {
 	 */
 	@RequestMapping("/category/list")
 	@LoginRequired
-	public void categoryList(@RequestParam("ownerType") String ownerType) {
-		if (Strings.isNullOrEmpty(ownerType)) {
-			zipOut(Result.error(ErrorCodes.NOT_FOUND));
-			return;
-		}
-
-		List<Category> cateList = codeTableService.list(new Owner(ownerType, getUserId()));
+	public void categoryList() {
+		List<Category> cateList = codeTableService.list();
 		cateList.forEach(c -> {
 			List<Code> codes = c.getCodes() == null ? Lists.newArrayList() : c.getCodes();
 			for (Code code : codes) {
@@ -51,6 +44,21 @@ public class CodeTableWebApi extends WebApi implements UserSessionOperator {
 			}
 		});
 		zipOut(Result.success(cateList));
+
+	}
+
+	/**
+	 * 保存code
+	 */
+	@RequestMapping("/code/update")
+	@LoginRequired
+	public void codeUpdate(@RequestParam("jsonStr") String jsonStr) {
+		Code code = Jsons.from(jsonStr).to(Code.class);
+		Result<Code> ret = codeTableService.saveCode(code);
+		if (ret.isSuccess()) {
+			ret.getObject().setCategory(null);
+		}
+		zipOut(ret);
 
 	}
 

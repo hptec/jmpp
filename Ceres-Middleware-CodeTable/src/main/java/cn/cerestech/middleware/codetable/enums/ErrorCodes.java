@@ -4,7 +4,7 @@ import cn.cerestech.framework.core.enums.DescribableEnum;
 
 public enum ErrorCodes implements DescribableEnum {
 
-	NOT_FOUND("NOT_FOUND", "字典表不存在"), //
+	NOT_FOUND("NOT_FOUND", "找不到对应的字典"), //
 
 	;
 	private String key, desc;
