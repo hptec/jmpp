@@ -12,10 +12,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.enums.DescribableEnum;
+import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.middleware.codetable.dao.CategoryDao;
 import cn.cerestech.middleware.codetable.entity.Category;
 import cn.cerestech.middleware.codetable.entity.Code;
+import cn.cerestech.middleware.codetable.enums.ErrorCodes;
 import cn.cerestech.middleware.codetable.provider.CodeTableProvider;
 
 @Service
@@ -27,8 +29,8 @@ public class CodeTableService {
 	@Autowired
 	CodeTableProvider provider;
 
-	public Category get(Owner owner, DescribableEnum category, DescribableEnum[] defaultValues) {
-		return get(owner, category, Arrays.asList(defaultValues == null ? new DescribableEnum[0] : defaultValues));
+	public Category get(DescribableEnum category, DescribableEnum[] defaultValues) {
+		return get(category, Arrays.asList(defaultValues == null ? new DescribableEnum[0] : defaultValues));
 	}
 
 	/**
@@ -38,7 +40,8 @@ public class CodeTableService {
 	 * @param category
 	 * @return
 	 */
-	public Category get(Owner owner, DescribableEnum category, Collection<DescribableEnum> defaultValues) {
+	public Category get(DescribableEnum category, Collection<DescribableEnum> defaultValues) {
+		Owner owner = provider.resolveOwner();
 		if (owner == null || category == null) {
 			return null;
 		}
@@ -85,8 +88,8 @@ public class CodeTableService {
 
 	}
 
-	public Category get(Owner owner, DescribableEnum category) {
-		return get(owner, category, Lists.newArrayList());
+	public Category get(DescribableEnum category) {
+		return get(category, Lists.newArrayList());
 	}
 
 	/**
@@ -96,7 +99,12 @@ public class CodeTableService {
 	 * @param defaultValues
 	 * @return
 	 */
-	public List<Category> list(Owner owner) {
+	public List<Category> list() {
+		Owner owner = provider.resolveOwner();
+		if (owner == null) {
+			return Lists.newArrayList();
+		}
+
 		List<Category> cateList = categoryDao.findByOwner(owner);
 
 		// 补充完善
@@ -122,11 +130,12 @@ public class CodeTableService {
 						code.setCategory(c);
 						code.setDesc(cde.desc());
 						code.setSortIndex(999);
-						code.setValue(de.key());
+						code.setValue(cde.key());
 						c.getCodes().add(code);
 					}
 
 					// 添加到集合中
+					c.reCount();
 					cateToSave.add(c);
 				}
 			}
@@ -139,6 +148,51 @@ public class CodeTableService {
 			categoryDao.save(cateToSave);
 			return categoryDao.findByOwner(owner);
 		}
+	}
 
+	/**
+	 * 添加或更新code
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public Result<Code> saveCode(Code code) {
+		if (code == null) {
+			return Result.error(ErrorCodes.NOT_FOUND);
+		}
+		Category category = code.getCategory();
+		if (category == null) {
+			return Result.error(ErrorCodes.NOT_FOUND);
+		}
+		category = categoryDao.findOne(category.getId());
+		if (category == null) {
+			return Result.error(ErrorCodes.NOT_FOUND);
+		}
+		if (code.getId() != null) {
+			// 更新模式
+			Code codeInDb = category.getCodes().stream().filter(c -> c.getId().equals(code.getId())).findFirst()
+					.orElse(null);
+			if (codeInDb != null) {
+				codeInDb.setValue(code.getValue());
+				codeInDb.setDesc(code.getDesc());
+				categoryDao.save(category);
+				return Result.success(codeInDb);
+			} else {
+				return Result.success();
+			}
+		} else {
+			// 新增模式
+			Code codeInDb = new Code();
+			codeInDb.setCategory(category);
+			codeInDb.setDesc(code.getDesc());
+			codeInDb.setValue(code.getValue());
+			codeInDb.setSortIndex(999);
+			if (category.getCodes() == null) {
+				category.setCodes(Lists.newArrayList());
+			}
+			category.getCodes().add(codeInDb);
+			categoryDao.save(category);
+			return Result.success(codeInDb);
+		}
 	}
 }

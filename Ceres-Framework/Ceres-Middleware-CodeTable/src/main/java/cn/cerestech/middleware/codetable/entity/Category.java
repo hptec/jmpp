@@ -39,8 +39,6 @@ public class Category extends IdEntity {
 	@OrderBy("sortIndex,id")
 	private List<Code> codes;
 
-	private String hashTag;
-
 	public Owner getOwner() {
 		return owner;
 	}
@@ -86,14 +84,6 @@ public class Category extends IdEntity {
 	 */
 	public void reCount() {
 		setCount(codes == null ? 0 : codes.size());
-	}
-
-	public String getHashTag() {
-		return hashTag;
-	}
-
-	public void setHashTag(String hashTag) {
-		this.hashTag = hashTag;
 	}
 
 }
