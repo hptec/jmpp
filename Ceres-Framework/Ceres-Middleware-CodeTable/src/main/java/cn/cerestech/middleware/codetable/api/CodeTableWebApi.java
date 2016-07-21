@@ -62,4 +62,14 @@ public class CodeTableWebApi extends WebApi implements UserSessionOperator {
 
 	}
 
+	/**
+	 * 删除code
+	 */
+	@RequestMapping("/code/remove")
+	@LoginRequired
+	public void codeRemove(@RequestParam("categoryId") Long cateogryId, @RequestParam("codeId") Long codeId) {
+		codeTableService.removeCode(cateogryId, codeId);
+		zipOut(Result.success());
+	}
+
 }

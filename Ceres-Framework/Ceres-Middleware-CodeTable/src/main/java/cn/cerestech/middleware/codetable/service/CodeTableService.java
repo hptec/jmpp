@@ -191,8 +191,52 @@ public class CodeTableService {
 				category.setCodes(Lists.newArrayList());
 			}
 			category.getCodes().add(codeInDb);
+			category.reCount();
 			categoryDao.save(category);
-			return Result.success(codeInDb);
+
+			return Result.success(category.getCodes().get(category.getCodes().size() - 1));
 		}
+	}
+
+	/**
+	 * 删除指定的代码，必须是属于自己的才能删除
+	 * 
+	 * @param id
+	 */
+	public void removeCode(Long categoryId, Long codeId) {
+		if (categoryId == null || codeId == null) {
+			return;
+		}
+		if (!isCategoryOwned(categoryId)) {
+			// 不是自己的不能删除
+			return;
+		}
+
+		Category cate = categoryDao.findOne(categoryId);
+		for (int i = 0; i < cate.getCodes().size(); i++) {
+			Code code = cate.getCodes().get(i);
+			if (code.getId().equals(codeId)) {
+				code.setCategory(null);
+				cate.getCodes().remove(i);
+				cate.reCount();
+				categoryDao.save(cate);
+				return;
+			}
+		}
+
+	}
+
+	/**
+	 * 判断用户是否拥有该分类
+	 * 
+	 * @param categoryId
+	 * @return
+	 */
+	public Boolean isCategoryOwned(Long categoryId) {
+		Category cate = categoryDao.findOne(categoryId);
+		if (cate == null) {
+			return Boolean.FALSE;
+		}
+		return cate.getOwner().equals(provider.resolveOwner());
 	}
 }

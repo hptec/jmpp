@@ -19,6 +19,33 @@ define([ 'app', 'codetable', 'modal', 'angular' ], function(app, codetable, moda
 							$scope.__codetable.backToList = function() {
 								$scope.__codetable.category = undefined;
 							}
+							$scope.__codetable.removeCode = function(code) {
+								if (confirm("删除该选项后将不可恢复，是否继续?")) {
+									// 删除前关闭修改对话框
+									$scope.__codetable.cancelSaveCode();
+
+									codetable.removeCode({
+										codeId : code.id,
+										categoryId : $scope.__codetable.category.id
+									}, {
+										success : function(ret) {
+											for (i in $scope.__codetable.category.codes) {
+												var c = $scope.__codetable.category.codes[i];
+												if (c.id == code.id) {
+													$scope.__codetable.category.codes.splice(i, 1);
+												}
+											}
+											$scope.$apply();
+										}
+									});
+								}
+							}
+							$scope.__codetable.addCode = function() {
+								$scope.__codetable.code = {
+									value : "NEWCODE",
+									desc : "新建选项"
+								};
+							}
 							$scope.__codetable.editCode = function(code) {
 								$scope.__codetable.code = {};
 								angular.extend($scope.__codetable.code, code);
@@ -48,12 +75,21 @@ define([ 'app', 'codetable', 'modal', 'angular' ], function(app, codetable, moda
 										success : function(ret) {
 											if (ret.isSuccess) {
 												// 更新原始数据
-												for (i in $scope.__codetable.category.codes) {
-													var c = $scope.__codetable.category.codes[i];
-													if (c.id == ret.object.id) {
-														c.value = ret.object.value;
-														c.desc = ret.object.desc;
+												if (data.id != undefined) {
+													// 编辑
+													for (i in $scope.__codetable.category.codes) {
+														var c = $scope.__codetable.category.codes[i];
+														if (c.id == ret.object.id) {
+															c.value = ret.object.value;
+															c.desc = ret.object.desc;
+														}
 													}
+												} else {
+													// 新增
+													if ($scope.__codetable.category.codes == undefined) {
+														$scope.__codetable.category.codes = new Array();
+													}
+													$scope.__codetable.category.codes.push(ret.object);
 												}
 
 												$scope.__codetable.code = undefined;

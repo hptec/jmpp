@@ -15,6 +15,11 @@ define([ 'http' ], function(http) {
 				}
 				http.load(opt);
 			}
+		},
+		removeCode : function(data, opt) {
+			opt.url = "/api/codetable/code/remove";
+			opt.data = data;
+			http.load(opt);
 		}
 	}
 });
