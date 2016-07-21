@@ -18,7 +18,7 @@
 	            <tbody>
 		            <tr ng-repeat="cate in __codetable.categorys">
 		                <td ng-bind="cate.desc" class="text-center"></td>
-		                <td ng-bind="cate.count" class="text-center"></td>
+		                <td ng-bind="cate.codes.length" class="text-center"></td>
 		                <td class="text-center" width="20%">
 		                	<!-- <button class="btn btn-default btn-xs" uib-popover="排序上移" popover-trigger="mouseenter"><i class="fa fa-arrow-up"></i></button>
 		                	<button class="btn btn-default btn-xs" uib-popover="排序下移" popover-trigger="mouseenter"><i class="fa fa-arrow-down"></i></button> -->
@@ -30,7 +30,7 @@
     	</div>
     	<div class="row" ng-show="__codetable.category !=undefined">
     		<div class="col-md-12">
-    			<button class="btn btn-default btn-sm pull-right"><i class="fa fa-fw fa-plus"></i> 添加选项</button>
+    			<button class="btn btn-default btn-sm pull-right" ng-click="__codetable.addCode()"><i class="fa fa-fw fa-plus"></i> 添加选项</button>
     		</div>
     		<div class="col-md-12">
     			&nbsp;
@@ -74,6 +74,7 @@
 			                	<button class="btn btn-default btn-xs" uib-popover="排序上移" popover-trigger="mouseenter"><i class="fa fa-arrow-up"></i></button>
 			                	<button class="btn btn-default btn-xs" uib-popover="排序下移" popover-trigger="mouseenter"><i class="fa fa-arrow-down"></i></button>
 			                	<button class="btn btn-default btn-xs" ng-click="__codetable.editCode(code)"><i class="fa fa-edit"></i></button>
+			                	<button class="btn btn-default btn-xs" ng-click="__codetable.removeCode(code)"><i class="fa fa-trash"></i></button>
 			                </td>
 			            </tr>
 		            </tbody>
