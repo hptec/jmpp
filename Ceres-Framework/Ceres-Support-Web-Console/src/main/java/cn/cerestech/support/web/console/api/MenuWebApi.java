@@ -28,7 +28,23 @@ public class MenuWebApi extends WebApi implements UserSessionOperator {
 	public void mine() {
 		Long eid = getUserId();
 		List<SysMenu> menus = menuService.getMyMenus();
+		menus.forEach(m -> {
+			if (m.getSubmenus() != null && !m.getSubmenus().isEmpty()) {
+				clearParent(m.getSubmenus());
+			}
+		});
 		zipOut(menus);
 	}
 
+	private void clearParent(List<SysMenu> menus) {
+		if (menus == null || menus.isEmpty()) {
+			return;
+		}
+		menus.forEach(m -> {
+			m.setParent(null);
+			if (m.getSubmenus() != null && !m.getSubmenus().isEmpty()) {
+				clearParent(m.getSubmenus());
+			}
+		});
+	}
 }

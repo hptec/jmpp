@@ -5,8 +5,8 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 		return {
 			restrict : "E",
 			controller : [ "$scope", "$state", function($scope, $state) {
-				$scope.go = function(url) {
-					$state.go(url);
+				$scope.go = function(url, data) {
+					$state.go(url, data);
 				}
 			} ],
 			link : function(scope, element, attrs, controller) {
@@ -16,8 +16,8 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 					for (i in pgs) {
 						var pg = pgs[i];
 						element.append("<a style='display:none;' >" + pg.name + "</a>");
-						element.bind("click", function(e) {
-							scope.go(e.target.text);
+						element.bind("click", function(e, data) {
+							scope.go(e.target.text, data);
 						});
 					}
 				}

@@ -88,6 +88,10 @@
 			angularModule:"xeditable"
 		},
 		{
+			name:"date-format",
+			uri:"/api/classpath/query/support/web/bower_components/jquery-dateFormat/dist/dateFormat.min"
+		},
+		{
 			name:"md5",
 			uri:"/api/classpath/query/support/web/bower_components/js-md5/js/md5.min",
 			exports:"md5"
@@ -111,7 +115,9 @@
 			deps:[
 				"less",
 				"text",
+				
 			]
+			
 		},
 		{
 			name:"moment",
@@ -156,6 +162,10 @@
 			exports:"enums"
 		},
 		{
+			name:"directives-enums",
+			uri:"/api/classpath/query/support/web/js/directives-enums"
+		},
+		{
 			name:"modal",
 			uri:"/api/classpath/query/support/web/js/modal",
 			exports:"modal"
@@ -167,6 +177,7 @@
 			name:"jquery",
 			uri:"/api/classpath/query/support/web/bower_components/jquery/dist/jquery.min",
 			deps:[
+				"date-format"
 			]
 			
 		},

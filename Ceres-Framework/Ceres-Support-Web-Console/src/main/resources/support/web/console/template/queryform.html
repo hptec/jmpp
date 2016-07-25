@@ -1,4 +1,54 @@
-<div class="row">
+
+<div class="hpanel">
+	<div class="panel-heading hbuilt ">
+		<div class="row" >
+			<div class="col-sm-10" term-box>
+			
+			</div>
+			<div class="col-sm-2" >
+				<button class="btn btn-default btn-block " ng-click="search()"><i class="fa fa-fw fa-search"></i>搜索</button>
+			</div>
+		</div>
+	</div>
+	<div class="panel-body" style="display: block;">
+		<div class="row">
+			<div class="table-responsive col-md-12">
+				<table class="table table-bordered table-striped" cellpadding="1" cellspacing="1">
+					<thead>
+						<tr>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="panel-footer" style="display: block;">
+		<div class="row">
+			<div class="col-md-8">
+				总共查询到数据0条，每页显示
+				<select >
+					<option>5</option>
+					<option>10</option>
+					<option>15</option>
+					<option>35</option>
+					<option>50</option>
+					<option>75</option>
+					<option>100</option>
+				</select>条
+			</div>
+			<div class="col-md-4 pagination-example">
+				<uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <div class="row">
 	<div class="col-md-12">
 		<div class="box box-primary">
 			<div class="box-header with-border">
@@ -32,12 +82,12 @@
 					</tbody>
 				</table>
 			</div>
-			<!-- /.box-body -->
+			/.box-body
 			<div class="overlay hide">
 			  <i class="fa fa-refresh fa-spin"></i>
 			</div>
 		</div>
-		<!-- /.box -->
+		/.box
 	</div>
 </div>
-<div ceres-select-menu-callback="onMenuSelected"></div>
+<div ceres-select-menu-callback="onMenuSelected"></div> -->

@@ -79,6 +79,8 @@
     <module>Ceres-Support-Storage-WebApi</module>
     <module>Ceres-Middleware-Baidu-Map</module>
     <module>Ceres-Middleware-CodeTable</module>
+    
+    <module>Ceres-Middleware-CodeTable-Console</module>
   </modules>
   <version>3.0.3</version>
   <dependencies>

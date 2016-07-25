@@ -1,14 +1,11 @@
 {
 	name:"Ceres-Support-Web-Console",
 	desc:"平台后台管理基本模块",
-	menus1:[
+	menus:[
 		{
 			key:"TOP_SYSTEM_CONFIGURATION",
 			caption:"平台设置",
-			menus:[
-				
-			]
-			
+			icon:"fa fa-cogs"
 		}
 		
 	],

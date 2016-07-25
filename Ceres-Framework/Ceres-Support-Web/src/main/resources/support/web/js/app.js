@@ -9,7 +9,7 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 			angularModule.push(m.angularModule);
 		}
 	}
-	
+
 	console.log("angularModule:", angularModule);
 	var app = angular.module('app', angularModule);
 
@@ -31,7 +31,8 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 			var opt = {
 				url : pg.uri,
 				templateUrl : pg.tpl,
-				data : pg.data
+				data : pg.data,
+				params : pg.params
 			}
 			if (pg.abstract != undefined && pg.abstract == true) {
 				opt.abstract = true;
@@ -59,6 +60,9 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 			}
 			console.log("页面:" + pg.name, opt);
 			$stateProvider.state(pg.name == undefined ? pg.uri : pg.name, opt);
+			if (opt.params != undefined) {
+				console.log("报告，发现params", opt);
+			}
 
 		}
 

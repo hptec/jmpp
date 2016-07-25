@@ -2,8 +2,6 @@ package cn.cerestech.middleware.codetable.api;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,14 +17,27 @@ import cn.cerestech.framework.support.web.web.WebApi;
 import cn.cerestech.middleware.codetable.entity.Category;
 import cn.cerestech.middleware.codetable.entity.Code;
 import cn.cerestech.middleware.codetable.service.CodeTableService;
+import cn.cerestech.middleware.codetable.wrapper.CodeTableWrapper;
 
 @RestController
 @RequestMapping("api/codetable")
 public class CodeTableWebApi extends WebApi implements UserSessionOperator {
 
-	private Logger log = LogManager.getLogger();
 	@Autowired
 	CodeTableService codeTableService;
+
+	/**
+	 * 获得当前的字典表数据
+	 * 
+	 * @param hashTag
+	 */
+	@RequestMapping("/data.js")
+	@LoginRequired
+	public void data() {
+		List<Category> cateList = codeTableService.list();
+
+		zipOutRequireJson(new CodeTableWrapper(cateList).doWrap());
+	}
 
 	/**
 	 * 获得当前可用的字典表项目列表

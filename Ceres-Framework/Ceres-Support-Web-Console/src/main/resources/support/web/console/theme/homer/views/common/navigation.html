@@ -33,12 +33,20 @@
     </div>
 
     <ul side-navigation class="nav" id="side-menu">
-        <li ui-sref-active="active" ng-repeat="topMenu in menus" >
-            <a ng-click="jump(topMenu.uri)" ><i ng-class="topMenu.icon"></i> <span class="nav-label" ng-bind="topMenu.caption"></span> <span class="fa arrow" ng-if="topMenu.submenus.length > 0"></span> </a>
+        <li ng-repeat="topMenu in menus" >
+            <a ng-click="topMenu.submenus.length > 0?undefined:jump(topMenu.uri)" style="font-size:14px;" >
+            	<i ng-class="topMenu.icon"></i> 
+            	<span class="nav-label" ng-bind="topMenu.caption"></span> 
+            	<span class="fa arrow" ng-if="topMenu.submenus.length > 0"></span> 
+            </a>
             
-            <ul class="nav nav-second-level" ng-class="{in: $state.includes('interface')}" ng-if="topMenu.submenus.length > 0">
-                <li ui-sref-active="active" ng-repeat="secondMenu in topMenu.submenus track by $index">
-                	<a ui-sref="interface.panels" ng-bind="secondMenu.caption"></a>
+            <ul class="nav nav-second-level"  ng-if="topMenu.submenus.length > 0">
+                <li ng-repeat="secondMenu in topMenu.submenus track by $index">
+                	<a ng-click="jump(secondMenu.uri)" style="font-size:14px;">
+                		<i ng-class="secondMenu.icon"></i> 
+		            	<span class="nav-label" ng-bind="secondMenu.caption"></span> 
+		            	<span class="fa arrow" ng-if="secondMenu.submenus.length > 0"></span> 
+                	</a>
                 </li>
             </ul>
         </li>

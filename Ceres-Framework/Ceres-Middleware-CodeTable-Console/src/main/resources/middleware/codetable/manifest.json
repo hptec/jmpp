@@ -1,0 +1,41 @@
+{
+	name:"Ceres-Middleware-CodeTable-Console",
+	desc:"字典表后台管理模块",
+	menus:[
+		{
+			key:"SYS_CODETABLE",
+			caption:"字典设置",
+			icon:"fa fa-book",
+			parent:"TOP_SYSTEM_CONFIGURATION",
+			uri:"workbench.middleware_codetable"
+		}
+	],
+	pages:[
+		{
+			name:"workbench.middleware_codetable",
+			uri:"/middleware/codetable",
+			tpl:"/api/classpath/query/middleware/codetable/tpl/list.html",
+			deps:[
+				"page-codetable"
+			]
+			
+		}
+		
+	],
+	jsModules:[
+		{
+			name:"page-codetable",
+			uri:"/api/classpath/query/middleware/codetable/js/page-codetable",
+			exports:"codetable"
+		},
+		{
+			name:"directives-codetable",
+			uri:"/api/classpath/query/middleware/codetable/directives/directives-codetable"
+		},
+		{
+			name:"codetable-data",
+			uri:"/api/codetable/data",
+			export:"codetableData"
+		}
+	]
+}
