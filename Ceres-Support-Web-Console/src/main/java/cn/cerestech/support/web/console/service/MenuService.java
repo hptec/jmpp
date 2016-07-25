@@ -3,12 +3,13 @@ package cn.cerestech.support.web.console.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.web.enums.ModuleType;
@@ -28,22 +29,23 @@ public class MenuService {
 	// 记录当前platform是否已经同步过菜单
 	private static Map<Long, Boolean> platformMenuSynchronizedPool = Maps.newHashMap();
 
-	/**
-	 * 获取Manifest中配置的所有菜单
-	 * 
-	 * @return
-	 */
-	public Map<String, SysMenu> getFlatDefaultMenus() {
-		Map<String, SysMenu> buffer = Maps.newHashMap();
+	public List<Jsons> getFlatManifestMenus() {
+		Set<String> keyPool = Sets.newHashSet();
 
-		manifestService.getModule(ModuleType.MENU).stream().map(json -> json.to(SysMenu.class)).forEach(m -> {
-			if (buffer.containsKey(m.getKey())) {
-				throw new IllegalArgumentException("Menu conflict: " + Jsons.from(m).toPrettyJson());
-			} else {
-				buffer.put(m.getKey(), m);
+		List<Jsons> menus = manifestService.getModule(ModuleType.MENU);
+		menus.stream().forEach(json -> {
+			if (!json.get("key").isNull()) {
+				String uuid = json.get("key").asString();
+				if (keyPool.contains(uuid)) {
+					throw new IllegalArgumentException("Menu conflict: " + json.toPrettyJson());
+				} else {
+					keyPool.add(uuid);
+				}
+
 			}
+
 		});
-		return buffer;
+		return menus;
 	}
 
 	/**
@@ -53,7 +55,7 @@ public class MenuService {
 	 */
 	public List<SysMenu> getMyMenus() {
 		doSynchronizedIfNecessary();
-		return sysMenuDao.findAll();
+		return sysMenuDao.findByParentIsNull();
 	}
 
 	/**
@@ -68,26 +70,71 @@ public class MenuService {
 			return;
 		}
 
-		// 同步菜单
-		Map<String, SysMenu> flatMenus = getFlatDefaultMenus();
-		Set<String> allKeyInManifest = flatMenus.values().stream().map(m -> m.getKey()).distinct()
-				.collect(Collectors.toSet());
+		// 获取Manifest中配置的菜单
+		List<Jsons> manifestJsons = getFlatManifestMenus();
+		manifestJsons.forEach(json -> {
+			// 添加新的菜单进入数据库
+			String uuid = json.get("key").asString();
+			SysMenu menu = sysMenuDao.findByUuid(uuid);
+			if (menu == null) {
+				// 数据库中不存在，加入数据库
+				// 转化json -> SysMenu
+				SysMenu me = new SysMenu();
+				me.setCaption(json.get("caption").isNull() ? null : json.get("caption").asString());
+				me.setIcon(json.get("icon").isNull() ? null : json.get("icon").asString());
+				if (!json.get("parent").isNull()) {
+					SysMenu parent = sysMenuDao.findByUuid(json.get("parent").asString());
+					if (parent != null) {
+						me.setParent(parent);
+						if (parent.getSubmenus() == null) {
+							parent.setSubmenus(Lists.newArrayList());
+						}
+						parent.getSubmenus().add(me);
+					}
+				}
+				me.setSortIndex(999);
+				me.setUuid(json.get("key").asString());
+				me.setUri(json.get("uri").asString(null));
 
-		List<SysMenu> allInDb = sysMenuDao.findAll();
-		Set<String> allKeyInDb = allInDb.stream().map(m -> m.getKey()).distinct().collect(Collectors.toSet());
+				sysMenuDao.save(me);
+			}
+		});
 
-		// 要删除的menu
-		Set<String> keyToDelete = allKeyInDb.stream().filter(k -> !allKeyInManifest.contains(k))
-				.collect(Collectors.toSet());
-		sysMenuDao.deleteByKeyIn(keyToDelete);
+		// 删除多余的菜单
+		Set<String> keySet = Sets.newHashSet();
+		manifestJsons.forEach(json -> {
+			keySet.add(json.get("key").asString());
+		});
 
-		// 要添加的Menu
-		List<SysMenu> menuToAdd = allKeyInManifest.stream().filter(k -> !allKeyInDb.contains(k))
-				.map(k -> flatMenus.get(k)).collect(Collectors.toList());
+		List<SysMenu> menusInDb = sysMenuDao.findAll();
+		menusInDb.forEach(m -> {
+			if (!keySet.contains(m.getUuid())) {
+				sysMenuDao.delete(m);
+			}
+		});
 
-		sysMenuDao.save(menuToAdd);
-
-		platformMenuSynchronizedPool.put(1L, Boolean.TRUE);
+		// Set<String> allKeyInManifest = flatMenus.values().stream().map(m ->
+		// m.getKey()).distinct()
+		// .collect(Collectors.toSet());
+		//
+		// List<SysMenu> allInDb = sysMenuDao.findAll();
+		// Set<String> allKeyInDb = allInDb.stream().map(m ->
+		// m.getKey()).distinct().collect(Collectors.toSet());
+		//
+		// // 要删除的menu
+		// Set<String> keyToDelete = allKeyInDb.stream().filter(k ->
+		// !allKeyInManifest.contains(k))
+		// .collect(Collectors.toSet());
+		// sysMenuDao.deleteByKeyIn(keyToDelete);
+		//
+		// // 要添加的Menu
+		// List<SysMenu> menuToAdd = allKeyInManifest.stream().filter(k ->
+		// !allKeyInDb.contains(k))
+		// .map(k -> flatMenus.get(k)).collect(Collectors.toList());
+		//
+		// sysMenuDao.save(menuToAdd);
+		//
+		// platformMenuSynchronizedPool.put(1L, Boolean.TRUE);
 	}
 
 }

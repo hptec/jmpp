@@ -61,6 +61,7 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 				if (pg != undefined) {
 					if (pg.options != undefined) {
 						options = cui.extend(true, options, pg.options);
+						options = cui.extend(true, options.extras, pg.options.data);
 					}
 				}
 				console.log("窗口参数1", JSON.stringify(options));
@@ -100,7 +101,7 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 					var o = angular.element(obj);
 					if (o.text() == context.url) {
 						console.log(context, o);
-						o.trigger("click");
+						o.trigger("click", context.data);
 						return;
 					}
 				})

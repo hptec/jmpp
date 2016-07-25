@@ -107,7 +107,11 @@
 								initModule.push(jsModule.name);
 							}
 
-							// initModule.push(jsModule.name);
+							// 只要是queryform( queryform- 开头)的都预先加载
+							if (jsModule.name.substring(0, 10) == "queryform-") {
+								initModule.push(jsModule.name);
+							}
+
 						}
 
 						// 根据jsModule设置requriejs的配置

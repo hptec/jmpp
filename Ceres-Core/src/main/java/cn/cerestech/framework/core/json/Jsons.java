@@ -212,7 +212,7 @@ public class Jsons {
 	}
 
 	public String asString(String defaultValue) {
-		return root == null ? defaultValue : root.getAsString();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsString();
 	}
 
 	public BigDecimal asBigDecimal() {
@@ -220,7 +220,7 @@ public class Jsons {
 	}
 
 	public BigDecimal asBigDecimal(BigDecimal defaultValue) {
-		return root == null ? defaultValue : root.getAsBigDecimal();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsBigDecimal();
 	}
 
 	public BigInteger asBigInteger() {
@@ -228,7 +228,7 @@ public class Jsons {
 	}
 
 	public BigInteger asBigInteger(BigInteger defaultValue) {
-		return root == null ? defaultValue : root.getAsBigInteger();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsBigInteger();
 	}
 
 	public Boolean asBoolean() {
@@ -236,7 +236,7 @@ public class Jsons {
 	}
 
 	public Boolean asBoolean(Boolean defaultValue) {
-		return root == null ? defaultValue : root.getAsBoolean();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsBoolean();
 	}
 
 	public Byte asByte() {
@@ -244,7 +244,7 @@ public class Jsons {
 	}
 
 	public Byte asByte(Byte defaultValue) {
-		return root == null ? defaultValue : root.getAsByte();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsByte();
 	}
 
 	public Character asCharacter() {
@@ -252,7 +252,7 @@ public class Jsons {
 	}
 
 	public Character asCharacter(Character defaultValue) {
-		return root == null ? defaultValue : root.getAsCharacter();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsCharacter();
 	}
 
 	public Double asDouble() {
@@ -260,7 +260,7 @@ public class Jsons {
 	}
 
 	public Double asDouble(Double defaultValue) {
-		return root == null ? defaultValue : root.getAsDouble();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsDouble();
 	}
 
 	public Float asFloat() {
@@ -268,7 +268,7 @@ public class Jsons {
 	}
 
 	public Float asFloat(Float defaultValue) {
-		return root == null ? defaultValue : root.getAsFloat();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsFloat();
 	}
 
 	public Integer asInt() {
@@ -276,7 +276,7 @@ public class Jsons {
 	}
 
 	public Integer asInt(Integer defaultValue) {
-		return root == null ? defaultValue : root.getAsInt();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsInt();
 	}
 
 	public Long asLong() {
@@ -284,7 +284,7 @@ public class Jsons {
 	}
 
 	public Long asLong(Long defaultValue) {
-		return root == null ? defaultValue : root.getAsLong();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsLong();
 	}
 
 	public Number asNumber() {
@@ -292,7 +292,7 @@ public class Jsons {
 	}
 
 	public Number asNumber(Number defaultValue) {
-		return root == null ? defaultValue : root.getAsNumber();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsNumber();
 	}
 
 	public List<Jsons> asList() {
@@ -366,9 +366,4 @@ public class Jsons {
 		return this;
 	}
 
-	public static void main(String[] argus) {
-		String json = "{\"pageNumber\":0,\"pageSize\":8,\"numberOfElements\":0,\"totalElements\":0,\"totalPages\":0,\"data\":[]}";
-		Jsons j = Jsons.from(json);
-		System.out.println(Jsons.from(j).toJson());
-	}
 }

@@ -7,7 +7,6 @@ public enum ModuleType implements DescribableEnum {
 	MENU("menus", "菜单"), //
 	STARTER("starter", "启动器"), //
 	PAGES("pages", "页面"),//
-	QUERYFORM("queryform","查询表单"),//
 	
 
 	;

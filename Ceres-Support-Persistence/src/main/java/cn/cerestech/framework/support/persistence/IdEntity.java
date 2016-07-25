@@ -1,5 +1,6 @@
 package cn.cerestech.framework.support.persistence;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -19,9 +20,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  * @author harryhe
  *
  */
+@SuppressWarnings("serial")
 @MappedSuperclass
 @EntityListeners({ AuditingEntityListener.class, CeresEntityListener.class })
-public abstract class IdEntity {
+public abstract class IdEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
