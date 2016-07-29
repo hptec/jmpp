@@ -3,16 +3,26 @@ package cn.cerestech.framework.support.persistence.search;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import com.google.common.collect.Lists;
+
+import cn.cerestech.framework.core.json.JsonWrapper;
 
 public abstract class AbstractCriteria<T> implements Criteria<T> {
 
 	protected Paginated<T> page;
+
+	protected JsonWrapper<T> wrapper;
 
 	public void doSearch(JpaSpecificationExecutor<T> executer) {
 		if (page == null) {
@@ -55,14 +65,27 @@ public abstract class AbstractCriteria<T> implements Criteria<T> {
 		return ret;
 	}
 
-	/**
-	 * 过滤结果集
-	 * 
-	 * @param list
-	 * @return
-	 */
-	protected List<T> filter(List<T> list) {
-		return list;
+	@SuppressWarnings("unchecked")
+	protected Predicate[] toArray(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder,
+			Specification<T>... specs) {
+		List<Predicate> buffer = Lists.newArrayList();
+		for (Specification<T> spec : specs) {
+			Predicate predicate = spec.toPredicate(root, query, builder);
+			if (predicate != null) {
+				buffer.add(predicate);
+			}
+		}
+		Predicate[] ret = new Predicate[buffer.size()];
+		buffer.toArray(ret);
+		return ret;
+	}
+
+	public JsonWrapper<T> getWrapper() {
+		return wrapper;
+	}
+
+	public void setWrapper(JsonWrapper<T> wrapper) {
+		this.wrapper = wrapper;
 	}
 
 }
