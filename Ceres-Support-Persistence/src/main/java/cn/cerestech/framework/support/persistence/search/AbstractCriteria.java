@@ -16,13 +16,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.google.common.collect.Lists;
 
-import cn.cerestech.framework.core.json.JsonWrapper;
+import cn.cerestech.framework.core.utils.KV;
 
 public abstract class AbstractCriteria<T> implements Criteria<T> {
 
 	protected Paginated<T> page;
 
-	protected JsonWrapper<T> wrapper;
+	protected KV wrap = KV.on();
 
 	public void doSearch(JpaSpecificationExecutor<T> executer) {
 		if (page == null) {
@@ -79,13 +79,4 @@ public abstract class AbstractCriteria<T> implements Criteria<T> {
 		buffer.toArray(ret);
 		return ret;
 	}
-
-	public JsonWrapper<T> getWrapper() {
-		return wrapper;
-	}
-
-	public void setWrapper(JsonWrapper<T> wrapper) {
-		this.wrapper = wrapper;
-	}
-
 }

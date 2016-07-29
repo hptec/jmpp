@@ -8,11 +8,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -30,6 +34,7 @@ public class Jsons {
 	private Boolean serializeNull = Boolean.FALSE;
 	private Boolean toUnicode = Boolean.TRUE;
 	private Boolean prettyPrint = Boolean.FALSE;
+	private static Map<Class<?>, Object> adapters = Maps.newHashMap();
 
 	/**
 	 * 转换成为json时，表示不会将中文等符号转化成unicode 编码的转义字符
@@ -154,6 +159,15 @@ public class Jsons {
 				return null;
 			}
 		});
+
+		// 追加外部Adapter
+		if (adapters != null && !adapters.isEmpty()) {
+
+			Set<Entry<Class<?>, Object>> sets = adapters.entrySet();
+			for (Entry<Class<?>, Object> entry : sets) {
+				builder.registerTypeHierarchyAdapter(entry.getKey(), entry.getValue());
+			}
+		}
 
 		return builder.create();
 	}
@@ -370,6 +384,12 @@ public class Jsons {
 			put(key, Jsons.from(value));
 		}
 		return this;
+	}
+
+	public static void registerAdapter(Class<?> type, Object adapter) {
+		if (type != null && adapter != null) {
+			adapters.put(type, adapter);
+		}
 	}
 
 }
