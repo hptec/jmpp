@@ -80,6 +80,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 									$scope.result = ret.object.page.data;
 									angular.extend($scope, ret);
 								}
+								$scope.$apply();
 
 								// var toPage = 1;
 								// if (localStorage && attrs.form) {
