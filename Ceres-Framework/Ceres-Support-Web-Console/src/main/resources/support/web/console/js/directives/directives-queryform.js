@@ -52,26 +52,46 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 					} else {
 						// 远程加载数据
 						// $(".overlay").removeClass("hide");
+						var data = cui.extend(true, {}, $scope.terms);
+
+						// 考虑将daterange的数据转换为符合要求的格式。
+						for ($ln in formDef.terms) {
+							var term = formDef.terms[$ln];
+							switch (term.type) {
+							case "daterange":
+								if (data[term.prop] != undefined) {
+									var range = data[term.prop];
+									var startDate = range.startDate == undefined ? undefined : new Date(range.startDate);
+									var endDate = range.endDate == undefined ? undefined : new Date(range.endDate);
+									data[term.prop + ".startDate"] = startDate;
+									data[term.prop + ".endDate"] = endDate;
+									data[term.prop] = undefined;
+								}
+							}
+						}
+
 						http.load({
 							url : formDef.url,
-							data : $scope.terms,
+							data : data,
 							success : function(ret) {
 								if (ret instanceof Array) {
-									scope.$$ceresQueryForm.dataOriginal = ret;
+									$scope.result = ret;
 								} else {
-									scope.$$ceresQueryForm.dataOriginal = ret.data;
-									$.extend(scope, ret);
+									$scope.result = ret.object.page.data;
+									angular.extend($scope, ret);
 								}
 
-								var toPage = 1;
-								if (localStorage && attrs.form) {
-									var p = localStorage.getItem("PAGESTATUS_PAGENUMBER_" + attrs.form);
-									if (p != undefined && p != "") {
-										toPage = parseInt(p);
-									}
-								}
-
-								scope.$$ceresQueryForm.toPage(toPage);
+								// var toPage = 1;
+								// if (localStorage && attrs.form) {
+								// var p =
+								// localStorage.getItem("PAGESTATUS_PAGENUMBER_"
+								// + attrs.form);
+								// if (p != undefined && p != "") {
+								// toPage = parseInt(p);
+								// }
+								// }
+								//
+								// scope.$$ceresQueryForm.toPage(toPage);
 							},
 							complete : function() {
 								$(".overlay").addClass("hide");
@@ -79,6 +99,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 						});
 					}
 				}
+				$scope.search();
 			} ],
 			compile : function(element, attrs) {
 
@@ -185,7 +206,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 					// 添加列名
 					element.find("thead > tr").append("<th>" + col.title + "</th>");
 					// 添加行字段
-					if (col.key != undefined && col.key != "") {
+					if (col.prop != undefined && col.prop != "") {
 						switch (col.type) {
 						case "date":
 						case "datetime":
@@ -197,34 +218,35 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								pattern = "HH:mm:ss";
 							}
 
-							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | toDate | date:'" + pattern + "'\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | toDate | date:'" + pattern + "'\"></td>");
+							break;
 						case "codetable":
 
 							break;
 						case "CURRENCY":
-							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | currency\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | currency\"></td>");
 							break;
 						case "CURRENCYTENK":
-							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | currencyTenK\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | currencyTenK\"></td>");
 							break;
 						case "ENUM":
-							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | enums: '" + col.pattern + "'\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | enums: '" + col.pattern + "'\"></td>");
 							break;
 						case "IMAGE":
-							element.find("tbody > tr").append("<td><img resfs='{{row." + col.key + "}}' class='user-image img-circle'  width='" + col.width + "' height='" + col.height + "' ></td>");
+							element.find("tbody > tr").append("<td><img resfs='{{row." + col.prop + "}}' class='user-image img-circle'  width='" + col.width + "' height='" + col.height + "' ></td>");
 							break;
 						case "IDIN":
-							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | idInList: " + col.pattern + " : '" + col.extra + "'\"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | idInList: " + col.pattern + " : '" + col.extra + "'\"></td>");
 							break;
 						case "ICON":
-							element.find("tbody > tr").append("<td><i class='{{row." + col.key + "}}' ng-if='row." + col.key + "'></i></td>");
+							element.find("tbody > tr").append("<td><i class='{{row." + col.prop + "}}' ng-if='row." + col.prop + "'></i></td>");
 							break;
 						case "PERCENTAGE":
-							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " | percentage \"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | percentage \"></td>");
 							break;
 						default:
 							// 默认TEXT
-							element.find("tbody > tr").append("<td ng-bind=\"row." + col.key + " \"></td>");
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " \"></td>");
 						}
 
 					} else {
@@ -347,10 +369,10 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 						// 初始化默认条件
 						if (scope.terms == undefined) {
 							scope.terms = {
-//								page : {
-//									pageNumber : 0,
-//									pageSize : 15
-//								}
+							// page : {
+							// pageNumber : 0,
+							// pageSize : 15
+							// }
 							};
 						}
 						var formId = attrs.cuiForm;

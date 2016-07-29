@@ -27,6 +27,9 @@ public abstract class JsonWrapper<T> {
 		put(data);
 	}
 
+	public JsonWrapper() {
+	}
+
 	public void put(T t) {
 		data = t;
 		isList = Boolean.FALSE;

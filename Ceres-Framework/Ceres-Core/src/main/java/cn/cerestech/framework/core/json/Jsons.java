@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -120,6 +121,7 @@ public class Jsons {
 		builder = serializeNull ? builder.serializeNulls() : builder;
 		builder = toUnicode ? builder : builder.disableHtmlEscaping();
 		builder = prettyPrint ? builder.setPrettyPrinting() : builder;
+		builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
 		// 解析日期格式
 		builder.registerTypeAdapter(java.util.Date.class, new JsonDeserializer<java.util.Date>() {
@@ -140,7 +142,11 @@ public class Jsons {
 							try {
 								return new Date(json.getAsLong());
 							} catch (Exception e2) {
-								e2.printStackTrace();
+								try {
+									new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(json.getAsString());
+								} catch (ParseException e3) {
+									e3.printStackTrace();
+								}
 							}
 						}
 					}
