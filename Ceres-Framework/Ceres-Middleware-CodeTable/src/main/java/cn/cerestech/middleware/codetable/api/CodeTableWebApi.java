@@ -17,7 +17,6 @@ import cn.cerestech.framework.support.web.web.WebApi;
 import cn.cerestech.middleware.codetable.entity.Category;
 import cn.cerestech.middleware.codetable.entity.Code;
 import cn.cerestech.middleware.codetable.service.CodeTableService;
-import cn.cerestech.middleware.codetable.wrapper.CodeTableWrapper;
 
 @RestController
 @RequestMapping("api/codetable")
@@ -36,7 +35,7 @@ public class CodeTableWebApi extends WebApi implements UserSessionOperator {
 	public void data() {
 		List<Category> cateList = codeTableService.list();
 
-		zipOutRequireJson(new CodeTableWrapper(cateList).doWrap());
+		zipOutRequireJson(cateList);
 	}
 
 	/**
