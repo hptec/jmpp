@@ -1,6 +1,6 @@
-define([ 'app', 'enums' ], function(app, enums) {
+define([ 'app', 'http' ], function(app, http) {
 
-	app.directive('cuiEnum', function($compile) {
+	app.directive('cuiRemote', function($compile) {
 		return {
 			restrict : "E",
 			scope : false,
@@ -9,13 +9,13 @@ define([ 'app', 'enums' ], function(app, enums) {
 			replace : true,
 			template : "<select class='form-control'></select>",
 			compile : function(tElement, tAttrs, transclude) {
-				var category = tAttrs.cuiCategory;
-				if (category == undefined && category == "") {
-					throw new Error("枚举类指令必须指定枚举名称");
+				var url = tAttrs.cuiUrl;
+				if (url == undefined && url == "") {
+					throw new Error("RemoteList必须指定Url");
 				}
 				var uuid = "KEY_" + Math.uuid(32);
-				var select = angular.element(tElement).attr("ng-options", "c.key as c.desc for c in " + uuid + "");
-//				angular.element(tElement).attr("ng-model", tAttrs.ngModel);
+				var select = angular.element(tElement).attr("ng-options", "c.id as c.desc for c in " + uuid + "");
+				// angular.element(tElement).attr("ng-model", tAttrs.ngModel);
 				tAttrs.uuid = uuid;
 
 				// 设置默认描述
@@ -29,7 +29,15 @@ define([ 'app', 'enums' ], function(app, enums) {
 			},
 			controller : [ '$scope', '$attrs', function($scope, $attrs) {
 				var uuid = $attrs.uuid;
-				$scope[uuid] = enums.get($attrs.cuiCategory).values();
+				// 加载远程数据
+				http.load({
+					url : $attrs.cuiUrl,
+					success : function(ret) {
+						$scope[uuid] = ret;
+						$scope.$apply();
+					}
+				});
+
 			} ]
 		};
 	});

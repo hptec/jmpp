@@ -166,6 +166,10 @@
 			uri:"/api/classpath/query/support/web/js/directives-enums"
 		},
 		{
+			name:"directives-remote",
+			uri:"/api/classpath/query/support/web/js/directives-remote"
+		},
+		{
 			name:"modal",
 			uri:"/api/classpath/query/support/web/js/modal",
 			exports:"modal"
