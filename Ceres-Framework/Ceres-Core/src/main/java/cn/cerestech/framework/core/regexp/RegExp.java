@@ -1,6 +1,7 @@
 package cn.cerestech.framework.core.regexp;
 
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.common.base.Strings;
 
@@ -50,7 +51,20 @@ public class RegExp {
 	public static boolean match(String exp, String src){
 		return Pattern.compile(Strings.nullToEmpty(exp)).matcher(Strings.nullToEmpty(src)).matches();
 	}
-	
+	/**
+	 * 查询字符串src 中所有满足 regexp 正则表达式的数据
+	 * @param src
+	 * @param regexp
+	 * @return
+	 */
+	public static String fetch(String src, String regexp){
+		String res = "";
+		Matcher matcher = Pattern.compile(Strings.nullToEmpty(regexp)).matcher(Strings.nullToEmpty(src));
+		while(matcher.find()){
+			res += matcher.group();
+		}
+		return res;
+	}
 	public static boolean isEmail(String str){
 		return match(REGEXP_EMAIL, str);
 	}
