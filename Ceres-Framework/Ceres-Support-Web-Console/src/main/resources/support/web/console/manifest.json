@@ -4,8 +4,8 @@
 	menus:[
 		{
 			key:"TOP_SYSTEM_CONFIGURATION",
-			caption:"平台设置",
-			icon:"fa fa-cogs"
+			caption:" 系 统 ",
+			icon:"fa fa-fw fa-cogs"
 		}
 		
 	],
