@@ -59,6 +59,10 @@ public class Dates {
 		return getCalendar().getTime();
 	}
 
+	public Calendar toCalendar() {
+		return getCalendar();
+	}
+
 	public Long toTimeInMillis() {
 		return getCalendar().getTimeInMillis();
 	}

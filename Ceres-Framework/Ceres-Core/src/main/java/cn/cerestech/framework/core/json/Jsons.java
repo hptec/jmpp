@@ -24,7 +24,10 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
+
+import cn.cerestech.framework.core.date.Dates;
 
 public class Jsons {
 
@@ -126,39 +129,7 @@ public class Jsons {
 		builder = serializeNull ? builder.serializeNulls() : builder;
 		builder = toUnicode ? builder : builder.disableHtmlEscaping();
 		builder = prettyPrint ? builder.setPrettyPrinting() : builder;
-		builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-
-		// 解析日期格式
-		builder.registerTypeAdapter(java.util.Date.class, new JsonDeserializer<java.util.Date>() {
-			@Override
-			public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-					throws JsonParseException {
-				try {
-					Date d = new GsonBuilder().create().fromJson(json, java.util.Date.class);
-					return new Date(d.getTime());
-				} catch (Exception e) {
-					try {
-						java.sql.Date d = new GsonBuilder().create().fromJson(json, java.sql.Date.class);
-						return new Date(d.getTime());
-					} catch (Exception ee) {
-						try {
-							return DateFormat.getDateInstance().parse(json.toString());
-						} catch (ParseException e1) {
-							try {
-								return new Date(json.getAsLong());
-							} catch (Exception e2) {
-								try {
-									new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(json.getAsString());
-								} catch (ParseException e3) {
-									e3.printStackTrace();
-								}
-							}
-						}
-					}
-				}
-				return null;
-			}
-		});
+		builder.setDateFormat(Dates.DATE_TIME);
 
 		// 追加外部Adapter
 		if (adapters != null && !adapters.isEmpty()) {
@@ -390,6 +361,10 @@ public class Jsons {
 		if (type != null && adapter != null) {
 			adapters.put(type, adapter);
 		}
+	}
+
+	public static void main(String[] args) throws Throwable {
+		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse("2016-08-02T16:00:00.000Z");
 	}
 
 }
