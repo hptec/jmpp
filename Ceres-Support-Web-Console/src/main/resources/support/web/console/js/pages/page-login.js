@@ -16,7 +16,7 @@ define([ 'app', 'platform', 'http', 'modal', 'employee', 'pages', 'login' ], fun
 		$scope.doLogin = function() {
 			employee.login($scope.loginEntity, function(result) {
 				if (result.isSuccess) {
-					$state.go("workbench.hotelorder");
+					$state.go("workbench.customer");
 					$scope.$apply();
 				} else {
 					modal.alert({
