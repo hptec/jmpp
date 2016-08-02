@@ -15,7 +15,7 @@ define([ 'app', 'enums' ], function(app, enums) {
 				}
 				var uuid = "KEY_" + Math.uuid(32);
 				var select = angular.element(tElement).attr("ng-options", "c.key as c.desc for c in " + uuid + "");
-//				angular.element(tElement).attr("ng-model", tAttrs.ngModel);
+				// angular.element(tElement).attr("ng-model", tAttrs.ngModel);
 				tAttrs.uuid = uuid;
 
 				// 设置默认描述
@@ -32,6 +32,27 @@ define([ 'app', 'enums' ], function(app, enums) {
 				$scope[uuid] = enums.get($attrs.cuiCategory).values();
 			} ]
 		};
+	});
+
+	app.filter("enums", function() {
+		return function(code, category) {
+			if (code == undefined || code == "" || category == undefined || category == "") {
+				return "";
+			}
+			var cate = enums.get(category).values();
+			if (cate == undefined) {
+				return "";
+			}
+
+			for (_$ln in cate) {
+				var de = cate[_$ln];
+				if (de.key == code) {
+					return de.desc;
+				}
+			}
+			return ""
+
+		}
 	});
 
 });

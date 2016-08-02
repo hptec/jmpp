@@ -1,25 +1,5 @@
 define([ 'app' ], function(app) {
 
-	// consoleApp.filter("enums", function() {
-	// return function(key, clazzName) {
-	// if (clazzName == undefined || clazzName == "") {
-	// return "";
-	// }
-	//
-	// var enums = $c.enums[clazzName];
-	// if (enums == undefined) {
-	// return "";
-	// }
-	//
-	// for ($i in enums) {
-	// if (enums[$i].key == key) {
-	// return enums[$i].desc;
-	// }
-	// }
-	//
-	// return "";
-	// }
-	// });
 	// consoleApp.filter("currencyTenK", function() {
 	// return function(key) {
 	// var k = parseInt(key);

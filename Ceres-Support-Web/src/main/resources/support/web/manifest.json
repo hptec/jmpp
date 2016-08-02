@@ -163,11 +163,16 @@
 		},
 		{
 			name:"directives-enums",
-			uri:"/api/classpath/query/support/web/js/directives-enums"
+			uri:"/api/classpath/query/support/web/js/directives-enums",
+			deps:["uuid"]
 		},
 		{
 			name:"directives-remote",
 			uri:"/api/classpath/query/support/web/js/directives-remote"
+		},
+		{
+			name:"directives-web",
+			uri:"/api/classpath/query/support/web/js/directives-web"
 		},
 		{
 			name:"modal",

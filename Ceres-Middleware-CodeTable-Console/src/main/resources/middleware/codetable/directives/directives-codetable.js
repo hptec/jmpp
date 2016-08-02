@@ -9,6 +9,21 @@ define([ 'app', 'codetable-data', 'modal', 'angular' ], function(app, codetableD
 		}
 	}
 
+	var findByCode = function(category, code) {
+		if (category == undefined || category.codes == undefined) {
+			return "";
+		}
+
+		for (_$ln in category.codes) {
+			var codeRec = category.codes[_$ln];
+			if (codeRec.value == code) {
+				return codeRec.desc;
+			}
+		}
+		return "";
+
+	}
+
 	app.directive('cuiCodetable', function($compile) {
 		return {
 			restrict : "E",
@@ -25,7 +40,7 @@ define([ 'app', 'codetable-data', 'modal', 'angular' ], function(app, codetableD
 				var uuid = "KEY_" + Math.uuid(32);
 				var select = angular.element(tElement).attr("ng-options", "c.value as c.desc for c in " + uuid);
 				tAttrs.uuid = uuid;
-				
+
 				// 设置默认描述
 				var defaultDesc = tAttrs.cuiDefaultDesc;
 				if (defaultDesc != undefined && defaultDesc != "") {
@@ -45,5 +60,18 @@ define([ 'app', 'codetable-data', 'modal', 'angular' ], function(app, codetableD
 				}
 			} ]
 		};
+	});
+
+	app.filter("codetable", function() {
+		return function(code, category) {
+			if (code == undefined || code == "" || category == undefined || category == "") {
+				return "";
+			}
+			var cate = findByCategory(category);
+			if (cate == undefined) {
+				return "";
+			}
+			return findByCode(cate, code);
+		}
 	});
 });

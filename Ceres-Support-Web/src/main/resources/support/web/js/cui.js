@@ -377,4 +377,9 @@
 
 	window.cui = window.$C = window.$c = cui;
 
+	// 由于Date类型的在Javascript中默认是按照ISO格式进行toJson，会减少时区时差，故这里修改默认toJson方法以便匹配数据正确性。
+	Date.prototype.toJSON = function() {
+		return new Date(this.getTime() - this.getTimezoneOffset() * 60000).toISOString();
+	}
+
 })(window);

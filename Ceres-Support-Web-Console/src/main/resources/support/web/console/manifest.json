@@ -236,7 +236,9 @@
 		{
 			name:"employee",
 			uri:"/api/classpath/query/support/web/console/js/api/employee",
-			deps:["$cookie"],
+			deps:[
+				"$cookie"
+			],
 			exports:"employee"
 		},
 		{
@@ -251,12 +253,15 @@
 				"uuid",
 				"directives-daterangepicker"
 			]
+			
 		},
 		{
 			name:"directives-codetable",
 			uri:"/api/classpath/query/support/web/console/js/directives/directives-codetable",
 			deps:[
+				
 			]
+			
 		},
 		{
 			name:"directives-daterangepicker",
@@ -273,7 +278,7 @@
 				"bootstrap",
 				"jquery",
 				"moment",
-				"css!/api/classpath/query/support/web/console/bower_components/bootstrap-daterangepicker/daterangepicker",
+				"css!/api/classpath/query/support/web/console/bower_components/bootstrap-daterangepicker/daterangepicker"
 			]
 		}
 		

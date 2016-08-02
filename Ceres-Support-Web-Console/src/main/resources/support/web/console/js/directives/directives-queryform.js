@@ -222,7 +222,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | toDate | date:'" + pattern + "'\"></td>");
 							break;
 						case "codetable":
-
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | codetable:'" + col.category + "'\"></td>");
 							break;
 						case "CURRENCY":
 							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | currency\"></td>");
@@ -230,8 +230,8 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 						case "CURRENCYTENK":
 							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | currencyTenK\"></td>");
 							break;
-						case "ENUM":
-							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | enums: '" + col.pattern + "'\"></td>");
+						case "enum":
+							element.find("tbody > tr").append("<td ng-bind=\"row." + col.prop + " | enums: '" + col.category + "'\"></td>");
 							break;
 						case "IMAGE":
 							element.find("tbody > tr").append("<td><img resfs='{{row." + col.prop + "}}' class='user-image img-circle'  width='" + col.width + "' height='" + col.height + "' ></td>");
