@@ -39,7 +39,7 @@ public class IdEntityJsonConfig implements ApplicationRunner {
 							try {
 								f.setAccessible(true);
 								Object value = f.get(src);
-								log.trace(value + " - " + f.toString());
+//								log.trace(value + " - " + f.toString());
 								ele.add(f.getName(), context.serialize(value));
 							} catch (IllegalArgumentException | IllegalAccessException e) {
 								log.error(e);

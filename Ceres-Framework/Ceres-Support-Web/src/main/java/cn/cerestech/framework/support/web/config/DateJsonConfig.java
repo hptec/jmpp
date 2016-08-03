@@ -8,16 +8,21 @@ import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
+import com.google.common.primitives.Longs;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
@@ -25,28 +30,18 @@ import com.google.gson.JsonSerializer;
 import cn.cerestech.framework.core.date.Dates;
 import cn.cerestech.framework.core.json.Jsons;
 
-@Component
+@Configuration
 public class DateJsonConfig implements ApplicationRunner {
 
 	Logger log = LogManager.getLogger();
 
+	@Autowired
+	private RequestMappingHandlerAdapter handlerAdapter;
+
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 
-		// Jsons.registerAdapter(Date.class, new JsonSerializer<Date>() {
-		//
-		// @Override
-		// public JsonElement serialize(Date src, Type typeOfSrc,
-		// JsonSerializationContext context) {
-		// if (src == null) {
-		// return JsonNull.INSTANCE;
-		// } else {
-		// return new JsonPrimitive(new
-		// SimpleDateFormat(Dates.DATE_TIME).format(src));
-		// }
-		// }
-		//
-		// });
+		// 应用于JSON的Date类型转换
 		Jsons.registerAdapter(java.sql.Date.class, new JsonSerializer<java.sql.Date>() {
 
 			@Override
@@ -99,6 +94,38 @@ public class DateJsonConfig implements ApplicationRunner {
 			}
 		});
 
+		// 应用于Spring数据绑定的类型转换
+		ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer) handlerAdapter
+				.getWebBindingInitializer();
+		if (initializer.getConversionService() != null) {
+			GenericConversionService genericConversionService = (GenericConversionService) initializer
+					.getConversionService();
+			genericConversionService.addConverter(new Converter<String, Date>() {
+
+				@Override
+				public Date convert(String source) {
+					return convertStringToDate(source);
+				}
+
+			});
+		}
 	}
 
+	private Date convertStringToDate(String str) {
+		if (Longs.tryParse(str) != null) {
+			return new Date(Longs.tryParse(str));
+		}
+
+		try {
+			return Dates.fromDateTime(str).toDate();
+		} catch (Exception e3) {
+			try {
+				Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(str);
+				return date;
+			} catch (ParseException e4) {
+				e4.printStackTrace();
+			}
+		}
+		return null;
+	}
 }
