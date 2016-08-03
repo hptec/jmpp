@@ -55,7 +55,6 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 						// 远程加载数据
 						// $(".overlay").removeClass("hide");
 						var data = cui.extend(true, {}, $scope.param);
-						console.log($scope.param);
 						var data = cui.extend(true, data, $scope.terms);
 
 						// 考虑将daterange的数据转换为符合要求的格式。
@@ -134,13 +133,8 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								throw new Error("枚举未指定", term);
 							}
 
-							var uuid = "KEY_" + Math.uuid(32);
-							term.uuid = uuid;
 							str = "<div class='col-md-" + width + "'>";
-							str += "<select class='form-control' ng-model='terms." + term.prop + "' ng-options='s.key as s.desc for s in " + uuid + "'>";
-							if (term.defaultDesc != undefined && term.defaultDesc != "") {
-								str += "<option value=''>" + term.defaultDesc + "</option>";
-							}
+							str += "<select class='form-control' cui-enum=" + term.category + " ng-model='terms." + term.prop + "' cui-desc='" + (term.desc == undefined ? "" : term.desc) + "' >";
 							str += "</select></div>";
 							contTerm.append(str);
 							break;
@@ -149,13 +143,8 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								throw new Error("字典表未指定", term);
 							}
 
-							var uuid = "KEY_" + Math.uuid(32);
-							term.uuid = uuid;
 							str = "<div class='col-md-" + width + "'>";
-							str += "<select class='form-control' ng-model='terms." + term.prop + "' ng-options='s.value as s.desc for s in " + uuid + "'>";
-							if (term.defaultDesc != undefined && term.defaultDesc != "") {
-								str += "<option value=''>" + term.defaultDesc + "</option>";
-							}
+							str += "<select class='form-control' ng-model='terms." + term.prop + "' cui-codetable='"+term.category+"' cui-desc='"+(term.desc == undefined ? "" : term.desc)+"' >";
 							str += "</select></div>";
 							contTerm.append(str);
 							break;
@@ -191,7 +180,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							var str = "<div class='col-md-" + width + "'>";
 							str += "<div class='form-group'>";
 							// str += "<label>"+col.title+"</label>";
-							str += "<input type='text' class='form-control' ng-model='terms." + term.prop + "' placeholder='" + term.defaultDesc + "'>";
+							str += "<input type='text' class='form-control' ng-model='terms." + term.prop + "' placeholder='" + term.desc + "'>";
 							str += "</div>";
 							str += "</div>";
 							contTerm.append(str);
@@ -386,12 +375,6 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 						for ($ln in formDef.terms) {
 							var term = formDef.terms[$ln];
 							switch (term.type) {
-							case "enum":
-								if (term.uuid != undefined && term.uuid != "") {
-									var enums = require("enums");
-									scope[term.uuid] = enums.get(term.category).values();
-								}
-								break;
 							case "codetable":
 								if (term.uuid != undefined && term.uuid != "") {
 									var codetable = require("codetable-data");

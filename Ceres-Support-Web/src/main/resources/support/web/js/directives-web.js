@@ -25,82 +25,27 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 
 		}
 	});
-	// 只能输入数字和小数
-	app.directive('cuiNumberOnly', function($rootScope, $timeout) {
-		return {
-			restrict : "AC",
-			controller : [ "$scope", "$state", function($scope, $state) {
-
-			} ],
-			link : function(scope, element, attrs, controller) {
-				element.bind("keyup", function(e) {
-					var value = element.val();
-					value = value.replace(/[^\d.]/g, ""); // 清除"数字"和"."以外的字符
-					value = value.replace(/^\./g, ""); // 验证第一个字符是数字而不是
-					value = value.replace(/\.{2,}/g, "."); // 只保留第一个. 清除多余的
-					value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-					// value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,
-					// '$1$2.$3'); // 只能输入两个小数
-					element.val(value);
-				});
-			}
-		}
-	});
-
-	// 只能输入货币
-	app.directive('cuiCurrencyOnly', function($rootScope, $timeout) {
+	app.directive('cuiNumber', function($rootScope, $timeout) {
 		return {
 			restrict : "AC",
 			scope: {
-				model:"=ngModel"
-			},
-			controller : [ "$scope", "$state", function($scope, $state) {
-
-			} ],
-			link : function(scope, element, attrs, controller) {
-				element.bind("keydown", function(e) {
-					var keyCode = e.keyCode;
-					console.log("当前按键："+keyCode);
-					if((keyCode >= 37 && keyCode <= 40) || keyCode == 8){//上下左右 删除键
-						event.returnValue=true;
-						return;
-					}
-					if(!((keyCode >= 48 && keyCode <= 57) || keyCode == 110 || keyCode == 190)){//(keyCode >= 65 && keyCode <= 90) || 
-						event.returnValue=false;
-						return;
-					}
-					// TODO 保留光标位置的方法没有做
-					var value = element.val();
-					value = value.replace(/[^\d.]/g, ""); // 清除"数字"和"."以外的字符
-					value = value.replace(/^\./g, ""); // 验证第一个字符是数字而不是
-					value = value.replace(/\.{2,}/g, "."); // 只保留第一个. 清除多余的
-					value = value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-					value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'); // 只能输入两个小数
-					element.val(value);
-				});
-			}
-		}
-	});
-	app.directive('numberLimit', function($rootScope, $timeout) {
-		return {
-			restrict : "AC",
-			scope: {
-				precision: "@precision",
-				scale: "@scale",
+				precision: "@cuiPrecision",
+				scale: "@cuiScale",
 				model: "=ngModel"
 			},
 			controller : [ "$scope", "$state", function($scope, $state) {
 			}],
 			link : function(scope, element, attrs, controller) {
 				if(!scope.precision){
-					scope.precision = 99;
+					scope.precision = 19;
 				}
 				if(!scope.scale){
 					scope.scale = 2;
 				}
+				element.addClass("text-right")
 				element.bind("keydown", function(e) {
 					var keyCode = e.keyCode;
-					console.log("当前按键："+keyCode+"    : event.target.selectionStart:"+event.target.selectionStart + "  input cur value :"+ $(e.target).val());
+//					console.log("当前按键："+keyCode+"    : event.target.selectionStart:"+event.target.selectionStart + "  input cur value :"+ $(e.target).val());
 					if((keyCode >= 37 && keyCode <= 40) || keyCode == 8){//上下左右 删除键
 						event.returnValue=true;
 						return;
@@ -168,7 +113,7 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 					}
 					
 					var legalVal = curVal.substring(0,curIdx)+keyVal+curVal.substring(curIdx);
-					console.log("正确的合法数据："+legalVal);
+//					console.log("正确的合法数据："+legalVal);
 					scope.model = legalVal;
 				});
 			}

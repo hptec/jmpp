@@ -2,35 +2,28 @@ define([ 'app', 'enums' ], function(app, enums) {
 
 	app.directive('cuiEnum', function($compile) {
 		return {
-			restrict : "E",
+			restrict : "A",
 			scope : false,
-			priority : 1000,
-			terminal : true,
-			replace : true,
-			template : "<select class='form-control'></select>",
 			compile : function(tElement, tAttrs, transclude) {
-				var category = tAttrs.cuiCategory;
+				var category = tAttrs.cuiEnum;
 				if (category == undefined && category == "") {
 					throw new Error("枚举类指令必须指定枚举名称");
 				}
-				var uuid = "KEY_" + Math.uuid(32);
-				var select = angular.element(tElement).attr("ng-options", "c.key as c.desc for c in " + uuid + "");
-				// angular.element(tElement).attr("ng-model", tAttrs.ngModel);
-				tAttrs.uuid = uuid;
 
 				// 设置默认描述
-				var defaultDesc = tAttrs.cuiDefaultDesc;
+				var defaultDesc = tAttrs.cuiDesc;
 				if (defaultDesc != undefined && defaultDesc != "") {
 					tElement.append("<option value=''>" + defaultDesc + "</option>");
 				}
-				return function(scope, element, attrs) {
-					$compile(select)(scope);
+				//设置内容
+				var values=enums.get(category).values();
+				for(_$ln in values){
+					var o=values[_$ln];
+					tElement.append("<option value='"+o.key+"'>" + o.desc + "</option>");
 				}
-			},
-			controller : [ '$scope', '$attrs', function($scope, $attrs) {
-				var uuid = $attrs.uuid;
-				$scope[uuid] = enums.get($attrs.cuiCategory).values();
-			} ]
+				return function(scope, element, attrs) {
+				}
+			}
 		};
 	});
 
