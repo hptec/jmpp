@@ -7,7 +7,12 @@
 			caption:" 系 统 ",
 			icon:"fa fa-fw fa-cogs"
 		}
-		
+		/*,{
+			key:"SYS_EMPLOYEE",
+			caption:"员工管理",
+			parent:"TOP_SYSTEM_CONFIGURATION",
+			icon:"fa fa-fw fa-users"
+		}*/
 	],
 	jsModules_console:[
 		{

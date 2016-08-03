@@ -24,7 +24,9 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 	app.directive('queryForm', function() {
 		return {
 			restrict : 'E',
-			scope : false,
+			scope : {
+				param : "=cuiParam"
+			},
 			templateUrl : '/api/classpath/query/support/web/console/template/queryform.html',
 			controller : [ '$scope', '$attrs', function($scope, $attrs) {
 				$scope.search = function() {
@@ -52,7 +54,9 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 					} else {
 						// 远程加载数据
 						// $(".overlay").removeClass("hide");
-						var data = cui.extend(true, {}, $scope.terms);
+						var data = cui.extend(true, {}, $scope.param);
+						console.log($scope.param);
+						var data = cui.extend(true, data, $scope.terms);
 
 						// 考虑将daterange的数据转换为符合要求的格式。
 						for ($ln in formDef.terms) {
@@ -292,12 +296,12 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 				}
 
 				// 添加行级按钮
-				if (formDef.rowBtns != undefined && formDef.rowBtns.length > 0) {
-					e.find("thead > tr").append("<th>操作</th>");
+				if (formDef.rowButtons != undefined && formDef.rowButtons.length > 0) {
+					element.find("thead > tr").append("<th>操作</th>");
 					var td = $("<td/>");
-					e.find("tbody > tr").append(td);
-					for ($ln in formDef.rowBtns) {
-						var btn = formDef.rowBtns[$ln];
+					element.find("tbody > tr").append(td);
+					for ($ln in formDef.rowButtons) {
+						var btn = formDef.rowButtons[$ln];
 
 						var tag = "button";
 						if (btn.href != undefined && btn.href != "") {
@@ -310,7 +314,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							str += " ng-href=\"" + btn.href + "\"";
 						}
 						if (btn.action != undefined && btn.action != "") {
-							str += " ng-click=\"" + btn.action + "\" ";
+							str += " ng-click=\"param." + btn.action + "\" ";
 						}
 						if (btn.comment != undefined && btn.comment != "") {
 							str += " title=\"" + btn.comment + "\" ";
@@ -420,6 +424,34 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 						// },
 						// data : [],
 						// }
+
+						// 执行配置管理
+						scope.config = {};
+						if (formDef.config != undefined) {
+							// 是否显示搜索按钮
+							if (formDef.config.search != undefined) {
+								scope.config.search = formDef.config.search;
+							}
+							// 表格样式
+							var tableClass = "table";
+							if (formDef.config.style != undefined) {
+								if (formDef.config.style.condensed && formDef.config.style.condensed == true) {
+									tableClass += " table-condensed";
+								}
+								if (formDef.config.style.striped && formDef.config.style.striped == true) {
+									tableClass += " table-striped";
+								}
+								if (formDef.config.style.responsive == undefined || formDef.config.style.responsive == true) {
+									tableClass += " table-responsive";
+								}
+								if (formDef.config.style.bordered == undefined && formDef.config.style.bordered == true) {
+									tableClass += " table-bordered";
+								}
+							}
+							scope.config.tableClass = tableClass;
+						}
+
+						scope.def = formDef;
 					},
 					post : function(scope, element, attrs) {
 						var e = $(element);
