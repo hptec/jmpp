@@ -8,6 +8,7 @@ import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -113,6 +114,8 @@ public class DataTable {
 
 	public DataTable from(HSSFWorkbook book) {
 		HSSFSheet sheet = book.getSheetAt(sheetAt);
+		List<CellRangeAddress> mergedCell =  sheet.getMergedRegions();
+		
 		int rownum = sheet.getLastRowNum();
 		List<Jsons> data = Lists.newArrayList();
 		for (int i = rowStart; i < rownum; i++) {
@@ -122,6 +125,13 @@ public class DataTable {
 			for (int ci = 0, size = columns.size(); ci < size; ci++) {
 				// 取每个列的值
 				HSSFCell cell = row.getCell(ci);
+				for(CellRangeAddress adr: mergedCell){
+					if(i >= adr.getFirstRow() && i <= adr.getLastRow() && ci >= adr.getFirstColumn() && ci <= adr.getLastColumn()){
+						cell = sheet.getRow(adr.getFirstRow()).getCell(adr.getFirstColumn());
+						break;
+					}
+				}
+				
 				String key = columns.get(ci).getProperty();
 				if (cell == null) {
 					continue;
