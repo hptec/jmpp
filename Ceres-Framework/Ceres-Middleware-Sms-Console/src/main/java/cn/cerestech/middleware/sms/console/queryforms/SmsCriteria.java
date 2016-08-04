@@ -3,6 +3,8 @@ package cn.cerestech.middleware.sms.console.queryforms;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import com.google.common.collect.Lists;
 
 import cn.cerestech.framework.support.persistence.search.AbstractCriteria;
@@ -86,5 +88,10 @@ public class SmsCriteria<T extends SmsRecord> extends AbstractCriteria<T>{
 	}
 	public String getBusiness_type() {
 		return business_type;
+	}
+	@Override
+	public Specification<T> specification() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

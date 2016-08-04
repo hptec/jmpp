@@ -4,10 +4,9 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import cn.cerestech.framework.core.KV;
-import cn.cerestech.framework.core.enums.ConfigKey;
+import cn.cerestech.framework.core.utils.KV;
 
-public enum BalanceConfigKeys implements ConfigKey {
+public enum BalanceConfigKeys  {
 	BALANCE_WITHDRAW_BANKCARD_ENABLED("BALANCE_WITHDRAW_BANKCARD_ENABLED", "Y", "是否开启银行卡提现方式"), //
 	BALANCE_WITHDRAW_MP_ENABLED("BALANCE_WITHDRAW_MP_ENABLED", "N", "是否开启微信提现方式"), //
 
@@ -27,17 +26,14 @@ public enum BalanceConfigKeys implements ConfigKey {
 		this.desc = desc;
 	}
 
-	@Override
 	public String key() {
 		return key;
 	}
 
-	@Override
 	public String defaultValue() {
 		return defaultValue;
 	}
 
-	@Override
 	public String desc() {
 		return desc;
 	}

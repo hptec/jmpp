@@ -2,6 +2,8 @@ package cn.cerestech.middleware.balance.criteria;
 
 import java.util.Date;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.framework.support.persistence.search.AbstractCriteria;
 import cn.cerestech.middleware.balance.entity.Withdraw;
@@ -21,8 +23,8 @@ public class WithdrawCriteria<T extends Withdraw> extends AbstractCriteria<T> {
 
 	public WithdrawCriteria<T> setOwner(Owner owner) {
 		if (owner != null) {
-			owner_id = owner.getOwner_id();
-			owner_type = owner.getOwner_type();
+//			owner_id = owner.getOwner_id();
+//			owner_type = owner.getOwner_type();
 		}
 		return this;
 	}
@@ -81,6 +83,12 @@ public class WithdrawCriteria<T extends Withdraw> extends AbstractCriteria<T> {
 
 	public void setDateTo(Date dateTo) {
 		this.dateTo = dateTo;
+	}
+
+	@Override
+	public Specification<T> specification() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
