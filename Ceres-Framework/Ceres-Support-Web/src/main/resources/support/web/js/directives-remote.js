@@ -19,7 +19,7 @@ define([ 'app', 'http' ], function(app, http) {
 				tAttrs.uuid = uuid;
 
 				// 设置默认描述
-				var defaultDesc = tAttrs.cuiDefaultDesc;
+				var defaultDesc = tAttrs.cuiDesc;
 				if (defaultDesc != undefined && defaultDesc != "") {
 					tElement.append("<option value=''>" + defaultDesc + "</option>");
 				}
