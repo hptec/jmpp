@@ -29,14 +29,17 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 			},
 			templateUrl : '/api/classpath/query/support/web/console/template/queryform.html',
 			controller : [ '$scope', '$attrs', function($scope, $attrs) {
+				$scope.searching = false;
 				$scope.search = function() {
+					$scope.searching = true;
 					var formDef = getFormDefinition($attrs);
 
 					if (formDef.url == undefined || formDef.url == "") {
 						throw new Error("数据查询连接url不存在");
 						// 暂时不考虑本地数据
 						// // 本地数据
-						// if (attrs.datamodel != undefined && attrs.datamodel
+						// if (attrs.datamodel != undefined &Quar&
+						// attrs.datamodel
 						// != "") {
 						// scope.$$ceresQueryForm.dataOriginal =
 						// $c.fn.val(scope, attrs.datamodel);
@@ -73,6 +76,16 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							}
 						}
 
+						// 组合page参数
+						if (data.page != undefined) {
+							data["page.pageSize"] = data.page.pageSize;
+							data["page.pageNumber"] = data.page.pageNumber - 1;
+							if (data["page.pageNumber"] < 0) {
+								data["page.pageNumber"] = 0;
+							}
+							data.page = undefined;
+						}
+
 						http.load({
 							url : formDef.url,
 							data : data,
@@ -80,8 +93,26 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								if (ret instanceof Array) {
 									$scope.result = ret;
 								} else {
-									$scope.result = ret.object.page.data;
-									angular.extend($scope, ret);
+									cui.extend($scope, {
+										result : ret.object.page.data
+									});
+									cui.extend(true, $scope, {
+										terms : {
+											page : ret.object.page
+										}
+									});
+
+									// 因为服务器使用0作为第一页，uibPagination使用1作为第一页，这里进行匹配
+									$scope.terms.page.pageNumber += 1;
+									
+									//如果因为操作的原因，导致页面超出范围，需要显示出那个本不应该存在的页码好让用户能够切换到正确的页码。
+									if($scope.terms.page.numberOfElements==0){
+//										$scope.search();
+										$scope.terms.page.totalPages+=1;
+									}
+									console.log($scope.terms);
+									// $scope.result = ret.object.page.data;
+									// angular.extend($scope, ret);
 								}
 								$scope.$apply();
 
@@ -98,12 +129,18 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								// scope.$$ceresQueryForm.toPage(toPage);
 							},
 							complete : function() {
-								$(".overlay").addClass("hide");
+								$scope.searching = false;
 							}
 						});
 					}
 				}
-				$scope.search();
+
+				$scope.$watch("terms.page.pageNumber", function(n, o) {
+					console.log("新:" + n + " => 旧:" + o);
+					if (!$scope.searching) {
+						$scope.search();
+					}
+				});
 			} ],
 			compile : function(element, attrs) {
 
@@ -144,7 +181,8 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							}
 
 							str = "<div class='col-md-" + width + "'>";
-							str += "<select class='form-control' ng-model='terms." + term.prop + "' cui-codetable='"+term.category+"' cui-desc='"+(term.desc == undefined ? "" : term.desc)+"' >";
+							str += "<select class='form-control' ng-model='terms." + term.prop + "' cui-codetable='" + term.category + "' cui-desc='" + (term.desc == undefined ? "" : term.desc)
+									+ "' >";
 							str += "</select></div>";
 							contTerm.append(str);
 							break;
@@ -168,11 +206,13 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							str = "<div class='col-md-" + width + "'><div class='form-group'><input type='text' class='form-control' style='visibility:hidden;'></div></div>";
 							contTerm.append(str);
 							break;
-						case "REMOTELIST":
+						case "remote":
+							var uuid = "KEY_" + Math.uuid(32);
+							term.uuid = uuid;
+
 							str = "<div class='col-md-" + width + "'>";
-							str += "<select class='form-control' ng-change='$$ceresQueryForm.search()' ng-model='$$ceresQueryForm.terms." + term.key + "' ng-options='s." + term.remoteList.keyName
-									+ " as s." + term.remoteList.descName + " for s in " + term.remoteList.listVarName + "'>";
-							str += "<option value>" + term.title + "</option></select>";
+							str += "<select class='form-control' cui-uuid='" + uuid + "' ng-model='terms." + term.prop + "' ng-options='s.id as s.desc for s in " + uuid + "'>";
+							str += "<option value>" + term.desc + "</option></select>";
 							str += "</div>";
 							contTerm.append(str);
 							break;
@@ -330,43 +370,28 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 
 						// 保存状态：location.href+formId
 
-						// // 添加枚举
-						// if (formDef.terms.length > 0) {
-						// for ($ln in formDef.terms) {
-						// var term = formDef.terms[$ln];
-						// if (term.type == "ENUM") {
-						// scope[term.enumClass] = $c.enums[term.enumClass];
-						// } else if (term.type == "REMOTELIST") {
-						// (function() {
-						// $c.load({
-						// url : term.remoteList.remoteUrl,
-						// data : {
-						// listVarName : term.remoteList.listVarName
+						// scope.__queryform[formId] = {
+						// targetId : formId,
+						// form : formDef,
+						// terms : {},// 搜索条件
+						// dataOriginal : [],
+						// page : {
+						// size : 15,
+						// cur : 1,
+						// numbers : [],
+						// sizes : [ 5, 15, 30, 50, 100 ]
 						// },
-						// context : term,
-						// success : function(ret, context) {
-						// if (ret.data != undefined) {
-						// scope[context.remoteList.listVarName] = ret.data;
-						// } else {
-						// scope[context.remoteList.listVarName] = ret;
+						// data : [],
 						// }
-						//
-						// scope.$apply();
-						// }
-						// });
-						// }(this));
-						//
-						// }
-						//
-						// }
-						// }
+
 						// 初始化默认条件
 						if (scope.terms == undefined) {
 							scope.terms = {
-							// page : {
-							// pageNumber : 0,
-							// pageSize : 15
-							// }
+								page : {
+									pageNumber : 0,
+									pageSize : 15,
+									sizeArray : [ 5, 15, 30, 50, 100 ]
+								}
 							};
 						}
 						var formId = attrs.cuiForm;
@@ -385,28 +410,60 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 										}
 									}
 								}
+								if (term.value != undefined) {
+									if (cui.isFunction(term.value)) {
+										scope.terms[term.prop] = term.value();
+									} else {
+										scope.terms[term.prop] = term.value;
+									}
+								}
+
 								break;
 							case "daterange":
-								scope.terms[term.prop] = {
-									startDate : new Date(),
-									endDate : new Date()
+								var v = term.value;
+								if (cui.isFunction(v)) {
+									scope.terms[term.prop] = v();
+								} else if (v != undefined) {
+									scope.terms[term.prop] = v;
+								} else {
+									scope.terms[term.prop] = {
+										startDate : new Date(),
+										endDate : new Date()
+									}
 								}
+								break
+							case "remote":
+
+								http.load({
+									url : term.url,
+									data : {
+										uuid : term.uuid
+									},
+									success : function(ret) {
+										scope[this.data.uuid] = ret;
+										scope.$apply();
+									}
+								});
+								if (term.value != undefined) {
+									if (cui.isFunction(term.value)) {
+										scope.terms[term.prop] = term.value();
+									} else {
+										scope.terms[term.prop] = term.value;
+									}
+								}
+
+								break;
+							default:
+								if (term.value != undefined) {
+									if (cui.isFunction(term.value)) {
+										scope.terms[term.prop] = term.value();
+									} else {
+										scope.terms[term.prop] = term.value;
+									}
+								}
+
 							}
 						}
-
-						// scope.__queryform[formId] = {
-						// targetId : formId,
-						// form : formDef,
-						// terms : {},// 搜索条件
-						// dataOriginal : [],
-						// page : {
-						// size : 15,
-						// cur : 1,
-						// numbers : [],
-						// sizes : [ 5, 15, 30, 50, 100 ]
-						// },
-						// data : [],
-						// }
 
 						// 执行配置管理
 						scope.config = {};
@@ -432,26 +489,18 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								}
 							}
 							scope.config.tableClass = tableClass;
+
+							// Page设置
+							if (formDef.config.page != null) {
+								cui.extend(true, scope.terms.page, formDef.config.page);
+							}
+
 						}
 
 						scope.def = formDef;
 					},
 					post : function(scope, element, attrs) {
-						var e = $(element);
-
-						// 设置默认值
-
-						// for ($ln in scope.$$ceresQueryForm.form.terms) {
-						// var term = scope.$$ceresQueryForm.form.terms[$ln];
-						// if (term.value != undefined) {
-						// scope.$$ceresQueryForm.terms[term.key] = term.value;
-						// }
-						// }
-
-						// 加载数据
-
-						// $("#" +
-						// scope.$$ceresQueryForm.targetId).trigger("search");
+						scope.search();
 					}
 				}
 			},

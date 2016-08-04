@@ -123,9 +123,8 @@ public class DateJsonConfig implements ApplicationRunner {
 				Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(str);
 				return date;
 			} catch (ParseException e4) {
-				e4.printStackTrace();
+				return new Date(str);
 			}
 		}
-		return null;
 	}
 }
