@@ -1,10 +1,5 @@
 package cn.cerestech.middleware.balance.enums;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
-import cn.cerestech.framework.core.KV;
 import cn.cerestech.framework.core.enums.DescribableEnum;
 
 public enum ErrorCodes implements DescribableEnum {
@@ -58,11 +53,11 @@ public enum ErrorCodes implements DescribableEnum {
 		return null;
 	}
 
-	public static List<KV> toList() {
-		List<KV> kv = Lists.newArrayList();
-		for (ErrorCodes s : ErrorCodes.values()) {
-			kv.add(KV.on().put("key", s.key()).put("desc", s.desc()));
-		}
-		return kv;
-	}
+//	public static List<KV> toList() {
+//		List<KV> kv = Lists.newArrayList();
+//		for (ErrorCodes s : ErrorCodes.values()) {
+//			kv.add(KV.on().put("key", s.key()).put("desc", s.desc()));
+//		}
+//		return kv;
+//	}
 }

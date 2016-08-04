@@ -5,7 +5,7 @@
   <artifactId>Ceres-Framework</artifactId>
   <packaging>pom</packaging>
   <properties>
-    <ceres.version>3.0.3</ceres.version>
+    <ceres.version>3.0.4</ceres.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <zxing.version>3.2.0</zxing.version>
@@ -79,10 +79,9 @@
     <module>Ceres-Support-Storage-WebApi</module>
     <module>Ceres-Middleware-Baidu-Map</module>
     <module>Ceres-Middleware-CodeTable</module>
-    
     <module>Ceres-Middleware-CodeTable-Console</module>
   </modules>
-  <version>3.0.3</version>
+  <version>3.0.4</version>
   <dependencies>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>

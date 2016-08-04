@@ -158,7 +158,7 @@ public class BalanceTransaction extends IdEntity {
 	public BalanceTransaction substract(DescribableEnum balanceType, Owner toWhom, BigDecimal amount,
 			BigDecimal minimalAmount) {
 		Log log = log(balanceType, toWhom, ActionType.OUT, amount, null, null, null);
-		log.setMinimalAmount(minimalAmount);
+//		log.setMinimalAmount(minimalAmount);
 		return this;
 
 	}
@@ -172,7 +172,7 @@ public class BalanceTransaction extends IdEntity {
 	public BalanceTransaction substract(DescribableEnum balanceType, Owner toWhom, BigDecimal amount,
 			BigDecimal minimalAmount, DescribableEnum business_stats, DescribableEnum reason, String remark) {
 		Log log = log(balanceType, toWhom, ActionType.OUT, amount, business_stats, reason, remark);
-		log.setMinimalAmount(minimalAmount);
+//		log.setMinimalAmount(minimalAmount);
 		return this;
 	}
 
@@ -187,21 +187,21 @@ public class BalanceTransaction extends IdEntity {
 		}
 
 		Log log = new Log();
-		log.setActionType(inout.key());
-		log.setAmount(amount);
-		log.setOwner_id(toWhom.getId());
-		log.setOwner_type(toWhom.getType());
-		log.setReason(reason == null ? this.reason : reason.key());
-		log.setBusiness_status_desc(business_stats == null ? businessStatusDesc : business_stats.desc());
-		log.setBusiness_status_key(business_stats == null ? businessStatusKey : business_stats.key());
-		log.setRemark(Strings.isNullOrEmpty(remark) ? this.remark : remark);
-		log.setBalance_type(balanceType.key());
-		log.setBalance_desc(balanceType.desc());
-		log.setExtra1(extra1);
-		log.setExtra2(extra2);
-		log.setExtra3(extra3);
-		log.setExtra4(extra4);
-		log.setExtra5(extra5);
+//		log.setActionType(inout.key());
+//		log.setAmount(amount);
+//		log.setOwner_id(toWhom.getId());
+//		log.setOwner_type(toWhom.getType());
+//		log.setReason(reason == null ? this.reason : reason.key());
+//		log.setBusiness_status_desc(business_stats == null ? businessStatusDesc : business_stats.desc());
+//		log.setBusiness_status_key(business_stats == null ? businessStatusKey : business_stats.key());
+//		log.setRemark(Strings.isNullOrEmpty(remark) ? this.remark : remark);
+//		log.setBalance_type(balanceType.key());
+//		log.setBalance_desc(balanceType.desc());
+//		log.setExtra1(extra1);
+//		log.setExtra2(extra2);
+//		log.setExtra3(extra3);
+//		log.setExtra4(extra4);
+//		log.setExtra5(extra5);
 		logs.add(log);
 		return log;
 	}

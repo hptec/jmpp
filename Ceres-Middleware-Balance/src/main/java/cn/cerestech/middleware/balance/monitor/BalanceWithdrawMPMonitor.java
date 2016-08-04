@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 
 import com.google.common.collect.Lists;
 
-import cn.cerestech.framework.core.monitor.AbstractMonitor;
 import cn.cerestech.middleware.balance.entity.Withdraw;
 
 /**
@@ -16,9 +15,8 @@ import cn.cerestech.middleware.balance.entity.Withdraw;
  *
  */
 // @Service
-public class BalanceWithdrawMPMonitor extends AbstractMonitor<Withdraw> {
+public class BalanceWithdrawMPMonitor {
 
-	@Override
 	public Supplier<List<Withdraw>> getReloader() {
 		return () -> {
 			// List<Withdraw> retList = mysqlService.queryBy(Withdraw.class,
@@ -29,7 +27,6 @@ public class BalanceWithdrawMPMonitor extends AbstractMonitor<Withdraw> {
 		};
 	}
 
-	@Override
 	public Function<Withdraw, Boolean> getMonitor() {
 		return wd -> {
 			// TODO 处理每一个提现请求，都是微信提现请求
@@ -37,13 +34,13 @@ public class BalanceWithdrawMPMonitor extends AbstractMonitor<Withdraw> {
 		};
 	}
 
-	@Override
 	public Boolean isRunable() {
-		if (getLastRunTime() == null) {
-			return Boolean.TRUE;
-		} else {
-			return System.currentTimeMillis() > (getLastRunTime().getTime() + 5 * 1000L);
-		}
+		return null;
+//		if (getLastRunTime() == null) {
+//			return Boolean.TRUE;
+//		} else {
+//			return System.currentTimeMillis() > (getLastRunTime().getTime() + 5 * 1000L);
+//		}
 	}
 
 }

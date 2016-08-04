@@ -1,5 +1,7 @@
 package cn.cerestech.middleware.balance.criteria;
 
+import org.springframework.data.jpa.domain.Specification;
+
 import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.framework.support.persistence.search.AbstractCriteria;
 import cn.cerestech.middleware.balance.entity.Log;
@@ -17,8 +19,8 @@ public class LogCriteria<T extends Log> extends AbstractCriteria<T> {
 
 	public LogCriteria<T> setOwner(Owner owner) {
 		if (owner != null) {
-			owner_id = owner.getOwner_id();
-			owner_type = owner.getOwner_type();
+//			owner_id = owner.getOwner_id();
+//			owner_type = owner.getOwner_type();
 		}
 		return this;
 	}
@@ -78,6 +80,12 @@ public class LogCriteria<T extends Log> extends AbstractCriteria<T> {
 
 	public void setBalance_type(String balance_type) {
 		this.balance_type = balance_type;
+	}
+
+	@Override
+	public Specification<T> specification() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
