@@ -15,16 +15,22 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
 				element.attr("src", ret);
 			});
 		} else {
-			console.log("发现未识别标记");
+			console.log("发现未识别标记："+tagName+ "fetchUrl:"+fetchUrl);
 		}
 	}
 
 	// 服务器存储对象格式
+	/**
+	 * 可以传StorageFile 对象样式， 或者传入一个url 字符串
+	 *  cuiStorage 如果是空则不解析，当为字符串时，按照url 进行解析 
+	 *  cuiFilter 如果为空，则不解析过滤器， 不管是否是url 或者 对象都加入过滤
+	 */
 	app.directive('cuiStorage', function($rootScope, $timeout) {
 		return {
 			restrict : "A",
 			scope : {
-				cuiStorage : "="
+				cuiStorage : "=",
+				cuiFilter: "@"
 			},
 			controller : [ "$scope", function($scope) {
 
@@ -47,13 +53,17 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
 					var fetchUrl = undefined;
 					if (typeof (obj) == "object" && obj.localUri != undefined) {
 						// 对象方式
-						var fetchUrl = obj.localUri;
-
+						fetchUrl = obj.localUri;
+					}else if(typeof (obj) == "string"){
+						fetchUrl = obj;
+					}
+					
+					if(fetchUrl != null && fetchUrl != ""){
 						// 检查是否指定filter
-						if (attrs.cuiFilter != undefined && attrs.cuiFilter != "") {
+						if (scope.cuiFilter != undefined && scope.cuiFilter != "") {
 							var ext = getExtension(fetchUrl);
 							var filenameWithoutExt = fetchUrl.substring(0, fetchUrl.length - ext.length);
-							fetchUrl = filenameWithoutExt + "@" + attrs.cuiFilter + ext;
+							fetchUrl = filenameWithoutExt + "@" + scope.cuiFilter + ext;
 						}
 
 						// 内部url
@@ -62,7 +72,6 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
 							url += "/"
 						}
 						fetchUrl = url + fetchUrl;
-
 					}
 
 					download(element, fetchUrl);
@@ -70,65 +79,4 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
 			}
 		}
 	});
-	// 指定url格式
-	app.directive('cuiStorageUrl', function($rootScope, $timeout) {
-
-		return {
-			restrict : "A",
-			scope : {},
-			controller : [ "$scope", function($scope) {
-
-			} ],
-			link : function(scope, element, attrs, controller) {
-
-				if (attrs.cuiStorageUrl == undefined) {
-					console.log("[cui-storage] 未发现存储文件");
-					return;
-				}
-
-				var obj = attrs.cuiStorageUrl;
-
-				// 拼装资源文件的标识key
-				var fetchUrl = undefined;
-				if (typeof (obj) == "string") {
-					// 指定路径，忽略cuiFilter
-					if (attrs.cuiFilter != undefined && attrs.cuiFilter != "") {
-						console.log("[WARN] Cui-Storage, 直接指定路径 cui-filter指定参数无效");
-					}
-					// 判断是内部url还是外部url
-					if (obj.indexOf("://") != -1) {
-						// 外部url
-						fetchUrl = obj;
-					} else {
-						// 内部url
-						var url = "/api/storage/query";
-						if (obj.substring(0, 1) != "/") {
-							url += "/"
-						}
-						fetchUrl = url + obj;
-					}
-				} else if (typeof (obj) == "object" && obj.localUri != undefined) {
-					// 对象方式
-					var fetchUrl = obj.localUri;
-
-					// 检查是否指定filter
-					if (attrs.cuiFilter != undefined && attrs.cuiFilter != "") {
-						var ext = getExtension(fetchUrl);
-						var filenameWithoutExt = fetchUrl.substring(0, fetchUrl.length - ext.length);
-						fetchUrl = filenameWithoutExt + "@" + attrs.cuiFilter + ext;
-					}
-
-					// 内部url
-					var url = "/api/storage/query";
-					if (fetchUrl.substring(0, 1) != "/") {
-						url += "/"
-					}
-					fetchUrl = url + fetchUrl;
-
-				}
-
-				download(element, fetchUrl);
-			}
-		}
-	})
 });
