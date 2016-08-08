@@ -201,7 +201,20 @@
 			deps:[
 				"jquery"
 			]
-			
+		},
+		{
+			name:"chart",
+			uri:"/api/classpath/query/support/web/console/bower_components/Chart.js/dist/Chart.bundle.min",
+			deps:[
+			]
+		},
+		{
+			name:"angular-chart",
+			uri:"/api/classpath/query/support/web/console/bower_components/angular-chart.js/dist/angular-chart.min",
+			deps:[
+				"chart"
+			],
+			angularModule:"chart.js"
 		},
 		{
 			name:"angular-ui-calendar",
