@@ -36,14 +36,17 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
         }
         function debounce(call, delay) {
             var preventCalls = false;
+            var timeout;
 
             return function() {
               if (!preventCalls) {
                 call();
 
                 preventCalls = true;
-
-                $timeout(function() {
+                if(timeout){
+                	$timeout.cancel(timeout);
+                }
+                timeout = $timeout(function() {
                   preventCalls = false;
                 }, delay);
               }
