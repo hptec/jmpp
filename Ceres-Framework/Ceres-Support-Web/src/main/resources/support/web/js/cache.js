@@ -125,7 +125,7 @@ define([ 'module', 'jquery' , 'md5'], function(module, $, md5) {
 			var platform = require('platform');
 			if(platform && platform.category() == "app"){
 				var Files =  require(['Files'],function(Files){
-					Files&&Files.get(url, back, expired);
+					Files&&Files.lining(url, back, expired);
 				}, function(){
 					back&&back(url, -1);
 				});
