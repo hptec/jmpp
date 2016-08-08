@@ -144,7 +144,7 @@ define([ 'app', 'icheck' ], function() {
 			restrict : 'A',
 			scope : true,
 			templateUrl : 'views/common/panel_tools.html',
-			controller : function($scope, $element) {
+			controller : function($scope, $element, $attrs) {
 				// Function for collapse ibox
 				$scope.showhide = function() {
 					var hpanel = $element.closest('div.hpanel');
@@ -167,6 +167,9 @@ define([ 'app', 'icheck' ], function() {
 					var hpanel = $element.closest('div.hpanel');
 					hpanel.remove();
 				}
+
+				$scope.collapse = $attrs.cuiCollapse == undefined ? true : angular.fromJson($attrs.cuiCollapse);
+				$scope.close = $attrs.cuiClose == undefined ? true : angular.fromJson($attrs.cuiClose);
 
 			}
 		};
