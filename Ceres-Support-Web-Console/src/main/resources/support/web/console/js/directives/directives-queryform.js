@@ -104,17 +104,23 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 
 									// 因为服务器使用0作为第一页，uibPagination使用1作为第一页，这里进行匹配
 									$scope.terms.page.pageNumber += 1;
-									
-									//如果因为操作的原因，导致页面超出范围，需要显示出那个本不应该存在的页码好让用户能够切换到正确的页码。
-									if($scope.terms.page.numberOfElements==0){
-//										$scope.search();
-										$scope.terms.page.totalPages+=1;
+
+									// 如果因为操作的原因，导致页面超出范围，需要显示出那个本不应该存在的页码好让用户能够切换到正确的页码。
+									if ($scope.terms.page.numberOfElements == 0) {
+										// $scope.search();
+										$scope.terms.page.totalPages += 1;
 									}
-									console.log($scope.terms);
+//									console.log($scope.terms);
 									// $scope.result = ret.object.page.data;
 									// angular.extend($scope, ret);
 								}
-								$scope.$apply();
+
+								var phase = $scope.$root.$$phase;
+								if (phase == '$apply' || phase == '$digest') {
+
+								} else {
+									$scope.$apply();
+								}
 
 								// var toPage = 1;
 								// if (localStorage && attrs.form) {
@@ -136,7 +142,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 				}
 
 				$scope.$watch("terms.page.pageNumber", function(n, o) {
-					console.log("新:" + n + " => 旧:" + o);
+//					console.log("新:" + n + " => 旧:" + o);
 					if (!$scope.searching) {
 						$scope.search();
 					}
@@ -159,7 +165,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 				// 数据初始化
 
 				// 添加搜索条件
-				if (formDef.terms.length > 0) {
+				if (formDef.terms != undefined && formDef.terms.length > 0) {
 					var contTerm = element.find("div[term-box]");
 					for ($ln in formDef.terms) {
 						var term = formDef.terms[$ln];
