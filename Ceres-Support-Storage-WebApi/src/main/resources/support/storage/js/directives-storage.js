@@ -56,7 +56,7 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
         	if(!element){
         		return false;
         	}else{
-        		return (element.getBoundingClientRect().top - document.documentElement.clientHeight) <= 0 ;
+        		return (element.getBoundingClientRect().top - document.documentElement.clientHeight) <= 50 ;
         	}
         }
         
@@ -85,14 +85,15 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
 			scope : {
 				cuiStorage : "=",
 				cuiFilter: "@",
-				cuiLoaded: "@"
+				cuiState: "@"
 			},
 			controller : [ "$scope", function($scope) {
 
 			} ],
 			link : function(scope, element, attrs, controller) {
 				function init(){
-					if(domService.painted(element[0]) == true && scope.cuiLoaded != true){
+					if(domService.painted(element[0]) == true && (scope.cuiState == 0 || scope.cuiState == undefined)){
+						scope.cuiState = 1;
 						var tagName = element[0].tagName;
 
 						if (scope.cuiStorage == undefined) {
@@ -131,7 +132,7 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
 						scope&&scope.$applyAsync();
 						
 						download(element, fetchUrl, function(){
-							scope.cuiLoaded = true;
+							scope.cuiState = 2;
 							angular.element($window).off('scroll', init);
 							scope&&scope.$applyAsync();
 						});
@@ -141,7 +142,7 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
 				scope.$watch(function() {
 					return JSON.stringify(scope.cuiStorage);
 				}, function(o, n) {
-					scope.cuiLoaded = false;
+					scope.cuiState = 0;
 					angular.element($window).on('scroll', domService.debounce(init, 300));
 					init();
 				});
