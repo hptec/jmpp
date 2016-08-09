@@ -240,7 +240,29 @@
 				"jquery",
 				"css!/api/classpath/query/support/web/console/theme/homer/bower_components/fullcalendar/dist/fullcalendar.min"
 			]
-			
+		},
+		{
+			name:"summernote",
+			uri:"/api/classpath/query/support/web/console/bower_components/summernote/dist/summernote.min",
+			deps:[
+				"css!/api/classpath/query/support/web/console/bower_components/summernote/dist/summernote",
+				"jquery"
+			]
+		},
+		{
+			name:"summernote-cn",
+			uri:"/api/classpath/query/support/web/console/bower_components/summernote/dist/lang/summernote-zh-CN.min",
+			deps:[
+				"summernote"
+			]
+		},{
+			name:"angular-summernote",
+			uri:"/api/classpath/query/support/web/console/bower_components/angular-summernote/dist/angular-summernote.min",
+			deps:[
+				"angular",
+				"summernote-cn"
+			],
+			angularModule:"summernote"
 		},
 		{
 			name:"console-starter",
