@@ -146,6 +146,11 @@ define([ 'app', 'cache', 'platform', 'module', 'http' ], function(app, cache, pl
 					angular.element($window).on('scroll', domService.debounce(init, 300));
 					init();
 				});
+				scope.$watch(function(){
+					return domService.painted(element[0]);
+				}, function(o,n){
+					init();
+				});
 			}
 		}
 	});
