@@ -110,7 +110,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 										// $scope.search();
 										$scope.terms.page.totalPages += 1;
 									}
-//									console.log($scope.terms);
+									// console.log($scope.terms);
 									// $scope.result = ret.object.page.data;
 									// angular.extend($scope, ret);
 								}
@@ -142,8 +142,8 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 				}
 
 				$scope.$watch("terms.page.pageNumber", function(n, o) {
-//					console.log("新:" + n + " => 旧:" + o);
-					if (!$scope.searching) {
+					// console.log("新:" + n + " => 旧:" + o);
+					if (!$scope.searching && n != o) {
 						$scope.search();
 					}
 				});
@@ -506,7 +506,10 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 						scope.def = formDef;
 					},
 					post : function(scope, element, attrs) {
-						scope.search();
+						var auto = attrs.cuiAuto == undefined || attrs.cuiAuto == "true" ? true : false;
+						if (auto) {
+							scope.search();
+						}
 					}
 				}
 			},
