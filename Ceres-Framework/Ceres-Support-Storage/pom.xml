@@ -4,7 +4,7 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>3.0.5</version>
+    <version>3.0.6</version>
   </parent>
   <artifactId>Ceres-Support-Storage</artifactId>
   <version>${ceres.version}</version>
@@ -30,9 +30,9 @@
       <version>${spring.boot.version}</version>
     </dependency>
     <dependency>
-    	<groupId>cn.cerestech</groupId>
-    	<artifactId>Ceres-Support-Starter</artifactId>
-    	<version>${ceres.version}</version>
+      <groupId>cn.cerestech</groupId>
+      <artifactId>Ceres-Support-Starter</artifactId>
+      <version>${ceres.version}</version>
     </dependency>
   </dependencies>
 </project>
