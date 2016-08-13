@@ -4,7 +4,7 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>3.0.4</version>
+    <version>3.0.5</version>
   </parent>
   <artifactId>Ceres-Middleware-Sms-Console</artifactId>
   <version>${ceres.version}</version>
@@ -12,11 +12,6 @@
     <dependency>
       <groupId>cn.cerestech</groupId>
       <artifactId>Ceres-Middleware-Sms</artifactId>
-      <version>${ceres.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>cn.cerestech</groupId>
-      <artifactId>Ceres-Support-Web-Console</artifactId>
       <version>${ceres.version}</version>
     </dependency>
   </dependencies>

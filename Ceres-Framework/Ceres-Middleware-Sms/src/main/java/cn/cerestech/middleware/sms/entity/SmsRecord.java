@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import cn.cerestech.framework.support.persistence.IdEntity;
+import cn.cerestech.framework.support.persistence.entity.IdEntity;
 import cn.cerestech.middleware.location.ip.IP;
 import cn.cerestech.middleware.location.mobile.Mobile;
 import cn.cerestech.middleware.sms.enums.SmsProvider;
