@@ -40,10 +40,13 @@ define([ 'app', 'codetable-data', 'modal', 'angular' ], function(app, codetableD
 					tElement.append("<option value=''>" + defaultDesc + "</option>");
 				}
 				// 添加枚举值
-				var values = findByCategory(category).codes;
-				for (_$ln in values) {
-					var o = values[_$ln];
-					tElement.append("<option value='" + o.value + "'>" + o.desc + "</option>");
+				var cate = findByCategory(category);
+				if (cate != undefined && cate.codes != undefined) {
+					var values = findByCategory(category).codes;
+					for (_$ln in values) {
+						var o = values[_$ln];
+						tElement.append("<option value='" + o.value + "'>" + o.desc + "</option>");
+					}
 				}
 
 				return function(scope, element, attrs) {
