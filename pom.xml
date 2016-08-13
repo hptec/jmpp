@@ -66,14 +66,14 @@
     <module>Ceres-Middleware-Sms</module>
     <module>Ceres-Support-Configuration</module>
     <module>Ceres-Support-Persistence</module>
-    <module>Ceres-Support-Classpath-WebApi</module>
+    
     <module>Ceres-Support-Classpath</module>
     <module>Ceres-Support-Login</module>
     <module>Ceres-Middleware-Sms-Console</module>
     <module>Ceres-Middleware-Balance</module>
     <module>Ceres-Middleware-Location</module>
     <module>Ceres-Support-Storage</module>
-    <module>Ceres-Support-Storage-WebApi</module>
+    
     <module>Ceres-Middleware-Baidu-Map</module>
     <module>Ceres-Middleware-CodeTable</module>
     <module>Ceres-Middleware-CodeTable-Console</module>
