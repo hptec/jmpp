@@ -11,9 +11,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.framework.support.persistence.entity.HashTag;
+import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 /**
  * 字典表分类表

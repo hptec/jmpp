@@ -13,14 +13,14 @@ import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
-import cn.cerestech.framework.support.web.web.WebApi;
+import cn.cerestech.framework.support.starter.web.WebSupport;
 import cn.cerestech.middleware.codetable.entity.Category;
 import cn.cerestech.middleware.codetable.entity.Code;
 import cn.cerestech.middleware.codetable.service.CodeTableService;
 
 @RestController
 @RequestMapping("api/codetable")
-public class CodeTableWebApi extends WebApi implements UserSessionOperator {
+public class CodeTableWebApi extends WebSupport implements UserSessionOperator {
 
 	@Autowired
 	CodeTableService codeTableService;
