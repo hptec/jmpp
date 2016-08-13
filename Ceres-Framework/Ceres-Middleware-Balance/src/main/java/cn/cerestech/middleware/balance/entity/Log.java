@@ -10,8 +10,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import cn.cerestech.framework.core.enums.EnumCollector;
-import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.framework.support.persistence.Owner;
+import cn.cerestech.framework.support.persistence.entity.IdEntity;
 import cn.cerestech.middleware.balance.enums.ActionType;
 import cn.cerestech.middleware.balance.enums.TransactionStatus;
 
