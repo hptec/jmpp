@@ -1,0 +1,20 @@
+<div ng-controller="workbenchCtrl">
+<!-- Header -->
+<div id="header" ng-include="'/api/theme/query/views/common/header.html'"></div>
+<!-- Navigation -->
+<aside id="menu" ng-include="'/api/theme/query/views/common/navigation.html'"></aside>
+
+<!-- Main Wrapper -->
+<div id="wrapper">
+	
+	<div class="content" ui-view animate-panel effect="zoomIn">
+	
+	</div>
+
+    <!-- Right sidebar -->
+    <div id="right-sidebar" ng-include="'/api/theme/query/views/common/right_sidebar.html'" class="sidebar-open" ng-show="rightSidebar"></div>
+
+    <!-- Footer -->
+    <footer class="footer" ng-include="'/api/theme/query/views/common/footer.html'"></footer>
+</div>
+</div>
