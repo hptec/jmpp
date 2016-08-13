@@ -13,16 +13,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.base.Strings;
 
-import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
-import cn.cerestech.framework.support.login.config.LoginProviderConfiguration;
 import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
-import cn.cerestech.framework.support.web.operator.PlatformOperator;
-import cn.cerestech.framework.support.web.operator.SessionOperator;
-import cn.cerestech.framework.support.web.operator.ZipOutOperator;
+import cn.cerestech.framework.support.login.provider.LoginProvider;
+import cn.cerestech.framework.support.login.service.LoginService;
+import cn.cerestech.framework.support.starter.operator.PlatformOperator;
+import cn.cerestech.framework.support.starter.operator.SessionOperator;
+import cn.cerestech.framework.support.starter.operator.ZipOutOperator;
 
 @Component
 public class LoginInterceptor
@@ -30,8 +30,17 @@ public class LoginInterceptor
 
 	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
 
+	@SuppressWarnings("rawtypes")
 	@Autowired
-	LoginProviderConfiguration loginProviders;
+	LoginProvider loginProvider;
+
+	@SuppressWarnings("rawtypes")
+	@Autowired
+	LoginDao loginDao;
+
+	@SuppressWarnings("rawtypes")
+	@Autowired
+	LoginService loginService;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -47,13 +56,6 @@ public class LoginInterceptor
 			LoginRequired fl = m.getMethodAnnotation(LoginRequired.class);
 			if (fl != null && fl.required()) {
 
-				// 检查paltform,必须指定platfomr
-				PlatformCategory platform = getPlatformCategory();
-				if (platform == null) {
-					zipOut(Result.error(cn.cerestech.framework.platform.enums.ErrorCodes.PLATFORM_CATEGORY_REQUIRED));
-					return Boolean.FALSE;
-				}
-
 				// 检查Session中是否存在登录用户ID
 
 				Long id = getUserId();
@@ -61,14 +63,14 @@ public class LoginInterceptor
 					// 用户未登录
 
 					// 检测是否有持久化Cookie登录
-					String token = getRememberToken();
+					String token = loginService.getRememberToken();
 					if (Strings.isNullOrEmpty(token)) {
 						// 如果要求登录、没有登录也没有token，则要求登录
 						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
 						return Boolean.FALSE;
 					}
 					// 获取remember_key和remember_id
-					id = getRememberId();
+					id = loginService.getRememberId();
 					if (id == null) {
 						// id 不存在，数据错误,要求重登录
 						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
@@ -76,9 +78,9 @@ public class LoginInterceptor
 					}
 
 					// 校验登录
-					LoginDao dao = loginProviders.getProvider(platform).getDao();
-					if (dao != null && dao.findUniqueByIdAndLoginRememberTokenAndLoginRememberExpiredGreaterThan(id,
-							token, new Date()) != null) {
+					if (loginDao != null
+							&& loginDao.findUniqueByIdAndLoginRememberTokenAndLoginRememberExpiredGreaterThan(id, token,
+									new Date()) != null) {
 						// 校验通过，记录入Session
 						putUserId(id);
 						return Boolean.TRUE;

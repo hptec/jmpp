@@ -2,6 +2,8 @@ package cn.cerestech.framework.support.login.provider;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.collect.Lists;
 
 import cn.cerestech.framework.core.service.Result;
@@ -15,11 +17,13 @@ public abstract class PasswordLoginProvider<T extends Loginable> implements Logi
 	public static final String LOGIN_ID = "usr";
 	public static final String LOGIN_PWD = "pwd";
 
+	@Autowired
+	LoginDao<T> loginDao;
+
 	@Override
 	public Result<Long> validate() {
-		LoginDao<T> dao = getDao();
 		Login fromLogin = getLogin();
-		if (dao == null || fromLogin == null || fromLogin.isEmpty()) {
+		if (fromLogin == null || fromLogin.isEmpty()) {
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
 
@@ -58,7 +62,7 @@ public abstract class PasswordLoginProvider<T extends Loginable> implements Logi
 	}
 
 	public T getLoginFromDB(Login fromLogin) {
-		return getDao().findUniqueByLoginIdIgnoreCase(fromLogin.getId());
+		return loginDao.findUniqueByLoginIdIgnoreCase(fromLogin.getId());
 	}
 
 }

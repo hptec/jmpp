@@ -3,12 +3,11 @@ package cn.cerestech.framework.support.login.operator;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Longs;
 
-import cn.cerestech.framework.support.web.Cookies;
-import cn.cerestech.framework.support.web.operator.PlatformOperator;
-import cn.cerestech.framework.support.web.operator.ResponseOperator;
-import cn.cerestech.framework.support.web.operator.SessionOperator;
+import cn.cerestech.framework.support.starter.Cookies;
+import cn.cerestech.framework.support.starter.operator.ResponseOperator;
+import cn.cerestech.framework.support.starter.operator.SessionOperator;
 
-public interface UserSessionOperator extends SessionOperator, PlatformOperator, ResponseOperator {
+public interface UserSessionOperator extends SessionOperator, ResponseOperator {
 
 	public static final String SESSION_LOGINENTITY_ID = "SESSION_LOGINENTITY_ID_";
 
@@ -16,41 +15,41 @@ public interface UserSessionOperator extends SessionOperator, PlatformOperator, 
 	public static final String COOKIE_REMEMBER_ID = "COOKIE_REMEMBER_ID_";
 
 	default void putUserId(Long id) {
-		String sKey = SESSION_LOGINENTITY_ID + getPlatformCategory().key();
+		String sKey = SESSION_LOGINENTITY_ID;
 		putSession(sKey, id);
 	}
 
 	default Long getUserId() {
-		String sKey = SESSION_LOGINENTITY_ID + getPlatformCategory().key();
+		String sKey = SESSION_LOGINENTITY_ID;
 		return getSession(sKey);
 	}
 
-	default String getRememberToken() {
-		String cKey = COOKIE_REMEMBER_TOKEN + getPlatformCategory().key();
-		Cookies cookies = Cookies.from(getRequest());
-		return cookies.getValue(cKey);
-	}
+//	default String getRememberToken() {
+//		String cKey = COOKIE_REMEMBER_TOKEN;
+//		Cookies cookies = Cookies.from(getRequest());
+//		return cookies.getValue(cKey);
+//	}
+//
+//	default Long getRememberId() {
+//		String cKey = COOKIE_REMEMBER_ID;
+//		Cookies cookies = Cookies.from(getRequest());
+//		return cookies.exist(cKey) ? Longs.tryParse(cookies.getValue(cKey)) : null;
+//	}
 
-	default Long getRememberId() {
-		String cKey = COOKIE_REMEMBER_ID + getPlatformCategory().key();
-		Cookies cookies = Cookies.from(getRequest());
-		return cookies.exist(cKey) ? Longs.tryParse(cookies.getValue(cKey)) : null;
-	}
-
-	default void putRemember(Long id, String token) {
-		if (id != null && !Strings.isNullOrEmpty(token)) {
-			String cKeyToken = COOKIE_REMEMBER_TOKEN + getPlatformCategory().key();
-			String cKeyId = COOKIE_REMEMBER_ID + getPlatformCategory().key();
-			Cookies cookies = Cookies.from(getRequest());
-			cookies.add(cKeyToken, token);
-			cookies.add(cKeyId, id.toString());
-			cookies.flushTo(getResponse());
-		}
-	}
+//	default void putRemember(Long id, String token) {
+//		if (id != null && !Strings.isNullOrEmpty(token)) {
+//			String cKeyToken = COOKIE_REMEMBER_TOKEN;
+//			String cKeyId = COOKIE_REMEMBER_ID;
+//			Cookies cookies = Cookies.from(getRequest());
+//			cookies.add(cKeyToken, token);
+//			cookies.add(cKeyId, id.toString());
+//			cookies.flushTo(getResponse());
+//		}
+//	}
 
 	default void clearRemember() {
-		String cKeyToken = COOKIE_REMEMBER_TOKEN + getPlatformCategory().key();
-		String cKeyId = COOKIE_REMEMBER_ID + getPlatformCategory().key();
+		String cKeyToken = COOKIE_REMEMBER_TOKEN;
+		String cKeyId = COOKIE_REMEMBER_ID;
 		Cookies cookies = Cookies.from(getRequest());
 		cookies.remove(cKeyToken);
 		cookies.remove(cKeyId);

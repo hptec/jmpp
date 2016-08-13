@@ -5,6 +5,9 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Strings;
+import com.google.common.primitives.Longs;
+
 import cn.cerestech.framework.core.date.Moment;
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.core.service.Result;
@@ -13,30 +16,34 @@ import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
-import cn.cerestech.framework.support.login.interceptor.LoginInterceptor;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
 import cn.cerestech.framework.support.login.provider.LoginProvider;
 import cn.cerestech.framework.support.persistence.entity.Confidential;
-import cn.cerestech.framework.support.web.operator.PlatformOperator;
+import cn.cerestech.framework.support.starter.Cookies;
+import cn.cerestech.framework.support.starter.dao.PlatformDao;
+import cn.cerestech.framework.support.starter.entity.Platform;
+import cn.cerestech.framework.support.starter.operator.PlatformOperator;
 
 @Service
 public class LoginService<T extends Loginable> implements PlatformOperator, UserSessionOperator {
 
 	@Autowired
-	LoginInterceptor interceptor;
+	LoginProvider<T> loginProvider;
+
+	@Autowired
+	LoginDao<T> loginDao;
+
+	@Autowired
+	PlatformDao platformDao;
 
 	@SuppressWarnings("unchecked")
-	public Result<T> login(LoginProvider<T> provider) {
-		if (provider == null) {
-			return Result.error(ErrorCodes.LOGIN_FAILED);
-		}
+	public Result<T> login() {
 
-		Result<Long> ret = provider.validate();
+		Result<Long> ret = loginProvider.validate();
 		if (!ret.isSuccess()) {
 			return Result.error(ret);
 		}
-		LoginDao<T> dao = provider.getDao();
-		T t = dao.findOne(ret.getObject());
+		T t = loginDao.findOne(ret.getObject());
 		Login inDb = t.getLogin();
 
 		if (inDb.getFrozen().equals(YesNo.YES)) {
@@ -44,7 +51,7 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		}
 
 		// 记录remember me
-		Boolean needRemember = provider.getRemember();
+		Boolean needRemember = loginProvider.getRemember();
 
 		Date now = new Date();
 		if (needRemember) {
@@ -75,7 +82,7 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		}
 
 		// 保存登录信息
-		dao.save(t);
+		loginDao.save(t);
 
 		return Result.success(t instanceof Confidential ? ((Confidential<T>) t).safty() : t);
 	}
@@ -86,4 +93,32 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		return Result.success();
 	}
 
+	public void putRemember(Long id, String token) {
+		if (id != null && !Strings.isNullOrEmpty(token)) {
+			Platform platform = platformDao.findOne(getPlatformId());
+
+			String cKeyToken = COOKIE_REMEMBER_TOKEN + platform.getKey();
+			String cKeyId = COOKIE_REMEMBER_ID + platform.getKey();
+			Cookies cookies = Cookies.from(getRequest());
+			cookies.add(cKeyToken, token);
+			cookies.add(cKeyId, id.toString());
+			cookies.flushTo(getResponse());
+		}
+	}
+
+	public String getRememberToken() {
+		Platform platform = platformDao.findOne(getPlatformId());
+
+		String cKey = COOKIE_REMEMBER_TOKEN + platform.getKey();
+		Cookies cookies = Cookies.from(getRequest());
+		return cookies.getValue(cKey);
+	}
+
+	public Long getRememberId() {
+		Platform platform = platformDao.findOne(getPlatformId());
+
+		String cKey = COOKIE_REMEMBER_ID + platform.getKey();
+		Cookies cookies = Cookies.from(getRequest());
+		return cookies.exist(cKey) ? Longs.tryParse(cookies.getValue(cKey)) : null;
+	}
 }
