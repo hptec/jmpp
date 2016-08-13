@@ -21,14 +21,14 @@ import com.google.common.io.Files;
 
 import cn.cerestech.framework.core.images.Images;
 import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.framework.support.starter.ContentType;
+import cn.cerestech.framework.support.starter.web.WebSupport;
 import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.service.StorageService;
-import cn.cerestech.framework.support.web.ContentType;
-import cn.cerestech.framework.support.web.web.WebApi;
 
 @RestController
 @RequestMapping("api/storage")
-public class StorageWebApi extends WebApi {
+public class StorageWebApi extends WebSupport {
 
 	private Logger log = LogManager.getLogger();
 	@Autowired
