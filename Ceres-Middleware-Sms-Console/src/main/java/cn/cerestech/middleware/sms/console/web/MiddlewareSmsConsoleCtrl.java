@@ -1,39 +1,15 @@
 package cn.cerestech.middleware.sms.console.web;
 
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-
-import cn.cerestech.framework.core.enums.EnumCollector;
-import cn.cerestech.framework.core.enums.YesNo;
-import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.core.utils.KV;
-import cn.cerestech.framework.support.configuration.service.ConfigService;
-import cn.cerestech.middleware.sms.entity.SmsRecord;
-import cn.cerestech.middleware.sms.enums.ErrorCodes;
-import cn.cerestech.middleware.sms.enums.SmsConfigKeys;
-import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
-import cn.cerestech.middleware.sms.enums.SmsState;
-import cn.cerestech.middleware.sms.providers.Provider;
-import cn.cerestech.middleware.sms.service.SmsService;
-import cn.cerestech.support.web.console.web.AbstractConsoleWeb;
+import cn.cerestech.framework.support.starter.web.WebSupport;
 
 @RequestMapping("$$ceres_sys/console/middleware/sms")
 //@Manifest("middleware/sms/manifest.json")
 // @RequiredResource(js = {
 // "console/base/res/cp?id=console/res/middleware/sms/ceres-pages-middleware-sms.js"
 // })
-public class MiddlewareSmsConsoleCtrl extends AbstractConsoleWeb {
+public class MiddlewareSmsConsoleCtrl extends WebSupport {
 //
 //	@Autowired
 //	ConfigService configService;
