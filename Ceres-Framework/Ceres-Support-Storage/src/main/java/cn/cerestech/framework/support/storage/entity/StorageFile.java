@@ -8,7 +8,7 @@ import javax.persistence.Transient;
 import com.google.common.io.Files;
 
 import cn.cerestech.framework.core.utils.Random;
-import cn.cerestech.framework.support.persistence.IdEntity;
+import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 @Entity
 @Table(name = "$$sys_storage")
