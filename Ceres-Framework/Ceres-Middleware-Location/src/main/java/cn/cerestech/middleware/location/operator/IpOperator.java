@@ -2,7 +2,7 @@ package cn.cerestech.middleware.location.operator;
 
 import javax.servlet.http.HttpServletRequest;
 
-import cn.cerestech.framework.support.web.operator.RequestOperator;
+import cn.cerestech.framework.support.starter.operator.RequestOperator;
 import cn.cerestech.middleware.location.ip.IP;
 
 public interface IpOperator extends RequestOperator {
