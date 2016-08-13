@@ -3,6 +3,7 @@ package cn.cerestech.framework.support.starter.console.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -22,6 +23,8 @@ import cn.cerestech.framework.support.persistence.entity.Sortable;
 @Entity
 @Table(name = "$$sys_menu")
 public class SysMenu extends IdEntity implements Sortable {
+
+	@Column(length = 35)
 	private String uuid;
 	private String icon;
 	private String caption;

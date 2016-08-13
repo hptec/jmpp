@@ -11,13 +11,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import cn.cerestech.framework.support.persistence.Owner;
-import cn.cerestech.framework.support.persistence.entity.HashTag;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 /**
  * 字典表分类表
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "$$sys_codetable_category")
 public class Category extends IdEntity {
@@ -37,6 +40,7 @@ public class Category extends IdEntity {
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@OrderBy("sortIndex,id")
+	@Fetch(FetchMode.SELECT)
 	private List<Code> codes;
 
 	public Owner getOwner() {
