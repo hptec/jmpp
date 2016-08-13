@@ -18,7 +18,7 @@ import com.google.gson.JsonSerializer;
 
 import cn.cerestech.framework.core.json.JsonIgnore;
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.persistence.IdEntity;
+import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 @Component
 public class IdEntityJsonConfig implements ApplicationRunner {

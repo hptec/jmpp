@@ -1,4 +1,4 @@
-package cn.cerestech.framework.support.persistence;
+package cn.cerestech.framework.support.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +13,9 @@ import javax.persistence.MappedSuperclass;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.framework.support.persistence.CeresEntityListener;
 
 /**
  * 是否支持ID为主键类型的实体记录
@@ -61,4 +64,8 @@ public abstract class IdEntity implements Serializable {
 		this.updateTime = updateTime;
 	}
 
+	@Override
+	public String toString() {
+		return Jsons.from(this).toPrettyJson();
+	}
 }
