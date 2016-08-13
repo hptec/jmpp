@@ -8,8 +8,8 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import cn.cerestech.framework.core.enums.DescribableEnum;
-import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.framework.support.persistence.Owner;
+import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 /**
  * 账户余额

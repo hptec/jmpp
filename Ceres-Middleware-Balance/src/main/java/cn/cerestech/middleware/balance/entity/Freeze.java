@@ -7,8 +7,8 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import cn.cerestech.framework.support.persistence.IdEntity;
 import cn.cerestech.framework.support.persistence.Owner;
+import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 @Entity
 @Table(name = "$$balance_freeze")
