@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
 
@@ -16,8 +17,8 @@ import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.LoginField;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.ErrorCodes;
-import cn.cerestech.framework.support.web.operator.RequestOperator;
-import cn.cerestech.framework.support.web.operator.SessionOperator;
+import cn.cerestech.framework.support.starter.operator.RequestOperator;
+import cn.cerestech.framework.support.starter.operator.SessionOperator;
 import cn.cerestech.middleware.location.mobile.Mobile;
 import cn.cerestech.middleware.location.operator.IpOperator;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
@@ -48,12 +49,14 @@ public abstract class SmsLoginProvider<T extends Loginable>
 	 */
 	abstract public Long onRegisterRequired(Login login);
 
+	@Autowired
+	LoginDao<T> loginDao;
+
 	@Override
 	public Result<Long> validate() {
 
-		LoginDao<T> dao = getDao();
 		Login fromLogin = getLogin();
-		if (dao == null || fromLogin == null || fromLogin.isEmpty()) {
+		if (fromLogin == null || fromLogin.isEmpty()) {
 			return Result.error(ErrorCodes.LOGIN_FAILED);
 		}
 
@@ -68,7 +71,7 @@ public abstract class SmsLoginProvider<T extends Loginable>
 		Long id = onRegisterRequired(fromLogin);
 		if (id == null) {
 			// 从数据库获取用户对象
-			T t = dao.findUniqueByLoginIdIgnoreCase(fromLogin.getId());
+			T t = loginDao.findUniqueByLoginIdIgnoreCase(fromLogin.getId());
 			if (t == null) {
 				return Result.error(ErrorCodes.LOGIN_FAILED);
 			}
