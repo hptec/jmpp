@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import cn.cerestech.framework.core.enums.DescribableEnum;
 import cn.cerestech.framework.support.persistence.Owner;
-import cn.cerestech.framework.support.web.operator.PlatformOperator;
+import cn.cerestech.framework.support.starter.operator.PlatformOperator;
 
 public interface CodeTableProvider extends PlatformOperator {
 

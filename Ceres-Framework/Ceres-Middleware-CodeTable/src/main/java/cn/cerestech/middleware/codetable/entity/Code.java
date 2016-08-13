@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import cn.cerestech.framework.core.json.JsonIgnore;
-import cn.cerestech.framework.support.persistence.IdEntity;
+import cn.cerestech.framework.support.persistence.entity.IdEntity;
 import cn.cerestech.framework.support.persistence.entity.Sortable;
 
 /**
