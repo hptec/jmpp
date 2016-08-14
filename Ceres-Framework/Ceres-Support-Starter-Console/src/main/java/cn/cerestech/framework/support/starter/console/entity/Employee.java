@@ -1,9 +1,9 @@
 package cn.cerestech.framework.support.starter.console.entity;
 
+import java.util.Date;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,17 +11,19 @@ import javax.persistence.Table;
 
 import cn.cerestech.framework.core.enums.Gender;
 import cn.cerestech.framework.core.enums.YesNo;
+import cn.cerestech.framework.core.json.JsonIgnore;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.persistence.entity.Confidential;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
+import cn.cerestech.framework.support.persistence.entity.SoftDelete;
 import cn.cerestech.middleware.location.mobile.Mobile;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "$$sys_employee")
-public class Employee extends IdEntity implements Confidential<Employee>, Loginable {
+public class Employee extends IdEntity implements Confidential<Employee>, Loginable, SoftDelete {
 
 	private String platform;
 
@@ -36,9 +38,12 @@ public class Employee extends IdEntity implements Confidential<Employee>, Logina
 
 	private Gender gender = Gender.UNKNOWN;
 
+	private Date deleteTime;
+
 	// 上级
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id", referencedColumnName = "id")
+	@JsonIgnore
 	private Employee parent;
 
 	private YesNo isSuperAdmin;
@@ -105,7 +110,13 @@ public class Employee extends IdEntity implements Confidential<Employee>, Logina
 	@Override
 	public Employee safty() {
 		Employee employee = Jsons.from(this).to(Employee.class);
-		employee.setLogin(null);
+		if (employee.getLogin() != null) {
+			Login loginTmp = new Login();
+			loginTmp.setId(employee.getLogin().getId());
+			loginTmp.setFrozen(employee.getLogin().getFrozen());
+			employee.setLogin(loginTmp);
+		}
+
 		return employee;
 	}
 
@@ -131,6 +142,14 @@ public class Employee extends IdEntity implements Confidential<Employee>, Logina
 
 	public void setParent(Employee parent) {
 		this.parent = parent;
+	}
+
+	public Date getDeleteTime() {
+		return deleteTime;
+	}
+
+	public void setDeleteTime(Date deleteTime) {
+		this.deleteTime = deleteTime;
 	}
 
 }

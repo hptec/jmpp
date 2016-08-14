@@ -5,17 +5,32 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
 
+import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.core.utils.Encrypts;
+import cn.cerestech.framework.support.login.entity.Login;
+import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
+import cn.cerestech.framework.support.login.operator.UserSessionOperator;
 import cn.cerestech.framework.support.starter.console.dao.EmployeeDao;
 import cn.cerestech.framework.support.starter.console.entity.Employee;
 import cn.cerestech.framework.support.starter.console.enums.EmployeeErrorCodes;
+import cn.cerestech.framework.support.starter.operator.PlatformOperator;
 
 @Service
-public class EmployeeService {
+public class EmployeeService implements UserSessionOperator, PlatformOperator {
 
 	@Autowired
 	EmployeeDao employeeDao;
+
+	/**
+	 * 获取员工对象，只能获取当前Platform下属的员工
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Employee get(Long id) {
+		return employeeDao.findUniqueByPlatformAndDeleteTimeIsNullAndId(getPlatformKey(), id);
+	}
 
 	public Result<Employee> modifyPassword(Long eid, String pwd) {
 		if (Strings.isNullOrEmpty(pwd)) {
@@ -94,4 +109,48 @@ public class EmployeeService {
 	// buffer.toString());
 	// return retList;
 	// }
+
+	/**
+	 * 添加子员工账号
+	 * 
+	 * @param employee
+	 * @return
+	 */
+	public Result<Employee> updateSubEmployee(Employee employee) {
+		if (employee == null) {
+			return Result.error(EmployeeErrorCodes.EMPLOYEE_NOT_EXIST);
+		}
+		if (employee.getLogin() == null || Strings.isNullOrEmpty(employee.getLogin().getId())) {
+			return Result.error(LoginErrorCodes.LOGIN_INFO_REQUIRED);
+		}
+		if (Strings.isNullOrEmpty(employee.getName())) {
+			return Result.error(EmployeeErrorCodes.NAME_REQUIRED);
+		}
+		// loginId能在其他平台下存在
+		int exist = employeeDao.countByPlatformAndDeleteTimeIsNullAndLoginIdAndParentIdNot(getPlatformKey(),
+				employee.getLogin().getId(), getUserId());
+		if (exist > 0) {
+			return Result.error(EmployeeErrorCodes.LOGINID_CONFLICT);
+		}
+
+		employee.setParent(employeeDao.findOne(getUserId()));
+		employee.setIsSuperAdmin(YesNo.NO);
+		employee.setPlatform(getPlatformKey());
+
+		if (employee.getId() == null) {
+			// 新增模式
+			employee.getLogin().setFrozen(YesNo.NO);
+			employee.getLogin().setPwd(Encrypts.md5(Encrypts.md5("888888")));
+		} else {
+			Login loginInDb = employeeDao.findOne(employee.getId()).getLogin();
+			loginInDb.setId(employee.getLogin().getId());// 登录名有可能被修改
+			loginInDb.setFrozen(employee.getLogin().getFrozen());//冻结状态可能被修改
+			employee.setLogin(loginInDb);
+		}
+
+		// 娇艳重复性
+
+		employeeDao.save(employee);
+		return Result.success(employee);
+	}
 }

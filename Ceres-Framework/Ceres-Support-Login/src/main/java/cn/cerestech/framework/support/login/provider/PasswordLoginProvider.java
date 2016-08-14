@@ -11,7 +11,7 @@ import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.LoginField;
 import cn.cerestech.framework.support.login.entity.Loginable;
-import cn.cerestech.framework.support.login.enums.ErrorCodes;
+import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 
 public abstract class PasswordLoginProvider<T extends Loginable> implements LoginProvider<T> {
 	public static final String LOGIN_ID = "usr";
@@ -24,24 +24,24 @@ public abstract class PasswordLoginProvider<T extends Loginable> implements Logi
 	public Result<Long> validate() {
 		Login fromLogin = getLogin();
 		if (fromLogin == null || fromLogin.isEmpty()) {
-			return Result.error(ErrorCodes.LOGIN_FAILED);
+			return Result.error(LoginErrorCodes.LOGIN_FAILED);
 		}
 
 		// 从数据库获取用户对象
 		T t = getLoginFromDB(fromLogin);
 		if (t == null) {
-			return Result.error(ErrorCodes.LOGIN_FAILED);
+			return Result.error(LoginErrorCodes.LOGIN_FAILED);
 		}
 
 		Login inDb = t.getLogin();
 
 		if (inDb == null || inDb.isEmpty()) {
-			return Result.error(ErrorCodes.LOGIN_FAILED);
+			return Result.error(LoginErrorCodes.LOGIN_FAILED);
 		}
 
 		if (!inDb.comparePassword(fromLogin.getPwd())) {
 			// 比对用户名密码
-			return Result.error(ErrorCodes.LOGIN_FAILED);
+			return Result.error(LoginErrorCodes.LOGIN_FAILED);
 		}
 
 		return Result.success(t.getId());

@@ -16,10 +16,12 @@ import com.google.common.base.Strings;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
 import cn.cerestech.framework.support.login.dao.LoginDao;
-import cn.cerestech.framework.support.login.enums.ErrorCodes;
+import cn.cerestech.framework.support.login.entity.Login;
+import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
 import cn.cerestech.framework.support.login.provider.LoginProvider;
 import cn.cerestech.framework.support.login.service.LoginService;
+import cn.cerestech.framework.support.persistence.entity.SoftDelete;
 import cn.cerestech.framework.support.starter.operator.PlatformOperator;
 import cn.cerestech.framework.support.starter.operator.SessionOperator;
 import cn.cerestech.framework.support.starter.operator.ZipOutOperator;
@@ -66,14 +68,14 @@ public class LoginInterceptor
 					String token = loginService.getRememberToken();
 					if (Strings.isNullOrEmpty(token)) {
 						// 如果要求登录、没有登录也没有token，则要求登录
-						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
+						zipOut(Result.error(LoginErrorCodes.LOGIN_REQUIRED));
 						return Boolean.FALSE;
 					}
 					// 获取remember_key和remember_id
 					id = loginService.getRememberId();
 					if (id == null) {
 						// id 不存在，数据错误,要求重登录
-						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
+						zipOut(Result.error(LoginErrorCodes.LOGIN_REQUIRED));
 						return Boolean.FALSE;
 					}
 
@@ -81,12 +83,22 @@ public class LoginInterceptor
 					if (loginDao != null
 							&& loginDao.findUniqueByIdAndLoginRememberTokenAndLoginRememberExpiredGreaterThan(id, token,
 									new Date()) != null) {
+						// 判断用户是否有可能被删除
+						Object obj = loginDao.findOne(id);
+						if (obj instanceof SoftDelete) {
+							if (((SoftDelete) obj).getDeleteTime() != null) {
+								// 已经被删除了
+								zipOut(Result.error(LoginErrorCodes.LOGIN_REQUIRED));
+								return Boolean.FALSE;
+							}
+						}
+
 						// 校验通过，记录入Session
 						putUserId(id);
 						return Boolean.TRUE;
 					} else {
 						// 不提供此种类型的持久化登录,要求重新登录
-						zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
+						zipOut(Result.error(LoginErrorCodes.LOGIN_REQUIRED));
 						return Boolean.FALSE;
 					}
 

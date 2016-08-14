@@ -71,8 +71,19 @@ public class EnumCollector {
 	public <T> T keyOf(String key) {
 		DescribableEnum[] values = values();
 		for (DescribableEnum v : values) {
-			DescribableEnum de = (DescribableEnum) v;
-			if (de.key().equalsIgnoreCase(key)) {
+			if (v.key().equalsIgnoreCase(key)) {
+				return (T) v;
+			}
+		}
+
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T nameOf(String key) {
+		DescribableEnum[] values = values();
+		for (DescribableEnum v : values) {
+			if (v.toString().equalsIgnoreCase(key)) {
 				return (T) v;
 			}
 		}
@@ -84,8 +95,7 @@ public class EnumCollector {
 	public <T> T descOf(String desc) {
 		DescribableEnum[] values = values();
 		for (DescribableEnum v : values) {
-			DescribableEnum de = (DescribableEnum) v;
-			if (de.desc().equalsIgnoreCase(desc)) {
+			if (v.desc().equalsIgnoreCase(desc)) {
 				return (T) v;
 			}
 		}

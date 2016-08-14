@@ -15,7 +15,7 @@ import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.Loginable;
-import cn.cerestech.framework.support.login.enums.ErrorCodes;
+import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
 import cn.cerestech.framework.support.login.provider.LoginProvider;
 import cn.cerestech.framework.support.persistence.entity.Confidential;
@@ -47,7 +47,7 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		Login inDb = t.getLogin();
 
 		if (inDb.getFrozen().equals(YesNo.YES)) {
-			return Result.error(ErrorCodes.LOGIN_FROZEN);
+			return Result.error(LoginErrorCodes.LOGIN_FROZEN);
 		}
 
 		// 记录remember me

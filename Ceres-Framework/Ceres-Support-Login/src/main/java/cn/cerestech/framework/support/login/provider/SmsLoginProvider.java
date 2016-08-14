@@ -16,7 +16,7 @@ import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.LoginField;
 import cn.cerestech.framework.support.login.entity.Loginable;
-import cn.cerestech.framework.support.login.enums.ErrorCodes;
+import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 import cn.cerestech.framework.support.starter.operator.RequestOperator;
 import cn.cerestech.framework.support.starter.operator.SessionOperator;
 import cn.cerestech.middleware.location.mobile.Mobile;
@@ -57,7 +57,7 @@ public abstract class SmsLoginProvider<T extends Loginable>
 
 		Login fromLogin = getLogin();
 		if (fromLogin == null || fromLogin.isEmpty()) {
-			return Result.error(ErrorCodes.LOGIN_FAILED);
+			return Result.error(LoginErrorCodes.LOGIN_FAILED);
 		}
 
 		// 验证短信验证码
@@ -65,7 +65,7 @@ public abstract class SmsLoginProvider<T extends Loginable>
 		String sys_code = getSession(LOGIN_SESSION_SMS_CODE);
 
 		if (!fromLogin.getId().equals(sys_phone) || !fromLogin.getPwd().equals(sys_code)) {
-			return Result.error(ErrorCodes.SMS_CODE_ERROR);
+			return Result.error(LoginErrorCodes.SMS_CODE_ERROR);
 		}
 		// 检查是否创建用户
 		Long id = onRegisterRequired(fromLogin);
@@ -73,7 +73,7 @@ public abstract class SmsLoginProvider<T extends Loginable>
 			// 从数据库获取用户对象
 			T t = loginDao.findUniqueByLoginIdIgnoreCase(fromLogin.getId());
 			if (t == null) {
-				return Result.error(ErrorCodes.LOGIN_FAILED);
+				return Result.error(LoginErrorCodes.LOGIN_FAILED);
 			}
 			id = t.getId();
 		}
