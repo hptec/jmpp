@@ -11,7 +11,7 @@ import com.google.common.base.Strings;
 
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.dao.LoginDao;
-import cn.cerestech.framework.support.login.enums.ErrorCodes;
+import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
 import cn.cerestech.framework.support.login.provider.LoginProvider;
 import cn.cerestech.framework.support.login.provider.SmsLoginProvider;
@@ -61,7 +61,7 @@ public class LoginWebApi extends WebSupport implements UserSessionOperator {
 					return;
 				}
 			}
-			zipOut(Result.error(ErrorCodes.LOGIN_REQUIRED));
+			zipOut(Result.error(LoginErrorCodes.LOGIN_REQUIRED));
 		} else {
 			zipOut(Result.success());
 		}
@@ -70,24 +70,16 @@ public class LoginWebApi extends WebSupport implements UserSessionOperator {
 	@RequestMapping("/sms")
 	@PlatformRequired
 	public void sms(@RequestParam(name = "phone") String phone) {
-		if (loginProvider == null || !(loginProvider instanceof SmsLoginProvider)) {
-			zipOut(Result.error(ErrorCodes.PROVIDER_NOT_SUPPORT));
-		} else {
-			SmsLoginProvider p = (SmsLoginProvider) loginProvider;
-			Result ret = p.sendSmsCode(Mobile.fromChina(phone));
-			zipOut(ret);
-		}
+		SmsLoginProvider p = (SmsLoginProvider) loginProvider;
+		Result ret = p.sendSmsCode(Mobile.fromChina(phone));
+		zipOut(ret);
 	}
 
 	@RequestMapping("/logout")
 	@PlatformRequired
 	public void logout() {
-		if (loginProvider == null) {
-			zipOut(Result.error(ErrorCodes.PROVIDER_NOT_SUPPORT));
-		} else {
-			Result ret = loginService.logout();
-			zipOut(ret);
-		}
+		Result ret = loginService.logout();
+		zipOut(ret);
 	}
 
 	@RequestMapping("/definition")

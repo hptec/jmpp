@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.entity.LoginField;
-import cn.cerestech.framework.support.login.enums.ErrorCodes;
+import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 import cn.cerestech.framework.support.login.provider.LoginProvider;
 
 @Configuration
@@ -21,7 +21,7 @@ public class LoginProviderConfiguration {
 
 			@Override
 			public Result validate() {
-				return Result.error(ErrorCodes.LOGIN_FAILED);
+				return Result.error(LoginErrorCodes.LOGIN_FAILED);
 			}
 
 			@Override

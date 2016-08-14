@@ -13,7 +13,7 @@ import cn.cerestech.framework.support.starter.web.WebSupport;
  *
  */
 @RestController
-@RequestMapping("$$ceres_sys/console/views/common")
+@RequestMapping("views/common")
 public class PatchViewCommonsTemplate extends WebSupport {
 	@Autowired
 	ClasspathService classpathService;
@@ -24,7 +24,7 @@ public class PatchViewCommonsTemplate extends WebSupport {
 	@RequestMapping("**")
 	public void uibPatch() {
 		String srcKey = getRequest().getRequestURI();
-		srcKey = srcKey.substring("/$$ceres_sys/console/views/common".length());
+		srcKey = srcKey.substring("/views/common".length());
 		
 		byte[] bytes=classpathService.findByUri("support/web/console/theme/homer/views/common/"+srcKey);
 		zipOut(bytes,"text/html");

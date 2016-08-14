@@ -28,92 +28,99 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 	app.directive('cuiNumber', function($rootScope, $timeout) {
 		return {
 			restrict : "AC",
-			scope: {
-				precision: "@cuiPrecision",
-				scale: "@cuiScale",
-				model: "=ngModel"
+			scope : {
+				precision : "@cuiPrecision",
+				scale : "@cuiScale",
+				model : "=ngModel"
 			},
 			controller : [ "$scope", "$state", function($scope, $state) {
-			}],
+			} ],
 			link : function(scope, element, attrs, controller) {
-				if(!scope.precision){
+				if (!scope.precision) {
 					scope.precision = 19;
 				}
-				if(!scope.scale){
+				if (!scope.scale) {
 					scope.scale = 2;
 				}
-				element.addClass("text-right")
+				if (attrs.cuiTextLeft == undefined) {
+					// 默认右对齐。除非特别说明是左对齐，默认右对齐
+					element.addClass("text-right");
+				}
 				element.bind("keydown", function(e) {
 					var keyCode = e.keyCode;
-//					console.log("当前按键："+keyCode+"    : event.target.selectionStart:"+event.target.selectionStart + "  input cur value :"+ $(e.target).val());
-					if((keyCode >= 37 && keyCode <= 40) || keyCode == 8){//上下左右 删除键
-						event.returnValue=true;
+					// console.log("当前按键："+keyCode+" :
+					// event.target.selectionStart:"+event.target.selectionStart
+					// + " input cur value :"+ $(e.target).val());
+					if ((keyCode >= 37 && keyCode <= 40) || keyCode == 8) {// 上下左右
+																			// 删除键
+						event.returnValue = true;
 						return;
 					}
-					//(keyCode >= 65 && keyCode <= 90) 字母  (keyCode == 110 || keyCode == 190) 小数点
-					if(!((keyCode >= 48 && keyCode <= 57) || keyCode == 110 || keyCode == 190)){// || 
-						event.returnValue=false;
+					// (keyCode >= 65 && keyCode <= 90) 字母 (keyCode == 110 ||
+					// keyCode == 190) 小数点
+					if (!((keyCode >= 48 && keyCode <= 57) || keyCode == 110 || keyCode == 190)) {// ||
+						event.returnValue = false;
 						return;
 					}
-					if((keyCode == 110 || keyCode == 190) && ((scope.model+"").indexOf(".") != -1 || scope.model == "")){
-						event.returnValue=false;
+					if ((keyCode == 110 || keyCode == 190) && ((scope.model + "").indexOf(".") != -1 || scope.model == "")) {
+						event.returnValue = false;
 						return;
 					}
 					var keyVal = event.key;
-					if(!/[0-9\\.]/.test(keyVal)){
-						event.returnValue=false;
+					if (!/[0-9\\.]/.test(keyVal)) {
+						event.returnValue = false;
 						return;
 					}
-					var curIdx = event.target.selectionStart;//光标位置
+					var curIdx = event.target.selectionStart;// 光标位置
 					var legalCursorIdx = curIdx;
-					var curVal = scope.model+"";
-					var pIdx = curVal.indexOf(".");//实际小数点位置
-					if(pIdx == -1){//全是整数
-						if(scope.precision <= curVal.length){
-							if(keyVal == "."){
-								if(scope.scale > 0){
+					var curVal = scope.model + "";
+					var pIdx = curVal.indexOf(".");// 实际小数点位置
+					if (pIdx == -1) {// 全是整数
+						if (scope.precision <= curVal.length) {
+							if (keyVal == ".") {
+								if (scope.scale > 0) {
 									legalCursorIdx++;
-								}else{//设置不能使用小数
-									event.returnValue=false;
+								} else {// 设置不能使用小数
+									event.returnValue = false;
 									return;
 								}
-							}else{
-								event.returnValue=false;
+							} else {
+								event.returnValue = false;
 								return;
 							}
-						}else{
-							if(keyVal == "."){
-								if(scope.scale > 0){
+						} else {
+							if (keyVal == ".") {
+								if (scope.scale > 0) {
 									legalCursorIdx++;
-								}else{//设置不能使用小数
-									event.returnValue=false;
+								} else {// 设置不能使用小数
+									event.returnValue = false;
 									return;
 								}
-							}else{
+							} else {
 								legalCursorIdx++;
 							}
 						}
-					}else{//本身是小数
-						//小数前，小数后
-						if(pIdx >= curIdx){//在小数点之前
-							if(scope.precision <= curVal.substring(0, curVal.indexOf(".")).length){
-								event.returnValue=false;
+					} else {// 本身是小数
+						// 小数前，小数后
+						if (pIdx >= curIdx) {// 在小数点之前
+							if (scope.precision <= curVal.substring(0, curVal.indexOf(".")).length) {
+								event.returnValue = false;
 								return;
-							}else{
+							} else {
 								legalCursorIdx++;
 							}
-						}else{//小数点之后
-							if(scope.scale <= curVal.substring(curVal.indexOf(".")+1).length){
-								event.returnValue=false;
+						} else {// 小数点之后
+							if (scope.scale <= curVal.substring(curVal.indexOf(".") + 1).length) {
+								event.returnValue = false;
 								return;
-							}else{
+							} else {
 								legalCursorIdx++;
 							}
 						}
 					}
-					
-					var legalVal = curVal.substring(0,curIdx)+keyVal+curVal.substring(curIdx);
-//					console.log("正确的合法数据："+legalVal);
+
+					var legalVal = curVal.substring(0, curIdx) + keyVal + curVal.substring(curIdx);
+					// console.log("正确的合法数据："+legalVal);
 					scope.model = legalVal;
 				});
 			}

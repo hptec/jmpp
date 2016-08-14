@@ -1,0 +1,60 @@
+<div class="hpanel" ng-controller="employeeDetailCtrl">
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-6">
+			
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-block btn-default" ng-click="returnToList()">返回列表</button>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-block btn-primary" ng-click="doSave()">保存</button>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-block btn-danger">为TA设置密码</button>
+			</div>
+		
+		</div>
+		<div class="hr-line-dashed"></div>
+		<div class="row">
+			<div class="form-group col-sm-3">
+				<label class="control-label">登录手机号<font class="text-danger">*</font> <small>（默认登录密码888888）</small></label>
+   				<input type="text" class="form-control" cui-number cui-precision="11" cui-scale="0" cui-text-left placeholder="请输入登录用的移动号码" ng-model="data.login.id">
+          		<div class="m-t-xs" ng-show="error.loginId!=undefined && error.loginId==true">
+                	<span class="text-danger" >
+                	<i class="fa fa-exclamation-triangle"></i> 此为必填项</span>
+                </div>
+   			</div>
+   			<div class="form-group col-sm-3">
+      			<label class="control-label">是否冻结</label>
+            	<select class="form-control" cui-enum="cn_cerestech_framework_core_enums_YesNo"  ng-model="data.login.frozen"  cui-desc="- 冻结状态 -"></select>
+         	</div>
+   		</div>
+   		<div class="hr-line-dashed"></div>
+     	<div class="row">
+			<div class="form-group col-sm-3">
+          		<label class="control-label">姓名<font class="text-danger">*</font></label>
+          		<input type="text" class="form-control" placeholder="联系人称谓" ng-model="data.name">
+          		<div class="m-t-xs" ng-show="error.name!=undefined && error.name==true">
+                	<span class="text-danger" >
+                	<i class="fa fa-exclamation-triangle"></i> 此为必填项</span>
+                </div>
+			</div>
+      		<div class="form-group col-sm-3">
+      			<label class="control-label">性别</label>
+            	<select class="form-control" cui-enum="cn_cerestech_framework_core_enums_Gender"  ng-model="data.gender"  cui-desc="- 请选择性别 -"></select>
+         	</div>
+	         <div class="form-group col-sm-3">
+	         	<label class="control-label">联系电话;</label>
+	             <input type="tel" class="form-control" placeholder="请输入移动电话号码"  cui-number cui-precision="11" cui-scale="0" cui-text-left ng-model="data.phone.number">
+	         </div>
+	         <div class="form-group col-sm-3">
+	         	<label class="control-label">电子邮箱</label>
+	            <input type="tel" class="form-control" placeholder="请输入电子邮箱"   ng-model="data.email">
+	         </div>
+  		</div>
+	</div>
+</div>
+
+
+

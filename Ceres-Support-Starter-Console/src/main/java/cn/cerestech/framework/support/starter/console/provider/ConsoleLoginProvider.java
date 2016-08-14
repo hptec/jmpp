@@ -15,7 +15,8 @@ public abstract class ConsoleLoginProvider extends PasswordLoginProvider<Employe
 
 	@Override
 	public Employee getLoginFromDB(Login fromLogin) {
-		Employee e = employeeDao.findUniqueByPlatformAndLoginIdIgnoreCase(getPlatformKey(), fromLogin.getId());
+		Employee e = employeeDao.findUniqueByPlatformAndDeleteTimeIsNullAndLoginIdIgnoreCase(getPlatformKey(),
+				fromLogin.getId());
 		return e;
 	}
 }

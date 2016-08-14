@@ -13,7 +13,7 @@ import cn.cerestech.framework.support.starter.web.WebSupport;
  *
  */
 @RestController
-@RequestMapping("$$ceres_sys/console/uib")
+@RequestMapping("/uib")
 public class PatchModalTemplate extends WebSupport {
 	@Autowired
 	ClasspathService classpathService;
@@ -24,7 +24,7 @@ public class PatchModalTemplate extends WebSupport {
 	@RequestMapping("**")
 	public void uibPatch() {
 		String srcKey = getRequest().getRequestURI();
-		srcKey = srcKey.substring("/$$ceres_sys/console/uib/".length());
+		srcKey = srcKey.substring("/uib/".length());
 		
 		byte[] bytes=classpathService.findByUri("support/starter/console/theme/homer/bower_components/ui-bootstrap/"+srcKey);
 		zipOut(bytes,"text/html");
