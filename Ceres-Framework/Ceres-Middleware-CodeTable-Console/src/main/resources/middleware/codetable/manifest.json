@@ -4,7 +4,7 @@
 	menus:[
 		{
 			key:"SYS_CODETABLE",
-			caption:"字典设置",
+			caption:" 字 典 ",
 			icon:"fa fa-book",
 			parent:"TOP_SYSTEM_CONFIGURATION",
 			uri:"workbench.middleware_codetable"

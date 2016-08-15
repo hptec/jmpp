@@ -79,6 +79,7 @@
     <module>Ceres-Support-Starter-Console</module>
     <module>Ceres-Support-Starter-Console-Theme-Homer</module>
     <module>Ceres-Support-Theme</module>
+    <module>Ceres-Support-Employee</module>
   </modules>
   <version>3.0.6</version>
   <dependencies>
