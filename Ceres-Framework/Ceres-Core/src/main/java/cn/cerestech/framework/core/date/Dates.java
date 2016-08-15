@@ -25,7 +25,7 @@ public class Dates {
 		return from(new Date());
 	}
 
-	public static Dates beginngOfToday() {
+	public static Dates beginningOfToday() {
 		return from(now().beginningOfDay().toTimeInMillis());
 	}
 
@@ -181,6 +181,24 @@ public class Dates {
 	}
 
 	/**
+	 * 对应月的第一天 00:00:00
+	 * 
+	 * @return
+	 */
+	public Dates beginningOfMonth() {
+		Dates dts = beginningOfDay();
+		dts.calc.set(Calendar.DAY_OF_MONTH, 1);
+		return dts;
+	}
+
+	public Dates endOfMonth() {
+		Dates dts = beginningOfMonth();
+		dts.calc.add(Calendar.MONTH, 1);
+		dts.calc.add(Calendar.DAY_OF_MONTH, -1);
+		return dts;
+	}
+
+	/**
 	 * 时间的 23：59：59：999
 	 * 
 	 * @param date
@@ -315,23 +333,17 @@ public class Dates {
 
 	}
 
-	// public static String formatString(String dateStr){
-	// /*
-	// "default": "ddd mmm dd yyyy HH:MM:ss",
-	// shortDate: "m/d/yy",
-	// mediumDate: "mmm d, yyyy",
-	// longDate: "mmmm d, yyyy",
-	// fullDate: "dddd, mmmm d, yyyy",
-	// shortTime: "h:MM TT",
-	// mediumTime: "h:MM:ss TT",
-	// longTime: "h:MM:ss TT Z",
-	// isoDate: "yyyy-mm-dd",
-	// isoTime: "HH:MM:ss",
-	// isoDateTime: "yyyy-mm-dd'T'HH:MM:ss",
-	// isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-	// */
-	//
-	// return "";
-	// }
+//	public static void main(String[] dateStr) {
+//		/*
+//		 * "default": "ddd mmm dd yyyy HH:MM:ss", shortDate: "m/d/yy",
+//		 * mediumDate: "mmm d, yyyy", longDate: "mmmm d, yyyy", fullDate:
+//		 * "dddd, mmmm d, yyyy", shortTime: "h:MM TT", mediumTime: "h:MM:ss TT",
+//		 * longTime: "h:MM:ss TT Z", isoDate: "yyyy-mm-dd", isoTime: "HH:MM:ss",
+//		 * isoDateTime: "yyyy-mm-dd'T'HH:MM:ss", isoUtcDateTime:
+//		 * "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+//		 */
+//		System.out.println(Dates.now().addMonth(-2).beginningOfMonth().toDate());
+//		System.out.println(Dates.now().addMonth(-2).endOfMonth().toDate());
+//	}
 
 }
