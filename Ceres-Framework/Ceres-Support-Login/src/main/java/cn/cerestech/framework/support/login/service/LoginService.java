@@ -95,7 +95,7 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 
 	public void putRemember(Long id, String token) {
 		if (id != null && !Strings.isNullOrEmpty(token)) {
-			Platform platform = platformDao.findOne(getPlatformId());
+			Platform platform = getPlatformEvenNotLoaded();
 
 			String cKeyToken = COOKIE_REMEMBER_TOKEN + platform.getKey();
 			String cKeyId = COOKIE_REMEMBER_ID + platform.getKey();
@@ -107,7 +107,7 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 	}
 
 	public String getRememberToken() {
-		Platform platform = platformDao.findOne(getPlatformId());
+		Platform platform = getPlatformEvenNotLoaded();
 
 		String cKey = COOKIE_REMEMBER_TOKEN + platform.getKey();
 		Cookies cookies = Cookies.from(getRequest());
@@ -115,10 +115,31 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 	}
 
 	public Long getRememberId() {
-		Platform platform = platformDao.findOne(getPlatformId());
+		Platform platform = getPlatformEvenNotLoaded();
 
 		String cKey = COOKIE_REMEMBER_ID + platform.getKey();
 		Cookies cookies = Cookies.from(getRequest());
 		return cookies.exist(cKey) ? Longs.tryParse(cookies.getValue(cKey)) : null;
+	}
+
+	/**
+	 * 获取Platform，如果session中没有数据，则从key中读取
+	 * 
+	 * @return
+	 */
+	public Platform getPlatformEvenNotLoaded() {
+		Platform platform = getPlatform();
+		if (platform != null) {
+			return platform;
+		}
+
+		Long pid = getPlatformId();
+		if (pid != null) {
+			return platformDao.findOne(pid);
+		}
+
+		String key = getPlatformKey();
+		platform = platformDao.findUniqueByKey(key);
+		return platform;
 	}
 }

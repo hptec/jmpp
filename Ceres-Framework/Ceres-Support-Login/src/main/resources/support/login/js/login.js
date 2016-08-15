@@ -12,7 +12,6 @@ define([ 'modal', 'http' ], function(modal, http) {
 				url : "/api/login/doLogin",
 				server : true
 			});
-
 			http.load(req);
 		},
 		/**
