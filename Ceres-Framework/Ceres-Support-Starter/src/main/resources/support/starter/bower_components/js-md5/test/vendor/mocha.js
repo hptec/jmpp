@@ -1741,7 +1741,7 @@ exports.cursor = {
  */
 
 exports.list = function(failures) {
-  console.log();
+  cui.log();
   failures.forEach(function(test, i) {
     // format
     var fmt = color('error title', '  %s) %s:\n')
@@ -1800,7 +1800,7 @@ exports.list = function(failures) {
     // indent stack trace
     stack = stack.replace(/^/gm, '  ');
 
-    console.log(fmt, (i + 1), test.fullTitle(), msg, stack);
+    cui.log(fmt, (i + 1), test.fullTitle(), msg, stack);
   });
 };
 
@@ -1882,14 +1882,14 @@ Base.prototype.epilogue = function() {
   var stats = this.stats;
   var fmt;
 
-  console.log();
+  cui.log();
 
   // passes
   fmt = color('bright pass', ' ')
     + color('green', ' %d passing')
     + color('light', ' (%s)');
 
-  console.log(fmt,
+  cui.log(fmt,
     stats.passes || 0,
     ms(stats.duration));
 
@@ -1898,20 +1898,20 @@ Base.prototype.epilogue = function() {
     fmt = color('pending', ' ')
       + color('pending', ' %d pending');
 
-    console.log(fmt, stats.pending);
+    cui.log(fmt, stats.pending);
   }
 
   // failures
   if (stats.failures) {
     fmt = color('fail', '  %d failing');
 
-    console.log(fmt, stats.failures);
+    cui.log(fmt, stats.failures);
 
     Base.list(this.failures);
-    console.log();
+    cui.log();
   }
 
-  console.log();
+  cui.log();
 };
 
 /**
@@ -2103,33 +2103,33 @@ function Doc(runner) {
       return;
     }
     ++indents;
-    console.log('%s<section class="suite">', indent());
+    cui.log('%s<section class="suite">', indent());
     ++indents;
-    console.log('%s<h1>%s</h1>', indent(), utils.escape(suite.title));
-    console.log('%s<dl>', indent());
+    cui.log('%s<h1>%s</h1>', indent(), utils.escape(suite.title));
+    cui.log('%s<dl>', indent());
   });
 
   runner.on('suite end', function(suite) {
     if (suite.root) {
       return;
     }
-    console.log('%s</dl>', indent());
+    cui.log('%s</dl>', indent());
     --indents;
-    console.log('%s</section>', indent());
+    cui.log('%s</section>', indent());
     --indents;
   });
 
   runner.on('pass', function(test) {
-    console.log('%s  <dt>%s</dt>', indent(), utils.escape(test.title));
+    cui.log('%s  <dt>%s</dt>', indent(), utils.escape(test.title));
     var code = utils.escape(utils.clean(test.fn.toString()));
-    console.log('%s  <dd><pre><code>%s</code></pre></dd>', indent(), code);
+    cui.log('%s  <dd><pre><code>%s</code></pre></dd>', indent(), code);
   });
 
   runner.on('fail', function(test, err) {
-    console.log('%s  <dt class="error">%s</dt>', indent(), utils.escape(test.title));
+    cui.log('%s  <dt class="error">%s</dt>', indent(), utils.escape(test.title));
     var code = utils.escape(utils.clean(test.fn.toString()));
-    console.log('%s  <dd class="error"><pre><code>%s</code></pre></dd>', indent(), code);
-    console.log('%s  <dd class="error">%s</dd>', indent(), utils.escape(err));
+    cui.log('%s  <dd class="error"><pre><code>%s</code></pre></dd>', indent(), code);
+    cui.log('%s  <dd class="error">%s</dd>', indent(), utils.escape(err));
   });
 }
 
@@ -2192,7 +2192,7 @@ function Dot(runner) {
   });
 
   runner.on('end', function() {
-    console.log();
+    cui.log();
     self.epilogue();
   });
 }
@@ -2795,18 +2795,18 @@ function List(runner) {
   var total = runner.total;
 
   runner.on('start', function() {
-    console.log(JSON.stringify(['start', { total: total }]));
+    cui.log(JSON.stringify(['start', { total: total }]));
   });
 
   runner.on('pass', function(test) {
-    console.log(JSON.stringify(['pass', clean(test)]));
+    cui.log(JSON.stringify(['pass', clean(test)]));
   });
 
   runner.on('fail', function(test, err) {
     test = clean(test);
     test.err = err.message;
     test.stack = err.stack || null;
-    console.log(JSON.stringify(['fail', test]));
+    cui.log(JSON.stringify(['fail', test]));
   });
 
   runner.on('end', function() {
@@ -3009,7 +3009,7 @@ function Landing(runner) {
 
   runner.on('end', function() {
     cursor.show();
-    console.log();
+    cui.log();
     self.epilogue();
   });
 }
@@ -3050,7 +3050,7 @@ function List(runner) {
   var n = 0;
 
   runner.on('start', function() {
-    console.log();
+    cui.log();
   });
 
   runner.on('test', function(test) {
@@ -3060,7 +3060,7 @@ function List(runner) {
   runner.on('pending', function(test) {
     var fmt = color('checkmark', '  -')
       + color('pending', ' %s');
-    console.log(fmt, test.fullTitle());
+    cui.log(fmt, test.fullTitle());
   });
 
   runner.on('pass', function(test) {
@@ -3068,12 +3068,12 @@ function List(runner) {
       + color('pass', ' %s: ')
       + color(test.speed, '%dms');
     cursor.CR();
-    console.log(fmt, test.fullTitle(), test.duration);
+    cui.log(fmt, test.fullTitle(), test.duration);
   });
 
   runner.on('fail', function(test) {
     cursor.CR();
-    console.log(color('fail', '  %d) %s'), ++n, test.fullTitle());
+    cui.log(color('fail', '  %d) %s'), ++n, test.fullTitle());
   });
 
   runner.on('end', self.epilogue.bind(self));
@@ -3540,7 +3540,7 @@ function Progress(runner, options) {
 
   // tests started
   runner.on('start', function() {
-    console.log();
+    cui.log();
     cursor.hide();
   });
 
@@ -3573,7 +3573,7 @@ function Progress(runner, options) {
   // and the failures if any
   runner.on('end', function() {
     cursor.show();
-    console.log();
+    cui.log();
     self.epilogue();
   });
 }
@@ -3618,24 +3618,24 @@ function Spec(runner) {
   }
 
   runner.on('start', function() {
-    console.log();
+    cui.log();
   });
 
   runner.on('suite', function(suite) {
     ++indents;
-    console.log(color('suite', '%s%s'), indent(), suite.title);
+    cui.log(color('suite', '%s%s'), indent(), suite.title);
   });
 
   runner.on('suite end', function() {
     --indents;
     if (indents === 1) {
-      console.log();
+      cui.log();
     }
   });
 
   runner.on('pending', function(test) {
     var fmt = indent() + color('pending', '  - %s');
-    console.log(fmt, test.title);
+    cui.log(fmt, test.title);
   });
 
   runner.on('pass', function(test) {
@@ -3645,20 +3645,20 @@ function Spec(runner) {
         + color('checkmark', '  ' + Base.symbols.ok)
         + color('pass', ' %s');
       cursor.CR();
-      console.log(fmt, test.title);
+      cui.log(fmt, test.title);
     } else {
       fmt = indent()
         + color('checkmark', '  ' + Base.symbols.ok)
         + color('pass', ' %s')
         + color(test.speed, ' (%dms)');
       cursor.CR();
-      console.log(fmt, test.title, test.duration);
+      cui.log(fmt, test.title, test.duration);
     }
   });
 
   runner.on('fail', function(test) {
     cursor.CR();
-    console.log(indent() + color('fail', '  %d) %s'), ++n, test.title);
+    cui.log(indent() + color('fail', '  %d) %s'), ++n, test.title);
   });
 
   runner.on('end', self.epilogue.bind(self));
@@ -3697,7 +3697,7 @@ function TAP(runner) {
 
   runner.on('start', function() {
     var total = runner.grepTotal(runner.suite);
-    console.log('%d..%d', 1, total);
+    cui.log('%d..%d', 1, total);
   });
 
   runner.on('test end', function() {
@@ -3705,26 +3705,26 @@ function TAP(runner) {
   });
 
   runner.on('pending', function(test) {
-    console.log('ok %d %s # SKIP -', n, title(test));
+    cui.log('ok %d %s # SKIP -', n, title(test));
   });
 
   runner.on('pass', function(test) {
     passes++;
-    console.log('ok %d %s', n, title(test));
+    cui.log('ok %d %s', n, title(test));
   });
 
   runner.on('fail', function(test, err) {
     failures++;
-    console.log('not ok %d %s', n, title(test));
+    cui.log('not ok %d %s', n, title(test));
     if (err.stack) {
-      console.log(err.stack.replace(/^/gm, '  '));
+      cui.log(err.stack.replace(/^/gm, '  '));
     }
   });
 
   runner.on('end', function() {
-    console.log('# tests ' + (passes + failures));
-    console.log('# pass ' + passes);
-    console.log('# fail ' + failures);
+    cui.log('# tests ' + (passes + failures));
+    cui.log('# pass ' + passes);
+    cui.log('# fail ' + failures);
   });
 }
 
@@ -3850,7 +3850,7 @@ XUnit.prototype.write = function(line) {
   if (this.fileStream) {
     this.fileStream.write(line + '\n');
   } else {
-    console.log(line);
+    cui.log(line);
   }
 };
 
@@ -6242,9 +6242,9 @@ function BrowserStdout(opts) {
 BrowserStdout.prototype._write = function(chunks, encoding, cb) {
   var output = chunks.toString ? chunks.toString() : chunks
   if (this.label === false) {
-    console.log(output)
+    cui.log(output)
   } else {
-    console.log(this.label+':', output)
+    cui.log(this.label+':', output)
   }
   process.nextTick(cb)
 }
@@ -6735,13 +6735,13 @@ Buffer.prototype.indexOf = function indexOf (val, byteOffset) {
 
 // `get` is deprecated
 Buffer.prototype.get = function get (offset) {
-  console.log('.get() is deprecated. Access using array indexes instead.')
+  cui.log('.get() is deprecated. Access using array indexes instead.')
   return this.readUInt8(offset)
 }
 
 // `set` is deprecated
 Buffer.prototype.set = function set (v, offset) {
-  console.log('.set() is deprecated. Access using array indexes instead.')
+  cui.log('.set() is deprecated. Access using array indexes instead.')
   return this.writeUInt8(v, offset)
 }
 
@@ -11339,9 +11339,9 @@ function timestamp() {
 }
 
 
-// log is just a thin wrapper to console.log that prepends a timestamp
+// log is just a thin wrapper to cui.log that prepends a timestamp
 exports.log = function() {
-  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+  cui.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
 };
 
 

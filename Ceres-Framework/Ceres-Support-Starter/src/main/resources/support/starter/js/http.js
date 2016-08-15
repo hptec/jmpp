@@ -51,7 +51,7 @@ define([ 'module', 'cache', 'pages', 'angular' ], function(module, cache, pages,
 				success : function(content, statusText, xhr) {
 
 					if (xhr.status == "404" || statusText == "error") {
-						console.log("Http模块: 找不到或返回错误", content)
+						cui.log("Http模块: 找不到或返回错误", content)
 						var func = (context.onNotFound == undefined ? moduleConfig.onHttpNotFound : context.onNotFound);
 						func(content, statusText, xhr);
 						return;
@@ -61,7 +61,7 @@ define([ 'module', 'cache', 'pages', 'angular' ], function(module, cache, pages,
 							var dataObj = JSON.parse(content);
 							if (!dataObj.isSuccess && dataObj.code == "LOGIN_REQUIRED") {
 								if (moduleConfig.onLoginRequired != undefined) {
-									console.log("Http模块: 要求登录", dataObj);
+									cui.log("Http模块: 要求登录", dataObj);
 									moduleConfig.onLoginRequired(pages, dataObj);
 
 									return;
@@ -74,7 +74,7 @@ define([ 'module', 'cache', 'pages', 'angular' ], function(module, cache, pages,
 							var dataObj = content;
 						}
 
-						 console.log("Http模块: 返回内容", dataObj);
+						 cui.log("Http模块: 返回内容", dataObj);
 
 						if (this.success != null) {
 							this.success(dataObj, this.context == undefined ? this : this.context);
@@ -86,7 +86,7 @@ define([ 'module', 'cache', 'pages', 'angular' ], function(module, cache, pages,
 						context.complete(xhr, textStatus);
 					}
 					if (this.__waiting != undefined) {
-						console.log("计数器:", this.__waiting.__root.__InProcessingCounter);
+						cui.log("计数器:", this.__waiting.__root.__InProcessingCounter);
 						this.__waiting.__root.__InProcessingCounter--;
 						if (this.__waiting.__root.__InProcessingCounter <= 0) {
 							this.__waiting.__root.__InProcessingCounter = 0;
@@ -101,7 +101,7 @@ define([ 'module', 'cache', 'pages', 'angular' ], function(module, cache, pages,
 			if (sendRequest.url != context.url) {
 				tmpUrl = context.url + " ==> " + sendRequest.url;
 			}
-			console.log("Http模块: 请求" + tmpUrl, context);
+			cui.log("Http模块: 请求" + tmpUrl, context);
 
 			// 开始计数
 			if (context.waiting == true || typeof (context.waiting) == "object") {
@@ -122,7 +122,7 @@ define([ 'module', 'cache', 'pages', 'angular' ], function(module, cache, pages,
 
 			}
 			if (moduleConfig.platform.category == "app") {
-				console.log("请求内容：" + JSON.stringify(sendRequest));
+				cui.log("请求内容：" + JSON.stringify(sendRequest));
 				require([ "mui" ], function(mui) {
 					mui.ajax(sendRequest.url, sendRequest);
 				});

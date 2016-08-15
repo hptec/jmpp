@@ -136,7 +136,7 @@ var S = require('string');
 var phrase = S('JavaScript is the best scripting language ever!');
 var sub = 'best scripting';
 var pos = phrase.indexOf(sub);
-console.log(phrase.substr(pos, sub.length).truncate(8)); //best...
+cui.log(phrase.substr(pos, sub.length).truncate(8)); //best...
 ```
 
 
@@ -788,15 +788,15 @@ Example:
 ```js
 var str = "Hello {{name}}! How are you doing during the year of {{date-year}}?"
 var values = {name: 'JP', 'date-year': 2013}
-console.log(S(str).template(values).s) //'Hello JP! How are you doing during the year of 2013?'
+cui.log(S(str).template(values).s) //'Hello JP! How are you doing during the year of 2013?'
 
 str = "Hello #{name}! How are you doing during the year of #{date-year}?"
-console.log(S(str).template(values, '#{', '}').s) //'Hello JP! How are you doing during the year of 2013?'
+cui.log(S(str).template(values, '#{', '}').s) //'Hello JP! How are you doing during the year of 2013?'
 
 S.TMPL_OPEN = '{'
 S.TMPL_CLOSE = '}'
 str = "Hello {name}! How are you doing during the year of {date-year}?"
-console.log(S(str).template(values).s) //'Hello JP! How are you doing during the year of 2013?'
+cui.log(S(str).template(values).s) //'Hello JP! How are you doing during the year of 2013?'
 ```
 
 

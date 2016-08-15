@@ -168,10 +168,10 @@ var xn = new Object();
 
 	/* Configure the test logger try to use FireBug */
 	var log, error;
-	if (window["console"] && typeof console.log == "function") {
+	if (window["console"] && typeof cui.log == "function") {
 		log = function() {
 			if (xn.test.enableTestDebug) {
-				console.log.apply(console, arguments);
+				cui.log.apply(console, arguments);
 			}
 		};
 		error = function() {

@@ -40,7 +40,7 @@ var validateMessage = function(message) {
   var isValid = true;
 
   if (IGNORED.test(message)) {
-    console.log('Commit message validation ignored.');
+    cui.log('Commit message validation ignored.');
     return true;
   }
 

@@ -48,7 +48,7 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 				}
 				element.bind("keydown", function(e) {
 					var keyCode = e.keyCode;
-					// console.log("当前按键："+keyCode+" :
+					// cui.log("当前按键："+keyCode+" :
 					// event.target.selectionStart:"+event.target.selectionStart
 					// + " input cur value :"+ $(e.target).val());
 					if ((keyCode >= 37 && keyCode <= 40) || keyCode == 8) {// 上下左右
@@ -120,7 +120,7 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 					}
 
 					var legalVal = curVal.substring(0, curIdx) + keyVal + curVal.substring(curIdx);
-					// console.log("正确的合法数据："+legalVal);
+					// cui.log("正确的合法数据："+legalVal);
 					scope.model = legalVal;
 				});
 			}

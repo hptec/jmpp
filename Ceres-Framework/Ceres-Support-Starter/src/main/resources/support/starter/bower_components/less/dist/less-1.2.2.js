@@ -3234,7 +3234,7 @@ function removeNode(node) {
 }
 
 function log(str) {
-    if (less.env == 'development' && typeof(console) !== "undefined") { console.log('less: ' + str) }
+    if (less.env == 'development' && typeof(console) !== "undefined") { cui.log('less: ' + str) }
 }
 
 function error(e, href) {

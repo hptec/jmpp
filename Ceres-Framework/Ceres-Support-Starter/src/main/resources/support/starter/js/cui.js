@@ -1,5 +1,4 @@
 (function(window, undefined) {
-
 	var cui = (function() {
 		var cui = {
 			__initState : undefined,
@@ -21,7 +20,13 @@
 			config : function(opt) {
 				this.__config = this.extend(true, this.__config, opt);
 			},
+			log : function() {
+				if (this.__config.debug == undefined || this.__config.debug == true) {
+					console.log(arguments);
+				}
+			},
 			ready : function(reqArgs, callFunc) {
+				cui.log("开始加载");
 				if (cui.__initState == "loaded") {
 					// 已经初始化完成，直接返回ready;
 					require(reqArgs, callFunc);
@@ -42,7 +47,7 @@
 
 				// 检测reqiure文件是否加载
 				this.loadScript(this.__config.defaultUri.requirejs, function() {
-					console.log("[INFO] RequireJs成功加载");
+					cui.log("[INFO] RequireJs成功加载");
 					var configUrl = cui.__config.defaultUri.systemconfig;
 					if (cui.__config.platform.category != "app") {
 						configUrl += '?ceres_platform_key=' + cui.__config.platform.key;
@@ -50,10 +55,10 @@
 
 					require([ configUrl ], function(sysConfig) {
 
-						console.log("[INFO] 默认配置成功加载", cui.__config);
+						cui.log("[INFO] 默认配置成功加载", cui.__config);
 						require.config(cui.__config);
 
-						console.log("[INFO] 系统配置成功加载", sysConfig);
+						cui.log("[INFO] 系统配置成功加载", sysConfig);
 						var shimConfig = {
 							"shim" : {
 
@@ -67,7 +72,7 @@
 						var initModule = new Array(); // 哪些jsModule是是在要求启动的时候就加载的；
 
 						var putShim = function(jsModule) {
-							// console.log("加载JSMODULE [" + jsModule.name + "]",
+							// cui.log("加载JSMODULE [" + jsModule.name + "]",
 							// jsModule);
 							if (shimConfig.shim[jsModule.name] == undefined) {
 								shimConfig.shim[jsModule.name] = {};
@@ -95,10 +100,10 @@
 											}
 											remote = p + remote;
 										}
-										console.log("开发者模式：使用服务器端文件 [" + remote + "]");
+										cui.log("开发者模式：使用服务器端文件 [" + remote + "]");
 										shimConfig.paths[jsModule.name] = remote;
 									} else {
-										console.log("生产模式：使用本地文件 [" + jsModule.uri.local + "]")
+										cui.log("生产模式：使用本地文件 [" + jsModule.uri.local + "]")
 										shimConfig.paths[jsModule.name] = jsModule.uri.local;
 									}
 								} else {
@@ -126,7 +131,7 @@
 								putShim(jm);
 							}
 						}
-						console.log("RequireJs配置", shimConfig);
+						cui.log("RequireJs配置", shimConfig);
 						require.config(shimConfig);
 
 						var configObj = {

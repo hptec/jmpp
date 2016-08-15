@@ -676,7 +676,7 @@ string.js - Copyright (C) 2012-2014, JP Richardson <jprichardson@gmail.com>
       }
 
       //chop last delim
-      //console.log(buildString.length)
+      //cui.log(buildString.length)
       buildString.length = buildString.length - 1;
       return new this.constructor(buildString.join(''));
     },
@@ -752,11 +752,11 @@ string.js - Copyright (C) 2012-2014, JP Richardson <jprichardson@gmail.com>
     (function(name) {
       var stringProp = __nsp[name];
       if (typeof stringProp == 'function') {
-        //console.log(stringProp)
+        //cui.log(stringProp)
         if (!__sp[name]) {
           if (nativeProperties[name] === 'string') {
             __sp[name] = function() {
-              //console.log(name)
+              //cui.log(name)
               return new this.constructor(stringProp.apply(this, arguments));
             }
           } else {

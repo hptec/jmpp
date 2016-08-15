@@ -13,7 +13,7 @@ define([ 'module', 'cache', 'http', 'modal' ], function(module, cache, http, mod
 			callFunc && callFunc(platform.get());
 			return;
 		} else if (platform.__initState == 'failed') {
-			console.log("platform 加载失败");
+			cui.log("platform 加载失败");
 			return;
 		} else {// (platform.__initState == 'loading') || platform.__initState
 			// == undefined

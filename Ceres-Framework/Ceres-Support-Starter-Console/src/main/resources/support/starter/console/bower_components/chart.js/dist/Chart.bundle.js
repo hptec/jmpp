@@ -3852,7 +3852,7 @@ module.exports = {
         for (i = 0; i < tokens.length; i++) {
             token = tokens[i];
             parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
-            // console.log('token', token, 'parsedInput', parsedInput,
+            // cui.log('token', token, 'parsedInput', parsedInput,
             //         'regex', getParseRegexForToken(token, config));
             if (parsedInput) {
                 skipped = string.substr(0, string.indexOf(parsedInput));
@@ -9811,7 +9811,7 @@ module.exports = function(Chart) {
 	};
 	helpers.color = function(c) {
 		if (!color) {
-			console.log('Color.js not found!');
+			cui.log('Color.js not found!');
 			return c;
 		}
 

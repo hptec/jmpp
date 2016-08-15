@@ -40,7 +40,7 @@
       return new Gallery(list, options)
     }
     if (!list || !list.length) {
-      this.console.log(
+      this.cui.log(
         'blueimp Gallery: No or empty list provided as first argument.',
         list
       )
@@ -197,7 +197,7 @@
       startSlideshow: true
     },
 
-    console: window.console && typeof window.console.log === 'function'
+    console: window.console && typeof window.cui.log === 'function'
       ? window.console
       : {log: function () {}},
 
@@ -1305,7 +1305,7 @@
       }
       this.container = $(this.options.container)
       if (!this.container.length) {
-        this.console.log(
+        this.cui.log(
           'blueimp Gallery: Widget container not found.',
           this.options.container
         )
@@ -1315,7 +1315,7 @@
         this.options.slidesContainer
       ).first()
       if (!this.slidesContainer.length) {
-        this.console.log(
+        this.cui.log(
           'blueimp Gallery: Slides container not found.',
           this.options.slidesContainer
         )

@@ -342,10 +342,10 @@
 				// ngf fix for IE8 #1071
 				if( api.debug && api._supportConsoleLog ){
 					if( api._supportConsoleLogApply ){
-						console.log.apply(console, arguments);
+						cui.log.apply(console, arguments);
 					}
 					else {
-						console.log([].join.call(arguments, ' '));
+						cui.log([].join.call(arguments, ' '));
 					}
 				}
 			},
@@ -1793,8 +1793,8 @@
 
 	// configuration
 	try {
-		api._supportConsoleLog = !!console.log;
-		api._supportConsoleLogApply = !!console.log.apply;
+		api._supportConsoleLog = !!cui.log;
+		api._supportConsoleLogApply = !!cui.log.apply;
 	} catch (err) {}
 
 	if( !api.flashUrl ){ api.flashUrl = api.staticPath + 'FileAPI.flash.swf'; }

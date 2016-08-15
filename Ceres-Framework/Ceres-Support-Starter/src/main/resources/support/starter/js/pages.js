@@ -19,7 +19,7 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 				}
 			}
 
-			console.log("窗口参数Context", JSON.stringify(context));
+			cui.log("窗口参数Context", JSON.stringify(context));
 			if (moduleConfig.platform.category == "app") {
 
 				var options = {
@@ -64,10 +64,10 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 						options = cui.extend(true, options.extras, pg.options.data);
 					}
 				}
-				console.log("窗口参数1", JSON.stringify(options));
+				cui.log("窗口参数1", JSON.stringify(options));
 
 				options = cui.extend(true, options, context);
-				console.log("窗口参数2", JSON.stringify(options));
+				cui.log("窗口参数2", JSON.stringify(options));
 
 				if (pg == undefined) {
 					// 没有配置pages设置，直接使用html
@@ -80,7 +80,7 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 
 				// 校验是否需要登录
 				if (options != undefined && options.loginRequired != undefined && options.loginRequired == true) {
-					console.log("验证用户登录");
+					cui.log("验证用户登录");
 					require('login').validate({
 						success : function(ret) {
 							if (ret.isSuccess) {
@@ -92,7 +92,7 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 					try {
 						mui.openWindow(options);
 					} catch (e) {
-						console.log("错误", JSON.stringify(e));
+						cui.log("错误", JSON.stringify(e));
 					}
 				}
 
@@ -100,7 +100,7 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 				angular.element("cui-pages").find("a").each(function(i, obj) {
 					var o = angular.element(obj);
 					if (o.text() == context.url) {
-						console.log(context, o);
+						cui.log(context, o);
 						o.trigger("click", context.data);
 						return;
 					}
@@ -117,7 +117,7 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 		retObj.__windows[pg.uri] = pg;
 	}
 
-	console.log(retObj);
+	cui.log(retObj);
 
 	return retObj;
 });

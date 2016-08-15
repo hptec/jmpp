@@ -334,7 +334,7 @@ window['Rainbow'] = (function() {
                     replacement = _wrapCodeInSpan(pattern['name'], replacement);
                 }
 
-                // console.log('LEVEL', CURRENT_LEVEL, 'replace', match[0], 'with', replacement, 'at position', start_pos, 'to', end_pos);
+                // cui.log('LEVEL', CURRENT_LEVEL, 'replace', match[0], 'with', replacement, 'at position', start_pos, 'to', end_pos);
 
                 // store what needs to be replaced with what at this position
                 if (!replacements[CURRENT_LEVEL]) {

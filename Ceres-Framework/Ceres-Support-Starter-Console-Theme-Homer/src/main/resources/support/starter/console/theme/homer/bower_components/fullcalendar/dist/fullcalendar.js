@@ -819,8 +819,8 @@ function isTimeString(str) {
 FC.log = function() {
 	var console = window.console;
 
-	if (console && console.log) {
-		return console.log.apply(console, arguments);
+	if (console && cui.log) {
+		return cui.log.apply(console, arguments);
 	}
 };
 

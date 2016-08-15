@@ -391,8 +391,8 @@ var DateFormat = {};
           retValue += unparsedRest;
           return retValue;
         } catch (e) {
-          if(console && console.log) {
-            console.log(e);
+          if(console && cui.log) {
+            cui.log(e);
           }
           return value;
         }

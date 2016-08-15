@@ -30,10 +30,10 @@ define([], function() {
 						}
 					}
 				}
-				console.log("默认配置", defaultConfig);
+				cui.log("默认配置", defaultConfig);
 				require.config(defaultConfig);
 
-				console.log("模块配置", sysConfig);
+				cui.log("模块配置", sysConfig);
 				var shimConfig = {
 					"shim" : {
 
@@ -73,10 +73,10 @@ define([], function() {
 										}
 										remote = p + remote;
 									}
-									console.log("开发者模式：使用服务器端文件 [" + remote + "]");
+									cui.log("开发者模式：使用服务器端文件 [" + remote + "]");
 									shimConfig.paths[jsModule.name] = remote;
 								} else {
-									console.log("生产模式：使用本地文件 [" + jsModule.uri.local + "]")
+									cui.log("生产模式：使用本地文件 [" + jsModule.uri.local + "]")
 									shimConfig.paths[jsModule.name] = jsModule.uri.local;
 								}
 							} else {
@@ -92,10 +92,10 @@ define([], function() {
 					}
 				}
 
-				console.log("RequireJs配置", shimConfig);
+				cui.log("RequireJs配置", shimConfig);
 				require.config(shimConfig);
 
-				console.log("输入配置", cfg);
+				cui.log("输入配置", cfg);
 
 				require.config(cfg);
 
@@ -135,7 +135,7 @@ define([], function() {
 
 				var boot = cfg.starter;
 				if (boot != undefined && boot.name != undefined && boot.name != "") {
-					console.log("启动模块 [" + boot.name + "]", boot);
+					cui.log("启动模块 [" + boot.name + "]", boot);
 					angularModule.push(boot.name);
 					require(angularModule, function() {
 						// 启动

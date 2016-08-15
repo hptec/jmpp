@@ -13,7 +13,7 @@ define(['require', './normalize'], function(req, normalize) {
         var csso = require.nodeRequire('csso');
       }
       catch(e) {
-        console.log('Compression module not installed. Use "npm install csso -g" to enable.');
+        cui.log('Compression module not installed. Use "npm install csso -g" to enable.');
         return css;
       }
       var csslen = css.length;
@@ -21,13 +21,13 @@ define(['require', './normalize'], function(req, normalize) {
         css =  csso.justDoIt(css);
       }
       catch(e) {
-        console.log('Compression failed due to a CSS syntax error.');
+        cui.log('Compression failed due to a CSS syntax error.');
         return css;
       }
-      console.log('Compressed CSS output to ' + Math.round(css.length / csslen * 100) + '%.');
+      cui.log('Compressed CSS output to ' + Math.round(css.length / csslen * 100) + '%.');
       return css;
     }
-    console.log('Compression not supported outside of nodejs environments.');
+    cui.log('Compression not supported outside of nodejs environments.');
     return css;
   }
 
@@ -198,7 +198,7 @@ define(['require', './normalize'], function(req, normalize) {
 
     if (config.separateCSS) {
       var outPath = data.path.replace(/(\.js)?$/, '.css');
-      console.log('Writing CSS! file: ' + outPath + '\n');
+      cui.log('Writing CSS! file: ' + outPath + '\n');
 
       var css = layerBuffer.join('');
 
