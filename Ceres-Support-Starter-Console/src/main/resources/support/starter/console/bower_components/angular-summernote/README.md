@@ -113,7 +113,7 @@ function DemoController($scope) {
     }
   };
   $scope.mediaDelete = function(target) {
-    console.log('media is delted:', target);
+    cui.log('media is delted:', target);
   }
 }
 ```
@@ -193,19 +193,19 @@ event listeners can be registered as attribute as you want.
 
 ```javascript
 function DemoController($scope) {
-  $scope.init = function() { console.log('Summernote is launched'); }
-  $scope.enter = function() { console.log('Enter/Return key pressed'); }
-  $scope.focus = function(e) { console.log('Editable area is focused'); }
-  $scope.blur = function(e) { console.log('Editable area loses focus'); }
-  $scope.paste = function(e) { console.log('Called event paste'); }
+  $scope.init = function() { cui.log('Summernote is launched'); }
+  $scope.enter = function() { cui.log('Enter/Return key pressed'); }
+  $scope.focus = function(e) { cui.log('Editable area is focused'); }
+  $scope.blur = function(e) { cui.log('Editable area loses focus'); }
+  $scope.paste = function(e) { cui.log('Called event paste'); }
   $scope.change = function(contents) {
-    console.log('contents are changed:', contents, $scope.editable);
+    cui.log('contents are changed:', contents, $scope.editable);
   };
-  $scope.keyup = function(e) { console.log('Key is released:', e.keyCode); }
-  $scope.keydown = function(e) { console.log('Key is pressed:', e.keyCode); }
+  $scope.keyup = function(e) { cui.log('Key is released:', e.keyCode); }
+  $scope.keydown = function(e) { cui.log('Key is pressed:', e.keyCode); }
   $scope.imageUpload = function(files) {
-    console.log('image upload:', files);
-    console.log('image upload\'s editable:', $scope.editable);
+    cui.log('image upload:', files);
+    cui.log('image upload\'s editable:', $scope.editable);
   }
 }
 ```

@@ -40,7 +40,7 @@ define([ 'division', 'address', 'http://api.map.baidu.com/getscript?v=2.0&ak=' +
 		__geoc : new BMap.Geocoder(),
 		getAddress : function(point, opt) {
 			this.__geoc.getLocation(point, function(rs) {
-				console.log("百度地址查询结果", rs);
+				cui.log("百度地址查询结果", rs);
 				var addComp = rs.addressComponents;
 				var retObj = {
 					province : {

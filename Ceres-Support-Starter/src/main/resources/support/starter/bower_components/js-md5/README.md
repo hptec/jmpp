@@ -53,7 +53,7 @@ require("http").createServer(function (req, res) {
     // Calculate and print the MD5 hash of the url query:
     res.end(md5(query));
 }).listen(8080, "localhost");
-console.log("Server running at http://localhost:8080/");
+cui.log("Server running at http://localhost:8080/");
 ```
 
 Run the application with the following command:

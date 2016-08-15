@@ -1120,7 +1120,7 @@ angular.module('xeditable').factory('editableFormController',
 
   var base = {
     $addEditable: function(editable) {
-      //console.log('add editable', editable.elem, editable.elem.bind);
+      //cui.log('add editable', editable.elem, editable.elem.bind);
       this.$editables.push(editable);
 
       //'on' is not supported in angular 1.0.8

@@ -533,7 +533,7 @@ TestLoader.displayName = 'TestLoader';
 })(TestLoader.prototype);
   Evidence.TestLoader = TestLoader;
 function AutoRunner() {
-  if (global.console && global.console.log) {
+  if (global.console && global.cui.log) {
     this.logger = Logger;
   } else if (Object.prototype.toString.call(global.environment) === '[object Environment]' && global.print) {
     this.logger = CommandLineLogger;

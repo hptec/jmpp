@@ -36,7 +36,7 @@ define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'angular' ], func
 					}
 				}
 				if (http.onLoginRequired) {
-					console.log("onLoginRequired");
+					cui.log("onLoginRequired");
 					http.onLoginRequired();
 				}
 				return undefined;

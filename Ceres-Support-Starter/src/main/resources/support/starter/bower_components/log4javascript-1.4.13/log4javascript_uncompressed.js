@@ -1859,9 +1859,9 @@
 
 		var console = window.console;
 
-		if (console && console.log) {
+		if (console && cui.log) {
 			// Log to Firebug or the browser console using specific logging
-			// methods or revert to console.log otherwise
+			// methods or revert to cui.log otherwise
 			var consoleMethodName;
 
 			if (console.debug && Level.DEBUG.isGreaterOrEqual(loggingEvent.level)) {

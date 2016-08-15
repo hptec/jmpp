@@ -749,9 +749,9 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
        * // somewhere else
        * $scope.$on('$stateNotFound',
        * function(event, unfoundState, fromState, fromParams){
-       *     console.log(unfoundState.to); // "lazy.state"
-       *     console.log(unfoundState.toParams); // {a:1, b:2}
-       *     console.log(unfoundState.options); // {inherit:false} + default options
+       *     cui.log(unfoundState.to); // "lazy.state"
+       *     cui.log(unfoundState.toParams); // {a:1, b:2}
+       *     cui.log(unfoundState.options); // {inherit:false} + default options
        * })
        * </pre>
        */

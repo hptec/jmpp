@@ -21,10 +21,10 @@ else
 page = require('webpage').create()
 
 page.onConsoleMessage = (msg) ->
-  console.log msg
+  cui.log msg
 
 page.onError = (msg, trace) ->
-  console.log 'ERROR: ' + msg
+  cui.log 'ERROR: ' + msg
 
 # used for waiting until the tests finish running
 waitFor = (testFn, onReady, timeout=30000) ->
@@ -34,7 +34,7 @@ waitFor = (testFn, onReady, timeout=30000) ->
       clearInterval interval
       onReady()
     else if new Date() - start > timeout
-      console.log "timed out."
+      cui.log "timed out."
       phantom.exit(1)
   , 100
 
@@ -48,7 +48,7 @@ loadNextSuite = ->
 
     page.open url, (status) ->
       if status isnt "success"
-        console.log "failed opening #{url}"
+        cui.log "failed opening #{url}"
         phantom.exit(1)
 
       waitFor ->
@@ -61,7 +61,7 @@ loadNextSuite = ->
           res = document.getElementById 'results'
           paths = location.pathname.split('/')
           # echo test results to the console
-          console.log "#{paths[paths.length - 1]} - " + res.textContent
+          cui.log "#{paths[paths.length - 1]} - " + res.textContent
           /passed/.test res.className
 
         if passed

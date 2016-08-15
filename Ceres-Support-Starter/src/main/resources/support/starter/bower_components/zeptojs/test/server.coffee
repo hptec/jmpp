@@ -110,8 +110,8 @@ app.get '/test/auth', (req, res) ->
 app.post '/test/log', (req, res) ->
   params = req.body
   trace = cleanTrace params.trace
-  console.log "[%s] %s: %s", browser(req.headers['user-agent']), params.name, params.message
-  console.log trace.join("\n").replace(/^/mg, '  ') if trace.length
+  cui.log "[%s] %s: %s", browser(req.headers['user-agent']), params.name, params.message
+  cui.log trace.join("\n").replace(/^/mg, '  ') if trace.length
   res.send 200
 
 app.all '/test/error', (req, res) ->
@@ -121,5 +121,5 @@ if process.argv[1] is __filename
   port = process.argv[2]
   unless port
     port = 3000
-    console.log "Listening on port #{port}"
+    cui.log "Listening on port #{port}"
   app.listen port

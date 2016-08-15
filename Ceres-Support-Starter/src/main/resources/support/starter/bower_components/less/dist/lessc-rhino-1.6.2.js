@@ -204,7 +204,7 @@ function writeFile(filename, content) {
         switch (arg) {
             case 'v':
             case 'version':
-                console.log("lessc " + less.version.join('.') + " (LESS Compiler) [JavaScript]");
+                cui.log("lessc " + less.version.join('.') + " (LESS Compiler) [JavaScript]");
                 continueProcessing = false;
                 break;
             case 'verbose':
@@ -337,7 +337,7 @@ function writeFile(filename, content) {
                 }
                 break;
             default:
-                console.log('invalid option ' + arg);
+                cui.log('invalid option ' + arg);
                 continueProcessing = false;
         }
     });
@@ -356,7 +356,7 @@ function writeFile(filename, content) {
         options.sourceMapOutputFilename = output;
 //        output = path.resolve(process.cwd(), output);
         if (warningMessages) {
-            console.log(warningMessages);
+            cui.log(warningMessages);
         }
     }
 
@@ -364,9 +364,9 @@ function writeFile(filename, content) {
 //    options.sourceMapBasepath = '';
 
     if (options.sourceMap === true) {
-        console.log("output: " + output);
+        cui.log("output: " + output);
         if (!output && !sourceMapFileInline) {
-            console.log("the sourcemap option only has an optional filename if the css filename is given");
+            cui.log("the sourcemap option only has an optional filename if the css filename is given");
             return;
         }
         options.sourceMapFullFilename = options.sourceMapOutputFilename + ".map";
@@ -377,8 +377,8 @@ function writeFile(filename, content) {
     
 
     if (!name) {
-        console.log("lessc: no inout files");
-        console.log("");
+        cui.log("lessc: no inout files");
+        cui.log("");
         // TODO
 //        require('../lib/less/lessc_helper').printUsage();
         currentErrorcode = 1;
@@ -401,14 +401,14 @@ function writeFile(filename, content) {
 
     if (options.depends) {
         if (!outputbase) {
-            console.log("option --depends requires an output path to be specified");
+            cui.log("option --depends requires an output path to be specified");
             return;
         }
-        console.log(outputbase + ": ");
+        cui.log(outputbase + ": ");
     }
 
     if (!name) {
-        console.log('No files present in the fileset');
+        cui.log('No files present in the fileset');
         quit(1);
     }
 
@@ -417,7 +417,7 @@ function writeFile(filename, content) {
         input = readFile(name, 'utf-8');
 
     } catch (e) {
-        console.log('lesscss: couldn\'t open file ' + name);
+        cui.log('lesscss: couldn\'t open file ' + name);
         quit(1);
     }
 
@@ -433,7 +433,7 @@ function writeFile(filename, content) {
                 result = root.toCSS(options);
                 if (output) {
                     writeFile(output, result);
-                    console.log("Written to " + output);
+                    cui.log("Written to " + output);
                 } else {
                     print(result);
                 }
@@ -445,5 +445,5 @@ function writeFile(filename, content) {
         writeError(e, options);
         quit(1);
     }
-    console.log("done");
+    cui.log("done");
 }(arguments));

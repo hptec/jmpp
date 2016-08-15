@@ -118,7 +118,7 @@ angular.module("app", ["chart.js"])
     [28, 48, 40, 19, 86, 27, 90]
   ];
   $scope.onClick = function (points, evt) {
-    console.log(points, evt);
+    cui.log(points, evt);
   };
   
   // Simulate async data update
@@ -160,7 +160,7 @@ angular-chart.js emits the following events on the `scope` and pass the chart as
 
 ```
 $scope.$on('chart-create', function (evt, chart) {
-  console.log(chart);
+  cui.log(chart);
 });
 ```
 

@@ -10,7 +10,7 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 		}
 	}
 
-	console.log("angularModule:", angularModule);
+	cui.log("angularModule:", angularModule);
 	var app = angular.module('app', angularModule);
 
 	function configState($stateProvider, $urlRouterProvider, $compileProvider, $locationProvider, $requireProvider) {
@@ -18,7 +18,7 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 		$compileProvider.debugInfoEnabled(false);
 		var html5mode = config.html5mode;
 		if (html5mode != undefined && html5mode) {
-			console.log("启用html5模式");
+			cui.log("启用html5模式");
 			$locationProvider.html5Mode(true);// 启用html5模式
 		}
 
@@ -58,10 +58,10 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 				}
 				opt.resolve = resolve;
 			}
-//			console.log("页面:" + pg.name, opt);
+//			cui.log("页面:" + pg.name, opt);
 			$stateProvider.state(pg.name == undefined ? pg.uri : pg.name, opt);
 			if (opt.params != undefined) {
-				console.log("报告，发现params", opt);
+				cui.log("报告，发现params", opt);
 			}
 
 		}
@@ -80,6 +80,6 @@ define([ 'angular', 'module', 'angular-ui-router', 'angular-require' ], function
 		});
 	}
 
-	console.log("APP初始化")
+	cui.log("APP初始化")
 	return app;
 });
