@@ -37,16 +37,18 @@ define([ 'app', 'icheck' ], function() {
 			restrict : 'A',
 			link : function(scope, element) {
 				// Call the metsiMenu plugin and plug it to sidebar navigation
-				element.metisMenu();
+				setTimeout(function() {
+					element.metisMenu();
 
-				// Colapse menu in mobile mode after click on element
-				var menuElement = $('#side-menu a:not([href$="\\#"])');
-				menuElement.click(function() {
+					// Colapse menu in mobile mode after click on element
+					var menuElement = $('#side-menu a:not([href$="\\#"])');
+					menuElement.click(function() {
 
-					if ($(window).width() < 769) {
-						$("body").toggleClass("show-sidebar");
-					}
-				});
+						if ($(window).width() < 769) {
+							$("body").toggleClass("show-sidebar");
+						}
+					});
+				}, 1500);
 
 			}
 		};

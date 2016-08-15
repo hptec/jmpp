@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.base.Strings;
 
-import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.starter.annotation.PlatformRequired;
 import cn.cerestech.framework.support.starter.dao.PlatformDao;
@@ -30,28 +29,6 @@ public class PlatformInterceptor implements HandlerInterceptor, ZipOutOperator, 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
-		// Session中是否有存放
-		if (getPlatformId() == null) {
-			// Session中不存在，进行初始化
-			String key = getPlatformKey();
-			if (Strings.isNullOrEmpty(key)) {
-				// 前段没有提交Key
-				zipOut(Result.error(ErrorCodes.PLATFORM_CATEGORY_REQUIRED));
-				return Boolean.FALSE;
-			} else {
-				Platform platform = platformDao.findUniqueByKey(key);
-				if (platform == null) {
-					// 数据库中没有Key对应的记录
-					zipOut(Result.error(ErrorCodes.PLATFORM_CATEGORY_REQUIRED));
-					return Boolean.FALSE;
-				} else {
-					// 将记录放入相应位置
-					putSession(PLATFORM_ID, platform.getId());// Session中放Id
-					putRequest(PLATFORM_OBJECT, platform);// Request中放对象
-				}
-			}
-		}
 
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod m = (HandlerMethod) handler;
