@@ -5,6 +5,16 @@ public class RemoteList {
 	private Long id;
 	private String desc;
 
+	public RemoteList(Long id, String desc) {
+		super();
+		this.id = id;
+		this.desc = desc;
+	}
+
+	public RemoteList() {
+		super();
+	}
+
 	public Long getId() {
 		return id;
 	}
