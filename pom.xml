@@ -5,7 +5,7 @@
   <artifactId>Ceres-Framework</artifactId>
   <packaging>pom</packaging>
   <properties>
-    <ceres.version>3.0.6</ceres.version>
+    <ceres.version>3.0.7</ceres.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <zxing.version>3.2.0</zxing.version>
@@ -81,7 +81,7 @@
     <module>Ceres-Support-Theme</module>
     <module>Ceres-Support-Employee</module>
   </modules>
-  <version>3.0.6</version>
+  <version>3.0.7</version>
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
