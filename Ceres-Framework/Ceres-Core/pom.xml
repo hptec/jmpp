@@ -4,7 +4,7 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>3.0.6</version>
+    <version>3.0.7</version>
   </parent>
   <artifactId>Ceres-Core</artifactId>
   <version>${ceres.version}</version>
@@ -85,9 +85,9 @@
       <version>1.1.6</version>
     </dependency>
     <dependency>
-    	<groupId>org.reflections</groupId>
-    	<artifactId>reflections</artifactId>
-    	<version>0.9.10</version>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.10</version>
     </dependency>
   </dependencies>
 </project>
