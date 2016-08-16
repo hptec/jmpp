@@ -22,7 +22,10 @@
 			},
 			log : function() {
 				if (this.__config.debug == undefined || this.__config.debug == true) {
-					console.log(arguments);
+					var arg1 = arguments[0];
+					var arg2 = arguments[1];
+					var arg3 = arguments[2];
+					console.log(arg1, arg2, arg3);
 				}
 			},
 			ready : function(reqArgs, callFunc) {
