@@ -33,6 +33,7 @@ public class SysMenu extends IdEntity implements Sortable {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent", referencedColumnName = "uuid")
+	@Column(length = 35)
 	private SysMenu parent;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "parent")
