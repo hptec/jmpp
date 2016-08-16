@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 
 import javax.persistence.AttributeConverter;
 
+import com.google.common.base.Strings;
+
 import cn.cerestech.framework.core.enums.DescribableEnum;
 import cn.cerestech.framework.core.enums.EnumCollector;
 
@@ -15,7 +17,8 @@ public abstract class AbstractAttributeConverter<T extends DescribableEnum> impl
 	}
 
 	public T convertToEntityAttribute(String dbData) {
-		return EnumCollector.forClass(getType()).keyOf(dbData);
+
+		return Strings.isNullOrEmpty(dbData) ? null : EnumCollector.forClass(getType()).keyOf(dbData);
 	}
 
 	@SuppressWarnings("unchecked")
