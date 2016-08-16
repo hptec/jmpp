@@ -32,6 +32,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 				$scope.searching = false;
 				$scope.search = function() {
 					$scope.searching = true;
+//					$(".splash").show();
 					var formDef = getFormDefinition($attrs);
 
 					if (formDef.url == undefined || formDef.url == "") {
@@ -137,6 +138,9 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								// scope.$$ceresQueryForm.toPage(toPage);
 							},
 							complete : function() {
+//								setTimeout(function() {
+//									$(".splash").hide();
+//								}, 2000);
 								$scope.searching = false;
 							}
 						});

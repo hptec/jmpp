@@ -43,7 +43,6 @@ define([ 'app', 'icheck' ], function() {
 					// Colapse menu in mobile mode after click on element
 					var menuElement = $('#side-menu a:not([href$="\\#"])');
 					menuElement.click(function() {
-
 						if ($(window).width() < 769) {
 							$("body").toggleClass("show-sidebar");
 						}
