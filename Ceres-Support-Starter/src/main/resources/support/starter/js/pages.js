@@ -81,6 +81,7 @@ define([ 'module', 'app', 'angular' ], function(module, app, angular) {
 				// 校验是否需要登录
 				if (options != undefined && options.loginRequired != undefined && options.loginRequired == true) {
 					cui.log("验证用户登录");
+					cui.log("验证参数:"+JSON.stringify(options));
 					require('login').validate({
 						success : function(ret) {
 							if (ret.isSuccess) {
