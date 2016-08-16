@@ -73,8 +73,11 @@ define([ 'module', 'cache', 'pages', 'angular' ], function(module, cache, pages,
 						} catch (e) {
 							var dataObj = content;
 						}
-
-						 cui.log("Http模块: 返回内容", dataObj);
+						if (moduleConfig.platform.category == "app") {
+							cui.log("Http模块: 返回内容", JSON.stringify(dataObj));
+						} else {
+							cui.log("Http模块: 返回内容", dataObj);
+						}
 
 						if (this.success != null) {
 							this.success(dataObj, this.context == undefined ? this : this.context);
