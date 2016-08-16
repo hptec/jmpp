@@ -204,7 +204,7 @@
 		},
 		{
 			name:"chart",
-			uri:"/api/classpath/query/support/starter/console/bower_components/Chart.js/dist/Chart.bundle.min",
+			uri:"/api/classpath/query/support/starter/console/bower_components/chart.js/dist/Chart.bundle.min",
 			deps:[
 			]
 		},

@@ -4,7 +4,7 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>3.0.9</version>
+    <version>3.0.10</version>
   </parent>
   <artifactId>Ceres-Middleware-Baidu-Map</artifactId>
   <dependencies>
