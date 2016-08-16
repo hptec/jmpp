@@ -5,7 +5,7 @@ define([ 'http', 'cache', 'platform' ], function(http, cache, platform) {
 		 * 获取本人的菜单
 		 */
 		getMine : function(func) {
-			var key = "EMPLOYEE_MINE_MENUS_" + platform.category();
+			var key = "EMPLOYEE_MINE_MENUS_" + platform.get().key;
 			if (func != undefined) {
 				http.load({
 					url : '/api/console/menu/mine',

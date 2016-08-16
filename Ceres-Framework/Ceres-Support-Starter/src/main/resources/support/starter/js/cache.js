@@ -123,7 +123,7 @@ define([ 'module', 'jquery' , 'md5'], function(module, $, md5) {
 			this.set("CERES_FILE_DB",  FDBS);
 			
 			var platform = require('platform');
-			if(platform && platform.category() == "app"){
+			if(platform && platform.get().key == "app"){
 				var Files =  require(['Files'],function(Files){
 					Files&&Files.lining(url, back, expired);
 				}, function(){
