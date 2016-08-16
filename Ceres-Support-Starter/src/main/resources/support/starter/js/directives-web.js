@@ -10,7 +10,7 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 				}
 			} ],
 			link : function(scope, element, attrs, controller) {
-				if (platform.get().key != "app") {
+				if (platform.get().category != "app") {
 					// 非APP方式使用此种
 					var pgs = pages.pages();
 					for (i in pgs) {
