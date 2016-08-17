@@ -13,7 +13,7 @@ import cn.cerestech.middleware.location.enums.GeodeticSystem;
 @SuppressWarnings("serial")
 @Embeddable
 public class Coordinate implements Serializable {
-	public static final int COORDINATE_SCALE = 6;
+	public static final int COORDINATE_SCALE = 14;
 
 	private GeodeticSystem standard;
 
