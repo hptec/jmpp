@@ -36,12 +36,8 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 			controller : [ "$scope", "$state", function($scope, $state) {
 			} ],
 			link : function(scope, element, attrs, controller) {
-				if (!scope.precision) {
-					scope.precision = 19;
-				}
-				if (!scope.scale) {
-					scope.scale = 2;
-				}
+				scope.precision=scope.precision==undefined?19:parseInt(scope.precision);
+				scope.scale=scope.scale==undefined?2:parseInt(scope.precision);
 				if (attrs.cuiTextLeft == undefined) {
 					// 默认右对齐。除非特别说明是左对齐，默认右对齐
 					element.addClass("text-right");
@@ -52,7 +48,7 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 					// event.target.selectionStart:"+event.target.selectionStart
 					// + " input cur value :"+ $(e.target).val());
 					if ((keyCode >= 37 && keyCode <= 40) || keyCode == 8) {// 上下左右
-																			// 删除键
+						// 删除键
 						event.returnValue = true;
 						return;
 					}
@@ -73,7 +69,7 @@ define([ 'app', 'platform', 'pages' ], function(app, platform, pages) {
 					}
 					var curIdx = event.target.selectionStart;// 光标位置
 					var legalCursorIdx = curIdx;
-					var curVal = scope.model + "";
+					var curVal = scope.model == undefined ? "" : scope.model + "";
 					var pIdx = curVal.indexOf(".");// 实际小数点位置
 					if (pIdx == -1) {// 全是整数
 						if (scope.precision <= curVal.length) {

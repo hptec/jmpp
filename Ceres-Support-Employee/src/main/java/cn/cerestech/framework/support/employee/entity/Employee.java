@@ -9,10 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.beans.BeanUtils;
+
 import cn.cerestech.framework.core.enums.Gender;
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.core.json.JsonIgnore;
-import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.persistence.entity.Confidential;
@@ -41,7 +42,7 @@ public class Employee extends IdEntity implements Confidential<Employee>, Logina
 	private Date deleteTime;
 
 	// 上级
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent_id", referencedColumnName = "id")
 	@JsonIgnore
 	private Employee parent;
@@ -109,7 +110,8 @@ public class Employee extends IdEntity implements Confidential<Employee>, Logina
 
 	@Override
 	public Employee safty() {
-		Employee employee = Jsons.from(this).to(Employee.class);
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(this,employee);
 		if (employee.getLogin() != null) {
 			Login loginTmp = new Login();
 			loginTmp.setId(employee.getLogin().getId());

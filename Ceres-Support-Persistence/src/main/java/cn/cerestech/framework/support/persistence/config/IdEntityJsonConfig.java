@@ -18,6 +18,7 @@ import com.google.gson.JsonSerializer;
 
 import cn.cerestech.framework.core.json.JsonIgnore;
 import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.framework.support.persistence.entity.Confidential;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 @Component
@@ -32,6 +33,9 @@ public class IdEntityJsonConfig implements ApplicationRunner {
 			@Override
 			public JsonElement serialize(IdEntity src, Type typeOfSrc, JsonSerializationContext context) {
 				JsonObject ele = new JsonObject();
+				if (src instanceof Confidential) {
+					src = (IdEntity) ((Confidential) src).safty();
+				}
 				if (src != null) {
 					List<Field> fields = getFieldsTree(src.getClass());
 					for (Field f : fields) {
@@ -39,8 +43,10 @@ public class IdEntityJsonConfig implements ApplicationRunner {
 							try {
 								f.setAccessible(true);
 								Object value = f.get(src);
-//								log.trace(value + " - " + f.toString());
-								ele.add(f.getName(), context.serialize(value));
+								if (value != null) {
+//									log.trace(value + " - " + f.toString());
+									ele.add(f.getName(), context.serialize(value));
+								}
 							} catch (IllegalArgumentException | IllegalAccessException e) {
 								log.error(e);
 							}
