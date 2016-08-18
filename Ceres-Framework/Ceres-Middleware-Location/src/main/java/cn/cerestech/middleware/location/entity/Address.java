@@ -1,16 +1,15 @@
 package cn.cerestech.middleware.location.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
 import cn.cerestech.middleware.location.enums.AdminLevel;
 
+@SuppressWarnings("serial")
 @Entity
-@Table(name = "$$address")
+@Table(name = "$$sys_address")
 public class Address extends IdEntity {
 
 	@Embedded
