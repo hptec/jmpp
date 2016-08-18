@@ -2,11 +2,12 @@ package cn.cerestech.framework.support.employee.dao;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import cn.cerestech.framework.support.employee.entity.Employee;
-import cn.cerestech.framework.support.login.dao.LoginDao;
+
 
 public interface EmployeeDao extends JpaRepository<Employee, Long>, JpaSpecificationExecutor<Employee> {
 
