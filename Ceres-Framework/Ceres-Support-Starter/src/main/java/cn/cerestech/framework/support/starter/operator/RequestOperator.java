@@ -25,7 +25,11 @@ public interface RequestOperator {
 
 	@SuppressWarnings("unchecked")
 	default <T> T getRequest(String key) {
-		return (T) getRequest().getParameter(key);
+		T value = (T) getRequest().getParameter(key);
+		if (value == null) {
+			value = (T) getRequest().getAttribute(key);
+		}
+		return value;
 	}
 
 	default void putRequest(String name, Object o) {

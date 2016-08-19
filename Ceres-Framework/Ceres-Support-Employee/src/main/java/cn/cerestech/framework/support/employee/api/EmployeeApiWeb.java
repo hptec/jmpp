@@ -28,6 +28,25 @@ public class EmployeeApiWeb extends WebSupport implements UserSessionOperator, P
 	@Autowired
 	EmployeeDao employeeDao;
 
+	/**
+	 * 得到当前登录用户信息
+	 * 
+	 * @param id
+	 */
+	@RequestMapping("/me")
+	@PlatformRequired
+	public void me() {
+		Long id = getUserId();
+		if (id == null) {
+			zipOutRequireJson(null);
+			return;
+		} else {
+			Employee me = employeeService.get(id);
+			zipOutRequireJson(me == null ? null : me.safty());
+			return;
+		}
+	}
+
 	@RequestMapping("/get")
 	@PlatformRequired
 	public void get(@RequestParam("id") Long id) {

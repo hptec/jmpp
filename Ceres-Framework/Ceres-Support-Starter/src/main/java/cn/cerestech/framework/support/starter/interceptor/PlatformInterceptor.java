@@ -41,6 +41,7 @@ public class PlatformInterceptor implements HandlerInterceptor, ZipOutOperator, 
 					// 会话中存在，并且设置为预加载数据
 					Platform platform = platformDao.findOne(pid);
 					putRequest(PLATFORM_OBJECT, platform);
+					putRequest(PLATFORM_KEY,platform.getKey());
 				} else {
 					// Session中不存在，进行初始化
 					String key = getPlatformKey();

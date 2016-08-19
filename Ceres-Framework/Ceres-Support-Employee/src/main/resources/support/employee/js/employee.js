@@ -1,7 +1,7 @@
-define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'angular' ], function(http, modal, cache, platform, app, login, angular) {
+define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'angular', '/api/employee/me' ], function(http, modal, cache, platform, app, login, angular, me) {
 
 	return {
-		__currentUser : undefined,
+		__currentUser : me,
 		login : function(loginEntity, funcCallback) {
 			if (loginEntity == undefined) {
 
@@ -22,7 +22,7 @@ define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'angular' ], func
 				})
 			}
 		},
-		getCurrentUser : function() {
+		getCurrent : function() {
 
 			if (this.__currentUser == undefined) {
 				// 检测是否有持久化缓存
@@ -42,23 +42,6 @@ define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'angular' ], func
 				return undefined;
 			}
 
-			return this.__currentUser;
-		},
-		getMine : function() {
-			if (this.__currentUser == undefined) {
-				var id = angular.element.cookie("COOKIE_REMEMBER_ID_" + platform.get().key);
-				http.load({
-					url : '/api/employee/get',
-					data : {
-						id : id
-					},
-					async : false,
-					context : this,
-					success : function(obj, context) {
-						context.__currentUser = obj;
-					}
-				});
-			}
 			return this.__currentUser;
 		}
 	}
