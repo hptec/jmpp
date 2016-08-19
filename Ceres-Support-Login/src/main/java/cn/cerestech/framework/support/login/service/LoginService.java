@@ -106,6 +106,7 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		}
 	}
 
+	
 	public String getRememberToken() {
 		Platform platform = getPlatformEvenNotLoaded();
 
@@ -121,7 +122,17 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		Cookies cookies = Cookies.from(getRequest());
 		return cookies.exist(cKey) ? Longs.tryParse(cookies.getValue(cKey)) : null;
 	}
+	
+	public void clearRemember() {
+		Platform platform = getPlatformEvenNotLoaded();
 
+		String cKeyToken = COOKIE_REMEMBER_TOKEN + platform.getKey();
+		String cKeyId = COOKIE_REMEMBER_ID + platform.getKey();
+		Cookies cookies = Cookies.from(getRequest());
+		cookies.remove(cKeyToken);
+		cookies.remove(cKeyId);
+		cookies.flushTo(getResponse());
+	}
 	/**
 	 * 获取Platform，如果session中没有数据，则从key中读取
 	 * 
