@@ -1,0 +1,15 @@
+{
+	name:"Ceres-Support-Employee",
+	desc:"平台员工管理模块",
+	jsModules:[
+		{
+			name:"employee",
+			uri:"/api/classpath/query/support/employee/js/employee",
+			deps:[
+				"$cookie"
+			],
+			exports:"employee"
+		}
+	]
+}
+

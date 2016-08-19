@@ -265,14 +265,6 @@
 			angularModule:"summernote"
 		},
 		{
-			name:"employee",
-			uri:"/api/classpath/query/support/starter/console/js/api/employee",
-			deps:[
-				"$cookie"
-			],
-			exports:"employee"
-		},
-		{
 			name:"menu",
 			uri:"/api/classpath/query/support/starter/console/js/api/menu",
 			exports:"menu"

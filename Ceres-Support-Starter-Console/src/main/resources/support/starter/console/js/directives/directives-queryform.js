@@ -32,7 +32,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 				$scope.searching = false;
 				$scope.search = function() {
 					$scope.searching = true;
-//					$(".splash").show();
+					// $(".splash").show();
 					var formDef = getFormDefinition($attrs);
 
 					if (formDef.url == undefined || formDef.url == "") {
@@ -87,6 +87,14 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							data.page = undefined;
 						}
 
+						for ( var i in data) {
+							var v = data[i];
+							if (cui.isFunction(v)) {
+								// 排除掉函数类型的param
+								data[i] = undefined;
+							}
+						}
+
 						http.load({
 							url : formDef.url,
 							data : data,
@@ -138,9 +146,9 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								// scope.$$ceresQueryForm.toPage(toPage);
 							},
 							complete : function() {
-//								setTimeout(function() {
-//									$(".splash").hide();
-//								}, 2000);
+								// setTimeout(function() {
+								// $(".splash").hide();
+								// }, 2000);
 								$scope.searching = false;
 							}
 						});
