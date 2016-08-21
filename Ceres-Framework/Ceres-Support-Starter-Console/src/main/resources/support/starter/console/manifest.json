@@ -303,10 +303,6 @@
 				"moment",
 				"css!/api/classpath/query/support/starter/console/bower_components/bootstrap-daterangepicker/daterangepicker"
 			]
-		},
-		{
-			name:"queryform-employee",
-			uri:"/api/classpath/query/support/starter/console/js/queryform/queryform-employees"
 		}
 		
 	],
@@ -338,37 +334,6 @@
 				"angular-ui-bootstrap-tpls",
 				"bootstrap-scrollspy"
 			]
-		},
-		{
-			name:"workbench.employee",
-			uri:"/employee",
-			tpl:"/api/classpath/query/support/starter/console/tpl/employee.html",
-			deps:[
-				"/api/classpath/query/support/starter/console/js/pages/page-employee.js",
-				"directives-queryform",
-				"directives-codetable",
-				"directives-enums",
-				"enums",
-				"filters-web"
-			]
-		},
-		{
-			name:"workbench.employee_detail",
-			uri:"/employeedetail",
-			tpl:"/api/classpath/query/support/starter/console/tpl/employee_detail.html",
-			deps:[
-				"/api/classpath/query/support/starter/console/js/pages/page-employeedetail.js",
-				"directives-codetable",
-				"directives-enums",
-				"directives-remote",
-				"directives-queryform",
-				"filters-web",
-				"directives-web"
-			],
-			params:{
-				id:""
-			}
 		}
-		
 	]
 }

@@ -35,6 +35,7 @@ public class EmployeeApiWeb extends WebSupport implements UserSessionOperator, P
 	 */
 	@RequestMapping("/me")
 	@PlatformRequired
+	@LoginRequired
 	public void me() {
 		Long id = getUserId();
 		if (id == null) {
