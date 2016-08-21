@@ -80,6 +80,7 @@
     <module>Ceres-Support-Starter-Console-Theme-Homer</module>
     <module>Ceres-Support-Theme</module>
     <module>Ceres-Support-Employee</module>
+    <module>Ceres-Support-Employee-Console</module>
   </modules>
   <version>3.0.14</version>
   <dependencies>
