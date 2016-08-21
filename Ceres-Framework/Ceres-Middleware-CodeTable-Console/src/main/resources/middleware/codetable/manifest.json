@@ -31,11 +31,7 @@
 		{
 			name:"directives-codetable",
 			uri:"/api/classpath/query/middleware/codetable/directives/directives-codetable"
-		},
-		{
-			name:"codetable-data",
-			uri:"/api/codetable/data",
-			export:"codetableData"
 		}
+		
 	]
 }

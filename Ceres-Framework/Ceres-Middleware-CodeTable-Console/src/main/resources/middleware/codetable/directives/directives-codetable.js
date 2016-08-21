@@ -1,28 +1,4 @@
-define([ 'app', 'codetable-data', 'modal', 'angular' ], function(app, codetableData, modal, angular) {
-
-	var findByCategory = function(cateName) {
-		for ($ln in codetableData) {
-			var data = codetableData[$ln];
-			if (data.category == cateName) {
-				return data;
-			}
-		}
-	}
-
-	var findByCode = function(category, code) {
-		if (category == undefined || category.codes == undefined) {
-			return "";
-		}
-
-		for (_$ln in category.codes) {
-			var codeRec = category.codes[_$ln];
-			if (codeRec.value == code) {
-				return codeRec.desc;
-			}
-		}
-		return "";
-
-	}
+define([ 'app', 'codetable', 'modal', 'angular' ], function(app, codetable, modal, angular) {
 
 	app.directive('cuiCodetable', function($compile) {
 		return {
@@ -40,9 +16,9 @@ define([ 'app', 'codetable-data', 'modal', 'angular' ], function(app, codetableD
 					tElement.append("<option value=''>" + defaultDesc + "</option>");
 				}
 				// 添加枚举值
-				var cate = findByCategory(category);
+				var cate = codetable.getCategory(category);
 				if (cate != undefined && cate.codes != undefined) {
-					var values = findByCategory(category).codes;
+					var values = codetable.getCategory(category).codes;
 					for (_$ln in values) {
 						var o = values[_$ln];
 						tElement.append("<option value='" + o.value + "'>" + o.desc + "</option>");
@@ -61,11 +37,8 @@ define([ 'app', 'codetable-data', 'modal', 'angular' ], function(app, codetableD
 			if (code == undefined || code == "" || category == undefined || category == "") {
 				return "";
 			}
-			var cate = findByCategory(category);
-			if (cate == undefined) {
-				return "";
-			}
-			return findByCode(cate, code);
+			var c = codetable.getCode(category, code);
+			c == undefined ? "" : c.desc;
 		}
 	});
 });
