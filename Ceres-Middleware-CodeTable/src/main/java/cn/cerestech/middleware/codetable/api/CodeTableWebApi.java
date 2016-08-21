@@ -39,25 +39,6 @@ public class CodeTableWebApi extends WebSupport implements UserSessionOperator {
 	}
 
 	/**
-	 * 获得当前可用的字典表项目列表
-	 * 
-	 * @param hashTag
-	 */
-	@RequestMapping("/category/list")
-	@LoginRequired
-	public void categoryList() {
-		List<Category> cateList = codeTableService.list();
-		cateList.forEach(c -> {
-			List<Code> codes = c.getCodes() == null ? Lists.newArrayList() : c.getCodes();
-			for (Code code : codes) {
-				code.setCategory(null);
-			}
-		});
-		zipOut(Result.success(cateList));
-
-	}
-
-	/**
 	 * 保存code
 	 */
 	@RequestMapping("/code/update")

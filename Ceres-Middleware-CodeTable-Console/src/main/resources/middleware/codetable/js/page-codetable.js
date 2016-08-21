@@ -3,18 +3,19 @@ define([ 'app', 'codetable' ], function(app, codetable) {
 	app.controller('codetableCtrl', [ '$scope', "$uibModal", function($scope, $modal) {
 		$scope.refreshList = function() {
 			// 从服务器获取
-			codetable.listMine({
-				success : function(ret) {
-					if (ret.isSuccess) {
-						$scope.categorys = ret.object;
-						$scope.$apply();
-					} else {
-						modal.toast({
-							title : ret.message
-						});
-					}
-				}
-			});
+			// codetable.listMine({
+			// success : function(ret) {
+			// if (ret.isSuccess) {
+			// $scope.categorys = ret.object;
+			// $scope.$apply();
+			// } else {
+			// modal.toast({
+			// title : ret.message
+			// });
+			// }
+			// }
+			// });
+			$scope.categorys = codetable.list();
 		}
 
 		$scope.editCodeTable = function(category) {
@@ -92,23 +93,23 @@ define([ 'app', 'codetable' ], function(app, codetable) {
 							codetable.updateCode(data, {
 								success : function(ret) {
 									if (ret.isSuccess) {
-										// 更新原始数据
-										if (data.id != undefined) {
-											// 编辑
-											for (i in $scope.category.codes) {
-												var c = $scope.category.codes[i];
-												if (c.id == ret.object.id) {
-													c.value = ret.object.value;
-													c.desc = ret.object.desc;
-												}
-											}
-										} else {
-											// 新增
-											if ($scope.category.codes == undefined) {
-												$scope.category.codes = new Array();
-											}
-											$scope.category.codes.push(ret.object);
-										}
+//										// 更新原始数据
+//										if (data.id != undefined) {
+//											// 编辑
+//											for (i in $scope.category.codes) {
+//												var c = $scope.category.codes[i];
+//												if (c.id == ret.object.id) {
+//													c.value = ret.object.value;
+//													c.desc = ret.object.desc;
+//												}
+//											}
+//										} else {
+//											// 新增
+//											if ($scope.category.codes == undefined) {
+//												$scope.category.codes = new Array();
+//											}
+//											$scope.category.codes.push(ret.object);
+//										}
 
 										$scope.code = undefined;
 										$scope.$apply();

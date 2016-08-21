@@ -6,6 +6,11 @@
 			name:"codetable",
 			uri:"/api/classpath/query/middleware/codetable/js/codetable",
 			exports:"codetable"
+		},
+		{
+			name:"codetable-data",
+			uri:"/api/codetable/data",
+			export:"codetableData"
 		}
 	]
 }
