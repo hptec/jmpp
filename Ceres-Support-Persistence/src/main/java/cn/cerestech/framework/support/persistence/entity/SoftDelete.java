@@ -12,4 +12,8 @@ public interface SoftDelete {
 	public Date getDeleteTime();
 
 	public void setDeleteTime(Date deleteTime);
+
+	default public Boolean isDeleted() {
+		return getDeleteTime() != null;
+	}
 }

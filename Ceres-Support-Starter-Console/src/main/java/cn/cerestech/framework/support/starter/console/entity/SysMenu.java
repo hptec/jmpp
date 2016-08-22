@@ -3,7 +3,9 @@ package cn.cerestech.framework.support.starter.console.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,28 +18,33 @@ import org.hibernate.annotations.FetchMode;
 
 import com.google.common.collect.Lists;
 
+import cn.cerestech.framework.core.json.JsonIgnore;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
-import cn.cerestech.framework.support.persistence.entity.Sortable;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "$$sys_menu")
-public class SysMenu extends IdEntity implements Sortable {
+public class SysMenu extends IdEntity {
 
+	private String platform;// 所属的Platform
 	@Column(length = 35)
-	private String uuid;
-	private String icon;
-	private String caption;
-	private String uri;
-	private Integer sortIndex;
+	private String uuid;// 唯一的Key
+	private String icon;// 图标
+	private String caption;// 显示标题
+	private String uri;// 跳转链接
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent", referencedColumnName = "uuid")
+	@JsonIgnore
 	private SysMenu parent;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "parent")
 	@Fetch(FetchMode.SELECT)
 	private List<SysMenu> submenus = Lists.newArrayList();
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "$$sys_menu_pages")
+	private List<String> privilege;
 
 	public String getIcon() {
 		return icon;
@@ -87,12 +94,20 @@ public class SysMenu extends IdEntity implements Sortable {
 		this.uuid = uuid;
 	}
 
-	public Integer getSortIndex() {
-		return sortIndex;
+	public List<String> getPrivilege() {
+		return privilege;
 	}
 
-	public void setSortIndex(Integer sortIndex) {
-		this.sortIndex = sortIndex;
+	public void setPrivilege(List<String> privilege) {
+		this.privilege = privilege;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 
 }

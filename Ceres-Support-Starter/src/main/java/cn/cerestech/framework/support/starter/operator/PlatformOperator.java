@@ -1,7 +1,5 @@
 package cn.cerestech.framework.support.starter.operator;
 
-import com.google.common.base.Strings;
-
 import cn.cerestech.framework.support.starter.entity.Platform;
 
 public interface PlatformOperator extends RequestOperator, SessionOperator {

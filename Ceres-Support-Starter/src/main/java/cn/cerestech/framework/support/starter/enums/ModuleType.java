@@ -6,8 +6,8 @@ public enum ModuleType implements DescribableEnum {
 	JAVASCRIPT("jsModules", "Javascript模块"), //
 	MENU("menus", "菜单"), //
 	STARTER("starter", "启动器"), //
-	PAGES("pages", "页面"),//
-	
+	PAGES("pages", "页面"), //
+	ROLES("roles", "角色"),
 
 	;
 

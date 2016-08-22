@@ -16,13 +16,16 @@ import cn.cerestech.framework.support.employee.enums.EmployeeErrorCodes;
 import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
-import cn.cerestech.framework.support.starter.operator.PlatformOperator;
+import cn.cerestech.framework.support.starter.provider.PlatformProvider;
 
 @Service
-public class EmployeeService implements UserSessionOperator, PlatformOperator {
+public class EmployeeService implements UserSessionOperator {
 
 	@Autowired
 	EmployeeDao employeeDao;
+	
+	@Autowired
+	PlatformProvider platformProvider;
 
 	/**
 	 * 获取员工对象，只能获取当前Platform下属的员工
@@ -172,5 +175,9 @@ public class EmployeeService implements UserSessionOperator, PlatformOperator {
 
 	public List<Employee> getSubEmployee() {
 		return employeeDao.findByPlatformAndParentId(getPlatformKey(), getUserId());
+	}
+	
+	private String getPlatformKey(){
+		return platformProvider.get().getKey();
 	}
 }

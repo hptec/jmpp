@@ -41,7 +41,7 @@ public abstract class Starter implements ApplicationRunner {
 	protected PlatformProvider platformProvider;
 
 	protected Logger log = LogManager.getLogger();
-
+	
 	@Bean
 	@ConditionalOnMissingClass
 	public PlatformProvider getPlatformProvider() {

@@ -22,9 +22,9 @@ import com.google.gson.JsonElement;
 
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.starter.dao.PlatformDao;
 import cn.cerestech.framework.support.starter.enums.ModuleType;
 import cn.cerestech.framework.support.starter.operator.PlatformOperator;
+import cn.cerestech.framework.support.starter.provider.PlatformProvider;
 
 @Service
 public class ManifestService implements PlatformOperator {
@@ -32,57 +32,37 @@ public class ManifestService implements PlatformOperator {
 	private Logger log = LogManager.getLogger();
 
 	@Autowired
-	PlatformDao platformDao;
+	PlatformProvider platformProvider;
 
 	// 数据缓存
 	private List<Jsons> cacheManifests = Lists.newArrayList();
 	private Map<PlatformCategory, Map<ModuleType, List<Jsons>>> cacheModules = Maps.newHashMap();
 
 	private List<Jsons> getManifest() {
-		cacheManifests.clear();
-		log.trace("Manifest 未初始化，进行初始化..");
-		ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-		try {
-			Resource[] resources = resourcePatternResolver.getResources("classpath*:**/manifest.json");
-			for (Resource res : resources) {
-				log.trace(res);
-				String str = Resources.toString(res.getURL(), Charset.defaultCharset());
-				cacheManifests.add(Jsons.from(str));
+		// cacheManifests.clear();
+		if (cacheManifests.isEmpty()) {
+			log.trace("Manifest 未初始化，进行初始化..");
+			ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+			try {
+				Resource[] resources = resourcePatternResolver.getResources("classpath*:**/manifest.json");
+				for (Resource res : resources) {
+					log.trace(res);
+					String str = Resources.toString(res.getURL(), Charset.defaultCharset());
+					cacheManifests.add(Jsons.from(str));
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} finally {
+				log.trace("Manifest 初始化完成.");
 			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			log.trace("Manifest 初始化完成.");
 		}
 		return cacheManifests;
-
-		// 每次重新扫描
-		// if (cacheManifests.isEmpty()) {
-		// log.trace("Manifest 未初始化，进行初始化..");
-		// ResourcePatternResolver resourcePatternResolver = new
-		// PathMatchingResourcePatternResolver();
-		// try {
-		// Resource[] resources =
-		// resourcePatternResolver.getResources("classpath*:**/manifest.json");
-		// for (Resource res : resources) {
-		// log.trace(res);
-		// String str = Resources.toString(res.getURL(),
-		// Charset.defaultCharset());
-		// cacheManifests.add(Jsons.from(str));
-		// }
-		// } catch (IOException e) {
-		// throw new RuntimeException(e);
-		// } finally {
-		// log.trace("Manifest 初始化完成.");
-		// }
-		// }
-		// return cacheManifests;
 	}
 
 	public List<Jsons> getModule(ModuleType type) {
 		List<Jsons> ret = getCache(type);
 		if (ret == null) {
-			PlatformCategory category = platformDao.findOne(getPlatformId()).getCategory();
+			PlatformCategory category = platformProvider.get().getCategory();
 			List<Jsons> list = Lists.newArrayList();
 			// 找到应用于所有的
 			getManifest().forEach(manifest -> {
@@ -93,8 +73,13 @@ public class ManifestService implements PlatformOperator {
 				}
 				List<Jsons> cur = manifest.getRoot().getAsJsonObject().entrySet().stream().filter(entry -> {
 					// 是否不带platform限定的
-					log.trace("发现模块 " + entry.getKey() + " - " + type.key());
-					return entry.getKey().startsWith(type.key());
+					Boolean found= entry.getKey().startsWith(type.key());
+					if(found){
+						log.trace("发现模块 " + entry.getKey() + " - " + type.key());
+						return Boolean.TRUE;
+					}else{
+						return Boolean.FALSE;
+					}
 				}).filter(entry -> {
 					// 检查模块是否包含对应的平台规定关系
 					if (entry.getKey().equals(type.key())) {
@@ -112,7 +97,8 @@ public class ManifestService implements PlatformOperator {
 					}
 				}).map(entry -> Jsons.from(entry.getValue())).flatMap(json -> json.asList().stream())
 						.collect(Collectors.toList());
-				list.addAll(cur);
+				// 过滤掉内容为空的配置块
+				list.addAll(cur.stream().filter(json -> json != null && !json.isNull()).collect(Collectors.toList()));
 				if (log.isTraceEnabled()) {
 					log.trace("发现记录" + cur.size() + "条");
 				}
@@ -128,7 +114,7 @@ public class ManifestService implements PlatformOperator {
 	}
 
 	private void putCache(ModuleType type, List<Jsons> json) {
-		PlatformCategory category = platformDao.findOne(getPlatformId()).getCategory();
+		PlatformCategory category = platformProvider.get().getCategory();
 		Map<ModuleType, List<Jsons>> cateCache = cacheModules.get(category);
 		if (cateCache == null) {
 			cateCache = Maps.newHashMap();
@@ -138,7 +124,7 @@ public class ManifestService implements PlatformOperator {
 	}
 
 	private List<Jsons> getCache(ModuleType type) {
-		PlatformCategory category = platformDao.findOne(getPlatformId()).getCategory();
+		PlatformCategory category = platformProvider.get().getCategory();
 		Map<ModuleType, List<Jsons>> cateCache = cacheModules.get(category);
 		if (cateCache != null && cateCache.containsKey(type)) {
 			return cateCache.get(type);
