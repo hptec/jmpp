@@ -8,7 +8,7 @@
 					systemconfig : '/api/web/systemconfigs.js'
 				},
 				baseUrl : '',
-				waitSeconds : 10,
+				waitSeconds : 30,
 				map : {
 					'*' : {
 						'css' : 'require-css',
