@@ -5,7 +5,6 @@ import java.util.List;
 import cn.cerestech.framework.core.operator.ProviderOperator;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.core.strings.StringTypes;
-import cn.cerestech.framework.support.login.dao.LoginDao;
 import cn.cerestech.framework.support.login.entity.LoginField;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.starter.operator.RequestOperator;

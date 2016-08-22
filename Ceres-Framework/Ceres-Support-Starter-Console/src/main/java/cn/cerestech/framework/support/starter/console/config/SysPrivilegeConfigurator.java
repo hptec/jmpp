@@ -15,10 +15,9 @@ import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.starter.console.entity.SysMenu;
 import cn.cerestech.framework.support.starter.console.entity.SysRole;
-import cn.cerestech.framework.support.starter.console.service.SysMenuService;
 import cn.cerestech.framework.support.starter.console.service.RoleService;
+import cn.cerestech.framework.support.starter.console.service.SysMenuService;
 import cn.cerestech.framework.support.starter.enums.ModuleType;
-import cn.cerestech.framework.support.starter.operator.PlatformOperator;
 import cn.cerestech.framework.support.starter.provider.PlatformProvider;
 import cn.cerestech.framework.support.starter.service.ManifestService;
 
@@ -29,7 +28,7 @@ import cn.cerestech.framework.support.starter.service.ManifestService;
  *
  */
 @Component
-public class SysPrivilegeConfigurator implements ApplicationRunner, PlatformOperator {
+public class SysPrivilegeConfigurator implements ApplicationRunner {
 
 	@Autowired
 	PlatformProvider platformProvider;

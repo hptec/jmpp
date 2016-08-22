@@ -32,7 +32,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 				$scope.searching = false;
 				$scope.search = function() {
 					$scope.searching = true;
-					// $(".splash").show();
+//					 $(".splash").show();
 					var formDef = getFormDefinition($attrs);
 
 					if (formDef.url == undefined || formDef.url == "") {

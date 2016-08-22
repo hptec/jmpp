@@ -16,19 +16,16 @@ import com.google.common.base.Strings;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
 import cn.cerestech.framework.support.login.dao.LoginDao;
-import cn.cerestech.framework.support.login.entity.Login;
 import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
 import cn.cerestech.framework.support.login.provider.LoginProvider;
 import cn.cerestech.framework.support.login.service.LoginService;
 import cn.cerestech.framework.support.persistence.entity.SoftDelete;
-import cn.cerestech.framework.support.starter.operator.PlatformOperator;
 import cn.cerestech.framework.support.starter.operator.SessionOperator;
 import cn.cerestech.framework.support.starter.operator.ZipOutOperator;
 
 @Component
-public class LoginInterceptor
-		implements HandlerInterceptor, ZipOutOperator, SessionOperator, PlatformOperator, UserSessionOperator {
+public class LoginInterceptor implements HandlerInterceptor, ZipOutOperator, SessionOperator, UserSessionOperator {
 
 	public static final String COOKIE_CERES_PLATFORM = "ceres_platform";
 

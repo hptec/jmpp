@@ -16,7 +16,6 @@ import cn.cerestech.framework.support.login.operator.UserSessionOperator;
 import cn.cerestech.framework.support.login.provider.LoginProvider;
 import cn.cerestech.framework.support.login.provider.SmsLoginProvider;
 import cn.cerestech.framework.support.login.service.LoginService;
-import cn.cerestech.framework.support.starter.annotation.PlatformRequired;
 import cn.cerestech.framework.support.starter.web.WebSupport;
 import cn.cerestech.middleware.location.mobile.Mobile;
 
@@ -35,7 +34,6 @@ public class LoginWebApi extends WebSupport implements UserSessionOperator {
 	LoginDao loginDao;
 
 	@RequestMapping("/doLogin")
-	@PlatformRequired
 	public void doLogin() {
 		Result ret = loginService.login();
 		zipOut(ret);
@@ -45,7 +43,6 @@ public class LoginWebApi extends WebSupport implements UserSessionOperator {
 	 * 校验用户的登录状态。如果返回的result.isSuccess=true则说明在登录中，反之为自动调用登录界面
 	 */
 	@RequestMapping("/validate")
-	@PlatformRequired
 	public void validate() {
 		if (getUserId() == null) {
 			Long id = loginService.getRememberId();
@@ -68,7 +65,6 @@ public class LoginWebApi extends WebSupport implements UserSessionOperator {
 	}
 
 	@RequestMapping("/sms")
-	@PlatformRequired
 	public void sms(@RequestParam(name = "phone") String phone) {
 		SmsLoginProvider p = (SmsLoginProvider) loginProvider;
 		Result ret = p.sendSmsCode(Mobile.fromChina(phone));
@@ -76,14 +72,12 @@ public class LoginWebApi extends WebSupport implements UserSessionOperator {
 	}
 
 	@RequestMapping("/logout")
-	@PlatformRequired
 	public void logout() {
 		Result ret = loginService.logout();
 		zipOut(ret);
 	}
 
 	@RequestMapping("/definition")
-	@PlatformRequired
 	public void definition() {
 		zipOut(loginProvider.getLoginFields());
 	}

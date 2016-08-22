@@ -1,16 +1,6 @@
 define([ 'app', 'pages', 'modal', 'http' ], function(app, pages, modal, http) {
 
-	app.controller('employeeDetailCtrl', [ '$scope', '$location', '$stateParams', function($scope, $location, $stateParams) {
-
-		$scope.roles = [ {
-			name : "超级管理员",
-			key : "SA"
-		}, {
-			name : "销售",
-			key : "SALE"
-		} ]
-
-		$scope.data = {};
+	app.controller('employeeDetailCtrl', [ '$scope', '$location', '$stateParams', '$uibModal', function($scope, $location, $stateParams, $modal) {
 
 		$scope.returnToList = function() {
 			pages.open({
@@ -60,9 +50,18 @@ define([ 'app', 'pages', 'modal', 'http' ], function(app, pages, modal, http) {
 			});
 		}
 
-		$scope.reloadRoles = function() {
-			
-		}
+		$scope.modifyPassword = function() {
+			var modalInstance = $modal.open({
+				templateUrl : "/api/classpath/query/support/employee/console/tpl/modify_password.html",
+				size : 'xs',
+				scope : $scope,
+				controller : function($scope, $uibModalInstance) {
+					$scope.cancel = function() {
+						$uibModalInstance.dismiss('cancel');
+					}
+				}
+			});
+		};
 
 		// 初始化过程
 		if ($stateParams.id == undefined || $stateParams.id == "") {

@@ -1,9 +1,7 @@
 package cn.cerestech.framework.core.properties;
 
-import java.io.File;
 import java.util.Map;
 import java.util.Properties;
-
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;

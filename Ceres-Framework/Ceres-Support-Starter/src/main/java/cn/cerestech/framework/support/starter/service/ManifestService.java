@@ -23,11 +23,10 @@ import com.google.gson.JsonElement;
 import cn.cerestech.framework.core.enums.PlatformCategory;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.support.starter.enums.ModuleType;
-import cn.cerestech.framework.support.starter.operator.PlatformOperator;
 import cn.cerestech.framework.support.starter.provider.PlatformProvider;
 
 @Service
-public class ManifestService implements PlatformOperator {
+public class ManifestService {
 
 	private Logger log = LogManager.getLogger();
 
@@ -73,11 +72,11 @@ public class ManifestService implements PlatformOperator {
 				}
 				List<Jsons> cur = manifest.getRoot().getAsJsonObject().entrySet().stream().filter(entry -> {
 					// 是否不带platform限定的
-					Boolean found= entry.getKey().startsWith(type.key());
-					if(found){
+					Boolean found = entry.getKey().startsWith(type.key());
+					if (found) {
 						log.trace("发现模块 " + entry.getKey() + " - " + type.key());
 						return Boolean.TRUE;
-					}else{
+					} else {
 						return Boolean.FALSE;
 					}
 				}).filter(entry -> {

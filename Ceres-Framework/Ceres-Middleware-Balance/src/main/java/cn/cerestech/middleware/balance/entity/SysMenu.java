@@ -1,7 +1,5 @@
 package cn.cerestech.middleware.balance.entity;
 
-import javax.persistence.Table;
-
 import cn.cerestech.framework.core.enums.YesNo;
 
 @SuppressWarnings("serial")

@@ -3,16 +3,12 @@ package cn.cerestech.middleware.balance.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-import cn.cerestech.framework.core.enums.EnumCollector;
-import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
-import cn.cerestech.middleware.balance.enums.ActionType;
 import cn.cerestech.middleware.balance.enums.TransactionStatus;
 
 @SuppressWarnings("serial")

@@ -6,6 +6,7 @@ import javax.persistence.Table;
 
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "$$sys_config")
 public class SysConfig extends IdEntity {
