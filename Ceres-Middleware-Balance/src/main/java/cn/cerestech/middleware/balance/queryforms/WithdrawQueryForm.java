@@ -1,8 +1,5 @@
 package cn.cerestech.middleware.balance.queryforms;
 
-import cn.cerestech.middleware.balance.enums.WithdrawChannel;
-import cn.cerestech.middleware.balance.enums.WithdrawState;
-
 public class WithdrawQueryForm  {
 
 	public WithdrawQueryForm() {

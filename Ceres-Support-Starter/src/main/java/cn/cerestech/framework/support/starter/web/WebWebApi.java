@@ -8,15 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.utils.KV;
-import cn.cerestech.framework.support.starter.annotation.PlatformRequired;
 import cn.cerestech.framework.support.starter.enums.ModuleType;
-import cn.cerestech.framework.support.starter.operator.PlatformOperator;
 import cn.cerestech.framework.support.starter.provider.MainPageProvider;
 import cn.cerestech.framework.support.starter.service.ManifestService;
 
 @RestController
 @RequestMapping("api/web")
-public class WebWebApi extends WebSupport implements PlatformOperator {
+public class WebWebApi extends WebSupport {
 
 	private Logger log = LogManager.getLogger();
 
@@ -26,7 +24,6 @@ public class WebWebApi extends WebSupport implements PlatformOperator {
 	MainPageProvider mainPageProvider;
 
 	@RequestMapping("systemconfigs.js")
-	@PlatformRequired
 	public void systemConfigs() {
 
 		KV defMap = KV.on();

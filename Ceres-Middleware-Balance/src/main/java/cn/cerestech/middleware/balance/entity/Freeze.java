@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "$$balance_freeze")
 public class Freeze extends IdEntity {

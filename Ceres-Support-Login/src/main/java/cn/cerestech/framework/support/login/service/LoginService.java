@@ -22,13 +22,16 @@ import cn.cerestech.framework.support.persistence.entity.Confidential;
 import cn.cerestech.framework.support.starter.Cookies;
 import cn.cerestech.framework.support.starter.dao.PlatformDao;
 import cn.cerestech.framework.support.starter.entity.Platform;
-import cn.cerestech.framework.support.starter.operator.PlatformOperator;
+import cn.cerestech.framework.support.starter.provider.PlatformProvider;
 
 @Service
-public class LoginService<T extends Loginable> implements PlatformOperator, UserSessionOperator {
+public class LoginService<T extends Loginable> implements UserSessionOperator {
 
 	@Autowired
 	LoginProvider<T> loginProvider;
+
+	@Autowired
+	PlatformProvider platformProvider;
 
 	@Autowired
 	LoginDao<T> loginDao;
@@ -95,7 +98,7 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 
 	public void putRemember(Long id, String token) {
 		if (id != null && !Strings.isNullOrEmpty(token)) {
-			Platform platform = getPlatformEvenNotLoaded();
+			Platform platform = platformProvider.get();
 
 			String cKeyToken = COOKIE_REMEMBER_TOKEN + platform.getKey();
 			String cKeyId = COOKIE_REMEMBER_ID + platform.getKey();
@@ -106,9 +109,8 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		}
 	}
 
-	
 	public String getRememberToken() {
-		Platform platform = getPlatformEvenNotLoaded();
+		Platform platform = platformProvider.get();
 
 		String cKey = COOKIE_REMEMBER_TOKEN + platform.getKey();
 		Cookies cookies = Cookies.from(getRequest());
@@ -116,15 +118,15 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 	}
 
 	public Long getRememberId() {
-		Platform platform = getPlatformEvenNotLoaded();
+		Platform platform = platformProvider.get();
 
 		String cKey = COOKIE_REMEMBER_ID + platform.getKey();
 		Cookies cookies = Cookies.from(getRequest());
 		return cookies.exist(cKey) ? Longs.tryParse(cookies.getValue(cKey)) : null;
 	}
-	
+
 	public void clearRemember() {
-		Platform platform = getPlatformEvenNotLoaded();
+		Platform platform = platformProvider.get();
 
 		String cKeyToken = COOKIE_REMEMBER_TOKEN + platform.getKey();
 		String cKeyId = COOKIE_REMEMBER_ID + platform.getKey();
@@ -133,24 +135,5 @@ public class LoginService<T extends Loginable> implements PlatformOperator, User
 		cookies.remove(cKeyId);
 		cookies.flushTo(getResponse());
 	}
-	/**
-	 * 获取Platform，如果session中没有数据，则从key中读取
-	 * 
-	 * @return
-	 */
-	public Platform getPlatformEvenNotLoaded() {
-		Platform platform = getPlatform();
-		if (platform != null) {
-			return platform;
-		}
 
-		Long pid = getPlatformId();
-		if (pid != null) {
-			return platformDao.findOne(pid);
-		}
-
-		String key = getPlatformKey();
-		platform = platformDao.findUniqueByKey(key);
-		return platform;
-	}
 }

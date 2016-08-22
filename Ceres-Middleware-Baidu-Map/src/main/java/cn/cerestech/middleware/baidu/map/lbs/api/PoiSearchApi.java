@@ -1,14 +1,12 @@
 package cn.cerestech.middleware.baidu.map.lbs.api;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import com.google.gson.reflect.TypeToken;
 
 import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.framework.core.json.Jsons;

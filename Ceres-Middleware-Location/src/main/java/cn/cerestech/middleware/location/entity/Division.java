@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
-import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,7 +13,6 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.middleware.location.converter.AdminLevelConverter;
 import cn.cerestech.middleware.location.enums.AdminLevel;
 
 @SuppressWarnings("serial")

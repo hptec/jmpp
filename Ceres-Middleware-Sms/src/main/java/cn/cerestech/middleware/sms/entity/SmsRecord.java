@@ -18,6 +18,7 @@ import cn.cerestech.middleware.sms.enums.SmsProvider;
 import cn.cerestech.middleware.sms.enums.SmsState;
 import cn.cerestech.middleware.sms.providers.Sms;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "$$sms_record")
 public class SmsRecord extends IdEntity implements Sms {

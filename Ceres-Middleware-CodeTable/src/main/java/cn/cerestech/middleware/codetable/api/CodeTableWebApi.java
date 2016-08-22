@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.beust.jcommander.internal.Lists;
-
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;

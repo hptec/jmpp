@@ -3,7 +3,6 @@ package cn.cerestech.framework.support.starter.entity;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 
 @SuppressWarnings("serial")
 @Embeddable

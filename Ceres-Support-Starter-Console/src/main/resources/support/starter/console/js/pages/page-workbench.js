@@ -3,11 +3,7 @@ define([ 'app', 'platform', 'employee', 'pages', 'login', 'angular' ], function(
 	app.controller('workbenchCtrl', [ '$scope', '$location', '$state', function($scope, $location, $state) {
 		$scope.platform = platform.get();
 		$scope.currentUser = employee.getCurrent();
-		$scope.jump = function(url) {
-			pages.open({
-				url : url
-			});
-		}
+		
 		$scope.logout = function() {
 			login.logout(function() {
 				pages.open("login");

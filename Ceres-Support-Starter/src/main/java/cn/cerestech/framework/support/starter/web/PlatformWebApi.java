@@ -5,23 +5,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.cerestech.framework.core.service.Result;
-import cn.cerestech.framework.support.starter.annotation.PlatformRequired;
-import cn.cerestech.framework.support.starter.dao.PlatformDao;
 import cn.cerestech.framework.support.starter.entity.Platform;
 import cn.cerestech.framework.support.starter.enums.ErrorCodes;
-import cn.cerestech.framework.support.starter.operator.PlatformOperator;
+import cn.cerestech.framework.support.starter.provider.PlatformProvider;
 
 @RestController
 @RequestMapping("api/platform")
-public class PlatformWebApi extends WebSupport implements PlatformOperator {
+public class PlatformWebApi extends WebSupport {
 
 	@Autowired
-	PlatformDao platformDao;
+	PlatformProvider platformProvider;
 
 	@RequestMapping("query")
-	@PlatformRequired
 	public void query() {
-		Platform pf = platformDao.findOne(getPlatformId());
+		Platform pf = platformProvider.get();
 		if (pf == null) {
 			zipOut(Result.error(ErrorCodes.PLATFORM_AUTH_INCORRECT));
 		} else {

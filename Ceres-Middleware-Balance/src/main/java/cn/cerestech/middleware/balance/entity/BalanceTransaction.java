@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import cn.cerestech.framework.core.enums.DescribableEnum;
@@ -17,6 +16,7 @@ import cn.cerestech.framework.support.persistence.entity.IdEntity;
 import cn.cerestech.middleware.balance.enums.ActionType;
 import cn.cerestech.middleware.balance.enums.TransactionStatus;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "$$balance_transaction")
 public class BalanceTransaction extends IdEntity {

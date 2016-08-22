@@ -17,6 +17,7 @@ import cn.cerestech.framework.support.persistence.entity.IdEntity;
  * @author harryhe
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "$$balance_account")
 public class BalanceAccount extends IdEntity {

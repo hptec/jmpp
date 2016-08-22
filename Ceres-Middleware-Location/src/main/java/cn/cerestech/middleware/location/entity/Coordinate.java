@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 
-import cn.cerestech.middleware.location.converter.GeodeticSystemConverter;
 import cn.cerestech.middleware.location.enums.GeodeticSystem;
 
 @SuppressWarnings("serial")

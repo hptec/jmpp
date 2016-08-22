@@ -32,24 +32,7 @@ public class WorkbechWebApi extends WebSupport implements UserSessionOperator {
 		List<SysMenu> menus = privilegeService.getMenusByEmployee(getUserId());
 		retMap.put("menus", menus);
 
-		// List<SysMenu> menus = menuService.getMyMenus();
-		// menus.forEach(m -> {
-		// if (m.getSubmenus() != null && !m.getSubmenus().isEmpty()) {
-		// clearParent(m.getSubmenus());
-		// }
-		// });
 		zipOut(retMap);
 	}
 
-	private void clearParent(List<SysMenu> menus) {
-		if (menus == null || menus.isEmpty()) {
-			return;
-		}
-		menus.forEach(m -> {
-			m.setParent(null);
-			if (m.getSubmenus() != null && !m.getSubmenus().isEmpty()) {
-				clearParent(m.getSubmenus());
-			}
-		});
-	}
 }
