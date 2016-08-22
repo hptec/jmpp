@@ -11,9 +11,9 @@
 		{
 			name:"workbench.employee",
 			uri:"/employee",
-			tpl:"/api/classpath/query/support/starter/console/tpl/employee.html",
+			tpl:"/api/classpath/query/support/employee/console/tpl/employee.html",
 			deps:[
-				"/api/classpath/query/support/starter/console/js/pages/page-employee.js",
+				"/api/classpath/query/support/employee/console/js/pages/page-employee.js",
 				"directives-queryform",
 				"directives-codetable",
 				"directives-enums",
@@ -24,9 +24,9 @@
 		{
 			name:"workbench.employee_detail",
 			uri:"/employeedetail",
-			tpl:"/api/classpath/query/support/starter/console/tpl/employee_detail.html",
+			tpl:"/api/classpath/query/support/employee/console/tpl/employee_detail.html",
 			deps:[
-				"/api/classpath/query/support/starter/console/js/pages/page-employeedetail.js",
+				"/api/classpath/query/support/employee/console/js/pages/page-employeedetail.js",
 				"directives-codetable",
 				"directives-enums",
 				"directives-remote",

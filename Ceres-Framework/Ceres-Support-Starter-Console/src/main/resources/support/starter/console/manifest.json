@@ -279,14 +279,6 @@
 			
 		},
 		{
-			name:"directives-codetable",
-			uri:"/api/classpath/query/support/starter/console/js/directives/directives-codetable",
-			deps:[
-				
-			]
-			
-		},
-		{
 			name:"directives-daterangepicker",
 			uri:"/api/classpath/query/support/starter/console/bower_components/angular-daterangepicker/js/angular-daterangepicker",
 			deps:[
@@ -303,7 +295,11 @@
 				"moment",
 				"css!/api/classpath/query/support/starter/console/bower_components/bootstrap-daterangepicker/daterangepicker"
 			]
-		}
+		},
+		{
+			name:"directives-navigation",
+			uri:"/api/classpath/query/support/starter/console/js/directives/directives-navigation"
+		},
 		
 	],
 	pages_console:[
@@ -332,7 +328,8 @@
 				"css!/api/classpath/query/support/starter/console/theme/homer/styles/style.css",
 				"metisMenu",
 				"angular-ui-bootstrap-tpls",
-				"bootstrap-scrollspy"
+				"bootstrap-scrollspy",
+				"directives-navigation"
 			]
 		}
 	]

@@ -1,7 +1,7 @@
 {
 	name:"Ceres-Middleware-CodeTable-Console",
 	desc:"字典表后台管理模块",
-	menus:[
+	/*menus:[
 		{
 			key:"SYS_CODETABLE",
 			caption:" 字 典 ",
@@ -9,7 +9,7 @@
 			parent:"TOP_SYSTEM_CONFIGURATION",
 			uri:"workbench.middleware_codetable"
 		}
-	],
+	],*/
 	pages:[
 		{
 			name:"workbench.middleware_codetable",

@@ -25,16 +25,16 @@ define([ 'http', 'modal', 'cache', 'platform', 'app', 'login', 'angular', '/api/
 		getCurrent : function() {
 
 			if (this.__currentUser == undefined) {
-				// 检测是否有持久化缓存
-				var c = angular.element.cookie("COOKIE_REMEMBER_TOKEN_" + platform.get().key);
-				if (c != undefined) {
-					// 有记住用户名
-					var mine = this.getMine();
-					if (mine != undefined) {
-						this.__currentUser = mine;
-						return mine;
-					}
-				}
+//				// 检测是否有持久化缓存
+//				var c = angular.element.cookie("COOKIE_REMEMBER_TOKEN_" + platform.get().key);
+//				if (c != undefined) {
+//					// 有记住用户名
+//					var mine = this.getMine();
+//					if (mine != undefined) {
+//						this.__currentUser = mine;
+//						return mine;
+//					}
+//				}
 				if (http.onLoginRequired) {
 					cui.log("onLoginRequired");
 					http.onLoginRequired();

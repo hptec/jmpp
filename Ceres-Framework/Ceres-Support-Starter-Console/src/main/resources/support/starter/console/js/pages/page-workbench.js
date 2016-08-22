@@ -11,7 +11,7 @@ define([ 'app', 'platform', 'employee', 'menu', 'pages', 'login', 'angular' ], f
 		$scope.menus = menu.getMine(function(result) {
 			$scope.menus = result;
 			$scope.$apply();
-			$("#side-menu").metisMenu();
+		
 		});
 		$scope.logout = function() {
 			login.logout(function() {
