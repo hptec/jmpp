@@ -52,18 +52,26 @@ public class EmployeeService implements UserSessionOperator {
 		return e.isAdmin() ? e : e.getParent();
 	}
 
-	public Result<Employee> modifyPassword(Long eid, String pwd) {
-		if (Strings.isNullOrEmpty(pwd)) {
+	/**
+	 * 有管理员为其设置密码
+	 * 
+	 * @param eid
+	 * @param newPwd1
+	 * @param newPwd2
+	 * @return
+	 */
+	public Result<Employee> modifyPassword(Long eid, String newPwd1, String newPwd2) {
+
+		if (Strings.isNullOrEmpty(newPwd1) || Strings.isNullOrEmpty(newPwd2)) {
 			return Result.error(EmployeeErrorCodes.PASSWORD_CANNOT_EMPTY);
 		}
-		Employee e = employeeDao.findOne(eid);
-		if (e != null) {
-			// e.setLoginPwd(Encrypts.md5(pwd));
-			employeeDao.save(e);
-			return Result.success().setObject(e);
-		} else {
-			return Result.error().setMessage("");
+		if (!newPwd1.equals(newPwd2)) {
+			return Result.error(EmployeeErrorCodes.PASSWORD_NOT_EQUAL);
 		}
+		Employee e = get(eid);
+		e.getLogin().setPwd(Encrypts.md5(Encrypts.md5(newPwd1)));
+		employeeDao.save(e);
+		return Result.success().setObject(e);
 	}
 
 	public Result<Employee> modifyPassword(Long eid, String oldPwd, String newPwd1, String newPwd2) {
@@ -83,52 +91,6 @@ public class EmployeeService implements UserSessionOperator {
 			return null;
 		}
 	}
-
-	// public List<Employee> search(Gender gender, YesNo frozen, String keyword,
-	// Date dateRegisterFrom,
-	// Date dateRegisterTo, Date dateLoginFrom, Date dateLoginTo) {
-	// StringBuffer buffer = new StringBuffer(" 1=1");
-	//
-	// if (gender != null) {
-	// buffer.append(" AND gender='" + gender.key() + "' ");
-	// }
-	// if (frozen != null) {
-	// buffer.append(" AND frozen='" + frozen.key() + "'");
-	// }
-	//
-	// if (dateRegisterFrom != null) {
-	// buffer.append(" AND create_time >= timestamp('" +
-	// FORMAT_DATE.format(dateRegisterFrom) + " 00:00:00') ");
-	// }
-	//
-	// if (dateRegisterTo != null) {
-	// buffer.append(" AND create_time <= timestamp('" +
-	// FORMAT_DATE.format(dateRegisterTo) + " 23:59:59') ");
-	// }
-	//
-	// if (dateLoginFrom != null) {
-	// buffer.append(" AND last_login_time >= timestamp('" +
-	// FORMAT_DATE.format(dateLoginFrom) + " 00:00:00') ");
-	// }
-	// if (dateLoginTo != null) {
-	// buffer.append(" AND last_login_time <= timestamp('" +
-	// FORMAT_DATE.format(dateLoginTo) + " 23:59:59') ");
-	// }
-	//
-	// if (!Strings.isNullOrEmpty(keyword)) {
-	// buffer.append(" AND (nickname LIKE '%" + keyword + "%' OR phone LIKE '%"
-	// + keyword
-	// + "%' OR position LIKE '%" + keyword + "%' OR work_num LIKE '%" + keyword
-	// + "%')");
-	// }
-	//
-	// buffer.append(" ORDER BY create_time DESC");
-	// buffer.append(" LIMIT " + BaseEntity.MAX_QUERY_RECOREDS);
-	//
-	// List<Employee> retList = mysqlService.queryBy(Employee.class,
-	// buffer.toString());
-	// return retList;
-	// }
 
 	/**
 	 * 添加子员工账号
@@ -174,7 +136,7 @@ public class EmployeeService implements UserSessionOperator {
 			employee.setLogin(loginInDb);
 		}
 
-		// 娇艳重复性
+		// 校验重复性
 
 		employeeDao.save(employee);
 		return Result.success(employee);

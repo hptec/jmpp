@@ -52,10 +52,6 @@
 				this.loadScript(this.__config.defaultUri.requirejs, function() {
 					cui.log("[INFO] RequireJs成功加载");
 					var configUrl = cui.__config.defaultUri.systemconfig;
-					if (cui.__config.platform.category != "app") {
-						configUrl += '?ceres_platform_key=' + cui.__config.platform.key;
-					}
-
 					require([ configUrl ], function(sysConfig) {
 
 						cui.log("[INFO] 默认配置成功加载", cui.__config);

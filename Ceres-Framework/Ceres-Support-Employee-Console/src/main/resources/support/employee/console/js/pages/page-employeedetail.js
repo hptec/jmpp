@@ -56,8 +56,28 @@ define([ 'app', 'pages', 'modal', 'http' ], function(app, pages, modal, http) {
 				size : 'xs',
 				scope : $scope,
 				controller : function($scope, $uibModalInstance) {
+					$scope.__modifyPassword = {};
 					$scope.cancel = function() {
 						$uibModalInstance.dismiss('cancel');
+					}
+					$scope.ok = function() {
+						var data = cui.extend(true, {}, $scope.__modifyPassword);
+						data.eid = $scope.data.id;
+						http.load({
+							url : '/api/employee/updatePassword',
+							data : data,
+							success : function(ret) {
+								if (ret.isSuccess) {
+									$scope.cancel();
+
+								} else {
+									modal.toast({
+										title : ret.message
+									});
+								}
+							}
+						});
+
 					}
 				}
 			});

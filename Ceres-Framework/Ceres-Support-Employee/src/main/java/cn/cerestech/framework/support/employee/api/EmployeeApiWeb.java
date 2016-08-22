@@ -78,4 +78,12 @@ public class EmployeeApiWeb extends WebSupport implements UserSessionOperator {
 		zipOut(ret.isSuccess() ? Result.success(ret.getObject().safty()) : ret);
 	}
 
+	@RequestMapping("/updatePassword")
+	@LoginRequired
+	public void updatePassword(@RequestParam("eid") Long eid, @RequestParam("newPwd") String newPwd,
+			@RequestParam("confirmPwd") String confirmPwd) {
+		Result<Employee> ret = employeeService.modifyPassword(eid, newPwd, confirmPwd);
+		zipOut(ret);
+	}
+
 }
