@@ -32,7 +32,8 @@
 				"directives-remote",
 				"directives-queryform",
 				"filters-web",
-				"directives-web"
+				"directives-web",
+				"directives"
 			],
 			params:{
 				id:""

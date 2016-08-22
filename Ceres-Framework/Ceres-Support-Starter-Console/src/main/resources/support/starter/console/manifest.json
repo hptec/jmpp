@@ -265,11 +265,6 @@
 			angularModule:"summernote"
 		},
 		{
-			name:"menu",
-			uri:"/api/classpath/query/support/starter/console/js/api/menu",
-			exports:"menu"
-		},
-		{
 			name:"directives-queryform",
 			uri:"/api/classpath/query/support/starter/console/js/directives/directives-queryform",
 			deps:[
@@ -298,7 +293,8 @@
 		},
 		{
 			name:"directives-navigation",
-			uri:"/api/classpath/query/support/starter/console/js/directives/directives-navigation"
+			uri:"/api/classpath/query/support/starter/console/js/directives/directives-navigation",
+			deps:["metisMenu"]
 		},
 		
 	],
@@ -310,7 +306,6 @@
 			defaultPage:true,
 			deps:[
 				"/api/classpath/query/support/starter/console/js/pages/page-login.js",
-				"css!/api/classpath/query/support/starter/console/theme/homer/styles/style.css",
 				"directives"
 			]
 			
@@ -325,8 +320,6 @@
 				"css!/api/classpath/query/support/starter/console/theme/homer/fonts/pe-icon-7-stroke/css/helper",
 				"css!/api/classpath/query/support/starter/console/theme/homer/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke",
 				"css!/api/classpath/query/support/starter/console/theme/homer/bower_components/animate.css/animate.min",
-				"css!/api/classpath/query/support/starter/console/theme/homer/styles/style.css",
-				"metisMenu",
 				"angular-ui-bootstrap-tpls",
 				"bootstrap-scrollspy",
 				"directives-navigation"

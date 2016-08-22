@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.beust.jcommander.internal.Lists;
 import com.google.common.base.Strings;
 
 import cn.cerestech.framework.core.enums.YesNo;
@@ -23,7 +24,7 @@ public class EmployeeService implements UserSessionOperator {
 
 	@Autowired
 	EmployeeDao employeeDao;
-	
+
 	@Autowired
 	PlatformProvider platformProvider;
 
@@ -160,6 +161,12 @@ public class EmployeeService implements UserSessionOperator {
 			// 新增模式
 			employee.getLogin().setFrozen(YesNo.NO);
 			employee.getLogin().setPwd(Encrypts.md5(Encrypts.md5("888888")));
+			if (employee.getRoles() == null) {
+				employee.setRoles(Lists.newArrayList());
+			}
+			if (!employee.getRoles().contains("SYS_ROLE_SALEMAN")) {
+				employee.getRoles().add("SYS_ROLE_SALEMAN");
+			}
 		} else {
 			Login loginInDb = employeeDao.findOne(employee.getId()).getLogin();
 			loginInDb.setId(employee.getLogin().getId());// 登录名有可能被修改
@@ -176,8 +183,8 @@ public class EmployeeService implements UserSessionOperator {
 	public List<Employee> getSubEmployee() {
 		return employeeDao.findByPlatformAndParentId(getPlatformKey(), getUserId());
 	}
-	
-	private String getPlatformKey(){
+
+	private String getPlatformKey() {
 		return platformProvider.get().getKey();
 	}
 }

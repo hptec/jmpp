@@ -2,6 +2,16 @@ define([ 'app', 'pages', 'modal', 'http' ], function(app, pages, modal, http) {
 
 	app.controller('employeeDetailCtrl', [ '$scope', '$location', '$stateParams', function($scope, $location, $stateParams) {
 
+		$scope.roles = [ {
+			name : "超级管理员",
+			key : "SA"
+		}, {
+			name : "销售",
+			key : "SALE"
+		} ]
+
+		$scope.data = {};
+
 		$scope.returnToList = function() {
 			pages.open({
 				url : "workbench.employee"
@@ -48,6 +58,10 @@ define([ 'app', 'pages', 'modal', 'http' ], function(app, pages, modal, http) {
 					}
 				}
 			});
+		}
+
+		$scope.reloadRoles = function() {
+			
 		}
 
 		// 初始化过程

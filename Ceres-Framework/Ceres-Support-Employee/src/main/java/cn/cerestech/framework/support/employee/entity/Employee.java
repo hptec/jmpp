@@ -1,7 +1,10 @@
 package cn.cerestech.framework.support.employee.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,7 +52,9 @@ public class Employee extends IdEntity implements Confidential<Employee>, Logina
 
 	private YesNo isSuperAdmin;
 
-	// private LocalFile avatar;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "$$sys_employee_roles")
+	private List<String> roles;
 
 	public String getName() {
 		return name;
@@ -111,7 +116,7 @@ public class Employee extends IdEntity implements Confidential<Employee>, Logina
 	@Override
 	public Employee safty() {
 		Employee employee = new Employee();
-		BeanUtils.copyProperties(this,employee);
+		BeanUtils.copyProperties(this, employee);
 		if (employee.getLogin() != null) {
 			Login loginTmp = new Login();
 			loginTmp.setId(employee.getLogin().getId());
@@ -161,6 +166,14 @@ public class Employee extends IdEntity implements Confidential<Employee>, Logina
 	 */
 	public Boolean isAdmin() {
 		return isSuperAdmin == null ? Boolean.FALSE : YesNo.YES.equals(isSuperAdmin);
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }
