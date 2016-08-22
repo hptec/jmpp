@@ -13,7 +13,6 @@
 			<div class="col-md-2" ng-if="data.id!=undefined">
 				<button class="btn btn-block btn-danger">为TA设置密码</button>
 			</div>
-		
 		</div>
 		<div class="hr-line-dashed"></div>
 		<div class="row">
@@ -53,6 +52,18 @@
 	            <input type="tel" class="form-control" placeholder="请输入电子邮箱"   ng-model="data.email">
 	         </div>
   		</div>
+  		<!-- <div class="hr-line-dashed"></div>
+  		<div class="row">
+  			<div class="form-group col-sm-12">
+          		<label class="control-label">选择角色</label>
+          		<div class="checkbox">
+          			<span ng-repeat="s in roles">
+          				<input icheck type="checkbox" ng-model="s.checked" value="s.value" >
+          				<span ng-bind="s.name"></span>
+          			</span>
+          		</div>
+			</div>
+  		</div> -->
 	</div>
 </div>
 

@@ -1,4 +1,4 @@
-define([ 'app', 'platform', 'cache', 'http', '/api/console/workbench/config' ], function(app, platform, cache, http, config) {
+define([ 'app', 'http', 'angular' ], function(app, http, angular) {
 
 	var combineMenu = function(menu) {
 		var menuStr = "<li cui-id='" + menu.uuid + "'>";
@@ -33,24 +33,23 @@ define([ 'app', 'platform', 'cache', 'http', '/api/console/workbench/config' ], 
 			templateUrl : '/api/theme/query/views/common/navigation.html',
 			controller : [ "$scope", "$state", function($scope, $state) {
 				$scope.refresh = function() {
-					// 从本地缓存加载配置
-					var data = cache.get(key);
-					if (data != undefined) {
-						$scope.data = data;
-					}
+					http.load({
+						url : '/api/console/workbench/config',
+						success : function(ret) {
+							$scope.menus=ret.menus
 
-					// 刷新服务器刷新导航配置
+							$scope.$apply();
+							var menuEle = angular.element("#side-menu");
+							menuEle.metisMenu();
+						}
+					});
+
 				}
+				$scope.refresh();
 			} ],
 			compile : function(element, attrs) {
-				var menuEle = element.find("#side-menu");
-				for (_$i in config.menus) {
-					var m = config.menus[_$i];
-					menuEle.append(combineMenu(m));
-				}
 				return {
 					post : function(scope, element, attrs) {
-						element.find("#side-menu").metisMenu();
 					}
 				}
 			}

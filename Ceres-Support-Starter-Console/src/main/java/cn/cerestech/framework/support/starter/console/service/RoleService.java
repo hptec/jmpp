@@ -62,4 +62,8 @@ public class RoleService {
 	public List<SysRole> getRolesById(Collection<Long> idIn) {
 		return roleDao.findByPlatformAndIdIn(platformProvider.get().getKey(), idIn);
 	}
+
+	public List<SysRole> getRolesByKey(Collection<String> keyIn) {
+		return roleDao.findByPlatformAndUuidIn(platformProvider.get().getKey(), keyIn);
+	}
 }

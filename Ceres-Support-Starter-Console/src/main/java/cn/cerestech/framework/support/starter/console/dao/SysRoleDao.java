@@ -15,6 +15,7 @@ public interface SysRoleDao extends JpaRepository<SysRole, Long> {
 	public List<SysRole> findByPlatformAndIsSuperAdmin(String platform, YesNo is);
 
 	public List<SysRole> findByPlatformAndIdIn(String platform, Collection<Long> idIn);
+	public List<SysRole> findByPlatformAndUuidIn(String platform, Collection<String> keyIn);
 	
 	public void deleteByPlatformAndId(String platform,Long id);
 }

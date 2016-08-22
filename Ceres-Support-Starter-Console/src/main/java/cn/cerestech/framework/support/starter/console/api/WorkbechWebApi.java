@@ -38,7 +38,7 @@ public class WorkbechWebApi extends WebSupport implements UserSessionOperator {
 		// clearParent(m.getSubmenus());
 		// }
 		// });
-		zipOutRequireJson(retMap);
+		zipOut(retMap);
 	}
 
 	private void clearParent(List<SysMenu> menus) {

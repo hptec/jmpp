@@ -1,4 +1,4 @@
-define([ 'app', 'platform', 'employee', 'menu', 'pages', 'login', 'angular' ], function(app, platform, employee, menu, pages, login, angular) {
+define([ 'app', 'platform', 'employee', 'pages', 'login', 'angular' ], function(app, platform, employee, pages, login, angular) {
 
 	app.controller('workbenchCtrl', [ '$scope', '$location', '$state', function($scope, $location, $state) {
 		$scope.platform = platform.get();
@@ -8,11 +8,6 @@ define([ 'app', 'platform', 'employee', 'menu', 'pages', 'login', 'angular' ], f
 				url : url
 			});
 		}
-		$scope.menus = menu.getMine(function(result) {
-			$scope.menus = result;
-			$scope.$apply();
-		
-		});
 		$scope.logout = function() {
 			login.logout(function() {
 				pages.open("login");
