@@ -28,6 +28,11 @@
       <artifactId>Ceres-Support-Employee-Console</artifactId>
       <version>${ceres.version}</version>
     </dependency>
+    <dependency>
+    	<groupId>cn.cerestech</groupId>
+    	<artifactId>Ceres-Middleware-Geetest</artifactId>
+    	<version>${ceres.version}</version>
+    </dependency>
   </dependencies>
 </project>
 

@@ -1,0 +1,17 @@
+{
+	name:"Ceres-Middleware-Geetest",
+	desc:"极验模块",
+	jsModules:[
+		{
+			name:"geetest",
+			uri:"/api/classpath/query/middleware/geetest/js/geetest",
+			deps:["geetest-lib"],
+			exports:"geetest"
+		},
+		{
+			name:"geetest-lib",
+			uri:"http://static.geetest.com/static/tools/gt",
+			deps:["jquery"]
+		}
+	]
+}

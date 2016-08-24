@@ -296,7 +296,7 @@
 			name:"directives-navigation",
 			uri:"/api/classpath/query/support/starter/console/js/directives/directives-navigation",
 			deps:["metisMenu"]
-		},
+		}
 		
 	],
 	pages_console:[
@@ -307,7 +307,8 @@
 			defaultPage:true,
 			deps:[
 				"/api/classpath/query/support/starter/console/js/pages/page-login.js",
-				"directives"
+				"directives",
+				"geetest"
 			]
 			
 		},
