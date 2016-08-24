@@ -88,7 +88,7 @@ public class SmsService {
 	}
 
 	public Result<SmsRecord> send(Supplier<Sms> supplier) {
-		if (isSMSEnabled()) {
+		if (!isSMSEnabled()) {
 			return Result.success();
 		}
 		Sms sms = supplier.get();

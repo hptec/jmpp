@@ -2,6 +2,9 @@ package cn.cerestech.middleware.sms.providers;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 
@@ -14,6 +17,7 @@ import cn.cerestech.middleware.sms.enums.SmsProviderAuthKey;
 
 public class YunPianProvider implements Provider {
 	public static String SEND_URL = "http://yunpian.com/v1/sms/send.json";
+	Logger log = LogManager.getLogger();
 
 	@Override
 	public SmsProviderAuthKey[] authKeys() {
@@ -31,6 +35,7 @@ public class YunPianProvider implements Provider {
 
 		try {
 			String resp = Https.of().post(SEND_URL, params).readString();
+			log.trace("短信发送结果:" + resp);
 			if (Strings.isNullOrEmpty(content)) {
 				result.setSuccess(Boolean.FALSE);
 			}
