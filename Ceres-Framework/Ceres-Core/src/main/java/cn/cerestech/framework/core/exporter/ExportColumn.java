@@ -2,7 +2,11 @@ package cn.cerestech.framework.core.exporter;
 
 import java.lang.reflect.Field;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ExportColumn {
+	private Logger log = LogManager.getLogger();
 
 	private String propertyName;
 	private String title;
@@ -14,6 +18,7 @@ public class ExportColumn {
 		Field f;
 		Object o = null;
 		try {
+//			log.info("对象:" + obj + " ;属性:" + propertyName);
 			f = obj.getClass().getField(propertyName);
 			o = f.get(obj);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {

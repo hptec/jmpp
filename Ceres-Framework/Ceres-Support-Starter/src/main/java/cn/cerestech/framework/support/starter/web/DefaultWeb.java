@@ -14,8 +14,8 @@ public class DefaultWeb extends WebSupport {
 	MainPageProvider mainPageProvider;
 
 	@RequestMapping("")
-	public String index() {
-		return mainPageProvider.get();
+	public void index() {
+		zipOut(mainPageProvider.get());
 	}
 
 }
