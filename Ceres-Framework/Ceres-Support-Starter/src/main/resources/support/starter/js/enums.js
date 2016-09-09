@@ -2,6 +2,7 @@ define([ 'http', 'cache' ], function(http, cache) {
 	// 加载初始数据
 	http.load({
 		url : "/api/web/enums",
+		server : true,
 		success : function(ret) {
 			var storeKey = "ENUM_DATASET";
 			cache.set(storeKey, ret);

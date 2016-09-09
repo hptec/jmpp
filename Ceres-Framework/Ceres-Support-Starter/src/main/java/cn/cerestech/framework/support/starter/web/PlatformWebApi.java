@@ -27,4 +27,15 @@ public class PlatformWebApi extends WebSupport {
 		}
 	}
 
+	@RequestMapping("get")
+	public void get() {
+		Platform pf = platformProvider.get();
+		if (pf == null) {
+			zipOutRequireJson(Result.error(ErrorCodes.PLATFORM_AUTH_INCORRECT));
+		} else {
+			pf.setId(null);
+			zipOutRequireJson(pf);
+		}
+	}
+
 }
