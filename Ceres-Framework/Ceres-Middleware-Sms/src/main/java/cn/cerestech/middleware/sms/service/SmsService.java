@@ -103,6 +103,8 @@ public class SmsService {
 		if (record.getPlanTime() != null && record.getPlanTime().after(new Date())) {
 			// 以后发送，加入Buffer
 			record.setState(SmsState.PLANNING);
+			smsDao.save(record);
+			return Result.success(record);
 		} else {
 			// 立即发送
 
@@ -152,10 +154,10 @@ public class SmsService {
 			record.setResult(ret);
 			record.setState(ret.isSuccess() ? SmsState.SUCCESS : SmsState.ERROR);
 			record.setSendedTime(new Date());
+			smsDao.save(record);
+			return ret.isSuccess() ? Result.success(record) : Result.error().setObject(record).setMessage(ret.getMessage());
 		}
 
-		smsDao.save(record);
-		return Result.success(record);
 	}
 
 	public Result<Collection<SmsRecord>> sendBatch(Supplier<Collection<Sms>> supplier) {
@@ -192,8 +194,8 @@ public class SmsService {
 						String ip = record.getIp().getAddr();
 						// 在当前批次或者数据库中存在的，则视为违反
 						if (ipMap.contains(ip)
-								|| smsDao.findUniqueBySendedTimeIsNotNullAndSendedTimeGreaterThanAndStateAndIpAddr(before,
-										SmsState.SUCCESS, ip) != null) {
+								|| smsDao.findUniqueBySendedTimeIsNotNullAndSendedTimeGreaterThanAndStateAndIpAddr(
+										before, SmsState.SUCCESS, ip) != null) {
 							// 在指定时间内有发送成功的短信
 							SmsResult ret = new SmsResult();
 							ret.setMessage("IP地址[" + record.getIp().getAddr() + "] 在 " + ipLimit + " 毫秒内 重复发送");
@@ -214,8 +216,8 @@ public class SmsService {
 						String mobile = record.getTo().number();
 						// 在当前批次或者数据库中存在的，则视为违反
 						if (mobileMap.contains(mobile)
-								|| smsDao.findUniqueBySendedTimeIsNotNullAndSendedTimeGreaterThanAndStateAndToNumber(before,
-										SmsState.SUCCESS, record.getTo().number()) != null) {
+								|| smsDao.findUniqueBySendedTimeIsNotNullAndSendedTimeGreaterThanAndStateAndToNumber(
+										before, SmsState.SUCCESS, record.getTo().number()) != null) {
 							// 在指定时间内有发送成功的短信
 							SmsResult ret = new SmsResult();
 							ret.setMessage("电话号码[" + record.getTo().number() + "] 在 " + mobileLimit + " 毫秒内 重复发送");

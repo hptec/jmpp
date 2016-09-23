@@ -259,7 +259,7 @@ public class Jsons {
 	}
 
 	public Integer asInt(Integer defaultValue) {
-		return root == null || root.isJsonNull() ? defaultValue : root.getAsInt();
+		return root == null || root.isJsonNull() ? defaultValue :  root.getAsInt();
 	}
 
 	public Long asLong() {
