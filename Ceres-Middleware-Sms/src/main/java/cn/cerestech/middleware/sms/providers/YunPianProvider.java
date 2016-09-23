@@ -39,7 +39,7 @@ public class YunPianProvider implements Provider {
 			if (Strings.isNullOrEmpty(content)) {
 				result.setSuccess(Boolean.FALSE);
 			}
-			Jsons ele = Jsons.from(content);
+			Jsons ele = Jsons.from(resp);
 			Integer code = ele.get("code").asInt();
 			if (code != null) {
 				String msg = Strings.nullToEmpty(ele.get("msg").asString());
