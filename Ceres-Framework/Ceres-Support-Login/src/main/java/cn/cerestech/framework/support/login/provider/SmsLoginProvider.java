@@ -102,10 +102,8 @@ public abstract class SmsLoginProvider<T extends Loginable>
 		String content = new DefaultPropertiesTemplateParser("login_or_reg").parse(KV.on().put("code", code));
 		Result<SmsRecord> res = getSmsService().send(to, content, getIp());
 		log.trace("发送短信 号码：" + to.fullNumber() + " 验证码：" + code);
-		if (res.isSuccess()) {
-			putSession(SmsLoginProvider.LOGIN_SESSION_SMS_CODE, code);
-			putSession(SmsLoginProvider.LOGIN_SESSION_SMS_MOBILE, to.number());
-		}
+		putSession(SmsLoginProvider.LOGIN_SESSION_SMS_CODE, code);
+		putSession(SmsLoginProvider.LOGIN_SESSION_SMS_MOBILE, to.number());
 
 		return res;
 	}
