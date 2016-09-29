@@ -23,6 +23,7 @@ define([ 'app', 'http' ], function(app, http) {
 				if (defaultDesc != undefined && defaultDesc != "") {
 					tElement.append("<option value=''>" + defaultDesc + "</option>");
 				}
+				
 				return function(scope, element, attrs) {
 					$compile(select)(scope);
 				}
