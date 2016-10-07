@@ -22,19 +22,19 @@ public abstract class FreemarkerClasspathThemeProvider implements ThemeProvider 
 
 	static {
 		stringLoader = new StringTemplateLoader();
-		configuration = new Configuration();
+		configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 		configuration.setTemplateLoader(stringLoader);
 	}
 
 	public String parse(String name, Map<String, Object> param) {
 		Template tpl = null;
 		try {
-			Object o=stringLoader.findTemplateSource(name);
-			if(o==null){
+			Object o = stringLoader.findTemplateSource(name);
+			if (o == null) {
 				// 模板不存在加载模板
 				stringLoader.putTemplate(name, new String(classpathService.findByUri(getThemeRoot() + name)));
 			}
-			
+
 			tpl = configuration.getTemplate(name);
 			StringWriter writer = new StringWriter();
 			tpl.process(param, writer);
@@ -44,6 +44,5 @@ public abstract class FreemarkerClasspathThemeProvider implements ThemeProvider 
 		}
 		return "";
 	}
-
 
 }
