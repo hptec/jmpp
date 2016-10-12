@@ -1,0 +1,36 @@
+{
+	name:"Ceres-Support-Starter-Console-Theme-Homer",
+	desc:"管理后台Homer主题",
+	jsModules_console:[
+		{
+			name:"spin",
+			uri:"/api/classpath/query/support/starter/console/theme/homer/bower_components/ladda/dist/spin.min"
+		},	
+		{
+			name:"ladda.jquery",
+			uri:"/api/classpath/query/support/starter/console/theme/homer/bower_components/ladda/dist/ladda.jquery.min",
+			deps:[
+				"jquery"
+			]
+		},
+		{
+			name:"ladda",
+			uri:"/api/classpath/query/support/starter/console/theme/homer/bower_components/ladda/dist/ladda.min",
+			deps:[
+				"ladda.jquery",
+				"css!/api/classpath/query/support/starter/console/theme/homer/bower_components/ladda/dist/ladda-themeless.min"
+			]
+			
+		},
+		{
+			name:"angular-ladda",
+			uri:"/api/classpath/query/support/starter/console/theme/homer/bower_components/angular-ladda/dist/angular-ladda.min",
+			deps:[
+				"ladda",
+				"angular"
+			],
+			angularModule:"angular-ladda"
+		}
+		
+	]
+}

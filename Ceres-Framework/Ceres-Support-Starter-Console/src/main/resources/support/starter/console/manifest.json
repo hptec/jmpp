@@ -297,7 +297,6 @@
 			uri:"/api/classpath/query/support/starter/console/js/directives/directives-navigation",
 			deps:["metisMenu"]
 		}
-		
 	],
 	pages_console:[
 		{
