@@ -20,7 +20,7 @@ import cn.cerestech.middleware.sms.providers.Sms;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "$$sms_record")
+@Table(name = "$$sys_sms_log")
 public class SmsRecord extends IdEntity implements Sms {
 
 	// 发送通道
