@@ -26,6 +26,7 @@ import cn.cerestech.framework.support.persistence.entity.IdEntity;
 @Table(name = "$$sys_menu")
 public class SysMenu extends IdEntity {
 
+	//TODO 添加是否隐藏禁用
 	private String platform;// 所属的Platform
 	@Column(length = 35)
 	private String uuid;// 唯一的Key
