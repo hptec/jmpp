@@ -1,11 +1,16 @@
 package cn.cerestech.framework.support.login.provider;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Strings;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 
 import cn.cerestech.framework.core.parser.DefaultPropertiesTemplateParser;
@@ -18,7 +23,6 @@ import cn.cerestech.framework.support.login.entity.LoginField;
 import cn.cerestech.framework.support.login.entity.Loginable;
 import cn.cerestech.framework.support.login.enums.LoginErrorCodes;
 import cn.cerestech.framework.support.starter.operator.RequestOperator;
-import cn.cerestech.framework.support.starter.operator.SessionOperator;
 import cn.cerestech.middleware.location.mobile.Mobile;
 import cn.cerestech.middleware.location.operator.IpOperator;
 import cn.cerestech.middleware.sms.entity.SmsRecord;
@@ -31,14 +35,19 @@ import cn.cerestech.middleware.sms.service.SmsService;
  *
  * @param <T>
  */
-public abstract class SmsLoginProvider<T extends Loginable>
-		implements LoginProvider<T>, SessionOperator, RequestOperator, IpOperator {
-
-	public static final String LOGIN_SESSION_SMS_MOBILE = "LOGIN_SESSION_SMS_MOBILE";// 发送验证短信后保存在Session中电话号码的值
-	public static final String LOGIN_SESSION_SMS_CODE = "LOGIN_SESSION_SMS_CODE";// 发送验证短信后保存在Session中代码的值
+public abstract class SmsLoginProvider<T extends Loginable> implements LoginProvider<T>, RequestOperator, IpOperator {
 
 	public static final String LOGIN_PHONE = "phone";// 登录电话
 	public static final String LOGIN_CODE = "code";// 登录验证码
+
+	// 短信验证码缓存 30分钟过期
+	private LoadingCache<String, String> smsCache = CacheBuilder.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES)
+			.build(new CacheLoader<String, String>() {
+				public String load(String id) throws Exception {
+
+					return null;
+				}
+			});
 
 	private Logger log = LogManager.getLogger();
 
@@ -61,10 +70,9 @@ public abstract class SmsLoginProvider<T extends Loginable>
 		}
 
 		// 验证短信验证码
-		String sys_phone = getSession(LOGIN_SESSION_SMS_MOBILE);
-		String sys_code = getSession(LOGIN_SESSION_SMS_CODE);
+		String sys_code = smsCache.getIfPresent(fromLogin.getId());
 
-		if (!fromLogin.getId().equals(sys_phone) || !fromLogin.getPwd().equals(sys_code)) {
+		if (Strings.isNullOrEmpty(sys_code) || !fromLogin.getPwd().equals(sys_code)) {
 			return Result.error(LoginErrorCodes.SMS_CODE_ERROR);
 		}
 		// 检查是否创建用户
@@ -102,8 +110,8 @@ public abstract class SmsLoginProvider<T extends Loginable>
 		String content = new DefaultPropertiesTemplateParser("login_or_reg").parse(KV.on().put("code", code));
 		Result<SmsRecord> res = getSmsService().send(to, content, getIp());
 		log.trace("发送短信 号码：" + to.fullNumber() + " 验证码：" + code);
-		putSession(SmsLoginProvider.LOGIN_SESSION_SMS_CODE, code);
-		putSession(SmsLoginProvider.LOGIN_SESSION_SMS_MOBILE, to.number());
+		// 使用cache缓存，而不是session（解决终端稳定性）
+		smsCache.put(to.number(), code);
 
 		return res;
 	}
