@@ -41,7 +41,7 @@ public class GeetestApi extends WebSupport {
 			@RequestParam("seccode") String seccode, @RequestParam("transId") String transId) {
 
 		// 从session中获取gt-server状态
-		int gt_server_status_code = (Integer) getSession(GEETEST_SERVER_STATUS);
+		Integer gt_server_status_code = (Integer) getSession(GEETEST_SERVER_STATUS);
 
 		// 从session中获取userid
 
