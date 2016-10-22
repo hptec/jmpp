@@ -82,6 +82,8 @@
     <module>Ceres-Support-Employee</module>
     <module>Ceres-Support-Employee-Console</module>
     <module>Ceres-Middleware-Geetest</module>
+    <module>Ceres-Support-MP</module>
+    <module>Ceres-Middleware-Balance-Background</module>
   </modules>
   <version>3.0.25</version>
   <dependencies>
