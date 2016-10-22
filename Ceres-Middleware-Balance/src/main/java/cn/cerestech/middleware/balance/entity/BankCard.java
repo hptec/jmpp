@@ -2,16 +2,14 @@ package cn.cerestech.middleware.balance.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.support.persistence.Owner;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "$$balance_bankcard")
+// @Entity
+// @Table(name = "$$balance_bankcard")
 public class BankCard extends IdEntity {
 
 	@Embedded

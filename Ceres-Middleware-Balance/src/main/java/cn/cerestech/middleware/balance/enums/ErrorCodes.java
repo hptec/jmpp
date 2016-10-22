@@ -3,7 +3,7 @@ package cn.cerestech.middleware.balance.enums;
 import cn.cerestech.framework.core.enums.DescribableEnum;
 
 public enum ErrorCodes implements DescribableEnum {
-	AMOUNT_NOT_ENOUGH("AMOUNT_NOT_ENOUGH", "账户余额不足"), //
+	
 	AMOUNT_ADD_POSITIVE_ZERO_ONLY("AMOUNT_ADD_POSITIVE_ZERO_ONLY", "添加账户余额只能为零或正数"), //
 	AMOUNT_SUBSTRACT_NEGETIVE_ZERO_ONLY("AMOUNT_SUBSTRACT_NEGETIVE_ZERO_ONLY", "减少账户余额只能为零或负数"), //
 	FREEZE_NOT_FOUND("FREEZE_NOT_FOUND", "冻结记录未找到"), //
