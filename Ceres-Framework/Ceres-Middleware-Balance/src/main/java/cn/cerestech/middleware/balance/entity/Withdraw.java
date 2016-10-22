@@ -17,8 +17,8 @@ import cn.cerestech.middleware.balance.enums.WithdrawState;
  *
  */
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "$$balance_withdraw")
+//@Entity
+//@Table(name = "$$balance_withdraw")
 public class Withdraw extends IdEntity {
 
 	// 提现金额
