@@ -177,6 +177,10 @@
 		{
 			name:"modal",
 			uri:"/api/classpath/query/support/starter/js/modal",
+			deps:[
+				"toastr",
+				"swal"
+			],
 			exports:"modal"
 		},
 		{
@@ -187,6 +191,24 @@
 			name:"platform",
 			uri:"/api/classpath/query/support/starter/js/platform",
 			exports:"platform"
+		},
+		{
+			name:"toastr",
+			uri:"/api/classpath/query/support/starter/bower_components/toastr/build/toastr.min",
+			deps:[
+				"jquery",
+				"css!/api/classpath/query/support/starter/bower_components/toastr/build/toastr.min"
+			],
+			exports:"toastr"
+		},
+		{
+			name:"swal",
+			uri:"/api/classpath/query/support/starter/bower_components/sweetalert/lib/sweet-alert.min",
+			deps:[
+				"jquery",
+				"css!/api/classpath/query/support/starter/bower_components/sweetalert/lib/sweet-alert.css"
+			],
+			exports:"swal"
 		}
 	],
 	jsModules_console:[
