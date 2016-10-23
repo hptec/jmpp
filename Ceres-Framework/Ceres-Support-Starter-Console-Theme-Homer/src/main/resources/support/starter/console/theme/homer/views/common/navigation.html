@@ -1,22 +1,20 @@
 <div id="navigation" style="background-color: #f7f9fa;">
-    <div class="profile-picture hide">
-        <a href="index.html" ng-click="jump()">
-            <img src="/api/theme/query/images/profile.jpg" class="img-circle m-b" alt="logo">
+    <div class="profile-picture">
+        <a><!--  href="index.html" ng-click="jump()" -->
+            <img src="/api/classpath/query/dinner/shopconsole/images/profile.jpg" class="img-circle m-b" alt="logo">
         </a>
 
         <div class="stats-label text-color ">
-            <span class="font-extra-bold font-uppercase" ng-bind="currentUser.name"></span>
+            <span class="font-extra-bold font-uppercase" ng-bind="currentUser.login.id"></span>
 
             <div class="dropdown" uib-dropdown>
                 <a uib-dropdown-toggle href>
-                    <small class="text-muted">Founder of App <b class="caret"></b></small>
+                    <small class="text-muted">操作 <b class="caret"></b></small>
                 </a>
                 <ul class="animated flipInX m-t-xs" uib-dropdown-menu>
-                    <li><a ui-sref="app_views.contacts">Contacts</a></li>
-                    <li><a ui-sref="app_views.profile">Profile</a></li>
-                    <li><a ui-sref="analytics">Analytics</a></li>
+                    <li><a ng-click="modifymypwd()">修改密码</a></li>
                     <li class="divider"></li>
-                    <li><a ui-sref="common.login">退出登录</a></li>
+                    <li><a ng-click="logout()">退出登录</a></li>
                 </ul>
             </div>
 
