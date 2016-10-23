@@ -8,6 +8,7 @@ public enum EmployeeErrorCodes implements DescribableEnum {
 	PASSWORD_NOT_EQUAL("PASSWORD_NOT_EQUAL", "两次输入密码不同，请确认输入正确！"), //
 	NAME_REQUIRED("NAME_REQUIRED", "名称为必填项目"),//
 	LOGINID_CONFLICT("LOGINID_CONFLICT","当前登录名已经被其他账号使用"),//
+	PASSWORD_ERROR("PASSWORD_ERROR","账号登录密码错误"),//
 	;
 
 	private String key, desc;
