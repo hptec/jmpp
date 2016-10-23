@@ -333,6 +333,10 @@ public class Images {
 		return this;
 	}
 	
+	public BufferedImage getImage() {
+		return this.image==null?this._primitive:this.image;
+	}
+	
 	public static void main(String[] args) throws Exception {
 		Images.of("/Users/bird/Desktop/tmp/mask/a.jpg")
 		.save("/Users/bird/Desktop/tmp/mask/_back.png").compress(0.1f).save("/Users/bird/Desktop/tmp/mask/_compress0.5.png")
