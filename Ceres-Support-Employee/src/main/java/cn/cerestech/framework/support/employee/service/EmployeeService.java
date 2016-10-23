@@ -82,13 +82,12 @@ public class EmployeeService implements UserSessionOperator {
 			return Result.error(EmployeeErrorCodes.PASSWORD_NOT_EQUAL);
 		}
 		Employee e = employeeDao.findOne(eid);
-		if (e != null && Strings.nullToEmpty(e.getLogin().getPwd()).equals(Encrypts.md5(oldPwd))) {
-			// e.setLoginPwd(Encrypts.md5(newPwd1));
+		if (e != null && Strings.nullToEmpty(e.getLogin().getPwd()).equals(Encrypts.md5(Encrypts.md5(oldPwd)))) {
+			e.getLogin().setPwd(Encrypts.md5(Encrypts.md5(newPwd1)));
 			employeeDao.save(e);
 			return Result.success().setObject(e);
 		} else {
-			// return Result.error(EmployeeErrorCodes.LOGIN_FAILED);
-			return null;
+			 return Result.error(EmployeeErrorCodes.PASSWORD_ERROR);
 		}
 	}
 

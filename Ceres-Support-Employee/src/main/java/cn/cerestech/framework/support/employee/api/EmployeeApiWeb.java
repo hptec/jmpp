@@ -11,9 +11,11 @@ import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.employee.criteria.EmployeeCriteria;
 import cn.cerestech.framework.support.employee.dao.EmployeeDao;
 import cn.cerestech.framework.support.employee.entity.Employee;
+import cn.cerestech.framework.support.employee.enums.EmployeeErrorCodes;
 import cn.cerestech.framework.support.employee.service.EmployeeService;
 import cn.cerestech.framework.support.login.annotation.LoginRequired;
 import cn.cerestech.framework.support.login.operator.UserSessionOperator;
+import cn.cerestech.framework.support.starter.enums.ErrorCodes;
 import cn.cerestech.framework.support.starter.provider.PlatformProvider;
 import cn.cerestech.framework.support.starter.web.WebSupport;
 
@@ -83,6 +85,19 @@ public class EmployeeApiWeb extends WebSupport implements UserSessionOperator {
 	public void updatePassword(@RequestParam("eid") Long eid, @RequestParam("newPwd") String newPwd,
 			@RequestParam("confirmPwd") String confirmPwd) {
 		Result<Employee> ret = employeeService.modifyPassword(eid, newPwd, confirmPwd);
+		zipOut(ret);
+	}
+	
+	@RequestMapping("/updateMyPassword")
+	@LoginRequired
+	public void updateMyPwd(@RequestParam("oldPwd") String oldPwd, @RequestParam("newPwd") String newPwd,
+			@RequestParam("confirmPwd") String confirmPwd) {
+		Long id = getUserId();//当前登录的员工
+		if(id == null){
+			zipOut(Result.error(EmployeeErrorCodes.EMPLOYEE_NOT_EXIST));
+			return;
+		}
+		Result<Employee> ret = employeeService.modifyPassword(id, oldPwd, newPwd, confirmPwd);
 		zipOut(ret);
 	}
 
