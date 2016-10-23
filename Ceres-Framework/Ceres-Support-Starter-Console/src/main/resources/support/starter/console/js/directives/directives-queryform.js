@@ -36,6 +36,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 					var formDef = getFormDefinition($attrs);
 
 					if (formDef.url == undefined || formDef.url == "") {
+						$scope.searching = false;
 						throw new Error("数据查询连接url不存在");
 						// 暂时不考虑本地数据
 						// // 本地数据
@@ -150,6 +151,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 								// $(".splash").hide();
 								// }, 2000);
 								$scope.searching = false;
+								$scope.$applyAsync();
 							}
 						});
 					}

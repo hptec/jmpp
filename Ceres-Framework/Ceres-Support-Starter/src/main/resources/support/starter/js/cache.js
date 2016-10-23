@@ -9,7 +9,7 @@ define([ 'module', 'jquery' , 'md5'], function(module, $, md5) {
 
 			var __value = undefined;
 			if (this.isLocalStorageSupport()) {
-				var __value = localStorage.getItem(__key);//[__key];
+				__value = localStorage.getItem(__key);//[__key];
 				if (__value == undefined) {
 					return undefined;
 				} else {
@@ -28,9 +28,9 @@ define([ 'module', 'jquery' , 'md5'], function(module, $, md5) {
 					}
 				}
 			} else {
-				value = $.cookie(__key);
+				__value = $.cookie(__key);
 				try{
-					value = JSON.parse(value);
+					__value = JSON.parse(value);
 				}catch(e){}
 			}
 
@@ -39,7 +39,7 @@ define([ 'module', 'jquery' , 'md5'], function(module, $, md5) {
 //			} else {
 //				return null;
 //			}
-			return value;
+			return __value;
 
 		},
 		/**
