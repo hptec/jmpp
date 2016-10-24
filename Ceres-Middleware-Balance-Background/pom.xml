@@ -6,4 +6,11 @@
     <version>3.0.25</version>
   </parent>
   <artifactId>Ceres-Middleware-Balance-Background</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>cn.cerestech</groupId>
+  		<artifactId>Ceres-Middleware-Balance</artifactId>
+  		<version>${ceres.version}</version>
+  	</dependency>
+  </dependencies>
 </project>
