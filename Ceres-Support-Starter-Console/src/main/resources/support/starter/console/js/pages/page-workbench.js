@@ -24,6 +24,7 @@ define([ 'app', 'platform', 'employee', 'pages', 'login', 'angular', 'http', 'mo
 					};
 					$scope.busying = false;
 					$scope.cancel = function() {
+						$scope.busying = false;
 						$uibModalInstance.dismiss('cancel');
 					}
 					$scope.modify = function() {
@@ -35,15 +36,14 @@ define([ 'app', 'platform', 'employee', 'pages', 'login', 'angular', 'http', 'mo
 							success : function(ret) {
 								if (ret.isSuccess) {
 									$scope.cancel();
-
+									modal.success("修改密码成功");
 								} else {
-									modal.toast({
-										title : ret.message
-									});
+									modal.error(ret.message);
 								}
 							},
 							complete:function(){
 								$scope.busying = false;
+								$scope.$applyAsync();
 							}
 						});
 
