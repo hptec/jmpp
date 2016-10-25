@@ -91,6 +91,12 @@ public class Result<T> implements Jsonable {
 		return (Result<T>) this;
 	}
 
+	@SuppressWarnings({ "unchecked", "hiding" })
+	public <T> Result<T> appendMessage(String message) {
+		this.message = this.message + message;
+		return (Result<T>) this;
+	}
+
 	@SuppressWarnings({ "unchecked" })
 	public <E> Result<E> setObject(T object) {
 		this.object = object;
