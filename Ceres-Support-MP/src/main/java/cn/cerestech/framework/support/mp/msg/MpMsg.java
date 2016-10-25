@@ -1,6 +1,5 @@
 package cn.cerestech.framework.support.mp.msg;
 
-import java.awt.TrayIcon.MessageType;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Map;
@@ -13,7 +12,9 @@ import org.xml.sax.InputSource;
 
 import com.google.common.collect.Maps;
 
+import cn.cerestech.framework.core.enums.EnumCollector;
 import cn.cerestech.framework.core.strings.StringTypes;
+import cn.cerestech.framework.support.mp.enums.MsgType;
 
 /**
  * 微信公众号最基本的消息类型
@@ -52,35 +53,35 @@ public class MpMsg {
 	}
 
 	public String getFromUserName() {
-		return FromUserName;
+		return attrs.get("FromUserName").stringValue();
 	}
 
 	public void setFromUserName(String fromUserName) {
-		FromUserName = fromUserName;
+		attrs.put("FromUserName", new StringTypes(fromUserName));
 	}
 
 	public Long getCreateTime() {
-		return CreateTime;
+		return attrs.get("CreateTime").longValue();
 	}
 
 	public void setCreateTime(Long createTime) {
-		CreateTime = createTime;
+		attrs.put("CreateTime", new StringTypes(createTime.toString()));
 	}
 
-	public MessageType getMsgType() {
-		return MsgType;
+	public MsgType getMsgType() {
+		return EnumCollector.forClass(MsgType.class).keyOf(attrs.get("MsgType").stringValue());
 	}
 
-	public void setMsgType(MessageType msgType) {
-		MsgType = msgType;
+	public void setMsgType(MsgType msgType) {
+		attrs.put("MsgType", new StringTypes(msgType.key()));
 	}
 
 	public String getMsgId() {
-		return MsgId;
+		return attrs.get("MsgId").stringValue();
 	}
 
 	public void setMsgId(String msgId) {
-		MsgId = msgId;
+		attrs.put("MsgId", new StringTypes(msgId));
 	}
 
 }
