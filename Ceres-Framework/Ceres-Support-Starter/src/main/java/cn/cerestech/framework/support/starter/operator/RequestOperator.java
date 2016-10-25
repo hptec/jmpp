@@ -1,5 +1,9 @@
 package cn.cerestech.framework.support.starter.operator;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.context.request.RequestAttributes;
@@ -38,6 +42,25 @@ public interface RequestOperator {
 
 	default void removeRequest(String key) {
 		getRequest().removeAttribute(key);
+	}
+
+	/**
+	 * 从Post中读取文本数据
+	 * 
+	 * @return
+	 */
+	default String readPostString() {
+		StringBuffer sbf = new StringBuffer("");
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(getRequest().getInputStream()));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				sbf.append(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sbf.toString();
 	}
 
 }
