@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import cn.cerestech.framework.support.mp.NormalMessageListener;
 import cn.cerestech.framework.support.starter.operator.RequestOperator;
 import cn.cerestech.framework.support.starter.web.WebSupport;
 
@@ -25,7 +27,7 @@ import cn.cerestech.framework.support.starter.web.WebSupport;
 @ConfigurationProperties(prefix = "mp")
 public class MpGatewayApi extends WebSupport implements RequestOperator {
 	@Autowired
-	MsgProcessServices msgService;
+	NormalMessageListener normalListener;
 
 	@NotNull
 	private String gatetoken;
@@ -53,7 +55,7 @@ public class MpGatewayApi extends WebSupport implements RequestOperator {
 		/* 访问 合法性校验,判定是否是微信官方push 的信息，否则不做任何处理,且判断是否是官方的唯一用户 */
 		boolean isIllegal = validateGateWay(gatetoken, signature, timestamp, nonce, echostr, false);// 消息通道验证
 		if (isIllegal) {
-			String msgStr =readPostString();
+			String msgStr = readPostString();
 			BaseMsg msg = MsgFactory.create(msgStr);
 			BaseMsg retMsg = null;
 			if (msg != null) {
