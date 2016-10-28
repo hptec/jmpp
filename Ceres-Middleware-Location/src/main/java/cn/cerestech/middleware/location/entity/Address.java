@@ -12,22 +12,28 @@ import cn.cerestech.middleware.location.enums.AdminLevel;
 @Table(name = "$$sys_address")
 public class Address extends IdEntity {
 
+	//省份
 	@Embedded
 	private Division province;
 
+	//市
 	@Embedded
 	private Division city;
 
+	//区、县
 	@Embedded
 	private Division county;
 
+	//坐标
 	@Embedded
 	private Coordinate coordinate;
 
+	//街道
 	private String street;
 
 	private String streetNumber;
 
+	//邮编号码
 	private String zipcode;
 
 	public Coordinate getCoordinate() {
