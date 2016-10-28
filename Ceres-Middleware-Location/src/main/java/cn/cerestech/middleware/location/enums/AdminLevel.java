@@ -49,13 +49,13 @@ public enum AdminLevel implements DescribableEnum {
 		case PROVINCE:
 			return code.length() >= 2 ? code.substring(0, 2) : null;
 		case CITY:
-			return code.length() >= 4 ? code.substring(2, 4) : null;
+			return code.length() >= 4 ? code.substring(0, 4) : null;
 		case COUNTY:
-			return code.length() >= 6 ? code.substring(4, 6) : null;
+			return code.length() >= 6 ? code.substring(0, 6) : null;
 		case TOWN:
-			return code.length() >= 9 ? code.substring(6, 9) : null;
+			return code.length() >= 9 ? code.substring(0, 9) : null;
 		case VILLAGE:
-			return code.length() >= 12 ? code.substring(9, 12) : null;
+			return code.length() >= 12 ? code.substring(0, 12) : null;
 		default:
 			return null;
 		}
