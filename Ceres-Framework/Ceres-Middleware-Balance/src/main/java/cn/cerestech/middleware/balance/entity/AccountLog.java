@@ -12,8 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import cn.cerestech.framework.core.json.JsonIgnore;
+import cn.cerestech.framework.support.persistence.entity.Extra;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
-import cn.cerestech.middleware.balance.dataobject.Extra;
 
 /**
  * 账户流水记录

@@ -15,15 +15,16 @@ import com.beust.jcommander.internal.Lists;
 import cn.cerestech.framework.core.enums.DescribableEnum;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.support.persistence.Owner;
+import cn.cerestech.framework.support.persistence.entity.Extra;
 import cn.cerestech.middleware.balance.config.AbstractBalanceConfig;
 import cn.cerestech.middleware.balance.dao.AccountDao;
 import cn.cerestech.middleware.balance.dao.AccountLogDao;
 import cn.cerestech.middleware.balance.dao.AccountRecordDao;
 import cn.cerestech.middleware.balance.dataobject.BalanceDefinition;
-import cn.cerestech.middleware.balance.dataobject.Extra;
 import cn.cerestech.middleware.balance.entity.Account;
 import cn.cerestech.middleware.balance.entity.AccountLog;
 import cn.cerestech.middleware.balance.entity.AccountRecord;
+import cn.cerestech.middleware.balance.entity.BufferedTransaction;
 import cn.cerestech.middleware.balance.errorcode.BalanceErrorCodes;
 
 @Service
@@ -195,5 +196,10 @@ public class BalanceService {
 
 		log(acc, left, oldAmount, newAmount, extra);
 		return Result.success(record);
+	}
+
+	public Result<BufferedTransaction> bufferedTransaction(Owner toWhom, DescribableEnum toType,
+			DescribableEnum toReason, BigDecimal amount, Extra extra) {
+		return null;
 	}
 }
