@@ -26,6 +26,9 @@ public class Division implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private AdminLevel level;
 
+	public Division(){
+	}
+	
 	public Division(String name,String code,AdminLevel level){
 		this.name = name;
 		this.code = code;
