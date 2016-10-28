@@ -11,8 +11,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import cn.cerestech.framework.support.persistence.Owner;
+import cn.cerestech.framework.support.persistence.entity.Extra;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
-import cn.cerestech.middleware.balance.dataobject.Extra;
 import cn.cerestech.middleware.balance.enums.FreezeState;
 
 @SuppressWarnings("serial")
