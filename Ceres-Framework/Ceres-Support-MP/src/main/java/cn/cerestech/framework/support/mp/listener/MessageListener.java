@@ -1,4 +1,4 @@
-package cn.cerestech.framework.support.mp;
+package cn.cerestech.framework.support.mp.listener;
 
 import cn.cerestech.framework.support.mp.msg.MpMsg;
 import cn.cerestech.framework.support.mp.msg.normal.ImageMsg;
@@ -15,7 +15,7 @@ import cn.cerestech.framework.support.mp.msg.normal.VoiceMsg;
  * @author harryhe
  *
  */
-public interface NormalMessageListener {
+public interface MessageListener {
 
 	public MpMsg onText(TextMsg textMsg);
 

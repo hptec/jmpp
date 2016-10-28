@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClas
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import cn.cerestech.framework.support.mp.NormalMessageListener;
+import cn.cerestech.framework.support.mp.listener.MessageListener;
 import cn.cerestech.framework.support.mp.msg.MpMsg;
 import cn.cerestech.framework.support.mp.msg.normal.ImageMsg;
 import cn.cerestech.framework.support.mp.msg.normal.LinkMsg;
@@ -19,8 +19,8 @@ public class MpConfiguration {
 
 	@Bean
 	@ConditionalOnMissingClass
-	public NormalMessageListener getNormalMessageListener() {
-		return new NormalMessageListener() {
+	public MessageListener getNormalMessageListener() {
+		return new MessageListener() {
 
 			@Override
 			public MpMsg onText(TextMsg textMsg) {

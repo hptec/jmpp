@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.cerestech.framework.support.mp.NormalMessageListener;
+import cn.cerestech.framework.support.mp.listener.MessageListener;
 import cn.cerestech.framework.support.starter.operator.RequestOperator;
 import cn.cerestech.framework.support.starter.web.WebSupport;
 
@@ -27,7 +27,7 @@ import cn.cerestech.framework.support.starter.web.WebSupport;
 @ConfigurationProperties(prefix = "mp")
 public class MpGatewayApi extends WebSupport implements RequestOperator {
 	@Autowired
-	NormalMessageListener normalListener;
+	MessageListener normalListener;
 
 	@NotNull
 	private String gatetoken;
