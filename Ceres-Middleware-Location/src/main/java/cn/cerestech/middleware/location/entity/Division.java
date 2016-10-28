@@ -13,6 +13,7 @@ import com.google.common.io.Files;
 import com.google.common.io.Resources;
 
 import cn.cerestech.framework.core.json.Jsons;
+import cn.cerestech.middleware.location.Divisions;
 import cn.cerestech.middleware.location.enums.AdminLevel;
 
 @SuppressWarnings("serial")
@@ -47,6 +48,46 @@ public class Division implements Serializable {
 
 	public void setLevel(AdminLevel level) {
 		this.level = level;
+	}
+
+	/**
+	 * 在此层级关系上向上寻找特定级别的,没有找到则返回空。
+	 * 
+	 * @param level
+	 * @return
+	 */
+	public Division findByLevel(AdminLevel level) {
+		if (level == null) {
+			return null;
+		}
+		if (level.ordinal() > this.level.ordinal()) {
+			// 要求级别低于现在级别，返回null
+			return null;
+		}
+		if (level.equals(this.level)) {
+			return Divisions.findByCode(this.getCode());
+		}
+		String code = null;
+		switch (level) {
+		case PROVINCE:
+			code = AdminLevel.PROVINCE.extract(this.getCode());
+			break;
+		case CITY:
+			code = AdminLevel.CITY.extract(this.getCode());
+			break;
+		case COUNTY:
+			code = AdminLevel.COUNTY.extract(this.getCode());
+			break;
+		case TOWN:
+			code = AdminLevel.TOWN.extract(this.getCode());
+			break;
+		case VILLAGE:
+			code = AdminLevel.VILLAGE.extract(this.getCode());
+			break;
+		}
+
+		return code == null ? null : Divisions.findByCode(code);
+
 	}
 
 	public Boolean isEmpty() {
