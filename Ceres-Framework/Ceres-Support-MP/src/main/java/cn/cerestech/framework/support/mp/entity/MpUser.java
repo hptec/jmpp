@@ -3,6 +3,7 @@ package cn.cerestech.framework.support.mp.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,7 +14,7 @@ import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "$$sys_mpuser")
+@Table(name = "$$sys_mp_user")
 public class MpUser extends IdEntity {
 
 	/**
@@ -34,7 +35,8 @@ public class MpUser extends IdEntity {
 	/**
 	 * 用户微信昵称
 	 */
-	private String nickname;
+	@Lob
+	private byte[] nickname;
 
 	/**
 	 * 用户性别
@@ -87,6 +89,15 @@ public class MpUser extends IdEntity {
 	 */
 	private String groupId;
 
+	/**
+	 * 获取字符串形式的昵称
+	 * 
+	 * @return
+	 */
+	public String getNicknameString() {
+		return new String(getNickname());
+	}
+
 	public String getAppId() {
 		return appId;
 	}
@@ -111,11 +122,11 @@ public class MpUser extends IdEntity {
 		this.openId = openId;
 	}
 
-	public String getNickname() {
+	public byte[] getNickname() {
 		return nickname;
 	}
 
-	public void setNickname(String nickname) {
+	public void setNickname(byte[] nickname) {
 		this.nickname = nickname;
 	}
 
