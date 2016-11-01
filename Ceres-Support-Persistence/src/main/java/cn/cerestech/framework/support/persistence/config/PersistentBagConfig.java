@@ -15,6 +15,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import cn.cerestech.framework.core.json.JsonIgnore;
 import cn.cerestech.framework.core.json.Jsons;
 
 @Component
@@ -35,7 +36,7 @@ public class PersistentBagConfig implements ApplicationRunner {
 					return null;
 				}
 
-				return context.serialize(src);
+				return context.serialize(list);
 			}
 
 		});
