@@ -1,6 +1,7 @@
 package cn.cerestech.framework.support.persistence.config;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import com.beust.jcommander.internal.Lists;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
@@ -26,8 +28,14 @@ public class PersistentBagConfig implements ApplicationRunner {
 
 			@Override
 			public JsonElement serialize(PersistentBag src, Type typeOfSrc, JsonSerializationContext context) {
-				// 忽略Lazy
-				return null;
+				List list = Lists.newArrayList();
+				try {
+					list.addAll(src);
+				} catch (Throwable t) {
+					return null;
+				}
+
+				return context.serialize(src);
 			}
 
 		});
