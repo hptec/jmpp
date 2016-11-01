@@ -8,8 +8,9 @@ public enum BalanceErrorCodes implements DescribableEnum {
 	ACCOUNT_OUT_BANNED("ACCOUNT_OUT_BANNED", "账户禁止转出"), //
 	AMOUNT_NOT_ENOUGH("AMOUNT_NOT_ENOUGH", "账户余额不足"), //
 
-	ACCOUNT_RECORD_NOT_FOUND("ACCOUNT_RECORD_NOT_FOUND", "未能查询到获得记录"),//
+	ACCOUNT_RECORD_NOT_FOUND("ACCOUNT_RECORD_NOT_FOUND", "未能查询到获得记录"), //
 
+	BUFFERED_TRANSACTION_NOT_FOUND("BUFFERED_TRANSACTION_NOT_FOUND", "延时交易记录未找到"),//
 	;
 
 	private String key, desc;
