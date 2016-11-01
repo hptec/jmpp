@@ -23,11 +23,6 @@ public class Owner {
 		this.setType(type.key());
 	}
 
-	public Owner(String type, Long id) {
-		this.setId(id);
-		this.setType(type);
-	}
-
 	public Owner() {
 	}
 
