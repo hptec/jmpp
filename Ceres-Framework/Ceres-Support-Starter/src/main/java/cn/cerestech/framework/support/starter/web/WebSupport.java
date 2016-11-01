@@ -10,15 +10,25 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+
 import com.google.common.base.Strings;
 
 import cn.cerestech.framework.support.starter.operator.RequestOperator;
 import cn.cerestech.framework.support.starter.operator.ResponseOperator;
 import cn.cerestech.framework.support.starter.operator.SessionOperator;
 import cn.cerestech.framework.support.starter.operator.ZipOutOperator;
+import freemarker.template.Template;
 
 public abstract class WebSupport implements RequestOperator, ResponseOperator, ZipOutOperator, SessionOperator {
 	protected static final String PAGE_ENCODING = "UTF-8";
+	protected Logger log = LogManager.getLogger(getClass());
+	
+	@Autowired
+	private FreeMarkerConfigurer freemarkerConfig;
 	
 	protected void redirect(String url, String params) {
 		try {
@@ -79,6 +89,21 @@ public abstract class WebSupport implements RequestOperator, ResponseOperator, Z
 			tmp = val;
 		}
 		return tmp;
+	}
+	
+	/**
+	 * 加载freemarker的模板
+	 * 
+	 * @param key
+	 * @return
+	 */
+	protected Template getTemplate(String key) {
+		try {
+			return freemarkerConfig.getConfiguration().getTemplate(key);
+		} catch (IOException e) {
+			log.throwing(e);
+		}
+		return null;
 	}
 
 }
