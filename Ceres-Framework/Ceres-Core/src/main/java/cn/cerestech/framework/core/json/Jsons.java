@@ -259,7 +259,7 @@ public class Jsons {
 	}
 
 	public Integer asInt(Integer defaultValue) {
-		return root == null || root.isJsonNull() ? defaultValue :  root.getAsInt();
+		return root == null || root.isJsonNull() ? defaultValue : root.getAsInt();
 	}
 
 	public Long asLong() {
@@ -346,6 +346,11 @@ public class Jsons {
 		} else {
 			put(key, Jsons.from(value));
 		}
+		return this;
+	}
+
+	public Jsons remove(String key) {
+		root.getAsJsonObject().remove(key);
 		return this;
 	}
 
