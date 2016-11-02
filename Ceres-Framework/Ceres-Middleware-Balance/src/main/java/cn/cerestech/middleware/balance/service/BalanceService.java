@@ -111,7 +111,9 @@ public class BalanceService {
 			AccountRecord record = new AccountRecord();
 			record.setAmount(amount);
 			record.setLeftAmount(amount);
-			record.setExpiredTime(new Date(System.currentTimeMillis() + def.getExpiredTime()));
+			if(def.getExpiredTime()!=null){
+				record.setExpiredTime(new Date(System.currentTimeMillis() + def.getExpiredTime()));
+			}
 			record.setAccount(acc);
 
 			// 如果余额为负,要从本次获得记录中扣除
