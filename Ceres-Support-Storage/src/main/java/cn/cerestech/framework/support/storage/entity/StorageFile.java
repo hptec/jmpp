@@ -7,6 +7,7 @@ import javax.persistence.Transient;
 
 import com.google.common.io.Files;
 
+import cn.cerestech.framework.core.json.JsonIgnore;
 import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
@@ -37,6 +38,7 @@ public class StorageFile extends IdEntity {
 	private String extensionName;
 
 	@Transient
+	@JsonIgnore
 	private byte[] bytes;// 内容
 
 	public static StorageFile fromLocalUri(String localUri, String filterString, byte[] bytes, String uploaded_name) {
