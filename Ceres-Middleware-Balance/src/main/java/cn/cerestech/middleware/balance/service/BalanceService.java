@@ -55,6 +55,15 @@ public class BalanceService {
 		return retList;
 	}
 
+	public Account findByOwner(Owner owner, DescribableEnum type) {
+		if (owner == null || owner.isEmpty()) {
+			return null;
+		}
+		return AbstractBalanceConfig.getDefinitions().stream().map(def -> create(owner, def.getType()))
+				.filter(acc -> acc.getType().equals(type.key())).findFirst().orElse(null);
+
+	}
+
 	/**
 	 * 为owner创建账户(如果没有创建的话）
 	 * 
@@ -111,7 +120,7 @@ public class BalanceService {
 			AccountRecord record = new AccountRecord();
 			record.setAmount(amount);
 			record.setLeftAmount(amount);
-			if(def.getExpiredTime()!=null){
+			if (def.getExpiredTime() != null) {
 				record.setExpiredTime(new Date(System.currentTimeMillis() + def.getExpiredTime()));
 			}
 			record.setAccount(acc);
