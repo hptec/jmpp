@@ -42,6 +42,7 @@ public class IdEntityJsonConfig implements ApplicationRunner {
 						if (!f.isAnnotationPresent(JsonIgnore.class)) {
 							try {
 								f.setAccessible(true);
+//								System.out.println(f);
 								Object value = f.get(src);
 								if (value != null) {
 									// log.trace(value + " - " + f.toString());
