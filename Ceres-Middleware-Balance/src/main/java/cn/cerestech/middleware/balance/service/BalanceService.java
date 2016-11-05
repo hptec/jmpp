@@ -116,7 +116,6 @@ public class BalanceService {
 			BigDecimal oldAmount = acc.getAmount();
 			BigDecimal newAmount = oldAmount.add(amount);
 			acc.setAmount(newAmount);// 加入账户余额
-			acc.setHistoryTotal((acc.getHistoryTotal() == null ? BigDecimal.ZERO : acc.getHistoryTotal()).add(amount));
 			accountDao.save(acc);
 			// 增加金额、创建获得记录
 			AccountRecord record = new AccountRecord();

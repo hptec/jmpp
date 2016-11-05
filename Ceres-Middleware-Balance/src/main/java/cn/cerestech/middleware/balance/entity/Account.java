@@ -29,10 +29,6 @@ public class Account extends IdEntity {
 	@Column(precision = 14, scale = 2)
 	private BigDecimal freeze;
 
-	// 历史总计
-	@Column(precision = 14, scale = 2)
-	private BigDecimal historyTotal;
-
 	@Column(length = 35)
 	private String type;
 
@@ -91,14 +87,6 @@ public class Account extends IdEntity {
 
 	public void setFreezeOut(YesNo freezeOut) {
 		this.freezeOut = freezeOut;
-	}
-
-	public BigDecimal getHistoryTotal() {
-		return historyTotal;
-	}
-
-	public void setHistoryTotal(BigDecimal historyTotal) {
-		this.historyTotal = historyTotal;
 	}
 
 }
