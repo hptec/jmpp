@@ -262,7 +262,22 @@ public class Https {
 	public Response upload(String url, Map<String, Object> params, String fileBodySpecName, File...files){
 		return upload(url, null, null, params,fileBodySpecName, files);
 	}
-
+	
+	public Response upload(String url, String...filesPath){
+		List<File> files = Lists.newArrayList();
+		for (String fp : filesPath) {
+			try{
+				files.add(new File(fp));
+			}catch(Exception e){}
+		}
+		
+		return upload(url, (String)null, files.toArray(new File[files.size()]));
+	}
+	
+	public Response upload(String url,String fileBodySpecName, File...files){
+		return upload(url, null, null, null,fileBodySpecName, files);
+	}
+	
 	public String url(String host, String uri, Map<String, String> params) {
 		StringBuffer buffer = new StringBuffer();
 		if (!Pattern.compile("(?i)^http(s{0,1})://.{0,}").matcher(host).matches()) {
@@ -301,12 +316,18 @@ public class Https {
 
 	public static class Response {
 		private HttpResponse response;
+		private int http_code;
 		/* private String response_encoding = "ISO-8859-1"; */
 
 		public static Response of(HttpResponse response) {
 			return new Response(response);
 		}
-
+		public int httpCode(){
+			if(this.response != null){
+				this.http_code = response.getStatusLine().getStatusCode();
+			}
+			return this.http_code;
+		}
 		private Response(HttpResponse response) {
 			this.response = response;
 			parseEncoding();
@@ -375,6 +396,18 @@ public class Https {
 
 		public void readFile(FileOutputStream fout) {
 			readByte(fout);
+		}
+		
+		public boolean success(){
+			if(this.response == null){
+				return false;
+			}
+			this.http_code = response.getStatusLine().getStatusCode();
+			if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){//请求成功
+				System.out.println("【网络请求失败：】返回码"+response.getStatusLine().getStatusCode());
+				return false;
+			}
+			return true;
 		}
 	}
 
