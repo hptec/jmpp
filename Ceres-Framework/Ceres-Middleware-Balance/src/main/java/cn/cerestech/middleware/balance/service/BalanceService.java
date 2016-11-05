@@ -112,9 +112,11 @@ public class BalanceService {
 		}
 
 		if (amount.compareTo(BigDecimal.ZERO) > 0) {
+			// 添加
 			BigDecimal oldAmount = acc.getAmount();
 			BigDecimal newAmount = oldAmount.add(amount);
 			acc.setAmount(newAmount);// 加入账户余额
+			acc.setHistoryTotal((acc.getHistoryTotal() == null ? BigDecimal.ZERO : acc.getHistoryTotal()).add(amount));
 			accountDao.save(acc);
 			// 增加金额、创建获得记录
 			AccountRecord record = new AccountRecord();
@@ -139,7 +141,7 @@ public class BalanceService {
 			accountRecordDao.save(record);
 
 			// 记录账户变动记录
-			log(acc, amount, oldAmount, newAmount, extra);
+			log(acc, amount, oldAmount, newAmount, type, extra);
 		} else {
 			// 账户禁止转出
 			if (acc.isFreezeOut()) {
@@ -174,18 +176,20 @@ public class BalanceService {
 				accountRecordDao.save(rec);
 			}
 			// 记录账户变动记录
-			log(acc, amount, oldAmount, newAmount, extra);
+			log(acc, amount, oldAmount, newAmount, type, extra);
 		}
 		return Result.success(acc);
 
 	}
 
-	public void log(Account acc, BigDecimal amount, BigDecimal oldAmount, BigDecimal newAmount, Extra extra) {
+	public void log(Account acc, BigDecimal amount, BigDecimal oldAmount, BigDecimal newAmount, String balanceType,
+			Extra extra) {
 		AccountLog log = new AccountLog();
 		log.setAmount(amount);
 		log.setAmountNew(newAmount);
 		log.setAmountOld(oldAmount);
 		log.setExtra(extra);
+		log.setBalanceType(balanceType);
 		log.setAccount(acc);
 		accountLogDao.save(log);
 	}
@@ -219,7 +223,7 @@ public class BalanceService {
 		Extra extra = new Extra();
 		extra.setRemark("过期失效");
 
-		log(acc, left, oldAmount, newAmount, extra);
+		log(acc, left, oldAmount, newAmount, acc.getType(), extra);
 		return Result.success(record);
 	}
 
