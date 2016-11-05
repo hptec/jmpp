@@ -10,22 +10,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import cn.cerestech.framework.support.mp.listener.MessageListener;
-import cn.cerestech.framework.support.starter.operator.RequestOperator;
+import com.google.common.base.Strings;
+
+import cn.cerestech.framework.core.http.HttpIO;
+import cn.cerestech.framework.core.utils.Encrypts;
+import cn.cerestech.framework.support.mp.msg.client.passive.comm.MpPassiveMsg;
+import cn.cerestech.framework.support.mp.msg.mpserver.comm.MpMsg;
+import cn.cerestech.framework.support.mp.msg.mpserver.comm.MpMsgParser;
+import cn.cerestech.framework.support.mp.service.MpMsgDispatcher;
 import cn.cerestech.framework.support.starter.web.WebSupport;
 
 /**
- * 为免税 appID：wx0ac5e092a266fceb appsecret：9f37840b6ed014cbc1ab95f1f9659173
  * 
  * @author bird
  *
  */
 @RestController
 @RequestMapping("/api/mp/gateway")
-//@ConfigurationProperties(prefix = "mp")
-public class MpGatewayApi extends WebSupport implements RequestOperator {
+@ConfigurationProperties(prefix="mp")
+public class MpGatewayApi extends WebSupport{
+	
 	@Autowired
-	MessageListener normalListener;
+	MpMsgDispatcher msgDispatch;
 
 	@NotNull
 	private String gatetoken;
@@ -37,10 +43,11 @@ public class MpGatewayApi extends WebSupport implements RequestOperator {
 	public void validate(@RequestParam("signature") String signature, @RequestParam("timestamp") String timestamp,
 			@RequestParam("nonce") String nonce, @RequestParam("echostr") String echostr) {
 
-//		boolean bol = validateGateWay(gatetoken, signature, timestamp, nonce, echostr, true);// 校验是否是
-//		if (bol) {
-//			zipOut(echostr);
-//		}
+		boolean bol = validateGateWay(gatetoken, signature, timestamp, nonce, echostr, true);// 校验是否是
+		System.out.println("校验：：：：："+bol);
+		if (bol) {
+			HttpIO.out(getResponse(), echostr, "UTF-8");
+		}
 	}
 
 	/**
@@ -48,108 +55,55 @@ public class MpGatewayApi extends WebSupport implements RequestOperator {
 	 * 并加以处理回复
 	 */
 	@RequestMapping(value = "/validator", method = RequestMethod.POST)
-	public void wechatGateWay(@RequestParam("signature") String signature, @RequestParam("timestamp") String timestamp,
-			@RequestParam("nonce") String nonce, @RequestParam("echostr") String echostr) {
+	public void wechatGateWay(@RequestParam(defaultValue="",required=false,value="signature") String signature, @RequestParam(defaultValue="",required=false,value="timestamp") String timestamp,
+			@RequestParam(defaultValue="",required=false,value="nonce") String nonce, @RequestParam(defaultValue="",required=false,value="echostr") String echostr) {
 		/* 访问 合法性校验,判定是否是微信官方push 的信息，否则不做任何处理,且判断是否是官方的唯一用户 */
-//		boolean isIllegal = validateGateWay(gatetoken, signature, timestamp, nonce, echostr, false);// 消息通道验证
-//		if (isIllegal) {
-//			String msgStr = readPostString();
-//			BaseMsg msg = MsgFactory.create(msgStr);
-//			BaseMsg retMsg = null;
-//			if (msg != null) {
-//				switch (msg.getMsgType()) {
-//				case TEXT:
-//					retMsg = msgService.textMsgProcess((TextMsg) msg);
-//					break;
-//				case IMAGE:
-//					retMsg = msgService.imgMsgProcess((ImgMsg) msg);
-//					break;
-//				case LINK:
-//					retMsg = msgService.linkMsgProcess((LinkMsg) msg);
-//					break;
-//				case LOCATION:
-//					retMsg = msgService.locationMsgProcess((LocationMsg) msg);
-//					break;
-//				case SHORTVIDEO:
-//				case VIDEO:
-//					retMsg = msgService.videoMsgProcess((VideoMsg) msg);
-//					break;
-//				case VOICE:
-//					retMsg = msgService.voiceMsgProcess((VoiceMsg) msg);
-//					break;
-//				case EVENT:
-//					// MessageEvent.keyOf(StringUtils.upperCase(root.elementText("Event")))
-//					EventMsg event = (EventMsg) msg;
-//					switch (event.getEvent()) {
-//					case CLICK:
-//					case VIEW:
-//						retMsg = msgService.menuClickProcess((MenuEventMsg) msg);
-//						break;
-//					case SCAN:
-//					case SUBSCRIBE:
-//					case UNSUBSCRIBE:
-//						retMsg = msgService.subscriptEvent((SubscribeEventMsg) msg);
-//						break;
-//					case LOCATION:
-//						retMsg = msgService.reportLocationEventProcess((LocationEventMsg) msg);
-//						break;
-//					case UNKNOW:
-//						// System.out.println("【WECHAT】-【WARN】未找到事件消息的类型");
-//						break;
-//					default:
-//						break;
-//					}
-//					break;
-//				case UNKNOWN:
-//					// System.out.println("【WECHAT】-【WARN】未找到消息的类型");
-//					break;
-//				default:
-//					break;
-//				}
-//			}
-//			if (retMsg != null) {
-//				String content = retMsg.replyXml();
-//				// System.out.println("ret:"+content);
-//				if (StringUtils.isNotBlank(content)) {
-//					HttpIOutils.outputContent(getResponse(), content, "utf-8");
-//				}
-//			}
-//		}
-//	}
-//
-//	/**
-//	 * @param signature
-//	 * @param timestamp
-//	 * @param nonce
-//	 * @param echostr
-//	 *            ： 当为微信服务器官方发起的初始化绑定，而不是接收消息的验证时，没有该参数
-//	 * @param isBind:
-//	 *            是否是官方提交绑定服务器入口的校验
-//	 * @return
-//	 */
-//	private static boolean validateGateWay(String gateToken, String signature, String timestamp, String nonce,
-//			String echostr, boolean isBind) {
-//		if (StringUtils.isBlank(signature) || StringUtils.isBlank(timestamp) || StringUtils.isBlank(nonce)
-//				|| (isBind && StringUtils.isBlank(echostr))) {
-//			return Boolean.FALSE;
-//		} else {
-//			String token = gateToken;
-//
-//			String[] str = { token, timestamp, nonce };
-//
-//			java.util.Arrays.sort(str);
-//			String pwd = "";
-//			// 字段加密结果
-//			pwd = Encryption.sha1(str[0] + str[1] + str[2]);
-//
-//			if (signature.equalsIgnoreCase(pwd)) {
-//				// System.out.println("++++++++++++++++++++++++");
-//				return Boolean.TRUE;
-//			} else {
-//				// System.out.println("========================");
-//				return Boolean.FALSE;
-//			}
-//		}
+		boolean isIllegal = validateGateWay(gatetoken, signature, timestamp, nonce, echostr, false);// 消息通道验证
+		if (isIllegal) {
+			String msgStr = readPostString();
+			MpMsg msg = MpMsgParser.parse(msgStr);
+			MpPassiveMsg retMsg = msgDispatch.dispatch(msg);
+			
+			if (retMsg != null) {
+				String content = retMsg.reply();
+				if (!Strings.isNullOrEmpty(content)) {
+					HttpIO.out(getResponse(), content, "UTF-8");
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param signature
+	 * @param timestamp
+	 * @param nonce
+	 * @param echostr
+	 *            ： 当为微信服务器官方发起的初始化绑定，而不是接收消息的验证时，没有该参数
+	 * @param isBind:
+	 *            是否是官方提交绑定服务器入口的校验
+	 * @return
+	 */
+	private static boolean validateGateWay(String gateToken, String signature, String timestamp, String nonce,
+			String echostr, boolean isBind) {
+		if (Strings.isNullOrEmpty(signature) || Strings.isNullOrEmpty(timestamp) || Strings.isNullOrEmpty(nonce)
+				|| (isBind && Strings.isNullOrEmpty(echostr))) {
+			return Boolean.FALSE;
+		} else {
+			String token = gateToken;
+
+			String[] str = { token, timestamp, nonce };
+
+			java.util.Arrays.sort(str);
+			String pwd = "";
+			// 字段加密结果
+			pwd = Encrypts.sha1(str[0] + str[1] + str[2]);
+
+			if (signature.equalsIgnoreCase(pwd)) {
+				return Boolean.TRUE;
+			} else {
+				return Boolean.FALSE;
+			}
+		}
 	}
 
 	/**
@@ -158,11 +112,20 @@ public class MpGatewayApi extends WebSupport implements RequestOperator {
 	@RequestMapping("jsGrant")
 	public @ResponseBody void jsGrant() {
 //		String url = requestParam("signUrl");
-//		if (StringUtils.isBlank(url)) {
+//		if (Strings.isNullOrEmpty(url)) {
 //			zipOut(Result.error().setMessage("地址错误！").toJson());
 //		} else {
 //			zipOut(Result.success()
 //					.setObject(WechatJs.sign(Setting.Quick.MP.appid(), Setting.Quick.MP.appsecret(), url)).toJson());
 //		}
 	}
+
+	public String getGatetoken() {
+		return gatetoken;
+	}
+
+	public void setGatetoken(String gatetoken) {
+		this.gatetoken = gatetoken;
+	}
+	
 }

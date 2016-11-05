@@ -1,11 +1,18 @@
 package cn.cerestech.framework.support.mp.listener;
 
-import cn.cerestech.framework.support.mp.msg.MpMsg;
-import cn.cerestech.framework.support.mp.msg.event.LocationEvent;
-import cn.cerestech.framework.support.mp.msg.event.MenuEvent;
-import cn.cerestech.framework.support.mp.msg.event.SubscribeEvent;
+import cn.cerestech.framework.support.mp.msg.client.passive.comm.MpPassiveMsg;
+import cn.cerestech.framework.support.mp.msg.mpserver.event.MpClickEvt;
+import cn.cerestech.framework.support.mp.msg.mpserver.event.MpLocationEvt;
+import cn.cerestech.framework.support.mp.msg.mpserver.event.MpSubscribeEvt;
+import cn.cerestech.framework.support.mp.msg.mpserver.event.MpTempMsgStateEvt;
+import cn.cerestech.framework.support.mp.msg.mpserver.event.MpViewEvt;
 
 public interface EventListener {
+	/**
+	 * 用户取消关注
+	 * @param e
+	 */
+	public void onUnSubscribe(MpSubscribeEvt e);
 
 	/**
 	 * 用户未关注扫码
@@ -13,7 +20,7 @@ public interface EventListener {
 	 * @param msg
 	 * @return
 	 */
-	public MpMsg onSubscribe(SubscribeEvent e);
+	public MpPassiveMsg onSubscribe(MpSubscribeEvt e);
 
 	/**
 	 * 用户已关注扫码
@@ -21,7 +28,7 @@ public interface EventListener {
 	 * @param e
 	 * @return
 	 */
-	public MpMsg onScan(SubscribeEvent e);
+	public MpPassiveMsg onScan(MpSubscribeEvt e);
 
 	/**
 	 * 每5秒上传一次位置信息。
@@ -29,7 +36,7 @@ public interface EventListener {
 	 * @param e
 	 * @return
 	 */
-	public MpMsg onLocation(LocationEvent e);
+	public MpPassiveMsg onLocation(MpLocationEvt e);
 
 	/**
 	 * 菜单点击事件
@@ -37,14 +44,18 @@ public interface EventListener {
 	 * @param e
 	 * @return
 	 */
-	public MpMsg onMenuClick(MenuEvent e);
+	public MpPassiveMsg onMenuClick(MpClickEvt e);
 	
 	/**
 	 * 菜单打开连接事件
 	 * @param e
 	 * @return
 	 */
-	public MpMsg onMenuView(MenuEvent e);
+	public MpPassiveMsg onMenuView(MpViewEvt e);
 	
+	/**
+	 * 模板消息发送状态
+	 */
+	public void onTemplateMsgState(MpTempMsgStateEvt e);
 	
 }
