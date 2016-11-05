@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.base.Strings;
 
 import cn.cerestech.framework.core.http.HttpIO;
+import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.core.utils.Encrypts;
+import cn.cerestech.framework.support.mp.mpapi.cache.strategy.MemoryStrategy;
 import cn.cerestech.framework.support.mp.msg.client.passive.comm.MpPassiveMsg;
 import cn.cerestech.framework.support.mp.msg.mpserver.comm.MpMsg;
 import cn.cerestech.framework.support.mp.msg.mpserver.comm.MpMsgParser;
@@ -35,6 +37,11 @@ public class MpGatewayApi extends WebSupport{
 
 	@NotNull
 	private String gatetoken;
+	
+	@NotNull
+	private String appid;
+	@NotNull
+	private String appsecret;
 
 	/**
 	 * 校验是否来自微信官方网站 用于绑定token 和 url 的验证
@@ -111,13 +118,12 @@ public class MpGatewayApi extends WebSupport{
 	 */
 	@RequestMapping("jsGrant")
 	public @ResponseBody void jsGrant() {
-//		String url = requestParam("signUrl");
-//		if (Strings.isNullOrEmpty(url)) {
-//			zipOut(Result.error().setMessage("地址错误！").toJson());
-//		} else {
-//			zipOut(Result.success()
-//					.setObject(WechatJs.sign(Setting.Quick.MP.appid(), Setting.Quick.MP.appsecret(), url)).toJson());
-//		}
+		String url = getRequest("signUrl");
+		if (Strings.isNullOrEmpty(url)) {
+			zipOut(Result.error().setMessage("地址错误！").toJson());
+		} else {
+			zipOut(Result.success().setObject(MemoryStrategy.of(getAppid(), getAppsecret()).JS().signUrl(url)).toJson());
+		}
 	}
 
 	public String getGatetoken() {
@@ -126,6 +132,22 @@ public class MpGatewayApi extends WebSupport{
 
 	public void setGatetoken(String gatetoken) {
 		this.gatetoken = gatetoken;
+	}
+
+	public String getAppid() {
+		return appid;
+	}
+
+	public void setAppid(String appid) {
+		this.appid = appid;
+	}
+
+	public String getAppsecret() {
+		return appsecret;
+	}
+
+	public void setAppsecret(String appsecret) {
+		this.appsecret = appsecret;
 	}
 	
 }
