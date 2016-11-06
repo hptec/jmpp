@@ -12,17 +12,21 @@ import cn.cerestech.framework.support.mp.mpapi.API;
 public class MpUserToken extends API{
 	private String token;
 	private long expired_time;
+	private String openid;
 	private String refresh_token;
+	private String scope;
 	
 	public MpUserToken(String appid, String appsecret) {
 		super(appid, appsecret);
 	}
 	
-	public static MpUserToken of(String appid, String appsecret, String token, String refresh_token, long expired_time){
+	public static MpUserToken of(String appid, String appsecret, String token, String refresh_token, long expired_time, String openid, String scope){
 		MpUserToken t = new MpUserToken(appid, appsecret);
 		t.token = token;
 		t.expired_time = expired_time;
 		t.refresh_token = refresh_token;
+		t.openid = openid;
+		t.scope = scope;
 		return t;
 	}
 	
@@ -34,6 +38,18 @@ public class MpUserToken extends API{
 		return refresh_token;
 	}
 	
+	public long getExpired_time() {
+		return expired_time;
+	}
+
+	public String getOpenid() {
+		return openid;
+	}
+
+	public String getScope() {
+		return scope;
+	}
+
 	public boolean isExpired(){
 		if (Strings.isNullOrEmpty(token)) {
 			return Boolean.TRUE;

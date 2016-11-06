@@ -47,8 +47,8 @@ public class MpGatewayApi extends WebSupport{
 	 * 校验是否来自微信官方网站 用于绑定token 和 url 的验证
 	 */
 	@RequestMapping(value = "/validator", method = RequestMethod.GET)
-	public void validate(@RequestParam("signature") String signature, @RequestParam("timestamp") String timestamp,
-			@RequestParam("nonce") String nonce, @RequestParam("echostr") String echostr) {
+	public void validate(@RequestParam(defaultValue="",required=false,value="signature") String signature, @RequestParam(defaultValue="",required=false,value="timestamp") String timestamp,
+			@RequestParam(defaultValue="",required=false,value="nonce") String nonce, @RequestParam(defaultValue="",required=false,value="echostr") String echostr) {
 
 		boolean bol = validateGateWay(gatetoken, signature, timestamp, nonce, echostr, true);// 校验是否是
 		System.out.println("校验：：：：："+bol);
