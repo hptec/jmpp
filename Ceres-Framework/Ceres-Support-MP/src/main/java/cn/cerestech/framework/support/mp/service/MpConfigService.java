@@ -17,6 +17,10 @@ public class MpConfigService {
 	private String appid;
 	@NotNull
 	private String appsecret;
+	
+	@NotNull
+	private String host;
+	
 	public String getAppid() {
 		return appid;
 	}
@@ -28,5 +32,11 @@ public class MpConfigService {
 	}
 	public void setAppsecret(String appsecret) {
 		this.appsecret = appsecret;
+	}
+	public String getHost() {
+		return host;
+	}
+	public void setHost(String host) {
+		this.host = host;
 	}
 }

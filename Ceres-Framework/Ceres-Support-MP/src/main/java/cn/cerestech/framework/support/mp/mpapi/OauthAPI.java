@@ -10,7 +10,7 @@ import cn.cerestech.framework.core.environment.OsInfo;
 import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.framework.core.json.Jsons;
 import cn.cerestech.framework.core.log.Logable;
-import cn.cerestech.framework.support.mp.entity.MpUser;
+import cn.cerestech.framework.support.mp.entity.base.MpUserGov;
 import cn.cerestech.framework.support.mp.entity.base.MpUserToken;
 import cn.cerestech.framework.support.mp.entity.base.Status;
 import cn.cerestech.framework.support.mp.enums.AuthorizeScope;
@@ -76,8 +76,11 @@ public class OauthAPI extends API implements Logable{
 			String accesstoken  = retStatus.jsonValue("access_token");
 			String refresh_token = retStatus.jsonValue("refresh_token");
 			Long expired_time = Longs.tryParse(retStatus.jsonValue("expires_in"));
+			String openid = retStatus.jsonValue("openid");
 			expired_time = expired_time == null?0L:expired_time;
-			MpUserToken token = MpUserToken.of(this.getAppid(), this.getAppsecret(), accesstoken, refresh_token, expired_time);
+			
+			String scope = retStatus.jsonValue("scope");
+			MpUserToken token = MpUserToken.of(this.getAppid(), this.getAppsecret(), accesstoken, refresh_token, expired_time, openid, scope);
 			retStatus.setObject(token);
 		}
 		return retStatus;
@@ -107,7 +110,10 @@ public class OauthAPI extends API implements Logable{
 			String rt = retStatus.jsonValue("refresh_token");
 			Long expired_time = Longs.tryParse(retStatus.jsonValue("expires_in"));
 			expired_time = expired_time == null?0L:expired_time;
-			MpUserToken token = MpUserToken.of(this.getAppid(), this.getAppsecret(), accesstoken, rt, expired_time);
+			String openid = retStatus.jsonValue("openid");
+			String scope = retStatus.jsonValue("scope");
+			
+			MpUserToken token = MpUserToken.of(this.getAppid(), this.getAppsecret(), accesstoken, rt, expired_time, openid, scope);
 			retStatus.setObject(token);
 		}
 
@@ -136,7 +142,7 @@ public class OauthAPI extends API implements Logable{
 	 * @param openid
 	 * @return
 	 */
-	public Status<MpUser> snsapiUserInfo(String accessToken, String openid) {
+	public Status<MpUserGov> snsapiUserInfo(String accessToken, String openid) {
 		StringBuffer url = new StringBuffer();
 		url.append("https://api.weixin.qq.com/sns/userinfo?");
 		url.append("access_token=" + accessToken);
@@ -145,11 +151,40 @@ public class OauthAPI extends API implements Logable{
 
 		String ret = Https.of().post(url.toString()).readString();
 
-		Status<MpUser> retStatus = Status.as(ret);
+		Status<MpUserGov> retStatus = Status.as(ret);
 		if (retStatus.isSuccess()) {
-			MpUser mpuser = Jsons.from(ret).to(MpUser.class);
+			MpUserGov mpuser = Jsons.from(ret).to(MpUserGov.class);
 			retStatus.setObject(mpuser);
 		}
 		return retStatus;
 	}
+	
+	/**
+	 * 根据code 直接获取用户的信息
+	 * @param code
+	 * @return
+	 */
+	public Status<MpUserGov> snsapiUserInfo(String code){
+		if(Strings.isNullOrEmpty(code)){
+			return Status.ABSENT;
+		}
+		//1. 获取用户的拉去token
+		Status<MpUserToken> ts = this.grantToken(code);
+		if(ts.isSuccess()){
+			String token = ts.getObject().getToken();
+			//2. 根据token拉去相关信息
+			System.out.println("拉去网页信息的scope："+ts.getObject().getScope());
+			Status<MpUserGov> infoStatus = this.snsapiUserInfo(token, ts.getObject().getOpenid());
+			if(!infoStatus.isSuccess()){
+				MpUserGov mpuserGov = new MpUserGov();
+				mpuserGov.setOpenid(ts.getObject().getOpenid());
+				return new Status<MpUserGov>(0).setObject(mpuserGov);
+			}
+			return infoStatus;
+		}
+		return Status.ABSENT; 
+	}
+	
+	
+	
 }
