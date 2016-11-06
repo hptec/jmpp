@@ -2,6 +2,7 @@ package cn.cerestech.framework.support.persistence;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import com.google.common.base.Strings;
@@ -12,6 +13,7 @@ import cn.cerestech.framework.core.enums.DescribableEnum;
 @Embeddable
 public class Owner {
 
+	@Column(length = 100)
 	private String type;
 	private Long id;
 

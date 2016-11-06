@@ -101,7 +101,7 @@ public class BalanceService {
 	}
 
 	@Transactional
-	private Result<Account> change(Owner owner, String type, BigDecimal amount, Extra extra) {
+	public Result<Account> change(Owner owner, String type, BigDecimal amount, Extra extra) {
 		Account acc = create(owner, type);
 		if (acc == null) {
 			return Result.error(BalanceErrorCodes.ACCOUNT_NOT_FOUND);
