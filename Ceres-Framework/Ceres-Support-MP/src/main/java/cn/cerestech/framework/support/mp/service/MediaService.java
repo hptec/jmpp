@@ -2,6 +2,7 @@ package cn.cerestech.framework.support.mp.service;
 
 import java.io.File;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.cerestech.framework.support.mp.entity.base.MpMaterial;
@@ -17,7 +18,9 @@ import cn.cerestech.framework.support.mp.mpapi.cache.strategy.MemoryStrategy;
  *
  */
 @Service
-public class MediaService extends MpConfigService {
+public class MediaService {
+	@Autowired
+	MpConfigService mpConfig;
 
 	/**
 	 * 创建永久素材
@@ -27,7 +30,7 @@ public class MediaService extends MpConfigService {
 	 * @param video_desc  type == MaterialType.VIDEO 时有效
 	 */
 	public void create(File file, MaterialType type, String video_title, String video_desc){
-		MemoryStrategy.of(this.getAppid(), this.getAppsecret()).MATERIAL()
+		MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).MATERIAL()
 			.create(file, type, video_title, video_desc);
 	}
 	
@@ -37,7 +40,7 @@ public class MediaService extends MpConfigService {
 	 * @param type
 	 */
 	public void createTemp(File file, MaterialType type){
-		MemoryStrategy.of(this.getAppid(), this.getAppsecret()).MATERIAL()
+		MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).MATERIAL()
 			.createTemp(file, type);
 	}
 	
@@ -48,7 +51,7 @@ public class MediaService extends MpConfigService {
 	 * @return 如果成功，则返回的object 中media_id否则，返回失败的消息
 	 */
 	public Status<String> createNews(MpNewsMaterial...materials){
-		Status<MpMaterial> status = MemoryStrategy.of(this.getAppid(), this.getAppsecret()).MATERIAL()
+		Status<MpMaterial> status = MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).MATERIAL()
 			.createNews(materials);
 		if(status.isSuccess()){
 			return new Status<String>(0).setObject(status.getObject().getMedia_id());
@@ -63,7 +66,7 @@ public class MediaService extends MpConfigService {
 	 * @return 返回错误消息，或者media_id
 	 */
 	public Status<String> createNewImg(File file){
-		Status<MpMaterial> status = MemoryStrategy.of(this.getAppid(), this.getAppsecret()).MATERIAL()
+		Status<MpMaterial> status = MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).MATERIAL()
 				.createNewsImg(file);
 		
 		if(status.isSuccess()){

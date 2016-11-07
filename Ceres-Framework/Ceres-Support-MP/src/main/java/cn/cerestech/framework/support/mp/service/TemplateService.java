@@ -1,5 +1,6 @@
 package cn.cerestech.framework.support.mp.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.cerestech.framework.support.mp.entity.base.Status;
@@ -7,8 +8,10 @@ import cn.cerestech.framework.support.mp.mpapi.cache.strategy.MemoryStrategy;
 import cn.cerestech.framework.support.mp.msg.client.initiative.templatemsg.MpTemplateMsg;
 
 @Service
-public class TemplateService extends MpConfigService{
-
+public class TemplateService{
+	
+	@Autowired
+	MpConfigService mpConfig;
 	/**
 	 * 发送模板消息，方法名说的是要有个发送方法，其他的没有定义。根据情况修改。
 	 * 
@@ -25,7 +28,7 @@ public class TemplateService extends MpConfigService{
 				msg.addParam(pd.getField(), new MpTemplateMsg.ParamDesc(pd.getValue(),pd.getColor()));
 			}
 		}
-		return MemoryStrategy.of(getAppid(), getAppsecret()).TMPMSGAPI().send(msg);
+		return MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).TMPMSGAPI().send(msg);
 	}
 	
 	public class ParamDesc{

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -27,6 +28,7 @@ import cn.cerestech.framework.support.starter.web.WebSupport;
  * @author <a mailto="royrxc@gmail.com">Roy</a>
  * @since 2016年11月6日
  */
+@Component
 public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOperator{
 	
 	@Autowired
