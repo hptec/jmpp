@@ -25,6 +25,15 @@ public abstract class WebSupport implements RequestOperator, ResponseOperator, Z
 	protected Logger log = LogManager.getLogger(getClass());
 	
 	
+	protected String getRequestUriWithParams(){
+		String uri = getRequest().getRequestURI(); 
+		String queryStr = getRequest().getQueryString();
+		if(!Strings.isNullOrEmpty(queryStr)){
+			uri += "?"+queryStr;
+		}
+		return uri;
+	}
+	
 	protected void redirect(String url, String params) {
 		try {
 			getResponse().sendRedirect(url + (Strings.isNullOrEmpty(params) ? "" : ("?" + params)));
