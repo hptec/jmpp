@@ -19,8 +19,8 @@ import com.google.gson.reflect.TypeToken;
 
 import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.mp.entity.MpUser;
 import cn.cerestech.framework.support.mp.entity.base.MpGroup;
+import cn.cerestech.framework.support.mp.entity.base.MpUserGov;
 import cn.cerestech.framework.support.mp.entity.base.Status;
 
 public class UserAPI extends API{
@@ -33,7 +33,7 @@ public class UserAPI extends API{
 		return new UserAPI(appid, appsecret);
 	}
 	
-	public Status<MpUser> get(String access_token, String open_id){
+	public Status<MpUserGov> get(String access_token, String open_id){
 		StringBuffer url = new StringBuffer();
 		url.append("https://api.weixin.qq.com/cgi-bin/user/info?");
 		url.append("access_token=" + access_token);
@@ -42,9 +42,9 @@ public class UserAPI extends API{
 		
 		String res = Https.of().post(url.toString()).readString();
 		
-		Status<MpUser> statusReturn = Status.as(res);
+		Status<MpUserGov> statusReturn = Status.as(res);
 		if (statusReturn.isSuccess()) {
-			MpUser user = Jsons.from(res).to(MpUser.class);
+			MpUserGov user = Jsons.from(res).to(MpUserGov.class);
 			statusReturn.setObject(user);
 		}
 		return statusReturn;
@@ -84,7 +84,7 @@ public class UserAPI extends API{
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
-	public Status<List<MpUser>> batchGet(String access_token, List<String> openids) throws UnsupportedEncodingException {
+	public Status<List<MpUserGov>> batchGet(String access_token, List<String> openids) throws UnsupportedEncodingException {
 		if (openids == null || openids.isEmpty() || openids.size() > 100) {
 			throw new IllegalArgumentException("获取粉丝数量太多，不能超过100");
 		}
@@ -104,10 +104,10 @@ public class UserAPI extends API{
 		HttpEntity entity = new StringEntity(Jsons.from(root).disableUnicode().toJson());
 		String ret = Https.of().post(url.toString(), entity).readString();
 		
-		Status<List<MpUser>> statusReturn = Status.as(ret);
+		Status<List<MpUserGov>> statusReturn = Status.as(ret);
 		if (statusReturn.isSuccess()) {
 			String mplst = statusReturn.jsonValue("user_info_list");
-			List<MpUser> retList = Jsons.from(mplst).to(new TypeToken<List<MpUser>>() {});
+			List<MpUserGov> retList = Jsons.from(mplst).to(new TypeToken<List<MpUserGov>>() {});
 			statusReturn.setObject(retList);
 		}
 		return statusReturn;
