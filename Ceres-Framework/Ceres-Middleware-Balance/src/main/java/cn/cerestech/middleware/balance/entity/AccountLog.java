@@ -44,6 +44,9 @@ public class AccountLog extends IdEntity {
 	private BigDecimal amountNew = BigDecimal.ZERO;
 	// 账户类型
 	private String balanceType;
+	
+	// 入账原因
+	private String reason;
 
 	@Embedded
 	private Extra extra;
@@ -94,6 +97,14 @@ public class AccountLog extends IdEntity {
 
 	public void setBalanceType(String balanceType) {
 		this.balanceType = balanceType;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 
 }
