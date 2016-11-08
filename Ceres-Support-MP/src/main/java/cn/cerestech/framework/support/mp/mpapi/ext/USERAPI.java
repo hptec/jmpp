@@ -3,8 +3,8 @@ package cn.cerestech.framework.support.mp.mpapi.ext;
 import java.util.List;
 import java.util.Set;
 
-import cn.cerestech.framework.support.mp.entity.MpUser;
 import cn.cerestech.framework.support.mp.entity.base.MpGroup;
+import cn.cerestech.framework.support.mp.entity.base.MpUserGov;
 import cn.cerestech.framework.support.mp.entity.base.Status;
 import cn.cerestech.framework.support.mp.mpapi.UserAPI;
 import cn.cerestech.framework.support.mp.mpapi.cache.Executor;
@@ -21,9 +21,9 @@ public class USERAPI extends UserAPI{
 		super(exec.getAppid(), exec.getAppsecret());
 		this.exec = exec;
 	}
-	public Status<MpUser> get(final String openid){
-		Status<MpUser> status = exec.execute(token->{
-			Status<MpUser> s = get(token.getToken(), openid);
+	public Status<MpUserGov> get(final String openid){
+		Status<MpUserGov> status = exec.execute(token->{
+			Status<MpUserGov> s = get(token.getToken(), openid);
 			return s;
 		});
 		return status;
