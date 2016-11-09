@@ -8,6 +8,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.google.common.collect.Lists;
@@ -26,7 +27,8 @@ public class AccountLogCriteria extends AbstractCriteria<AccountLog> {
 		
 	@Override
 	public Sort sort() {
-		return null;
+		Sort sort = new Sort(Direction.DESC, "createTime");
+		return sort;
 	}
 
 
