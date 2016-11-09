@@ -13,7 +13,7 @@ public class Status<T> implements Jsonable {
 	private String msg;
 	private String result;
 	private Boolean success = Boolean.TRUE;
-	public static final Status ABSENT = new Status(ABSENT_CODE);
+	public static final Status ABSENT = new Status(ABSENT_CODE).error();
 	private T object;
 
 	public Status(int code, String msg, String result) {
@@ -96,6 +96,16 @@ public class Status<T> implements Jsonable {
 
 	public Boolean isSuccess() {
 		return success;
+	}
+
+	public Status<T> success() {
+		this.success = true;
+		return this;
+	}
+	
+	public Status<T> error(){
+		this.success = false;
+		return this;
 	}
 
 	public Boolean isAbsent() {
