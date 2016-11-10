@@ -89,20 +89,20 @@ public class BalanceService {
 	 * @param amount
 	 * @return
 	 */
-	public Result<Account> change(Owner owner, DescribableEnum type, DescribableEnum reason, BigDecimal amount,
+	public Result<AccountLog> change(Owner owner, DescribableEnum type, DescribableEnum reason, BigDecimal amount,
 			Extra extra) {
 		return change(owner, type.key(), reason.key(), amount, extra);
 	}
 
 	@Transactional
-	public Result<Account> change(Owner owner, String type, String reason, BigDecimal amount, Extra extra) {
+	public Result<AccountLog> change(Owner owner, String type, String reason, BigDecimal amount, Extra extra) {
 		Account acc = create(owner, type);
 		if (acc == null) {
 			return Result.error(BalanceErrorCodes.ACCOUNT_NOT_FOUND);
 		}
 		BalanceDefinition def = AbstractBalanceConfig.get(type);
 		if (amount == null || amount.equals(BigDecimal.ZERO)) {
-			return Result.success(acc);
+			return Result.success(null);
 		}
 
 		if (amount.compareTo(BigDecimal.ZERO) > 0) {
@@ -134,7 +134,7 @@ public class BalanceService {
 			accountRecordDao.save(record);
 
 			// 记录账户变动记录
-			log(acc, amount, oldAmount, newAmount, type, reason, extra);
+			return Result.success(log(acc, amount, oldAmount, newAmount, type, reason, extra));
 		} else {
 			// 账户禁止转出
 			if (acc.isFreezeOut()) {
@@ -169,14 +169,13 @@ public class BalanceService {
 				accountRecordDao.save(rec);
 			}
 			// 记录账户变动记录
-			log(acc, amount, oldAmount, newAmount, type, reason, extra);
+			return Result.success(log(acc, amount, oldAmount, newAmount, type, reason, extra));
 		}
-		return Result.success(acc);
 
 	}
 
-	public void log(Account acc, BigDecimal amount, BigDecimal oldAmount, BigDecimal newAmount, String balanceType,
-			String reason, Extra extra) {
+	public AccountLog log(Account acc, BigDecimal amount, BigDecimal oldAmount, BigDecimal newAmount,
+			String balanceType, String reason, Extra extra) {
 		AccountLog log = new AccountLog();
 		log.setAmount(amount);
 		log.setAmountNew(newAmount);
@@ -186,6 +185,7 @@ public class BalanceService {
 		log.setBalanceType(balanceType);
 		log.setAccount(acc);
 		accountLogDao.save(log);
+		return log;
 	}
 
 	@Transactional
