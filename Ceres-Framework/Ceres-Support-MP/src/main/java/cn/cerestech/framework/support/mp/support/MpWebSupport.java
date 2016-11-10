@@ -12,9 +12,10 @@ import cn.cerestech.framework.support.starter.web.WebSupport;
  * @author <a mailto="royrxc@gmail.com">Roy</a>
  * @since 2016年11月6日
  */
-public class MpWebSupport extends WebSupport implements MpOperator{
+public class MpWebSupport extends WebSupport implements MpOperator {
 	@Autowired
 	MpUserDao mpUserDao;
+
 	protected MpUser getCurMpUser() {
 		return mpUserDao.findOne(getMpUserId());
 	}
