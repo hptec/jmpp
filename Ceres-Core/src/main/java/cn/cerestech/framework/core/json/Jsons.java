@@ -141,6 +141,8 @@ public class Jsons {
 
 	public String toPrettyJson() {
 		Jsons me = new Jsons();
+		me.serializeNull = this.serializeNull;
+		me.toUnicode = this.toUnicode;
 		me.root = root;
 		return me.prettyPrint().toJson();
 	}
@@ -358,10 +360,6 @@ public class Jsons {
 		if (type != null && adapter != null) {
 			adapters.put(type, adapter);
 		}
-	}
-
-	public static void main(String[] args) throws Throwable {
-		new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse("2016-08-02T16:00:00.000Z");
 	}
 
 }
