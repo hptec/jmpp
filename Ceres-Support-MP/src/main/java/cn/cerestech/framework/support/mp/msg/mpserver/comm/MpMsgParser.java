@@ -57,11 +57,13 @@ public class MpMsgParser {
 									MpSubscribeEvt se = parse(MpSubscribeEvt.class, root);
 									se.setEventKey(root.elementTextTrim("EventKey"));
 									se.setTicket(root.elementTextTrim("Ticket"));
+									se.setEvent(eventMsg);
 									result = se;
 									break;
 								case CLICK:
 									MpClickEvt ce = parse(MpClickEvt.class, root);
 									ce.setEventKey(root.elementTextTrim("EventKey"));
+									ce.setEvent(eventMsg);
 									result = ce;
 									break;
 								case LOCATION:
@@ -69,17 +71,20 @@ public class MpMsgParser {
 									le.setLatitude(root.elementTextTrim("Latitude"));
 									le.setLongitude(root.elementTextTrim("Longitude"));
 									le.setPrecision(root.elementTextTrim("Precision"));
+									le.setEvent(eventMsg);
 									result = le;
 									break;
 								case VIEW:
 									MpViewEvt ve = parse(MpViewEvt.class, root);
 									ve.setEventKey(root.elementTextTrim("EventKey"));
+									ve.setEvent(eventMsg);
 									result = ve;
 									break;
 								case TEMPLATESENDJOBFINISH:
 									System.out.println("接收模板消息发送状态事件："+xml);
 									MpTempMsgStateEvt te = parse(MpTempMsgStateEvt.class, root);
 									te.setStatus(root.elementTextTrim("Status"));
+									te.setEvent(eventMsg);
 									break;
 							}
 							break;
