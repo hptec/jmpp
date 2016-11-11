@@ -6,4 +6,5 @@ import cn.cerestech.framework.support.mp.entity.MpUser;
 
 public interface MpUserDao extends JpaRepository<MpUser, Long> {
 
+	MpUser findUniqueByAppIdAndOpenId(String appId, String openId);
 }
