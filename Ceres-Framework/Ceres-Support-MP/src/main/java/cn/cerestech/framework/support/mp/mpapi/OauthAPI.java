@@ -173,7 +173,7 @@ public class OauthAPI extends API implements Logable{
 		if(ts.isSuccess()){
 			String token = ts.getObject().getToken();
 			//2. 根据token拉去相关信息
-			System.out.println("拉去网页信息的scope："+ts.getObject().getScope());//snsapi_base
+//			System.out.println("拉去网页信息的scope："+ts.getObject().getScope());//snsapi_base
 			AuthorizeScope as = AuthorizeScope.keyOf(ts.getObject().getScope());
 			Status<MpUserGov> infoStatus = this.snsapiUserInfo(token, ts.getObject().getOpenid());
 			if(!infoStatus.isSuccess()){
