@@ -16,9 +16,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.google.common.collect.Lists;
 
+import cn.cerestech.framework.core.json.Jsonable;
 import cn.cerestech.framework.core.utils.KV;
 
-public abstract class AbstractCriteria<T> implements Criteria<T> {
+public abstract class AbstractCriteria<T> implements Criteria<T>, Jsonable {
 
 	protected Paginated<T> page;
 

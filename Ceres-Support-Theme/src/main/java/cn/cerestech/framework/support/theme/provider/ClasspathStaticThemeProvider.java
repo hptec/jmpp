@@ -10,8 +10,8 @@ public abstract class ClasspathStaticThemeProvider implements StaticThemeProvide
 	ClasspathService classpathService;
 
 	@Override
-	public String get(String name) {
-		return new String(classpathService.findByUri(getThemeRoot() + name));
+	public byte[] get(String name) {
+		return classpathService.findByUri(getThemeRoot() + name);
 	}
 
 }

@@ -23,7 +23,7 @@ public class GeetestApi extends WebSupport {
 	private String apiId;
 	private String apiKey;
 
-	private GeetestLib gtSdk ;
+	private GeetestLib gtSdk;
 
 	@RequestMapping("/init")
 	protected void init(@RequestParam("transId") String transId) {
@@ -47,7 +47,7 @@ public class GeetestApi extends WebSupport {
 
 		int gtResult = 0;
 
-		if (gt_server_status_code == 1) {
+		if (gt_server_status_code != null && gt_server_status_code == 1) {
 			// gt-server正常，向gt-server进行二次验证
 
 			gtResult = getLib().enhencedValidateRequest(challenge, validate, seccode, transId);

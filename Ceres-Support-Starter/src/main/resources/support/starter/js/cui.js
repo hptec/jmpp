@@ -151,7 +151,8 @@
 								'platform' : cui.__config.platform,
 							},
 							'modal' : cui.__config.modal,
-							'http' : {}
+							'http' : {},
+							'page-login' : cui.__config["page-login"]
 						};
 
 						if (cui.__config['http'] != undefined) {
@@ -163,6 +164,8 @@
 						require.config({
 							config : configObj
 						});
+
+						cui.log("configObj配置", configObj);
 
 						// 执行启动过程，加载必须文件
 						require(initModule, function() {

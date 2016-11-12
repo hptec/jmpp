@@ -296,6 +296,10 @@
 			name:"directives-navigation",
 			uri:"/api/classpath/query/support/starter/console/js/directives/directives-navigation",
 			deps:["metisMenu"]
+		},
+		{
+			name:"page-login",
+			uri:"/api/classpath/query/support/starter/console/js/pages/page-login"
 		}
 	],
 	pages_console:[
@@ -305,7 +309,7 @@
 			tpl:"/api/classpath/query/support/starter/console/theme/homer/views/common_app/login.html",
 			defaultPage:true,
 			deps:[
-				"/api/classpath/query/support/starter/console/js/pages/page-login.js",
+				"page-login",
 				"directives",
 				"geetest"
 			]
