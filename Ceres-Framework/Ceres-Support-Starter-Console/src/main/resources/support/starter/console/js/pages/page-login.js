@@ -1,4 +1,4 @@
-define([ 'app', 'platform', 'http', 'modal', 'employee', 'pages', 'login', 'geetest' ], function(app, platform, http, modal, employee, pages, login, geetest) {
+define([ 'module', 'app', 'platform', 'http', 'modal', 'employee', 'pages', 'login', 'geetest' ], function(module, app, platform, http, modal, employee, pages, login, geetest) {
 
 	app.controller('commonLoginCtrl', [ '$scope', '$location', '$state', function($scope, $location, $state) {
 
@@ -21,7 +21,12 @@ define([ 'app', 'platform', 'http', 'modal', 'employee', 'pages', 'login', 'geet
 			success : function(ret) {
 				employee.login($scope.loginEntity, function(result) {
 					if (result.isSuccess) {
-						$state.go("workbench.customer");
+						var page = "workbench.customer";
+						if (module.config().mainpage != undefined) {
+							page = module.config().mainpage;
+						}
+
+						$state.go(page);
 						$scope.$apply();
 					} else {
 						modal.alert({

@@ -51,7 +51,7 @@ public class MpGatewayApi extends WebSupport{
 			@RequestParam(defaultValue="",required=false,value="nonce") String nonce, @RequestParam(defaultValue="",required=false,value="echostr") String echostr) {
 
 		boolean bol = validateGateWay(gatetoken, signature, timestamp, nonce, echostr, true);// 校验是否是
-		System.out.println("校验：：：：："+bol);
+//		System.out.println("校验：：：：："+bol);
 		if (bol) {
 			HttpIO.out(getResponse(), echostr, "UTF-8");
 		}
