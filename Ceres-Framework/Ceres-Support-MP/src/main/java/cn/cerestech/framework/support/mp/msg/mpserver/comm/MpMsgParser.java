@@ -49,7 +49,7 @@ public class MpMsgParser {
 					switch(type){
 						case EVENT:
 							String event = root.elementTextTrim("Event");
-							Event eventMsg = Event.keyOf(event);
+							Event eventMsg = Event.keyOf(event.toUpperCase());
 							switch(eventMsg){
 								case SUBSCRIBE:
 								case UNSUBSCRIBE:
