@@ -7,6 +7,7 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import cn.cerestech.framework.core.enums.Gender;
 import cn.cerestech.framework.core.enums.YesNo;
@@ -37,6 +38,12 @@ public class MpUser extends IdEntity {
 	 */
 	@Lob
 	private byte[] nickname;
+
+	/**
+	 * 文本类型的微信昵称
+	 */
+	@Transient
+	private String nicknameStr;
 
 	/**
 	 * 用户性别
@@ -89,15 +96,6 @@ public class MpUser extends IdEntity {
 	 */
 	private String groupId;
 
-	/**
-	 * 获取字符串形式的昵称
-	 * 
-	 * @return
-	 */
-	public String getNicknameString() {
-		return new String(getNickname());
-	}
-
 	public String getAppId() {
 		return appId;
 	}
@@ -128,6 +126,7 @@ public class MpUser extends IdEntity {
 
 	public void setNickname(byte[] nickname) {
 		this.nickname = nickname;
+		this.nicknameStr = new String(nickname);
 	}
 
 	public Gender getGender() {
@@ -208,6 +207,15 @@ public class MpUser extends IdEntity {
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+
+	public String getNicknameStr() {
+		this.nicknameStr = nickname == null ? null : new String(nickname);
+		return this.nicknameStr;
+	}
+
+	public void setNicknameStr(String nicknameStr) {
+		this.nicknameStr = nicknameStr;
 	}
 
 }
