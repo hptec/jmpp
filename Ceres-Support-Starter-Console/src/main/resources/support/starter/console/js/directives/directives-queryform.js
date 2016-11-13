@@ -515,6 +515,7 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							// Page设置
 							if (formDef.config.page != null) {
 								cui.extend(true, scope.terms.page, formDef.config.page);
+								cui.log(scope.terms.page);
 							}
 
 						}

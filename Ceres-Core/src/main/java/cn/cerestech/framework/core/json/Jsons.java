@@ -2,7 +2,6 @@ package cn.cerestech.framework.core.json;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
 import cn.cerestech.framework.core.date.Dates;
@@ -30,6 +30,7 @@ public class Jsons {
 	private Boolean toUnicode = Boolean.TRUE;
 	private Boolean prettyPrint = Boolean.FALSE;
 	private static Map<Class<?>, Object> adapters = Maps.newHashMap();
+	private static List<TypeAdapterFactory> factories = Lists.newArrayList();
 
 	/**
 	 * 转换成为json时，表示不会将中文等符号转化成unicode 编码的转义字符
@@ -129,6 +130,12 @@ public class Jsons {
 			Set<Entry<Class<?>, Object>> sets = adapters.entrySet();
 			for (Entry<Class<?>, Object> entry : sets) {
 				builder.registerTypeHierarchyAdapter(entry.getKey(), entry.getValue());
+			}
+		}
+		// 追加外部factory
+		if (factories != null && !factories.isEmpty()) {
+			for (TypeAdapterFactory f : factories) {
+				builder.registerTypeAdapterFactory(f);
 			}
 		}
 
@@ -359,6 +366,12 @@ public class Jsons {
 	public static void registerAdapter(Class<?> type, Object adapter) {
 		if (type != null && adapter != null) {
 			adapters.put(type, adapter);
+		}
+	}
+
+	public static void registerAdapterFactory(TypeAdapterFactory factory) {
+		if (factory != null) {
+			factories.add(factory);
 		}
 	}
 

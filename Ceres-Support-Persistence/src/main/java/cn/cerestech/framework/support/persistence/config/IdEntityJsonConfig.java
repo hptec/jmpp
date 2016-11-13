@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,7 @@ public class IdEntityJsonConfig implements ApplicationRunner {
 //								System.out.println(f);
 								Object value = f.get(src);
 								if (value != null) {
-									// log.trace(value + " - " + f.toString());
+//									 log.trace(value + " - " + f.toString());
 									ele.add(f.getName(), context.serialize(value));
 								}
 							} catch (IllegalArgumentException | IllegalAccessException e) {
