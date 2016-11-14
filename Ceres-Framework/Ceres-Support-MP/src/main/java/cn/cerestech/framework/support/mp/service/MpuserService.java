@@ -1,5 +1,7 @@
 package cn.cerestech.framework.support.mp.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -9,6 +11,9 @@ import com.google.common.base.Strings;
 
 import cn.cerestech.framework.support.mp.dao.MpUserDao;
 import cn.cerestech.framework.support.mp.entity.MpUser;
+import cn.cerestech.framework.support.mp.entity.base.MpUserGov;
+import cn.cerestech.framework.support.mp.entity.base.Status;
+import cn.cerestech.framework.support.mp.mpapi.cache.strategy.MemoryStrategy;
 
 /**
  *
@@ -86,6 +91,21 @@ public class MpuserService {
 	public MpUser findByOpenid(String openid) {
 		return mpuserDao.findUniqueByAppIdAndOpenId(mpConfigService.getAppid(), openid);
 
+	}
+	
+	public MpUser fetchMpUserInfo(String openid){
+		try{
+			Status<MpUserGov> s = MemoryStrategy.of(mpConfigService.getAppid(), mpConfigService.getAppsecret()).USERAPI().get(openid);
+			if(s.getCode() == 0 || s.isSuccess()){//获取数据成功
+				MpUser mpuser = s.getObject().toMpUser(mpConfigService.getAppid());
+				this.updateOrNew(mpuser);
+			}else{
+				//System.out.println("||||同步用户数据失败||||||||||:"+JsonUtils.toJson(s));
+			}
+		}catch(Exception e){
+			//e.printStackTrace();
+		}
+		return null;
 	}
 
 }

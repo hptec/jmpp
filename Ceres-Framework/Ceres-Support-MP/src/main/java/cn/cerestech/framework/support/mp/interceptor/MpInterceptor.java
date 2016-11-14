@@ -1,5 +1,7 @@
 package cn.cerestech.framework.support.mp.interceptor;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +17,7 @@ import com.google.common.base.Strings;
 import cn.cerestech.framework.support.mp.annoation.MpUserRequire;
 import cn.cerestech.framework.support.mp.entity.MpUser;
 import cn.cerestech.framework.support.mp.entity.base.MpUserGov;
+import cn.cerestech.framework.support.mp.entity.base.MpUserToken;
 import cn.cerestech.framework.support.mp.entity.base.Status;
 import cn.cerestech.framework.support.mp.enums.AuthorizeScope;
 import cn.cerestech.framework.support.mp.mpapi.cache.strategy.MemoryStrategy;
@@ -88,10 +91,14 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 						}
 					}
 					//code 参数存在获取用户
-					Status<MpUserGov> status  = MemoryStrategy.of(mpconfig.getAppid(), mpconfig.getAppsecret())
+					Status<Map<String, Object>> status  = MemoryStrategy.of(mpconfig.getAppid(), mpconfig.getAppsecret())
 						.OAUTH().snsapiUserInfo(code);
 					if(status.isSuccess()){
-						MpUser mpuser = status.getObject().toMpUser(mpconfig.getAppid());
+						MpUser mpuser = ((MpUserGov)status.getObject().get("mpusergov")).toMpUser(mpconfig.getAppid());
+						MpUserToken token = (MpUserToken)status.getObject().get("token");
+						if(token != null){
+							putSession(SESSION_MPUSER_TOKEN, token);
+						}
 						mpuserService.updateOrNew(mpuser);
 						setSessionState(mpuser);
 						return true;

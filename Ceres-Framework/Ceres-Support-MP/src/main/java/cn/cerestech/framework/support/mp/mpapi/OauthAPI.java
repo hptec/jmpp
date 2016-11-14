@@ -2,7 +2,9 @@ package cn.cerestech.framework.support.mp.mpapi;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 
+import com.beust.jcommander.internal.Maps;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Longs;
 
@@ -164,13 +166,16 @@ public class OauthAPI extends API implements Logable{
 	 * @param code
 	 * @return
 	 */
-	public Status<MpUserGov> snsapiUserInfo(String code){
+	public Status<Map<String, Object>> snsapiUserInfo(String code){
 		if(Strings.isNullOrEmpty(code)){
 			return Status.ABSENT;
 		}
+		
+		Map<String, Object> result = Maps.newHashMap();
 		//1. 获取用户的拉去token
 		Status<MpUserToken> ts = this.grantToken(code);
 		if(ts.isSuccess()){
+			result.put("token", ts.getObject());
 			String token = ts.getObject().getToken();
 			//2. 根据token拉去相关信息
 //			System.out.println("拉去网页信息的scope："+ts.getObject().getScope());//snsapi_base
@@ -179,9 +184,11 @@ public class OauthAPI extends API implements Logable{
 			if(!infoStatus.isSuccess()){
 				MpUserGov mpuserGov = new MpUserGov();
 				mpuserGov.setOpenid(ts.getObject().getOpenid());
-				return new Status<MpUserGov>(0).setObject(mpuserGov);
+				result.put("mpusergov", mpuserGov);
+			}else{
+				result.put("mpusergov", infoStatus.getObject());
 			}
-			return infoStatus;
+			return new Status<Map<String, Object>>(0).setObject(result);
 		}
 		return Status.ABSENT; 
 	}
