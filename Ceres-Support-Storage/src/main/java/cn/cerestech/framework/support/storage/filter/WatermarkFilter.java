@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.cerestech.framework.core.utils.FileExtensions;
-import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.framework.support.storage.QueryRequest;
-import cn.cerestech.framework.support.storage.enums.WatermarkConfigKey;
 import cn.cerestech.framework.support.storage.service.StorageService;
 
 /**
@@ -23,8 +21,6 @@ public class WatermarkFilter implements Filter {
 	private Logger log = LogManager.getLogger();
 
 	@Autowired
-	protected ConfigService configService;
-	@Autowired
 	StorageService localstorageService;
 
 	/**
@@ -34,7 +30,9 @@ public class WatermarkFilter implements Filter {
 	 * @return
 	 */
 	protected String watermarkPath() {
-		return configService.query(WatermarkConfigKey.FRAMEWORK_SUPPORT_LOCALSTORAGE_WATERMARK_FILE_PATH).stringValue();
+		return null;
+		// return
+		// configService.query(WatermarkConfigKey.FRAMEWORK_SUPPORT_LOCALSTORAGE_WATERMARK_FILE_PATH).stringValue();
 	}
 
 	@Override

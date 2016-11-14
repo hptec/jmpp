@@ -20,11 +20,6 @@
       <version>${ceres.version}</version>
     </dependency>
     <dependency>
-      <groupId>cn.cerestech</groupId>
-      <artifactId>Ceres-Support-Configuration</artifactId>
-      <version>${ceres.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
       <version>${spring.boot.version}</version>
