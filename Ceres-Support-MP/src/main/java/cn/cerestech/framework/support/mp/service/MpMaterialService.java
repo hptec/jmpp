@@ -95,6 +95,9 @@ public class MpMaterialService {
 					status = api.create(new File(filePath), MaterialType.IMAGE, null, null);
 				}
 				if(status.isSuccess()){//
+					if(material == null){
+						material = new MpMaterial();
+					}
 					MpMaterialGov mgov = status.getObject();
 					material.setTemporary(YesNo.NO);
 					material.setCreateTime(new Date());
