@@ -9,10 +9,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,15 +28,17 @@ import com.google.common.io.Files;
 import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.framework.core.service.Result;
 import cn.cerestech.framework.core.utils.Random;
-import cn.cerestech.framework.support.configuration.service.ConfigService;
 import cn.cerestech.framework.support.storage.QueryRequest;
 import cn.cerestech.framework.support.storage.dao.StorageDao;
 import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.enums.ErrorCodes;
-import cn.cerestech.framework.support.storage.enums.LocalStorageConfigKey;
 
 @Service
+@ConfigurationProperties(prefix = "sys")
 public class StorageService {
+
+	@NotNull
+	private String filestorage;
 
 	private Logger log = LogManager.getLogger();
 
@@ -54,9 +58,6 @@ public class StorageService {
 	}
 
 	@Autowired
-	protected ConfigService configService;
-
-	@Autowired
 	protected StorageDao storageDao;
 
 	@Autowired
@@ -68,7 +69,7 @@ public class StorageService {
 	 * @return
 	 */
 	protected String path() {
-		return configService.query(LocalStorageConfigKey.FRAMEWORK_SUPPORT_LOCALSTORAGE_PATH).stringValue();
+		return filestorage;
 	}
 
 	protected String path(String path) {
@@ -369,13 +370,8 @@ public class StorageService {
 	 * @return
 	 */
 	public Boolean isFileStorageOpen() {
-		String dir = configService.query(LocalStorageConfigKey.FRAMEWORK_SUPPORT_LOCALSTORAGE_PATH).stringValue();
-		if (Strings.isNullOrEmpty(dir)) {// 目录未设置
-			log.debug("FileStorage not set");
-			return Boolean.FALSE;
-		}
 
-		File f = new File(dir);
+		File f = new File(filestorage);
 		if (!f.exists()) {
 			log.debug("FileStorage not exist");
 			return Boolean.FALSE;
@@ -443,6 +439,14 @@ public class StorageService {
 		}
 
 		return Result.success(file);
+	}
+
+	public String getFilestorage() {
+		return filestorage;
+	}
+
+	public void setFilestorage(String filestorage) {
+		this.filestorage = filestorage;
 	}
 
 }
