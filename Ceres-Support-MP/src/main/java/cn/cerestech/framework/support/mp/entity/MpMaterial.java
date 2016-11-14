@@ -2,7 +2,7 @@ package cn.cerestech.framework.support.mp.entity;
 
 import java.util.Date;
 
-import org.hibernate.annotations.Columns;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -23,6 +23,7 @@ import cn.cerestech.framework.support.persistence.entity.IdEntity;
 public class MpMaterial extends IdEntity {
 	private String media_id;//微信官方的id
 	private String media_url;//获取的url，微信官方的url
+	
 	@Column(name = "[key]")
 	private String key;//区分用途的key
 	private String remark;//备注
