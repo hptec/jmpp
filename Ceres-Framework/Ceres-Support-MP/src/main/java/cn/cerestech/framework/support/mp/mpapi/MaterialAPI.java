@@ -11,7 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 import cn.cerestech.framework.core.http.Https;
 import cn.cerestech.framework.core.json.Jsons;
-import cn.cerestech.framework.support.mp.entity.base.MpMaterial;
+import cn.cerestech.framework.support.mp.entity.base.MpMaterialGov;
 import cn.cerestech.framework.support.mp.entity.base.MpNewsMaterial;
 import cn.cerestech.framework.support.mp.entity.base.Status;
 
@@ -59,14 +59,14 @@ public class MaterialAPI extends API{
 	 * @param type
 	 * @return
 	 */
-	public Status<MpMaterial> createTemp(String server_access_token, File file, MaterialType type){
+	public Status<MpMaterialGov> createTemp(String server_access_token, File file, MaterialType type){
 		String url = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token="+server_access_token+"&type="+type.key();
 		
 		String ret = Https.of().upload(url, null, "media", file).readString();//{"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
 		
-		Status<MpMaterial> status = Status.as(ret);
+		Status<MpMaterialGov> status = Status.as(ret);
 		if(status.isSuccess()){
-			MpMaterial m = Jsons.from(status.asJson()).to(MpMaterial.class);
+			MpMaterialGov m = Jsons.from(status.asJson()).to(MpMaterialGov.class);
 			status.setObject(m);
 		}
 		return status;
@@ -80,7 +80,7 @@ public class MaterialAPI extends API{
 	 * @param video_desc: 上传视频素材有效
 	 * @return
 	 */
-	public Status<MpMaterial> create(String server_access_token, File file, MaterialType type, String video_title, String video_desc){
+	public Status<MpMaterialGov> create(String server_access_token, File file, MaterialType type, String video_title, String video_desc){
 		String url = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token="+server_access_token;
 		Map<String, Object> params = Maps.newHashMap();
 		Map<String, Object> p = Maps.newHashMap();
@@ -91,9 +91,9 @@ public class MaterialAPI extends API{
 		}
 		String ret = Https.of().upload(url, params, "media", file).readString();
 		
-		Status<MpMaterial> status = Status.as(ret);
+		Status<MpMaterialGov> status = Status.as(ret);
 		if(status.isSuccess()){
-			MpMaterial m = Jsons.from(status.asJson()).to(MpMaterial.class);
+			MpMaterialGov m = Jsons.from(status.asJson()).to(MpMaterialGov.class);
 			status.setObject(m);
 		}
 		return status;
@@ -164,12 +164,12 @@ public class MaterialAPI extends API{
 	 * @param file
 	 * @return 返回的Material 中只有 URL值
 	 */
-	public Status<MpMaterial> createNewsImg(String server_access_token, File file){
+	public Status<MpMaterialGov> createNewsImg(String server_access_token, File file){
 		String url = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token="+server_access_token;
 		String ret = Https.of().upload(url,null, "media", file).readString();
-		Status<MpMaterial> status = Status.as(ret);
+		Status<MpMaterialGov> status = Status.as(ret);
 		if(status.isSuccess()){
-			MpMaterial m = Jsons.from(ret).to(MpMaterial.class);
+			MpMaterialGov m = Jsons.from(ret).to(MpMaterialGov.class);
 			status.setObject(m);
 		}
 		return status;
@@ -180,16 +180,16 @@ public class MaterialAPI extends API{
 	 * @param materials: 如果只传入一个表示单图文消息，如果多个表示多图文消息
 	 * @return： 返回消息中包含值 media_id 其他不包含
 	 */
-	public Status<MpMaterial> createNews(String server_access_token, MpNewsMaterial... materials){
+	public Status<MpMaterialGov> createNews(String server_access_token, MpNewsMaterial... materials){
 		String url = "https://api.weixin.qq.com/cgi-bin/material/add_news?access_token="+server_access_token;
 		Map<String, Object> params = Maps.newHashMap();
 		params.put("articles", materials);
 		
 		String res = Https.of().post(url, new ByteArrayEntity(Jsons.from(params).disableUnicode().toJson().getBytes())).readString();
 		
-		Status<MpMaterial> status = Status.as(res);
+		Status<MpMaterialGov> status = Status.as(res);
 		if(status.isSuccess()){
-			MpMaterial m = Jsons.from(res).to(MpMaterial.class);
+			MpMaterialGov m = Jsons.from(res).to(MpMaterialGov.class);
 			status.setObject(m);
 		}
 		return status;

@@ -4,7 +4,7 @@ package cn.cerestech.framework.support.mp.entity.base;
  * @author <a mailto="royrxc@gmail.com">Roy</a>
  * @since 2016年4月22日
  */
-public class MpMaterial {
+public class MpMaterialGov {
 	/**
 	 * 微信服务器的素材id
 	 */

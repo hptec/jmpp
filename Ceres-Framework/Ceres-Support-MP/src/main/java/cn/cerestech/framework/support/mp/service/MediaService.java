@@ -5,7 +5,7 @@ import java.io.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.cerestech.framework.support.mp.entity.base.MpMaterial;
+import cn.cerestech.framework.support.mp.entity.base.MpMaterialGov;
 import cn.cerestech.framework.support.mp.entity.base.MpNewsMaterial;
 import cn.cerestech.framework.support.mp.entity.base.Status;
 import cn.cerestech.framework.support.mp.mpapi.MaterialAPI.MaterialType;
@@ -51,7 +51,7 @@ public class MediaService {
 	 * @return 如果成功，则返回的object 中media_id否则，返回失败的消息
 	 */
 	public Status<String> createNews(MpNewsMaterial...materials){
-		Status<MpMaterial> status = MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).MATERIAL()
+		Status<MpMaterialGov> status = MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).MATERIAL()
 			.createNews(materials);
 		if(status.isSuccess()){
 			return new Status<String>(0).setObject(status.getObject().getMedia_id());
@@ -66,7 +66,7 @@ public class MediaService {
 	 * @return 返回错误消息，或者media_id
 	 */
 	public Status<String> createNewImg(File file){
-		Status<MpMaterial> status = MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).MATERIAL()
+		Status<MpMaterialGov> status = MemoryStrategy.of(mpConfig.getAppid(), mpConfig.getAppsecret()).MATERIAL()
 				.createNewsImg(file);
 		
 		if(status.isSuccess()){

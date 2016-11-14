@@ -32,4 +32,9 @@ public interface MpOperator extends SessionOperator, RequestOperator {
 		putSession(SESSION_MPUSER_OPENID, mpuser.getOpenId());
 	}
 	
+	public default void clear(){
+		removeSession(SESSION_MPUSER_ID_KEY);
+		removeSession(SESSION_MPUSER_OPENID);
+	}
+	
 }
