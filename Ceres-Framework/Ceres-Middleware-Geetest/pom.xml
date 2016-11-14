@@ -4,7 +4,7 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>3.0.25</version>
+    <version>3.0.26</version>
   </parent>
   <artifactId>Ceres-Middleware-Geetest</artifactId>
   <dependencies>
@@ -15,4 +15,3 @@
     </dependency>
   </dependencies>
 </project>
-
