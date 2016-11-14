@@ -4,7 +4,7 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>3.0.25</version>
+    <version>3.0.26</version>
   </parent>
   <artifactId>Ceres-Support-Classpath</artifactId>
   <dependencies>
@@ -20,4 +20,3 @@
     </dependency>
   </dependencies>
 </project>
-
