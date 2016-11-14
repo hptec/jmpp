@@ -1,6 +1,7 @@
 package cn.cerestech.framework.support.mp.operator;
 
 import cn.cerestech.framework.support.mp.entity.MpUser;
+import cn.cerestech.framework.support.mp.entity.base.MpUserToken;
 import cn.cerestech.framework.support.starter.operator.RequestOperator;
 import cn.cerestech.framework.support.starter.operator.SessionOperator;
 
@@ -12,6 +13,7 @@ import cn.cerestech.framework.support.starter.operator.SessionOperator;
 public interface MpOperator extends SessionOperator, RequestOperator {
 	public static final String SESSION_MPUSER_ID_KEY = "_SESSION_MPUSER_IDKEY";
 	public static final String SESSION_MPUSER_OPENID = "_SESSION_MPUSER_OPENID";
+	public static final String SESSION_MPUSER_TOKEN = "_SESSION_MPUSER_TOKEN";
 	
 	/**
 	 * 获取当前登录的微信用户
@@ -19,6 +21,10 @@ public interface MpOperator extends SessionOperator, RequestOperator {
 	 */
 	public default Long getMpUserId(){
 		return getSession(SESSION_MPUSER_ID_KEY);
+	}
+	
+	public  default MpUserToken getToken(){
+		return getSession(SESSION_MPUSER_TOKEN);
 	}
 	
 	/**
