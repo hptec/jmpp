@@ -83,7 +83,7 @@ public class StorageService {
 		return dirPath;
 	}
 
-	protected String path(String... path) {
+	public String path(String... path) {
 		StringBuffer buffer = new StringBuffer(path());
 		if (path != null && path.length != 0) {
 			for (String p : path) {
