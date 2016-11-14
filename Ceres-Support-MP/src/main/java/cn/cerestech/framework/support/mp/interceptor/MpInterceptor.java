@@ -48,6 +48,8 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object requestMethod) throws Exception {
+//		putSession(SESSION_MPUSER_ID_KEY, 1541L);
+//		putSession(SESSION_MPUSER_OPENID, "otwEVt-T63dncpcxHkGsnIwTZePE");
 		if(requestMethod instanceof HandlerMethod){
 			HandlerMethod method = (HandlerMethod)requestMethod; 
 			MpUserRequire clsRequire = method.getBeanType().getAnnotation(MpUserRequire.class);
@@ -57,9 +59,15 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 			
 			if(mthRequire != null){
 				needCheck = mthRequire.require();
+				if(mthRequire.force()){
+					clear();
+				}
 				scope = mthRequire.scope();
 			}else if(clsRequire != null){
 				needCheck = clsRequire.require();
+				if(clsRequire.force()){
+					clear();
+				}
 				scope = clsRequire.scope();
 			}
 			if(needCheck){//需要检查是否是由微信浏览器2.0 认证过来的连接
