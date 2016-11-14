@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cn.cerestech.framework.core.date.Dates;
 import cn.cerestech.framework.core.enums.YesNo;
@@ -22,6 +23,7 @@ import cn.cerestech.framework.support.persistence.Owner;
  * @author <a mailto="royrxc@gmail.com">Roy</a>
  * @since 2016年11月12日
  */
+@Service
 public class MpMaterialService {
 	@Autowired
 	MpConfigService mpConfig;
