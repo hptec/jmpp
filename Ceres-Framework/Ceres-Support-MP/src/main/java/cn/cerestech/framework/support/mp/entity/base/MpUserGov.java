@@ -7,6 +7,7 @@ import cn.cerestech.framework.support.mp.enums.MpGender;
 
 /**
  * 微信官方字段，禁止修改字段名称和大小写规则！！！
+ * 
  * @author <a mailto="royrxc@gmail.com">Roy</a>
  * @since 2016年11月6日
  */
@@ -24,104 +25,130 @@ public class MpUserGov {
 	public String unionid;// 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。详见：获取用户个人信息（UnionID机制）
 	public String remark;// 公众号运营者对粉丝的备注，公众号运营者可在微信公众平台用户管理界面对粉丝添加备注
 	public String groupid;// 用户所在的分组ID
+
 	public String getOpenid() {
 		return openid;
 	}
+
 	public void setOpenid(String openid) {
 		this.openid = openid;
 	}
+
 	public String getNickname() {
 		return nickname;
 	}
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+
 	public int getSex() {
 		return sex;
 	}
+
 	public void setSex(int sex) {
 		this.sex = sex;
 	}
+
 	public String getProvince() {
 		return province;
 	}
+
 	public void setProvince(String province) {
 		this.province = province;
 	}
+
 	public String getCity() {
 		return city;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
+
 	public String getCountry() {
 		return country;
 	}
+
 	public void setCountry(String country) {
 		this.country = country;
 	}
+
 	public String getHeadimgurl() {
 		return headimgurl;
 	}
+
 	public void setHeadimgurl(String headimgurl) {
 		this.headimgurl = headimgurl;
 	}
+
 	public String getSubscribe() {
 		return subscribe;
 	}
+
 	public void setSubscribe(String subscribe) {
 		this.subscribe = subscribe;
 	}
+
 	public String getLanguage() {
 		return language;
 	}
+
 	public void setLanguage(String language) {
 		this.language = language;
 	}
+
 	public Long getSubscribe_time() {
 		return subscribe_time;
 	}
+
 	public void setSubscribe_time(Long subscribe_time) {
 		this.subscribe_time = subscribe_time;
 	}
+
 	public String getUnionid() {
 		return unionid;
 	}
+
 	public void setUnionid(String unionid) {
 		this.unionid = unionid;
 	}
+
 	public String getRemark() {
 		return remark;
 	}
+
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+
 	public String getGroupid() {
 		return groupid;
 	}
+
 	public void setGroupid(String groupid) {
 		this.groupid = groupid;
 	}
-	
-	public MpUser toMpUser(String appid){
+
+	public MpUser toMpUser(String appid) {
 		MpUser mpUser = new MpUser();
 		mpUser.setAppId(appid);
 		mpUser.setCity(this.getCity());
 		mpUser.setCountry(this.getCountry());
-		mpUser.setGender(MpGender.keyOf(this.getSex()+"").toGender());
+		mpUser.setGender(MpGender.keyOf(this.getSex() + "").toGender());
 		mpUser.setGroupId(this.getGroupid());
 		mpUser.setHeadImgUrl(this.getHeadimgurl());
 		mpUser.setLanguage(this.getLanguage());
-		mpUser.setNickname(this.getNickname().getBytes());
+		mpUser.setNickname(this.getNickname() == null ? null : this.getNickname().getBytes());
 		mpUser.setOpenId(this.getOpenid());
 		mpUser.setProvince(this.getProvince());
 		mpUser.setRemark(this.getRemark());
-		mpUser.setSubscribe("1".equals(this.getSubscribe())?YesNo.YES:YesNo.NO);
-		if(this.getSubscribe_time() != null){
-			mpUser.setSubscribeTime(Dates.from(this.getSubscribe_time()*1000).toDate());
+		mpUser.setSubscribe("1".equals(this.getSubscribe()) ? YesNo.YES : YesNo.NO);
+		if (this.getSubscribe_time() != null) {
+			mpUser.setSubscribeTime(Dates.from(this.getSubscribe_time() * 1000).toDate());
 		}
 		mpUser.setUnionId(this.getUnionid());
 		return mpUser;
 	}
-	
+
 }

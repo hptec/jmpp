@@ -126,7 +126,9 @@ public class MpUser extends IdEntity {
 
 	public void setNickname(byte[] nickname) {
 		this.nickname = nickname;
-		this.nicknameStr = new String(nickname);
+		if (nickname != null) {
+			this.nicknameStr = new String(nickname);
+		}
 	}
 
 	public Gender getGender() {
