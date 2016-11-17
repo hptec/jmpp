@@ -51,8 +51,9 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object requestMethod) throws Exception {
-//		putSession(SESSION_MPUSER_ID_KEY, 1541L);
+//		putSession(SESSION_MPUSER_ID_KEY, 1846L);
 //		putSession(SESSION_MPUSER_OPENID, "otwEVt-T63dncpcxHkGsnIwTZePE");
+		String code = getRequest("code");
 		if(requestMethod instanceof HandlerMethod){
 			HandlerMethod method = (HandlerMethod)requestMethod; 
 			MpUserRequire clsRequire = method.getBeanType().getAnnotation(MpUserRequire.class);
@@ -62,13 +63,13 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 			
 			if(mthRequire != null){
 				needCheck = mthRequire.require();
-				if(mthRequire.force()){
+				if(mthRequire.force() && Strings.isNullOrEmpty(code)){
 					clear();
 				}
 				scope = mthRequire.scope();
 			}else if(clsRequire != null){
 				needCheck = clsRequire.require();
-				if(clsRequire.force()){
+				if(clsRequire.force() && Strings.isNullOrEmpty(code)){
 					clear();
 				}
 				scope = clsRequire.scope();
@@ -80,7 +81,6 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 				if(Strings.isNullOrEmpty(openid)){
 					
 					//开始刷新数据
-					String code = getRequest("code");
 					if(Strings.isNullOrEmpty(code)){//参数失败，重新跳转
 						if(isDataMethod != null){//json 数据接口
 							zipOut("NOT_FROM_MP");
@@ -99,7 +99,7 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 						if(token != null){
 							putSession(SESSION_MPUSER_TOKEN, token);
 						}
-						mpuserService.updateOrNew(mpuser);
+						mpuser = mpuserService.updateOrNew(mpuser);
 						setSessionState(mpuser);
 						return true;
 					}else{
@@ -112,9 +112,13 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 						}
 					}
 				}else{//open id 存在，不需要刷新数据
+					if(getMpUserId() == null){
+						MpUser mpuser = mpuserService.findOrNew(openid, mpconfig.getAppid());
+						setSessionState(mpuser);
+					}
 					return true;
 				}
-			}else{
+			}else{//不需要校验
 				return true;
 			}
 		}
@@ -122,6 +126,7 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 	}
 	
 	private void redirectMpOauth(AuthorizeScope scope){
+		removeRequest("code");
 		String url = MemoryStrategy.of(mpconfig.getAppid(), mpconfig.getAppsecret())
 				.OAUTH().authURL(mpconfig.getHost()+getRequestUriWithParams(), scope, "STATE");
 		redirect(url);

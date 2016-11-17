@@ -1,12 +1,14 @@
 package cn.cerestech.framework.support.mp.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import com.beust.jcommander.internal.Lists;
 import com.google.common.base.Strings;
 
 import cn.cerestech.framework.support.mp.dao.MpUserDao;
@@ -22,13 +24,15 @@ import cn.cerestech.framework.support.mp.mpapi.cache.strategy.MemoryStrategy;
  */
 @Service
 public class MpuserService {
-
+	
 	@Autowired
 	MpUserDao mpuserDao;
 	private static final Object locker = new byte[1];
 
 	@Autowired
 	MpConfigService mpConfigService;
+	
+	private static final List<MpUser> pool = Lists.newArrayList();
 
 	/**
 	 * appid 和 appsecret 同时不能为空
@@ -78,10 +82,10 @@ public class MpuserService {
 				mpuserDb = findOrNew(mpuser.getOpenId(), mpuser.getAppId());
 			}
 			if (mpuserDb != null) {
-				mpuser.setId(mpuserDb.getId());
-				mpuser.setAppId(mpuserDb.getAppId());
-				mpuser.setOpenId(mpuserDb.getOpenId());
-				return mpuserDao.save(mpuser);
+				mpuserDb.copyNotNull(mpuser,false);
+				mpuserDb = mpuserDao.save(mpuserDb);
+				mpuser.copyNotNull(mpuserDb,true);
+				return mpuserDb;
 			} else {
 				return null;
 			}
@@ -98,12 +102,22 @@ public class MpuserService {
 			Status<MpUserGov> s = MemoryStrategy.of(mpConfigService.getAppid(), mpConfigService.getAppsecret()).USERAPI().get(openid);
 			if(s.getCode() == 0 || s.isSuccess()){//获取数据成功
 				MpUser mpuser = s.getObject().toMpUser(mpConfigService.getAppid());
-				this.updateOrNew(mpuser);
+				return this.updateOrNew(mpuser);
 			}else{
 				//System.out.println("||||同步用户数据失败||||||||||:"+JsonUtils.toJson(s));
 			}
 		}catch(Exception e){
 			//e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public MpUser fetchByMpuserId(Long mpuserId){
+		if(mpuserId != null){
+			MpUser mpuser = mpuserDao.findOne(mpuserId);
+			if(mpuser != null){
+				return this.fetchMpUserInfo(mpuser.getOpenId());
+			}
 		}
 		return null;
 	}
