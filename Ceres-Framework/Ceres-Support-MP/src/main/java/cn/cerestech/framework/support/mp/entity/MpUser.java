@@ -9,6 +9,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.google.common.base.Strings;
+
 import cn.cerestech.framework.core.enums.Gender;
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
@@ -219,5 +221,63 @@ public class MpUser extends IdEntity {
 	public void setNicknameStr(String nicknameStr) {
 		this.nicknameStr = nicknameStr;
 	}
+	
+	/**
+	 * copy 除了id  和 openid 和  appid 之外的不为空的值
+	 * @param mpuser
+	 */
+	public void copyNotNull(MpUser mpuser, boolean all){
+		if(mpuser != null){
+			if(all){
+				if(mpuser.getId() != null){
+					this.setId(mpuser.getId());
+				}
+				if(!Strings.isNullOrEmpty(mpuser.getAppId())){
+					this.setAppId(mpuser.getAppId());
+				}
+				if(!Strings.isNullOrEmpty(mpuser.getOpenId())){
+					this.setOpenId(mpuser.getOpenId());
+				}
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getCity())){
+				this.setCity(mpuser.getCity());
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getCountry())){
+				this.setCountry(mpuser.getCountry());
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getGroupId())){
+				this.setGroupId(mpuser.getGroupId());
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getHeadImgUrl())){
+				this.setHeadImgUrl(mpuser.getHeadImgUrl());
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getLanguage())){
+				this.setLanguage(mpuser.getLanguage());
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getNicknameStr())){
+				this.setNicknameStr(mpuser.getNicknameStr());
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getProvince())){
+				this.setProvince(mpuser.getProvince());
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getRemark())){
+				this.setRemark(mpuser.getRemark());
+			}
+			if(!Strings.isNullOrEmpty(mpuser.getUnionId())){
+				this.setUnionId(mpuser.getUnionId());
+			}
+			if(mpuser.getGender() != null){
+				this.setGender(mpuser.getGender());
+			}
+			if(mpuser.getNickname() != null && mpuser.getNickname().length > 0){
+				this.setNickname(mpuser.getNickname());
+			}
+			if(mpuser.getSubscribe() != null){
+				this.setSubscribe(mpuser.getSubscribe());
+			}
+		}
+	}
+	
+	
 
 }
