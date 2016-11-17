@@ -29,7 +29,17 @@ public class OrderNumber {
 	public static String getPrefix() {
 		Long dayDiff = 0L;
 		try {
-			dayDiff = new Long((new Date().getTime() - sdf.parse("20160601232323000").getTime()) / 1000 / 60 / 60 / 24);
+			dayDiff = new Long((new Date().getTime() - sdf.parse("20160601235959999").getTime()) / 1000 / 60 / 60 / 24);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return Long.toHexString(dayDiff).toUpperCase();
+	}
+	public static String getPrefix(Date date) {
+		Long dayDiff = 0L;
+		try {
+			dayDiff = new Long((date.getTime() - sdf.parse("20160601232323000").getTime()) / 1000 / 60 / 60 / 24);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
