@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,14 +26,6 @@ public abstract class WebSupport implements RequestOperator, ResponseOperator, Z
 	protected Logger log = LogManager.getLogger(getClass());
 	
 	
-	protected String getRequestUriWithParams(){
-		String uri = getRequest().getRequestURI(); 
-		String queryStr = getRequest().getQueryString();
-		if(!Strings.isNullOrEmpty(queryStr)){
-			uri += "?"+queryStr;
-		}
-		return uri;
-	}
 	
 	protected void redirect(String url, String params) {
 		try {
