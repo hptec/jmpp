@@ -81,7 +81,7 @@ public class MpMsgParser {
 									result = ve;
 									break;
 								case TEMPLATESENDJOBFINISH:
-									System.out.println("接收模板消息发送状态事件："+xml);
+//									System.out.println("接收模板消息发送状态事件："+xml);
 									MpTempMsgStateEvt te = parse(MpTempMsgStateEvt.class, root);
 									te.setStatus(root.elementTextTrim("Status"));
 									te.setEvent(eventMsg);
