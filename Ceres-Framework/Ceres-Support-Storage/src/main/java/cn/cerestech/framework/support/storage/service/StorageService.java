@@ -68,7 +68,7 @@ public class StorageService {
 	 * 
 	 * @return
 	 */
-	protected String path() {
+	public String path() {
 		return filestorage;
 	}
 
