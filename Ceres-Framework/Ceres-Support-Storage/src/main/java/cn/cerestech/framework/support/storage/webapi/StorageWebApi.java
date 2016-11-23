@@ -68,7 +68,8 @@ public class StorageWebApi extends WebSupport {
 			files.addAll(v);
 		});
 
-		List<StorageFile> ret = storageService.put(files);
+		// 从外部传上来的默认是要同步到第三方的
+		List<StorageFile> ret = storageService.put(files, true);
 		if (ret.size() == 0) {
 			zipOut(Jsons.from(new Object()));
 		} else if (ret.size() == 1) {
