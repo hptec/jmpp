@@ -11,6 +11,7 @@ import cn.cerestech.framework.core.json.JsonIgnore;
 import cn.cerestech.framework.core.utils.Random;
 import cn.cerestech.framework.support.persistence.entity.IdEntity;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "$$sys_storage")
 public class StorageFile extends IdEntity {

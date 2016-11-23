@@ -84,6 +84,10 @@
     <module>Ceres-Middleware-Geetest</module>
     <module>Ceres-Support-MP</module>
     <module>Ceres-Middleware-Balance-Background</module>
+    
+    
+    <module>Ceres-Middleware-Aliyun-OSS</module>
+    <module>Ceres-Middleware-Aliyun-OSS2</module>
   </modules>
   <version>3.0.28</version>
   <dependencies>

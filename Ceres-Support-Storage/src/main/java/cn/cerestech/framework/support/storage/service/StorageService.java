@@ -32,6 +32,7 @@ import cn.cerestech.framework.support.storage.QueryRequest;
 import cn.cerestech.framework.support.storage.dao.StorageDao;
 import cn.cerestech.framework.support.storage.entity.StorageFile;
 import cn.cerestech.framework.support.storage.enums.ErrorCodes;
+import cn.cerestech.framework.support.storage.provider.ThirdStorageProvider;
 
 @Service
 @ConfigurationProperties(prefix = "sys")
@@ -62,6 +63,9 @@ public class StorageService {
 
 	@Autowired
 	protected FilterService filterService;
+
+	@Autowired
+	ThirdStorageProvider thirdStorageProvider;
 
 	/**
 	 * 返回工程文件存储目录，不带结束“/”
@@ -164,7 +168,7 @@ public class StorageService {
 		storageDao.delete(id);
 	}
 
-	public StorageFile put(String orignalName, byte[] bytes) {
+	public StorageFile put(String orignalName, byte[] bytes, Boolean syncThird) {
 
 		if (bytes == null || bytes.length == 0) {
 			return null;
@@ -191,11 +195,26 @@ public class StorageService {
 		writeByLocalUri(localFile.getLocalUri(), bytes);
 		// 保存文件记录
 		storageDao.save(localFile);
+		// 是否同步到第三方
+		if (syncThird != null && syncThird) {
+			return thirdStorageProvider.upload(localFile.getId());
+		} else {
+			return localFile;
+		}
 
-		return localFile;
 	}
 
-	public StorageFile put(String uri, String orignalName, byte[] bytes) {
+	/**
+	 * 存储文件
+	 * 
+	 * @param uri
+	 * @param orignalName
+	 * @param bytes
+	 * @param syncThird
+	 *            是否同步到第三方
+	 * @return
+	 */
+	public StorageFile put(String uri, String orignalName, byte[] bytes, Boolean syncThird) {
 
 		if (bytes == null || bytes.length == 0) {
 			return null;
@@ -220,7 +239,13 @@ public class StorageService {
 		// 保存文件记录
 		storageDao.save(localFile);
 
-		return localFile;
+		// 是否同步到第三方
+		if (syncThird != null && syncThird) {
+			return thirdStorageProvider.upload(localFile.getId());
+		} else {
+			return localFile;
+		}
+
 	}
 
 	/**
@@ -348,12 +373,12 @@ public class StorageService {
 		}
 	}
 
-	public List<StorageFile> put(List<MultipartFile> files) {
+	public List<StorageFile> put(List<MultipartFile> files, Boolean syncThird) {
 		List<StorageFile> retList = Lists.newArrayList();
 		files.forEach(file -> {
 			StorageFile localFile;
 			try {
-				localFile = put(file.getOriginalFilename(), file.getBytes());
+				localFile = put(file.getOriginalFilename(), file.getBytes(), syncThird);
 				if (localFile != null) {
 					retList.add(localFile);
 				}
@@ -399,7 +424,7 @@ public class StorageService {
 	 *            指定放入哪个目录
 	 * @return
 	 */
-	public StorageFile download(String uri, String putToDir) {
+	public StorageFile download(String uri, String putToDir, Boolean syncThird) {
 		StorageFile file = storageDao.findUniqueByUploadName(uri);
 		if (file == null) {
 			// 没有找到，则下载新增
@@ -408,7 +433,7 @@ public class StorageService {
 			if (!putToDir.endsWith(File.separator)) {
 				putToDir = putToDir + File.separator;
 			}
-			file = put(putToDir + simpleName, uri, bytes);
+			file = put(putToDir + simpleName, uri, bytes, syncThird);
 		}
 		return file;
 	}
@@ -419,14 +444,14 @@ public class StorageService {
 	 * @param uri
 	 * @return
 	 */
-	public StorageFile download(String uri) {
+	public StorageFile download(String uri, Boolean syncThird) {
 		Calendar cale = Calendar.getInstance();
 		int year = cale.get(Calendar.YEAR);
 		int month = cale.get(Calendar.MONTH) + 1;
 		int day = cale.get(Calendar.DATE);
 
 		String idPath = year + File.separator + month + File.separator + day + File.separator;
-		return download(uri, idPath);
+		return download(uri, idPath, syncThird);
 	}
 
 	public Result<StorageFile> queryById(Long id) {
@@ -437,6 +462,9 @@ public class StorageService {
 		if (file == null) {
 			return Result.error(ErrorCodes.FILE_NOT_FOUND);
 		}
+
+		byte[] bytes = readFileSystem(file.getLocalUri());
+		file.setBytes(bytes);
 
 		return Result.success(file);
 	}
