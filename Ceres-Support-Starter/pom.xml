@@ -4,7 +4,7 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>3.0.29</version>
+    <version>3.0.30</version>
   </parent>
   <artifactId>Ceres-Support-Starter</artifactId>
   <dependencies>
@@ -24,11 +24,10 @@
       <version>${ceres.version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.springframework.session/spring-session -->
-	<dependency>
-	    <groupId>org.springframework.session</groupId>
-	    <artifactId>spring-session</artifactId>
-	    <version>1.3.0.M2</version>
-	</dependency>
-    
+    <dependency>
+      <groupId>org.springframework.session</groupId>
+      <artifactId>spring-session</artifactId>
+      <version>1.3.0.M2</version>
+    </dependency>
   </dependencies>
 </project>
