@@ -238,6 +238,15 @@ define([ 'app', 'angular', 'md5', 'http' ], function(app, angular, md5, http) {
 							str += "</div>";
 							contTerm.append(str);
 							break;
+						case "currency":
+							var str = "<div class='col-md-" + width + "'>";
+							str += "<div class='form-group'>";
+							// str += "<label>"+col.title+"</label>";
+							str += "<input type='text' class='form-control' ng-model='terms." + term.prop + "' cui-number cui-precision='14' cui-scale='2' placeholder='" + term.desc + "'>";
+							str += "</div>";
+							str += "</div>";
+							contTerm.append(str);
+							break;
 						default:
 							var str = "<div class='col-md-" + width + "'>";
 							str += "<div class='form-group'>";
