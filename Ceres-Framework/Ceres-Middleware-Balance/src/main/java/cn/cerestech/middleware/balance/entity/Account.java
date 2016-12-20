@@ -1,11 +1,15 @@
 package cn.cerestech.middleware.balance.entity;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.beust.jcommander.internal.Maps;
 
 import cn.cerestech.framework.core.enums.YesNo;
 import cn.cerestech.framework.support.persistence.Owner;
@@ -39,6 +43,9 @@ public class Account extends IdEntity {
 
 	@Embedded
 	private Owner owner;
+
+	@Transient
+	private Map<String, Object> extra = Maps.newHashMap();
 
 	/**
 	 * 账户是否禁止转出
@@ -87,6 +94,14 @@ public class Account extends IdEntity {
 
 	public void setFreezeOut(YesNo freezeOut) {
 		this.freezeOut = freezeOut;
+	}
+
+	public Map<String, Object> getExtra() {
+		return extra;
+	}
+
+	public void setExtra(Map<String, Object> extra) {
+		this.extra = extra;
 	}
 
 }
