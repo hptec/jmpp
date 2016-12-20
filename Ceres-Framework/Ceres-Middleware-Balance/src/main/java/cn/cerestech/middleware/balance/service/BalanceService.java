@@ -164,9 +164,12 @@ public class BalanceService {
 					// 本笔扣完
 					rec.setLeftAmount(rec.getLeftAmount().subtract(left));
 					left = BigDecimal.ZERO;
-					break;
 				}
 				accountRecordDao.save(rec);
+				
+				if(left.compareTo(BigDecimal.ZERO) == 0){
+					break;
+				}
 			}
 			// 记录账户变动记录
 			return Result.success(log(acc, amount, oldAmount, newAmount, type, reason, extra));
