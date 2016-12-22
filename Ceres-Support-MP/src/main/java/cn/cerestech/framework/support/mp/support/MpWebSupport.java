@@ -23,10 +23,15 @@ public class MpWebSupport extends WebSupport implements MpOperator {
 	MpUserDao mpUserDao;
 
 	protected MpUser getCurMpUser() {
+		if(getMpUserId() == null){
+			return null;
+		}
 		MpUser mpuser = mpUserDao.findOne(getMpUserId());
-		if(Strings.isNullOrEmpty(mpuser.getNicknameStr()) 
-				|| (mpuser.getUpdateTime() != null && Dates.from(mpuser.getUpdateTime()).addDate(30).toDate().before(new Date()))){
-			SyncSchema.put(mpuser.getId());
+		if(mpuser != null){
+			if(Strings.isNullOrEmpty(mpuser.getNicknameStr()) 
+					|| (mpuser.getUpdateTime() != null && Dates.from(mpuser.getUpdateTime()).addDate(30).toDate().before(new Date()))){
+				SyncSchema.put(mpuser.getId());
+			}
 		}
 		return mpuser;
 	}
