@@ -85,6 +85,7 @@
     <module>Ceres-Support-MP</module>
     <module>Ceres-Middleware-Balance-Background</module>
     <module>Ceres-Middleware-Aliyun-OSS</module>
+    <module>Ceres-Support-Pay</module>
   </modules>
   <version>3.0.32</version>
   <dependencies>
