@@ -64,7 +64,7 @@ public class BalanceService {
 	 * @param type
 	 * @return
 	 */
-	public Account create(Owner owner, DescribableEnum type) {
+	private Account create(Owner owner, DescribableEnum type) {
 		return create(owner, type.key());
 	}
 
@@ -95,7 +95,7 @@ public class BalanceService {
 	}
 
 	@Transactional
-	public Result<AccountLog> change(Owner owner, String type, String reason, BigDecimal amount, Extra extra) {
+	private Result<AccountLog> change(Owner owner, String type, String reason, BigDecimal amount, Extra extra) {
 		Account acc = create(owner, type);
 		if (acc == null) {
 			return Result.error(BalanceErrorCodes.ACCOUNT_NOT_FOUND);

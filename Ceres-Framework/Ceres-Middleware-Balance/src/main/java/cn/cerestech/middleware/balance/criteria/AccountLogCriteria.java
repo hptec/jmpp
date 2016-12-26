@@ -27,8 +27,9 @@ public class AccountLogCriteria extends AbstractCriteria<AccountLog> {
 		
 	@Override
 	public Sort sort() {
-		Sort sort = new Sort(Direction.DESC, "createTime");
-		return sort;
+		Sort createTime = new Sort(Direction.DESC, "createTime");
+		Sort id = new Sort(Direction.DESC, "id");
+		return createTime.and(id);
 	}
 
 
