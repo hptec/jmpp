@@ -47,6 +47,18 @@ public class Account extends IdEntity {
 	@Transient
 	private Map<String, Object> extra = Maps.newHashMap();
 
+	//可用额度
+	@Transient
+	private BigDecimal effectiveAmount;
+	
+	/**
+	 * 获取账户可用额度
+	 * @return
+	 */
+	public BigDecimal getEffectiveAmount() {
+		return amount.subtract(freeze);
+	}
+		
 	/**
 	 * 账户是否禁止转出
 	 * 

@@ -9,8 +9,10 @@ public enum BalanceErrorCodes implements DescribableEnum {
 	AMOUNT_NOT_ENOUGH("AMOUNT_NOT_ENOUGH", "账户余额不足"), //
 
 	ACCOUNT_RECORD_NOT_FOUND("ACCOUNT_RECORD_NOT_FOUND", "未能查询到获得记录"), //
-
-	BUFFERED_TRANSACTION_NOT_FOUND("BUFFERED_TRANSACTION_NOT_FOUND", "延时交易记录未找到"),//
+	
+	
+	FREEZE_NOT_FOUND("FREEZE_NOT_FOUND", "未能查询到冻结记录"), //
+	FREEZE_ERROR_BY_EFFECTIVE_AMOUNT_LESS("FREEZE_ERROR_BY_EFFECTIVE_AMOUNT_LESS", "账户可用额度不足，冻结额度失败"), 
 	;
 
 	private String key, desc;
