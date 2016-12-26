@@ -5,8 +5,7 @@ import cn.cerestech.framework.core.enums.DescribableEnum;
 
 public enum PayChannel implements DescribableEnum{
 	ALIPAY("ALIPAY", "支付宝支付"), 
-	WXPAY("WXPAY", "微信支付"),
-	OTHER("OTHER", "其他支付");
+	WXPAY("WXPAY", "微信支付");
 	private String key, desc;
 
 	private PayChannel(String key, String desc) {
@@ -30,6 +29,6 @@ public enum PayChannel implements DescribableEnum{
 				return channel;
 			}
 		}
-		return OTHER;
+		return null;
 	}
 }
