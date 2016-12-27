@@ -70,6 +70,16 @@ public class Jsons {
 		return getGson().fromJson(toJson(), typeToken.getType());
 	}
 
+	/**
+	 * 判断是否有这个属性
+	 * 
+	 * @param propName
+	 * @return
+	 */
+	public Boolean has(String propName) {
+		return root.getAsJsonObject().has(propName);
+	}
+
 	public static Jsons from(Object obj) {
 		Jsons me = new Jsons();
 		if (obj == null) {
