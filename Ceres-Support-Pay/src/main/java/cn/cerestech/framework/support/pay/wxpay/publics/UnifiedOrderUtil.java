@@ -34,7 +34,7 @@ public class UnifiedOrderUtil {
 				Method get = des.getReadMethod();
 				Object valobj = get.invoke(entity);
 				String val = valobj != null ?valobj.toString():"";
-				if(!Strings.isNotBlank(val) && !filed.getName().equals("sign")){
+				if(Strings.isNotBlank(val) && !filed.getName().equals("sign")){
 					signMap.put(filed.getName(), val);
 				}
 			} catch (Exception e) {
