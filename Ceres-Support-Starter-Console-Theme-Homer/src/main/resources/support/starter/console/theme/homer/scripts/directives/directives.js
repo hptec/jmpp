@@ -365,9 +365,9 @@ define([ 'app', 'icheck' ], function() {
 				elem.on('blur', function() {
 
 					// For test
-					// console.info('this', this);
-					// console.info('scope', scope);
-					// console.info('attrs', attrs);
+					 console.info('this', this);
+					 console.info('scope', scope);
+					 console.info('attrs', attrs);
 
 					/*
 					 * // returns moments.js format object scope.dateTime = new

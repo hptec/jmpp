@@ -20,7 +20,6 @@
 				"ladda.jquery",
 				"css!/api/classpath/query/support/starter/console/theme/homer/bower_components/ladda/dist/ladda-themeless.min"
 			]
-			
 		},
 		{
 			name:"angular-ladda",
@@ -30,6 +29,22 @@
 				"angular"
 			],
 			angularModule:"angular-ladda"
+		},{
+			name:"datetimepicker",
+			uri:"/api/classpath/query/support/starter/console/theme/homer/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min",
+			deps:[
+				"css!/api/classpath/query/support/starter/console/theme/homer/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min",
+				"jquery",
+				"moment",
+				"bootstrap"
+			]
+		},{
+			name:"directives-datetimepicker",
+			uri:"/api/classpath/query/support/starter/console/theme/homer/bower_components/angular-bootstrap-datetimepicker-directive/angular-bootstrap-datetimepicker-directive",
+			deps:[
+				"datetimepicker"
+			],
+			angularModule:"datetimepicker"
 		}
 		
 	]
