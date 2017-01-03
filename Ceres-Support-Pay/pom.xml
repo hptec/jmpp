@@ -16,7 +16,7 @@
     <dependency>
       <groupId>cn.cerestech</groupId>
       <artifactId>Ceres-Support-MP</artifactId>
-      <version>3.0.34</version>
+      <version>${ceres.version}</version>
     </dependency>
   </dependencies>
 </project>
