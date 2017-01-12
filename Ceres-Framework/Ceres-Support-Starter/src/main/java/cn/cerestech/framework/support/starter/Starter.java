@@ -91,7 +91,7 @@ public abstract class Starter implements ApplicationRunner {
 		if (p == null) {
 			throw new RuntimeException("Platform 没有指定");
 		}
-		Platform pInDb = platformDao.findUniqueByKey(p.getKey());
+		Platform pInDb = platformDao.findTopByKey(p.getKey());
 		if (pInDb == null) {
 			// 注入数据
 			platformDao.save(p);
