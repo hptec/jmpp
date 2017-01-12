@@ -6,5 +6,5 @@ import cn.cerestech.framework.support.starter.entity.Platform;
 
 public interface PlatformDao extends JpaRepository<Platform, Long> {
 
-	Platform findUniqueByKey(String id);
+	Platform findTopByKey(String id);
 }

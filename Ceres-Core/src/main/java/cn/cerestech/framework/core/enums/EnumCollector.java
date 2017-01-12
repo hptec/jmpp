@@ -4,15 +4,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
-import cn.cerestech.framework.core.utils.Classpaths;
 import cn.cerestech.framework.core.utils.KV;
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 /**
  * 整合采集枚举的方法
@@ -25,16 +23,18 @@ public class EnumCollector {
 
 	static {
 		// 加载所有继承 DescribableEnum的类
-		Set<?> set = Classpaths.getSubTypeWith(DescribableEnum.class, Sets.newHashSet(""));
-		for (Object de : set) {
-			if (de instanceof Class) {
-				@SuppressWarnings("unchecked")
-				Class<? extends DescribableEnum> clazz = (Class<? extends DescribableEnum>) de;
-				EnumCollector collector = new EnumCollector(clazz);
-				bufferPool.put(clazz.getName(), collector);
-			}
+		if (bufferPool.isEmpty()) {
+			new FastClasspathScanner().//
+					scan().getNamesOfClassesImplementing(DescribableEnum.class).forEach(str -> {
+						try {
+							EnumCollector collector = new EnumCollector(
+									(Class<? extends DescribableEnum>) Class.forName(str));
+							bufferPool.put(str, collector);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					});
 		}
-
 	}
 
 	private Class<? extends DescribableEnum> clazz;
@@ -51,16 +51,6 @@ public class EnumCollector {
 
 	public static EnumCollector forClass(Class<?> clazz) {
 		return forName(clazz.getName());
-	}
-
-	public static List<Class<? extends DescribableEnum>> filterBy(Class<? extends DescribableEnum> cls) {
-		List<Class<? extends DescribableEnum>> retList = Lists.newArrayList();
-
-		bufferPool.values().stream().filter(ec -> {
-			return ec.isInterfaceOf(cls);
-		}).collect(Collectors.toList());
-
-		return retList;
 	}
 
 	private EnumCollector(Class<? extends DescribableEnum> clazz) {
@@ -114,20 +104,6 @@ public class EnumCollector {
 						DescribableEnum de = (DescribableEnum) v;
 						kv.put("key", de.key()).put("desc", de.desc());
 					}
-					// if (v instanceof ConfigKey) {
-					// ConfigKey ck = (ConfigKey) v;
-					// KV kv = KV.on().put("key", ck.key()).put("desc",
-					// ck.desc()).put("value", ck.defaultValue());
-					// list.add(kv);
-					// } else if (isCategoryDescribableEnum()) {
-					// CategoryDescribableEnum ck = (CategoryDescribableEnum) v;
-					// KV kv = KV.on().put("key", ck.key()).put("desc",
-					// ck.desc()).put("category", ck.getCategory());
-					// list.add(kv);
-					// } else {
-					// KV kv = KV.on().put(v.toString(), v);
-					// list.add(kv);
-					// }
 					list.add(kv);
 				}
 			}
@@ -170,4 +146,5 @@ public class EnumCollector {
 	public String getName() {
 		return clazz.getName();
 	}
+
 }
