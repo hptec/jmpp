@@ -32,13 +32,13 @@ import cn.cerestech.framework.support.starter.web.WebSupport;
  * @since 2016年11月6日
  */
 @Component
-public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOperator{
-	
+public class MpInterceptor extends WebSupport implements HandlerInterceptor, MpOperator {
+
 	@Autowired
 	MpConfigService mpconfig;
 	@Autowired
 	MpuserService mpuserService;
-	
+
 	@Override
 	public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, Exception arg3)
 			throws Exception {
@@ -50,96 +50,107 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor,MpOp
 	}
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object requestMethod) throws Exception {
-//		putSession(SESSION_MPUSER_ID_KEY, 1846L);
-//		putSession(SESSION_MPUSER_OPENID, "otwEVt-T63dncpcxHkGsnIwTZePE");
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object requestMethod)
+			throws Exception {
+		// putSession(SESSION_MPUSER_ID_KEY, 1846L);
+		// putSession(SESSION_MPUSER_OPENID, "otwEVt-T63dncpcxHkGsnIwTZePE");
 		String code = getRequest("code");
-		if(requestMethod instanceof HandlerMethod){
-			HandlerMethod method = (HandlerMethod)requestMethod; 
+		if (requestMethod instanceof HandlerMethod) {
+			HandlerMethod method = (HandlerMethod) requestMethod;
 			MpUserRequire clsRequire = method.getBeanType().getAnnotation(MpUserRequire.class);
 			MpUserRequire mthRequire = method.getMethodAnnotation(MpUserRequire.class);
 			boolean needCheck = false;
 			AuthorizeScope scope = AuthorizeScope.SNSAPI_BASE;
-			
-			if(mthRequire != null){
+
+			if (mthRequire != null) {
 				needCheck = mthRequire.require();
-				if(mthRequire.force() && Strings.isNullOrEmpty(code)){
+				if (mthRequire.force() && Strings.isNullOrEmpty(code)) {
 					clear();
 				}
 				scope = mthRequire.scope();
-			}else if(clsRequire != null){
+			} else if (clsRequire != null) {
 				needCheck = clsRequire.require();
-				if(clsRequire.force() && Strings.isNullOrEmpty(code)){
+				if (clsRequire.force() && Strings.isNullOrEmpty(code)) {
 					clear();
 				}
 				scope = clsRequire.scope();
 			}
-			if(needCheck){//需要检查是否是由微信浏览器2.0 认证过来的连接
+			if (needCheck) {// 需要检查是否是由微信浏览器2.0 认证过来的连接
 				ResponseBody isDataMethod = method.getMethodAnnotation(ResponseBody.class);
-				//检查缓存中是否存在
-				String openid = getSessionOpenid();//从session中获取
-				if(Strings.isNullOrEmpty(openid)){
-					
-					//开始刷新数据
-					if(Strings.isNullOrEmpty(code)){//参数失败，重新跳转
-						if(isDataMethod != null){//json 数据接口
+				// 检查缓存中是否存在
+				String openid = getSessionOpenid();// 从session中获取
+				if (Strings.isNullOrEmpty(openid)) {
+
+					// 开始刷新数据
+					if (Strings.isNullOrEmpty(code)) {// 参数失败，重新跳转
+						if (isDataMethod != null) {// json 数据接口
 							zipOut("NOT_FROM_MP");
 							return false;
-						}else{//页面
+						} else {// 页面
 							redirectMpOauth(scope);
 							return false;
 						}
 					}
-					//code 参数存在获取用户
-					Status<Map<String, Object>> status  = MemoryStrategy.of(mpconfig.getAppid(), mpconfig.getAppsecret())
-						.OAUTH().snsapiUserInfo(code);
-					if(status.isSuccess()){
-						MpUser mpuser = ((MpUserGov)status.getObject().get("mpusergov")).toMpUser(mpconfig.getAppid());
-						MpUserToken token = (MpUserToken)status.getObject().get("token");
-						if(token != null){
+					/** 调试信息 **/
+					if (Strings.nullToEmpty(code).contains("'")) {
+						// 打印异常信息
+						System.out.println(request.getRequestURI());
+						request.getParameterMap().forEach((k, vs) -> {
+							for (String v : vs) {
+								System.out.println("PARAM: " + k + " = " + v);
+							}
+						});
+						// 打印OpenId
+						if (Strings.isNullOrEmpty(openid)) {
+							System.out.println("oid=" + openid);
+						}
+						// 打印是否data
+						System.out.println("isData= " + isDataMethod == null ? "NO" : "YES");
+						System.out.println("Referer: " + Strings.nullToEmpty(request.getHeader("Referer")));
+
+					}
+
+					/** 调试信息 **/
+					// code 参数存在获取用户
+					Status<Map<String, Object>> status = MemoryStrategy.of(mpconfig.getAppid(), mpconfig.getAppsecret())
+							.OAUTH().snsapiUserInfo(code);
+					if (status.isSuccess()) {
+						MpUser mpuser = ((MpUserGov) status.getObject().get("mpusergov")).toMpUser(mpconfig.getAppid());
+						MpUserToken token = (MpUserToken) status.getObject().get("token");
+						if (token != null) {
 							putSession(SESSION_MPUSER_TOKEN, token);
 						}
 						mpuser = mpuserService.updateOrNew(mpuser);
 						setSessionState(mpuser);
 						return true;
-					}else{
-						if(isDataMethod != null){//json 数据接口
+					} else {
+						if (isDataMethod != null) {// json 数据接口
 							zipOut("NOT_FROM_MP");
 							return false;
-						}else{//页面
+						} else {// 页面
 							redirectMpOauth(scope);
 							return false;
 						}
 					}
-				}else{//open id 存在，不需要刷新数据
-					if(getMpUserId() == null){
+				} else {// open id 存在，不需要刷新数据
+					if (getMpUserId() == null) {
 						MpUser mpuser = mpuserService.findOrNew(openid, mpconfig.getAppid());
 						setSessionState(mpuser);
 					}
 					return true;
 				}
-			}else{//不需要校验
+			} else {// 不需要校验
 				return true;
 			}
 		}
 		return true;
 	}
-	
-	private void redirectMpOauth(AuthorizeScope scope){
+
+	private void redirectMpOauth(AuthorizeScope scope) {
 		removeRequest("code");
-		String url = MemoryStrategy.of(mpconfig.getAppid(), mpconfig.getAppsecret())
-				.OAUTH().authURL(mpconfig.getHost()+getRequestUriWithParams(), scope, "STATE");
+		String url = MemoryStrategy.of(mpconfig.getAppid(), mpconfig.getAppsecret()).OAUTH()
+				.authURL(mpconfig.getHost() + getRequestUriWithParams(), scope, "STATE");
 		redirect(url);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
