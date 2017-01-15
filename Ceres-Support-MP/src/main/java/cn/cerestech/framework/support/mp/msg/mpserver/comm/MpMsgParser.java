@@ -49,6 +49,10 @@ public class MpMsgParser {
 					switch(type){
 						case EVENT:
 							String event = root.elementTextTrim("Event");
+							if(Strings.isNullOrEmpty(event)){
+								System.out.println("EMPTY EVENT: "+xml);
+								return null;
+							}
 							Event eventMsg = Event.keyOf(event.toUpperCase());
 							switch(eventMsg){
 								case SUBSCRIBE:

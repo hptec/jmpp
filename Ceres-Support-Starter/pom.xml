@@ -4,7 +4,7 @@
   <parent>
     <groupId>cn.cerestech</groupId>
     <artifactId>Ceres-Framework</artifactId>
-    <version>3.0.37</version>
+    <version>3.0.39</version>
   </parent>
   <artifactId>Ceres-Support-Starter</artifactId>
   <dependencies>
