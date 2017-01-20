@@ -150,6 +150,7 @@ public class MpInterceptor extends WebSupport implements HandlerInterceptor, MpO
 		removeRequest("code");
 		String url = MemoryStrategy.of(mpconfig.getAppid(), mpconfig.getAppsecret()).OAUTH()
 				.authURL(mpconfig.getHost() + getRequestUriWithParams(), scope, "STATE");
+		System.out.println("授权转向: " + url);
 		redirect(url);
 	}
 
