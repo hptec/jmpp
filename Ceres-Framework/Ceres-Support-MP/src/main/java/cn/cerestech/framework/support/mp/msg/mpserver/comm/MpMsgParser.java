@@ -31,7 +31,7 @@ import cn.cerestech.framework.support.mp.msg.mpserver.event.MpViewEvt;
  */
 public class MpMsgParser {
 	private static final Logger LOG = LogManager.getLogger(MpMsgParser.class);
-	
+
 	public static MpMsg parse(String xml) {
 		if (!Strings.isNullOrEmpty(xml)) {
 			Document dom = null;
@@ -46,97 +46,101 @@ public class MpMsgParser {
 				String msgType = root.elementTextTrim("MsgType");
 				RMsgType type = RMsgType.keyOf(msgType);
 				if (type != null) {
-					switch(type){
-						case EVENT:
-							String event = root.elementTextTrim("Event");
-							if(Strings.isNullOrEmpty(event)){
-								System.out.println("EMPTY EVENT: "+xml);
-								return null;
-							}
-							Event eventMsg = Event.keyOf(event.toUpperCase());
-							switch(eventMsg){
-								case SUBSCRIBE:
-								case UNSUBSCRIBE:
-								case SCAN:
-									MpSubscribeEvt se = parse(MpSubscribeEvt.class, root);
-									se.setEventKey(root.elementTextTrim("EventKey"));
-									se.setTicket(root.elementTextTrim("Ticket"));
-									se.setEvent(eventMsg);
-									result = se;
-									break;
-								case CLICK:
-									MpClickEvt ce = parse(MpClickEvt.class, root);
-									ce.setEventKey(root.elementTextTrim("EventKey"));
-									ce.setEvent(eventMsg);
-									result = ce;
-									break;
-								case LOCATION:
-									MpLocationEvt le = parse(MpLocationEvt.class, root);
-									le.setLatitude(root.elementTextTrim("Latitude"));
-									le.setLongitude(root.elementTextTrim("Longitude"));
-									le.setPrecision(root.elementTextTrim("Precision"));
-									le.setEvent(eventMsg);
-									result = le;
-									break;
-								case VIEW:
-									MpViewEvt ve = parse(MpViewEvt.class, root);
-									ve.setEventKey(root.elementTextTrim("EventKey"));
-									ve.setEvent(eventMsg);
-									result = ve;
-									break;
-								case TEMPLATESENDJOBFINISH:
-//									System.out.println("接收模板消息发送状态事件："+xml);
-									MpTempMsgStateEvt te = parse(MpTempMsgStateEvt.class, root);
-									te.setStatus(root.elementTextTrim("Status"));
-									te.setEvent(eventMsg);
-									break;
-							}
+					switch (type) {
+					case EVENT:
+						String event = root.elementTextTrim("Event");
+						if (Strings.isNullOrEmpty(event)) {
+							System.out.println("EMPTY EVENT STRING: " + xml);
+							return null;
+						}
+						Event eventMsg = Event.keyOf(event.toUpperCase());
+						if (eventMsg == null) {
+							System.out.println("EMPTY EVENT ENUM: " + xml);
+							return null;
+						}
+						switch (eventMsg) {
+						case SUBSCRIBE:
+						case UNSUBSCRIBE:
+						case SCAN:
+							MpSubscribeEvt se = parse(MpSubscribeEvt.class, root);
+							se.setEventKey(root.elementTextTrim("EventKey"));
+							se.setTicket(root.elementTextTrim("Ticket"));
+							se.setEvent(eventMsg);
+							result = se;
 							break;
-						case IMAGE:
-							MpImageMsg im = parse(MpImageMsg.class, root);
-							im.setPicUrl(root.elementTextTrim("PicUrl"));
-							im.setMediaId(root.elementTextTrim("MediaId"));
-							result = im;
+						case CLICK:
+							MpClickEvt ce = parse(MpClickEvt.class, root);
+							ce.setEventKey(root.elementTextTrim("EventKey"));
+							ce.setEvent(eventMsg);
+							result = ce;
 							break;
-						case LINK:
-							MpLinkMsg lm = parse(MpLinkMsg.class, root);
-							lm.setTitle(root.elementTextTrim("Title"));
-							lm.setDescription(root.elementTextTrim("Description"));
-							lm.setUrl(root.elementTextTrim("Url"));
-							result = lm;
+						case LOCATION:
+							MpLocationEvt le = parse(MpLocationEvt.class, root);
+							le.setLatitude(root.elementTextTrim("Latitude"));
+							le.setLongitude(root.elementTextTrim("Longitude"));
+							le.setPrecision(root.elementTextTrim("Precision"));
+							le.setEvent(eventMsg);
+							result = le;
 							break;
-						case LOCATION://主动上报位置
-							MpLocationMsg locm = parse(MpLocationMsg.class, root);
-							locm.setLocation_X(root.elementTextTrim("Location_X"));
-							locm.setLocation_Y(root.elementTextTrim("Location_Y"));
-							locm.setScale(root.elementTextTrim("Scale"));
-							locm.setLabel(root.elementTextTrim("Label"));
-							result = locm;
+						case VIEW:
+							MpViewEvt ve = parse(MpViewEvt.class, root);
+							ve.setEventKey(root.elementTextTrim("EventKey"));
+							ve.setEvent(eventMsg);
+							result = ve;
 							break;
-						case SHORTVIDEO:
-							MpShortvideoMsg svm = parse(MpShortvideoMsg.class, root);
-							svm.setThumbMediaId(root.elementTextTrim("ThumbMediaId"));
-							svm.setMediaId(root.elementTextTrim("MediaId"));
-							result = svm;
+						case TEMPLATESENDJOBFINISH:
+							// System.out.println("接收模板消息发送状态事件："+xml);
+							MpTempMsgStateEvt te = parse(MpTempMsgStateEvt.class, root);
+							te.setStatus(root.elementTextTrim("Status"));
+							te.setEvent(eventMsg);
 							break;
-						case TEXT:
-							MpTextMsg tm = parse(MpTextMsg.class, root);
-							tm.setContent(root.elementTextTrim("Content"));
-							result = tm;
-							break;
-						case VIDEO:
-							MpVideoMsg vm = parse(MpVideoMsg.class, root);
-							vm.setThumbMediaId(root.elementTextTrim("ThumbMediaId"));
-							vm.setMediaId(root.elementTextTrim("MediaId"));
-							result = vm;
-							break;
-						case VOICE:
-							MpVoiceMsg vom = parse(MpVoiceMsg.class, root);
-							vom.setFormat(root.elementTextTrim("Format"));
-							vom.setMediaId(root.elementTextTrim("MediaId"));
-							vom.setRecognition(root.elementTextTrim("Recognition"));
-							result = vom;
-							break;
+						}
+						break;
+					case IMAGE:
+						MpImageMsg im = parse(MpImageMsg.class, root);
+						im.setPicUrl(root.elementTextTrim("PicUrl"));
+						im.setMediaId(root.elementTextTrim("MediaId"));
+						result = im;
+						break;
+					case LINK:
+						MpLinkMsg lm = parse(MpLinkMsg.class, root);
+						lm.setTitle(root.elementTextTrim("Title"));
+						lm.setDescription(root.elementTextTrim("Description"));
+						lm.setUrl(root.elementTextTrim("Url"));
+						result = lm;
+						break;
+					case LOCATION:// 主动上报位置
+						MpLocationMsg locm = parse(MpLocationMsg.class, root);
+						locm.setLocation_X(root.elementTextTrim("Location_X"));
+						locm.setLocation_Y(root.elementTextTrim("Location_Y"));
+						locm.setScale(root.elementTextTrim("Scale"));
+						locm.setLabel(root.elementTextTrim("Label"));
+						result = locm;
+						break;
+					case SHORTVIDEO:
+						MpShortvideoMsg svm = parse(MpShortvideoMsg.class, root);
+						svm.setThumbMediaId(root.elementTextTrim("ThumbMediaId"));
+						svm.setMediaId(root.elementTextTrim("MediaId"));
+						result = svm;
+						break;
+					case TEXT:
+						MpTextMsg tm = parse(MpTextMsg.class, root);
+						tm.setContent(root.elementTextTrim("Content"));
+						result = tm;
+						break;
+					case VIDEO:
+						MpVideoMsg vm = parse(MpVideoMsg.class, root);
+						vm.setThumbMediaId(root.elementTextTrim("ThumbMediaId"));
+						vm.setMediaId(root.elementTextTrim("MediaId"));
+						result = vm;
+						break;
+					case VOICE:
+						MpVoiceMsg vom = parse(MpVoiceMsg.class, root);
+						vom.setFormat(root.elementTextTrim("Format"));
+						vom.setMediaId(root.elementTextTrim("MediaId"));
+						vom.setRecognition(root.elementTextTrim("Recognition"));
+						result = vom;
+						break;
 					}
 				}
 				return result;
@@ -144,8 +148,7 @@ public class MpMsgParser {
 		}
 		return null;
 	}
-	
-	
+
 	private static <T extends MpMsg> T parse(Class<T> clazz, Element root) {
 		T obj = null;
 		try {

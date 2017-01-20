@@ -1,5 +1,6 @@
 package cn.cerestech.framework.support.persistence;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,8 +11,9 @@ import com.google.common.base.Strings;
 import cn.cerestech.framework.core.date.Dates;
 import cn.cerestech.framework.core.enums.DescribableEnum;
 
+@SuppressWarnings("serial")
 @Embeddable
-public class Owner {
+public class Owner implements Serializable {
 
 	@Column(length = 100)
 	private String type;
